@@ -284,9 +284,6 @@ sub _mlb_end_finishes_with_line_break {
 
     ${$self}{EndFinishesWithLineBreak} = 0 if not defined ${$self}{EndFinishesWithLineBreak};
     if ( ${$self}{EndFinishesWithLineBreak} == 0 ) {
-        if ( ${$self}{trailingComment} and ${$self}{linebreaksAtEnd}{end} eq '' ) {
-            ${$self}{linebreaksAtEnd}{end} = "\n";
-        }
         ${$self}{end} .= ${$self}{horizontalTrailingSpace} . ${$self}{trailingComment} . ${$self}{linebreaksAtEnd}{end};
         return;
     }
@@ -500,6 +497,9 @@ sub _mlb_verbatim {
                         .= ( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ? $tokens{blanklines} : "\n" )
                         . "\n";
                 }
+                # remove trailing space from end statement
+                ${$child}{end} =~ s/\s*$//s;
+
                 ${$self}{body} =~ s/${$child}{id}(\h*)/${$child}{id}$1$trailingCommentToken$lineBreakCharacter/s;
             }
         }

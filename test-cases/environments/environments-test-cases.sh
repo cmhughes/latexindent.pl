@@ -93,6 +93,8 @@ do
    [[ $silentMode == 0 ]] && set +x 
 done
 
+keepappendinglogfile
+
 # maximum indentation test cases
 latexindent.pl -s environments-nested-fourth -o=+-max-indentation1 -l=max-indentation1
 latexindent.pl -s environments-nested-fourth -o=+-max-indentation2 -l=max-indentation2

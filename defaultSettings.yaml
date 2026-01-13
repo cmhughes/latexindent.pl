@@ -330,7 +330,7 @@ noAdditionalIndentGlobal:
   UnNamedGroupingBracesBrackets: 1  # 0/1                <!---------- updated V4.0
   specialBeginEnd: 0                # 0/1
   afterHeading: 0                   # 0/1
-  filecontents: 0                   # 0/1
+  filecontents: 0                   # 0/1     # <!---  to be DITCHED
 
 # set indentRules globally for codeblocks; these need
 # to be horizontal spaces, if they are to be used
@@ -346,7 +346,7 @@ indentRulesGlobal:
   UnNamedGroupingBracesBrackets: 0  # 0/h-space
   specialBeginEnd: 0                # 0/h-space
   afterHeading: 0                   # 0/h-space
-  filecontents: 0                   # 0/h-space
+  filecontents: 0                   # 0/h-space    # <!---  to be DITCHED
 
 # command code block details
 commandCodeBlocks:                # <!---  to be DITCHED
@@ -418,7 +418,7 @@ modifyLineBreaks:
       par: 1                            # 0/1
       blankLine: 1                      # 0/1
       verbatim: 1                       # 0/1
-      filecontents: 1                   # 0/1
+      filecontents: 1                   # 0/1        # <!---  to be DITCHED
       other: \\\]|\\item(?:\h|\[)       # regex
     blocksBeginWith:
       A-Z: 1                            # 0/1
@@ -428,7 +428,7 @@ modifyLineBreaks:
     blocksEndBefore:
       commentOnOwnLine: 1               # 0/1
       verbatim: 1                       # 0/1
-      filecontents: 1                   # 0/1
+      filecontents: 1                   # 0/1        # <!---  to be DITCHED
       other: \\begin\{|\\\[|\\end\{     # regex
     huge: overflow                      # forbid mid-word line breaks
     separator: ""

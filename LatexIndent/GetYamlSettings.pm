@@ -1068,6 +1068,9 @@ sub yaml_read_settings {
         items => (
             { BeginStartsOnOwnLine => "ItemStartsOnOwnLine", BodyStartsOnOwnLine => "ItemFinishesWithLineBreak" }
         ),
+        verbatim => (
+            { BeginStartsOnOwnLine => "VerbatimBeginStartsOnOwnLine", EndFinishesWithLineBreak => "VerbatimEndFinishesWithLineBreak" }
+        ),
         DBS => ( { BeginStartsOnOwnLine => "DBSStartsOnOwnLine", BodyStartsOnOwnLine => "DBSFinishesWithLineBreak" } ),
         UnNamedGroupingBracesBrackets => ( { BeginStartsOnOwnLineAlias => undef, } ),
         specialBeginEnd               => (

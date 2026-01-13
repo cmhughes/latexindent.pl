@@ -192,11 +192,11 @@ sub operate_on_file {
         $self->dodge_double_backslash;
         $self->remove_leading_space;
 
-        # ---------- one sentence per line, text wrap -------------------
+        # ---------- one sentence per line, text wrap (BEFORE) -------------------
         $self->mlb_pre_indent_sentence_and_text_wrap if $is_m_switch_active;
-
-        $self->_align_mark_down_block
-            if $alignMarkUpBlockPresent;    # marked-up alignment blocks: %*\begin{tabular}...%*\end{tabular}
+        
+        # ---------- marked-up alignment blocks: %*\begin{tabular}...%*\end{tabular} ----------
+        $self->_align_mark_down_block if $alignMarkUpBlockPresent;    
 
         # ---------- main code blocks  -------------------
         ${$self}{body} = _find_all_code_blocks( ${$self}{body}, "" );
@@ -205,13 +205,17 @@ sub operate_on_file {
 
         # ---------- headings -------------------
         $self->find_heading; 
-
+    
         $self->condense_blank_lines
             if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks} }{condenseMultipleBlankLinesInto} );
         $self->unprotect_blank_lines
             if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} );
         $self->un_dodge_double_backslash;
         $self->final_indentation_check;
+
+        # ---------- one sentence per line, text wrap (AFTER) -------------------
+        $self->mlb_POST_indent_sentence_and_text_wrap if $is_m_switch_active;
+
         $self->remove_trailing_whitespace( when => "after" );
         $self->make_replacements( when => "after" ) if $is_rv_switch_active;
         $self->put_verbatim_back_in( match => "everything-except-commands" );
@@ -340,31 +344,6 @@ sub process_body_of_text {
     $logger->info('*Phase 4: final indentation check');
     $self->final_indentation_check;
 
-    # one sentence per line: sentences are objects, as of V3.5.1
-    if (    $is_m_switch_active
-        and ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
-        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' )
-    {
-        $logger->trace("*one-sentence-per-line text wrapping routine, textWrapOptions:when set to 'after'")
-            if $is_tt_switch_active;
-        $self->one_sentence_per_line( textWrap => 1 );
-    }
-
-    # option for text wrap
-    if (    $is_m_switch_active
-        and !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
-        and !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}
-        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} != 0
-        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' )
-    {
-        $self->text_wrap();
-    }
-
-    # option for comment text wrap
-    $self->text_wrap_comment_blocks()
-        if ( $is_m_switch_active
-        and ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}
-        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' );
     return;
 }
 
@@ -407,6 +386,35 @@ sub mlb_pre_indent_sentence_and_text_wrap {
     # logfile information
     $logger->trace( Dumper( \%{$self} ) ) if ($is_tt_switch_active);
 
+    return;
+}
+
+sub mlb_POST_indent_sentence_and_text_wrap {
+    my $self = shift;
+    
+    # one sentence per line: sentences are objects, as of V3.5.1
+    if ( ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
+        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' )
+    {
+        $logger->trace("*one-sentence-per-line text wrapping routine, textWrapOptions:when set to 'after'")
+            if $is_tt_switch_active;
+        $self->one_sentence_per_line( textWrap => 1 );
+    }
+
+    # option for text wrap
+    if ( !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
+        and !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}
+        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} != 0
+        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' )
+    {
+        $logger->trace("*textWrap AFTER indentation") if $is_t_switch_active;
+        $self->text_wrap();
+    }
+
+    # option for comment text wrap
+    $self->text_wrap_comment_blocks()
+        if ( ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}
+        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' );
     return;
 }
 

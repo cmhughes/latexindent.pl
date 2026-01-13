@@ -43,6 +43,11 @@ sub text_wrap {
 
     my $headingsRegEx = q();
 
+    if (defined ${$blocksFollowHash}{filecontents}){
+    delete ${$blocksFollowHash}{filecontents};
+    $logger->warn("* textWrapOptions: blocksEndFollow: filecontents depreciated, use other instead");
+    }
+
     foreach my $blocksFollowEachPart ( sort keys %{$blocksFollowHash} ) {
         last if ${$self}{modifyLineBreaksYamlName} eq 'sentence';
 
@@ -69,9 +74,6 @@ sub text_wrap {
             }
             elsif ( $blocksFollowEachPart eq "verbatim" ) {
                 $blocksFollowEachPart = qr/$tokens{verbatim}\d+$tokens{endOfToken}/;
-            }
-            elsif ( $blocksFollowEachPart eq "filecontents" ) {
-                $blocksFollowEachPart = qr/$tokens{filecontents}\d+$tokens{endOfToken}/;
             }
             elsif ( $blocksFollowEachPart eq "headings" ) {
                 $blocksFollowEachPart = q();
@@ -131,7 +133,7 @@ sub text_wrap {
         $blocksFollow = ( $blocksFollow eq '' ? q() : qr/(?:$blocksFollow)(?:\h|\R)*/s );
     }
 
-    $logger->trace("textWrap blocks follow regexp:")
+    $logger->trace("Overall textWrap Blocks follow regexp:")
         if ( $is_tt_switch_active and ${$self}{modifyLineBreaksYamlName} ne 'sentence' );
     $logger->trace($blocksFollow) if $is_tt_switch_active;
 
@@ -178,6 +180,11 @@ sub text_wrap {
     my $blocksEndBefore     = q();
     my $blocksEndBeforeHash = \%{ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksEndBefore} };
 
+    if (defined ${$blocksEndBeforeHash}{filecontents}){
+       delete ${$blocksEndBeforeHash}{filecontents} if defined ${$blocksEndBeforeHash}{filecontents};
+       $logger->warn("* textWrapOptions: blocksEndBefore: filecontents depreciated, use other instead");
+    }
+
     foreach my $blocksEndBeforeEachPart ( sort keys %{$blocksEndBeforeHash} ) {
         last if ${$self}{modifyLineBreaksYamlName} eq 'sentence';
 
@@ -199,11 +206,6 @@ sub text_wrap {
                     if $is_t_switch_active;
                 $blocksEndBeforeEachPart = qr/$tokens{verbatim}\d/;
             }
-            elsif ( $blocksEndBeforeEachPart eq "filecontents" ) {
-                $logger->trace("textWrap Blocks ENDS with filecontents (see textWrap:blocksEndBefore:filecontents)")
-                    if $is_t_switch_active;
-                $blocksEndBeforeEachPart = qr/$tokens{filecontents}/;
-            }
             $blocksEndBefore .= ( $blocksEndBefore eq "" ? q() : "|" ) . $blocksEndBeforeEachPart;
         }
     }
@@ -223,7 +225,13 @@ sub text_wrap {
 
     # sentences need special treatment
     if ( ${$self}{modifyLineBreaksYamlName} eq 'sentence' ) {
+        if (${$self}{body} =~ m/$tokens{blanklines}/s){
+           # sentences with blank lines
+           @textWrapBlockStorage = split(/($tokens{blanklines})/s,${$self}{body});
+        } else {
+           # sentences withOUT blank lines
         @textWrapBlockStorage = ( ${$self}{body} );
+      }
     }
 
     # call the text wrapping routine
@@ -336,6 +344,7 @@ sub text_wrap {
                     }
                     else {
                         my $thingToMeasure = ( split( /\R/, $textWrapBlockStorage[ $textWrapBlockCount - 1 ] ) )[-1];
+                        $thingToMeasure = q() if not defined $thingToMeasure;
                         $thingToMeasure =~ s/$tokens{blanklines}//;
                         $thingToMeasure =~ s/$tokens{verbatim}\d+$tokens{endOfToken}//;
                         $thingToMeasure =~ s/$trailingCommentRegExp//;
@@ -629,6 +638,12 @@ sub text_wrap {
 
             # append blocksEndBefore and the stuff following it
             if ( scalar @textWrapBeforeEndWith > 1 ) {
+                # comment line break issues, see
+                # latexindent.pl -s -r -m -l wrap-comments,addruler1 issue-389c -o=+-mod1
+                # latexindent.pl -s -r -m -l wrap-comments2,addruler1 issue-389c -o=+-mod2
+                if ($textWrapBeforeEndWith[1] =~ m/^\h*\R/s){
+                    $textWrapBlockStorageValue =~ s/($trailingComments)\R\Z/$1/s;
+                }
                 $textWrapBlockStorageValue .= $textWrapBeforeEndWith[1] . $textWrapBeforeEndWith[2];
             }
 
@@ -646,6 +661,9 @@ sub text_wrap {
             $textWrapBlockStorageValue =~ s/${$_}{tmpVerbatimID}/${$_}{origVerbatimID}/s foreach (@putVerbatimBackIn);
         }
 
+        if ($textWrapBlockStorageValue =~ m/\A\R+/s and ${$self}{body} =~ m/\R\Z/s){
+           $textWrapBlockStorageValue =~ s/\A\R//s; 
+        }
         # update the body
         ${$self}{body} .= $textWrapBlockStorageValue;
     }
@@ -791,8 +809,7 @@ sub text_wrap_comment_blocks {
                   $commentValue = wrap( '', '', $commentValue );
 
                   # put them into storage
-                  $trailingComments .= $leadingHorizontalSpace."%".$self->add_comment_symbol(value=>$leadingSpace.$_)."\n" foreach (split( /\R/, $commentValue ) );
-            
+                  $trailingComments .= $leadingHorizontalSpace."%".$self->add_comment_symbol(value=>$leadingSpace.$_) foreach (split( /\R/, $commentValue ) );
           }
           $trailingComments;
     &xemg;

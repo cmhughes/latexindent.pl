@@ -35,10 +35,15 @@ specialBeginEnd:
     procedure:
         begin: '\\Procedure\{[^}]*?\}'
         end: '\\EndProcedure'
+        nested: 1
     forEndFor:
         begin: '\\For'
         end: '\\EndFor'
     whileEndwhile:
         begin: '\\While'
         end: '\\EndWhile'
-    specialBeforeCommand: 1
+
+fineTuning:
+  commands:
+    name: (?!Procedure|For|While)[+a-zA-Z@\*0-9_\:]+
+

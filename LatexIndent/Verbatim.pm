@@ -225,7 +225,7 @@ sub find_verbatim_environments {
                         \\end\{\2\}            # \end{<something>} statement captured into $4
                         )
                         (\h*)?                 # possibly followed by horizontal space
-                        (\R)?                  # possibly followed by a line break
+                        (\R\s*)?               # possibly followed by a line break
                     /sx;
 
         while ( ${$self}{body} =~ m/$verbatimRegExp/sx ) {
@@ -238,7 +238,7 @@ sub find_verbatim_environments {
                 name                     => $2,
                 type                     => "environment",
                 modifyLineBreaksYamlName => "verbatim",
-                linebreaksAtEnd          => { end => $6 ? 1 : 0, },
+                linebreaksAtEnd          => { end => $6 ? $6 : q(), },
                 horizontalTrailingSpace  => $5 ? $5 : q(),
                 aliases                  => {
 
@@ -250,14 +250,20 @@ sub find_verbatim_environments {
                 },
             );
 
+            # log file output
+            $logger->trace("*VERBATIM environment found: ${$verbatimBlock}{name}") if $is_t_switch_active;
+
             # there are common tasks for each of the verbatim objects
             $verbatimBlock->verbatim_common_tasks;
 
             # verbatim children go in special hash
             $verbatimStorage{ ${$verbatimBlock}{id} } = $verbatimBlock;
 
-            # log file output
-            $logger->trace("*VERBATIM environment found: ${$verbatimBlock}{name}") if $is_t_switch_active;
+            if ( $is_m_switch_active and defined ${$verbatimBlock}{EndFinishesWithLineBreak} and ${$verbatimBlock}{EndFinishesWithLineBreak} == 0 ){
+                ${$verbatimBlock}{replacementText} =~ s/\s*$//s;
+                ${$verbatimBlock}{replacementText} .= ${$verbatimBlock}{linebreaksAtEnd}{end};
+                ${$verbatimBlock}{linebreaksAtEnd}{end}=q();
+            }
 
             # remove the environment block, and replace with unique ID
             ${$self}{body} =~ s/$verbatimRegExp/${$verbatimBlock}{replacementText}/sx;
@@ -602,10 +608,21 @@ sub verbatim_common_tasks {
     # modify line breaks end statements
     $self->_mlb_end_starts_on_own_line
         if ( $is_m_switch_active and defined ${$self}{EndStartsOnOwnLine} and ${$self}{EndStartsOnOwnLine} != 0 );
-    $self->_mlb_end_finishes_with_line_break
-        if ( $is_m_switch_active
-        and defined ${$self}{EndFinishesWithLineBreak}
-        and ${$self}{EndFinishesWithLineBreak} != 0 );
+
+        # VerbatimEndFinishesWithLineBreak
+    if ( $is_m_switch_active and defined ${$self}{EndFinishesWithLineBreak} and ${$self}{EndFinishesWithLineBreak} != 0 ){
+       ${$self}{originalEnd} = ${$self}{end};
+       $self->_mlb_end_finishes_with_line_break;
+       # check if end statement has been modified
+       if (${$self}{originalEnd} ne ${$self}{end}){
+        $logger->trace("taking comments/linebreak stuff from after ${$self}{originalEnd}, appending to replacement ID (VerbatimEndFinishesWithLineBreak == ${$self}{EndFinishesWithLineBreak})");
+        ${$self}{end} =~ s/\Q${$self}{originalEnd}\E(.*)//s;
+        my $mSwitchTokens = $1;
+        ${$self}{end} = ${$self}{originalEnd};
+        ${$self}{replacementText} =~ s/\s*$//s;
+        ${$self}{replacementText} .= $mSwitchTokens;
+       }
+    }
 }
 
 sub create_unique_id {

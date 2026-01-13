@@ -15,8 +15,13 @@ modifyLineBreaks:
         EndStartsOnOwnLine: 1               # -1,0,1,2,3,4
         EndFinishesWithLineBreak: 1         # -1,0,1,2,3,4
 
-
 fineTuning:
-    environments:
-        begin: \\begin\{([a-zA-Z@\*0-9_\\]+)\}\s*\\label\{[^}]+?\}
-        end: \\end\{\2\}
+  environments:
+    begin: |-
+      (?x)                      # environment 
+        \\begin\{               # regex
+          (?<ENVNAME>           # NON default
+           [a-zA-Z@\*0-9_\\]+   #
+          )                     #
+        \}\s*\\label\{[^}]+?\}  #
+    end: \\end\{\g{ENVNAME}\}   # note the capture group name

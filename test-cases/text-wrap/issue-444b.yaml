@@ -5,6 +5,8 @@ modifyLineBreaks:
   textWrapOptions:
     columns: 80
     when: "after"
+    blocksFollow:
+      other: \\item(?:\s*)
   items:                                  
       ItemFinishesWithLineBreak: 1
 

@@ -269,7 +269,7 @@ sub one_sentence_per_line {
                                 $middle =~ s|
                                                 (?!\A)      # not at the *beginning* of a match
                                                 (\h*)\R     # possible horizontal space, then line break
-                                            |$1?$1:" ";|esgx 
+                                            |$1?$1:" ";|esgx;
                             }
                             $middle =~ s|\h{2,}| |sg if ${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{multipleSpacesToSingle};
                             $middle =~ s|$tokens{blanklines}\h*\R?|$tokens{blanklines}\n|sg;

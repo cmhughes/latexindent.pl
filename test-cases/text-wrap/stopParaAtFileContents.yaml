@@ -5,4 +5,6 @@ modifyLineBreaks:
            other: 0
         blocksEndBefore:
            filecontents: 1
-           other: 0
+           other: |-
+             (?x)
+             \\begin\{filecontents

@@ -132,7 +132,7 @@ sub find_file_contents_environments_and_preamble {
                         (
                          .*?
                         )
-                        \\begin\{document\}
+                        (\R?\h*\\begin\{document\})
                 /sx;
     my $preamble = q();
 
@@ -164,6 +164,9 @@ sub find_file_contents_environments_and_preamble {
             modifyLineBreaksYamlName => "preamble",
         );
 
+        # log file output
+        $logger->trace("*found: preamble, storing as verbatim (indentPreamble: 0)") if $is_t_switch_active;
+
         $verbatimBlock->unprotect_blank_lines
             if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} );
 
@@ -174,10 +177,8 @@ sub find_file_contents_environments_and_preamble {
         $verbatimStorage{ ${$verbatimBlock}{id} } = $verbatimBlock;
 
         # remove the special block, and replace with unique ID
-        ${$self}{body} =~ s/$preambleRegExp/${$verbatimBlock}{replacementText}\\begin{document}/sx;
+        ${$self}{body} =~ s/$preambleRegExp/${$verbatimBlock}{replacementText}$2/s;
 
-        # log file output
-        $logger->trace("*found: preamble, storing as verbatim (indentPreamble: 0)") if $is_t_switch_active;
     }
     else {
         ${$self}{preamblePresent} = 0;
@@ -203,21 +204,9 @@ sub find_file_contents_environments_and_preamble {
             }
         }
         else {
-            $logger->trace("storing ${$_}{id} for indentation (${$_}{name} found outside of preamble)")
+            $logger->trace("filecontents (${$_}{name}) outside of preamble)")
                 if $is_t_switch_active;
-            $indentThisChild = 1;
-        }
-
-        # store the child, if necessary
-        if ($indentThisChild) {
-            $_->remove_leading_space;
-            $_->yaml_get_indentation_settings_for_this_object;
-            $_->tasks_particular_to_each_object;
-            push( @{ ${$self}{children} }, $_ );
-
-            # possible decoration in log file
-            $logger->trace( ${ $mainSettings{logFilePreferences} }{showDecorationFinishCodeBlockTrace} )
-                if ${ $mainSettings{logFilePreferences} }{showDecorationFinishCodeBlockTrace};
+            ${$self}{body} =~ s/${$_}{id}/${$_}{begin}${$_}{body}${$_}{end}/s;
         }
     }
 
