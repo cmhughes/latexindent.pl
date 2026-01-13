@@ -259,12 +259,6 @@ sub find_verbatim_environments {
             # verbatim children go in special hash
             $verbatimStorage{ ${$verbatimBlock}{id} } = $verbatimBlock;
 
-            if ( $is_m_switch_active and defined ${$verbatimBlock}{EndFinishesWithLineBreak} and ${$verbatimBlock}{EndFinishesWithLineBreak} == 0 ){
-                ${$verbatimBlock}{replacementText} =~ s/\s*$//s;
-                ${$verbatimBlock}{replacementText} .= ${$verbatimBlock}{linebreaksAtEnd}{end};
-                ${$verbatimBlock}{linebreaksAtEnd}{end}=q();
-            }
-
             # remove the environment block, and replace with unique ID
             ${$self}{body} =~ s/$verbatimRegExp/${$verbatimBlock}{replacementText}/sx;
 
@@ -355,7 +349,7 @@ sub find_verbatim_commands {
                 name                     => $2,
                 type                     => "command",
                 modifyLineBreaksYamlName => "verbatim",
-                linebreaksAtEnd          => { end => $7 ? 1 : 0, },
+                linebreaksAtEnd          => { end => $7 ? $7 : q(), },
                 horizontalTrailingSpace  => $6 ? $6 : q(),
                 aliases                  => {
 
@@ -395,10 +389,6 @@ sub find_verbatim_commands {
             ${$self}{body} =~ s/$verbatimRegExp/${$verbatimCommand}{replacementText}/sx;
 
             $logger->trace("replaced with ID: ${$verbatimCommand}{id}") if $is_t_switch_active;
-
-            # possible decoration in log file
-            $logger->trace( ${ $mainSettings{logFilePreferences} }{showDecorationFinishCodeBlockTrace} )
-                if ${ $mainSettings{logFilePreferences} }{showDecorationFinishCodeBlockTrace};
         }
     }
     return;
@@ -440,7 +430,7 @@ sub find_verbatim_special {
                     end                      => $3,
                     name                     => $specialName,
                     modifyLineBreaksYamlName => "specialBeginEnd",
-                    linebreaksAtEnd          => { end => $5 ? 1 : 0, },
+                    linebreaksAtEnd          => { end => $5 ? $5 : q(), },
                     horizontalTrailingSpace  => $4 ? $4 : q(),
                     type                     => "special",
                     aliases                  => {
@@ -599,11 +589,21 @@ sub verbatim_common_tasks {
     $self->create_unique_id;
 
     # the replacement text can be just the ID, but the ID might have a line break at the end of it
-    $self->get_replacement_text;
+    ${$self}{replacementText} = ${$self}{id};
 
     # the above regexp, when used below, will remove the trailing linebreak in ${$self}{linebreaksAtEnd}{end}
-    # so we compensate for it here
-    $self->adjust_replacement_text_line_breaks_at_end;
+    if ( defined ${$self}{horizontalTrailingSpace} ) {
+            unless ( $is_m_switch_active
+            and defined ${$self}{EndFinishesWithLineBreak}
+            and ${$self}{EndFinishesWithLineBreak} == 2 ){
+        ${$self}{replacementText} .= ${$self}{horizontalTrailingSpace};
+    }
+    }
+
+    if (!$is_m_switch_active){
+        ${$self}{replacementText} =~ s/\s*$//s;
+        ${$self}{replacementText} .= ${$self}{horizontalTrailingSpace}.${$self}{linebreaksAtEnd}{end};
+    }
 
     # modify line breaks end statements
     $self->_mlb_end_starts_on_own_line
@@ -623,6 +623,14 @@ sub verbatim_common_tasks {
         ${$self}{replacementText} .= $mSwitchTokens;
        }
     }
+
+            if ( $is_m_switch_active and defined ${$self}{EndFinishesWithLineBreak} and ${$self}{EndFinishesWithLineBreak} == 0 ){
+                ${$self}{replacementText} =~ s/\s*$//s;
+                ${$self}{replacementText} .= ${$self}{horizontalTrailingSpace}.${$self}{linebreaksAtEnd}{end};
+                ${$self}{linebreaksAtEnd}{end}=q();
+                ${$self}{horizontalTrailingSpace}=q();
+            }
+
 }
 
 sub create_unique_id {

@@ -26,7 +26,7 @@ use LatexIndent::Item             qw/$listOfItems/;
 use LatexIndent::LogFile          qw/$logger/;
 use LatexIndent::Verbatim         qw/%verbatimStorage/;
 our @EXPORT_OK
-    = qw/_mlb_file_starts_with_line_break _mlb_begin_starts_on_own_line _mlb_body_starts_on_own_line _mlb_end_starts_on_own_line _mlb_end_finishes_with_line_break adjust_line_breaks_end_parent _mlb_verbatim _mlb_after_indentation_token_adjust _mlb_line_break_token_adjust/;
+    = qw/_mlb_line_break_token_adjust _mlb_file_starts_with_line_break _mlb_begin_starts_on_own_line _mlb_body_starts_on_own_line _mlb_end_starts_on_own_line _mlb_end_finishes_with_line_break adjust_line_breaks_end_parent _mlb_verbatim _mlb_after_indentation_token_adjust _mlb_line_break_token_adjust/;
 our $paragraphRegExp = q();
 
 sub _mlb_begin_starts_on_own_line {
@@ -504,6 +504,10 @@ sub _mlb_verbatim {
             }
         }
     }
+
+    # m-switch linebreaks/comments tokens need accomodating here
+    ${$self}{body} =~ s/($tokens{mAfterEndRemove})\h+/$1 /sg;
+    ${$self}{body}= &_mlb_line_break_token_adjust(${$self}{body});
 }
 
 sub _mlb_line_break_token_adjust {
