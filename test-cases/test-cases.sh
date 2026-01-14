@@ -3,8 +3,8 @@
 # latexindent.pl test-cases script to ensure that, as much as possible, 
 # the script behaves as intended.
 #----------------------------------------------------------------------
-# total number of test cases: 3501
-# total number of test cases last updated: 2026-01-13
+# total number of test cases: 3524
+# total number of test cases last updated: 2026-01-14
 #-----------------------------
 #
 # sample usage
@@ -130,7 +130,7 @@ dirExec=(
   "back-up-tests;back-up-tests.sh"
   "text-wrap;text-wrap-remove-PLB.sh"
   "verbatim;verbatim-test-cases.sh"
-  # "filecontents;filecontents-test-cases.sh"
+  "filecontents;filecontents-test-cases.sh"
   # "oneSentencePerLine;one-sentence-per-line.sh"
   # "path-tests;path-tests.sh"
   # "diacritics;diacritics-test-cases.sh"

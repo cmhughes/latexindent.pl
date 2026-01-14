@@ -177,51 +177,29 @@ sub find_file_contents_environments_and_preamble {
         # verbatim children go in special hash
         $verbatimStorage{ ${$verbatimBlock}{id} } = $verbatimBlock;
 
-        # remove the special block, and replace with unique ID
+        # replace filecontents in preamble body
+    foreach (@fileContentsStorageArray) {
+            ${$verbatimBlock}{body} =~ s/${$_}{id}/${$_}{begin}${$_}{body}${$_}{end}/s;
+    }
+
+        # remove preamble, and replace with unique ID
         ${$self}{body} =~ s/$preambleRegExp/${$verbatimBlock}{replacementText}$2/s;
+
+        # filecontents *not* in preamble
+    foreach (@fileContentsStorageArray) {
+            ${$self}{body} =~ s/${$_}{id}/${$_}{begin}${$_}{body}${$_}{end}/s;
+    }
 
     }
     else {
         ${$self}{preamblePresent} = 0;
-    }
-
-    # loop through the fileContents array, check if it's in the preamble
-    foreach (@fileContentsStorageArray) {
-        my $indentThisChild = 0;
-
-        # verbatim children go in special hash
-        if ( $preamble ne '' and ${$preamble}{body} =~ m/${$_}{id}/ ) {
-            $logger->trace("filecontents (${$_}{id}) is within preamble") if $is_t_switch_active;
-
-            # indentPreamble set to 1
-            if ( $mainSettings{indentPreamble} ) {
-                $logger->trace("storing ${$_}{id} for indentation (indentPreamble is 1)") if $is_t_switch_active;
-                $indentThisChild = 1;
-            }
-            else {
-                # indentPreamble set to 0
-                $logger->trace("Storing ${$_}{id} as a VERBATIM object (indentPreamble is 0)") if $is_t_switch_active;
-                $verbatimStorage{ ${$_}{id} } = $_;
-            }
-        }
-        else {
-            $logger->trace("filecontents (${$_}{name}) outside of preamble)")
-                if $is_t_switch_active;
-            ${$self}{body} =~ s/${$_}{id}/${$_}{begin}${$_}{body}${$_}{end}/s;
+        $logger->trace("*preamble not stored, so putting filecontents back in") if (scalar @fileContentsStorageArray> 0 and $is_t_switch_active);
+        foreach (@fileContentsStorageArray) {
+            $logger->trace("${$_}{name} put back in document") if $is_t_switch_active;
+                ${$self}{body} =~ s/${$_}{id}/${$_}{begin}${$_}{body}${$_}{end}/s;
         }
     }
 
-    if ($needToStorePreamble) {
-        $preamble->dodge_double_backslash;
-        $preamble->remove_leading_space;
-
-        # text wrapping
-        $preamble->text_wrap()
-            if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} != 0 );
-        $preamble->find_commands_or_key_equals_values_braces if ( $mainSettings{preambleCommandsBeforeEnvironments} );
-        $preamble->tasks_particular_to_each_object;
-        push( @{ ${$self}{children} }, $preamble );
-    }
     return;
 }
 
@@ -245,9 +223,6 @@ sub tasks_particular_to_each_object {
     # search for headings (part, chapter, section, setc)
     $self->find_heading if ${$self}{body} =~ m/$allHeadingsRegexp/s;
 
-    ####  # search for commands and special code blocks                            ## <! ditch
-    ####  $self->find_commands_or_key_equals_values_braces_and_special             ## <! ditch
-    ####      if ${$self}{body} =~ m/$specialBeginAndBracesBracketsBasicRegExp/s;  ## <! ditch
 }
 
 1;
