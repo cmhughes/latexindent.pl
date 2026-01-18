@@ -593,43 +593,53 @@ sub verbatim_common_tasks {
 
     # the above regexp, when used below, will remove the trailing linebreak in ${$self}{linebreaksAtEnd}{end}
     if ( defined ${$self}{horizontalTrailingSpace} ) {
-            unless ( $is_m_switch_active
+        unless ( $is_m_switch_active
             and defined ${$self}{EndFinishesWithLineBreak}
-            and ${$self}{EndFinishesWithLineBreak} == 2 ){
-        ${$self}{replacementText} .= ${$self}{horizontalTrailingSpace};
-    }
+            and ${$self}{EndFinishesWithLineBreak} == 2 )
+        {
+            ${$self}{replacementText} .= ${$self}{horizontalTrailingSpace};
+        }
     }
 
-    if (!$is_m_switch_active){
+    if ( !$is_m_switch_active ) {
         ${$self}{replacementText} =~ s/\s*$//s;
-        ${$self}{replacementText} .= ${$self}{horizontalTrailingSpace}.${$self}{linebreaksAtEnd}{end};
+        ${$self}{replacementText} .= ${$self}{horizontalTrailingSpace} . ${$self}{linebreaksAtEnd}{end};
     }
 
     # modify line breaks end statements
     $self->_mlb_end_starts_on_own_line
         if ( $is_m_switch_active and defined ${$self}{EndStartsOnOwnLine} and ${$self}{EndStartsOnOwnLine} != 0 );
 
-        # VerbatimEndFinishesWithLineBreak
-    if ( $is_m_switch_active and defined ${$self}{EndFinishesWithLineBreak} and ${$self}{EndFinishesWithLineBreak} != 0 ){
-       ${$self}{originalEnd} = ${$self}{end};
-       $self->_mlb_end_finishes_with_line_break;
-       # check if end statement has been modified
-       if (${$self}{originalEnd} ne ${$self}{end}){
-        $logger->trace("taking comments/linebreak stuff from after ${$self}{originalEnd}, appending to replacement ID (VerbatimEndFinishesWithLineBreak == ${$self}{EndFinishesWithLineBreak})");
-        ${$self}{end} =~ s/\Q${$self}{originalEnd}\E(.*)//s;
-        my $mSwitchTokens = $1;
-        ${$self}{end} = ${$self}{originalEnd};
-        ${$self}{replacementText} =~ s/\s*$//s;
-        ${$self}{replacementText} .= $mSwitchTokens;
-       }
+    # VerbatimEndFinishesWithLineBreak
+    if (    $is_m_switch_active
+        and defined ${$self}{EndFinishesWithLineBreak}
+        and ${$self}{EndFinishesWithLineBreak} != 0 )
+    {
+        ${$self}{originalEnd} = ${$self}{end};
+        $self->_mlb_end_finishes_with_line_break;
+
+        # check if end statement has been modified
+        if ( ${$self}{originalEnd} ne ${$self}{end} ) {
+            $logger->trace(
+                "taking comments/linebreak stuff from after ${$self}{originalEnd}, appending to replacement ID (VerbatimEndFinishesWithLineBreak == ${$self}{EndFinishesWithLineBreak})"
+            );
+            ${$self}{end} =~ s/\Q${$self}{originalEnd}\E(.*)//s;
+            my $mSwitchTokens = $1;
+            ${$self}{end} = ${$self}{originalEnd};
+            ${$self}{replacementText} =~ s/\s*$//s;
+            ${$self}{replacementText} .= $mSwitchTokens;
+        }
     }
 
-            if ( $is_m_switch_active and defined ${$self}{EndFinishesWithLineBreak} and ${$self}{EndFinishesWithLineBreak} == 0 ){
-                ${$self}{replacementText} =~ s/\s*$//s;
-                ${$self}{replacementText} .= ${$self}{horizontalTrailingSpace}.${$self}{linebreaksAtEnd}{end};
-                ${$self}{linebreaksAtEnd}{end}=q();
-                ${$self}{horizontalTrailingSpace}=q();
-            }
+    if (    $is_m_switch_active
+        and defined ${$self}{EndFinishesWithLineBreak}
+        and ${$self}{EndFinishesWithLineBreak} == 0 )
+    {
+        ${$self}{replacementText} =~ s/\s*$//s;
+        ${$self}{replacementText} .= ${$self}{horizontalTrailingSpace} . ${$self}{linebreaksAtEnd}{end};
+        ${$self}{linebreaksAtEnd}{end} = q();
+        ${$self}{horizontalTrailingSpace} = q();
+    }
 
 }
 

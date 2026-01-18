@@ -28,18 +28,20 @@ use LatexIndent::IfElseFi         qw/$ifElseFiBasicRegExp/;
 use LatexIndent::Heading          qw/$allHeadingsRegexp/;
 use LatexIndent::Special          qw/$specialBeginAndBracesBracketsBasicRegExp/;
 use Exporter                      qw/import/;
-our @ISA       = "LatexIndent::Document";     # class inheritance, Programming Perl, pg 321
+our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/one_sentence_per_line mlb_one_sentence_per_line_indent/;
 our $sentenceCounter;
-    our @sentenceStorage;
+our @sentenceStorage;
 
 sub one_sentence_per_line {
-    my $self  = shift;
+    my $self = shift;
 
     $logger->trace("*one sentence per line info:") if $is_t_switch_active;
-    $logger->trace("\ttext-wrap sentences: ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}") if $is_t_switch_active;
+    $logger->trace("\ttext-wrap sentences: ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}")
+        if $is_t_switch_active;
     $logger->trace("\tindent sentences: 0") if $is_t_switch_active;
-    $logger->trace("one sentence per line regular expression construction: (see oneSentencePerLine: manipulateSentences)")
+    $logger->trace(
+        "one sentence per line regular expression construction: (see oneSentencePerLine: manipulateSentences)")
         if $is_t_switch_active;
 
     #
@@ -254,9 +256,13 @@ sub one_sentence_per_line {
     # one sentence per line routine (finally)
     # ------------------------------------------
     my $sentenceWorkAfterIndentation = 0;
-    $sentenceWorkAfterIndentation = 1 if ( (${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences} 
-            and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after') 
-            or ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentenceIndent} =~ m/\h+/);
+    $sentenceWorkAfterIndentation = 1
+        if (
+        (       ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}
+            and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after'
+        )
+        or ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentenceIndent} =~ m/\h+/
+        );
     ${$self}{body} =~ s/$sentenceRegEx/
                             my $beginning = $1;
                             my $h_space   = ($2?$2:q());
@@ -330,137 +336,147 @@ sub one_sentence_per_line {
     #
     #   % first comment%second comment
     #
-    ${$self}{body} =~ s/($trailingCommentRegExp)\h($trailingCommentRegExp)/$1$2/sg unless ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap};
+    ${$self}{body} =~ s/($trailingCommentRegExp)\h($trailingCommentRegExp)/$1$2/sg
+        unless ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap};
 
-    # 
+    #
     # before:
     #   \item LTXIN-TK-SENTENCE-117-END
     # after
-    #   \item 
+    #   \item
     #   LTXIN-TK-SENTENCE-117-END
     ${$self}{body} =~ s/(\S)\h*($tokens{sentence}\d+$tokens{endOfToken})/$1\n$2/sg;
 
-    # 
+    #
     # before:
     #    LTXIN-TK-SENTENCE-117-END %tc-13
     # after:
-    #    LTXIN-TK-SENTENCE-117-END 
+    #    LTXIN-TK-SENTENCE-117-END
     #    %tc-13
-    if (${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}){
-    ${$self}{body} =~ s/($tokens{sentence}\d+$tokens{endOfToken})\h*($trailingCommentRegExp)/$1\n$2/sg;
+    if ( ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap} ) {
+        ${$self}{body} =~ s/($tokens{sentence}\d+$tokens{endOfToken})\h*($trailingCommentRegExp)/$1\n$2/sg;
     }
 
     # sentence indent means we do the sentence replacement later
     return if $sentenceWorkAfterIndentation;
 
-        foreach my $sentence( @sentenceStorage ) {
-            my $sentenceStorageID    = ${$sentence}{id};
-            my $sentenceStorageValue = ${$sentence}{value};
+    foreach my $sentence (@sentenceStorage) {
+        my $sentenceStorageID    = ${$sentence}{id};
+        my $sentenceStorageValue = ${$sentence}{value};
 
-            # possibly text wrap
-            if (    ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}
-                and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} != 0 )
-            {
-               ${$sentence}{follows} =~ s/.*?\R(\h*)$/$1/s;
-               my $sentenceObj = LatexIndent::Sentence->new(
-                                           name=>"sentence",
-                                           begin=>q(),
-                                           body=>$sentenceStorageValue,
-                                           end=>q(),
-                                           follows=>${$sentence}{follows},
-                                           indentation=>q(),
-                                           modifyLineBreaksYamlName=>"sentence",
-                                           BeginStartsOnOwnLine=>1,
-                                         );
-                $sentenceObj->text_wrap;
-                $sentenceStorageValue=${$sentenceObj}{body};
-            }
+        # possibly text wrap
+        if (    ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}
+            and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} != 0 )
+        {
+            ${$sentence}{follows} =~ s/.*?\R(\h*)$/$1/s;
+            my $sentenceObj = LatexIndent::Sentence->new(
+                name                     => "sentence",
+                begin                    => q(),
+                body                     => $sentenceStorageValue,
+                end                      => q(),
+                follows                  => ${$sentence}{follows},
+                indentation              => q(),
+                modifyLineBreaksYamlName => "sentence",
+                BeginStartsOnOwnLine     => 1,
+            );
+            $sentenceObj->text_wrap;
+            $sentenceStorageValue = ${$sentenceObj}{body};
+        }
 
-            # sentence at the very END
-            ${$self}{body} =~ s/\h*$sentenceStorageID\h*$/$sentenceStorageValue/s;
+        # sentence at the very END
+        ${$self}{body} =~ s/\h*$sentenceStorageID\h*$/$sentenceStorageValue/s;
 
-            # sentence at the very BEGINNING
-            ${$self}{body} =~ s/^$sentenceStorageID\h*\R?/$sentenceStorageValue\n/s;
+        # sentence at the very BEGINNING
+        ${$self}{body} =~ s/^$sentenceStorageID\h*\R?/$sentenceStorageValue\n/s;
 
-            # all other sentences
-            ${$self}{body} =~ s/\R?\h*$sentenceStorageID\h*\R?/\n$sentenceStorageValue\n/s;
-          }
+        # all other sentences
+        ${$self}{body} =~ s/\R?\h*$sentenceStorageID\h*\R?/\n$sentenceStorageValue\n/s;
+    }
 }
 
-sub mlb_one_sentence_per_line_indent{
+sub mlb_one_sentence_per_line_indent {
     my $self = shift;
-    return unless ( ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
-        and ( (${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences} 
-            and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after') 
-            or ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentenceIndent} =~ m/\h+/)
-    );
+    return
+        unless (
+        ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
+        and (
+            (       ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}
+                and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after'
+            )
+            or ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentenceIndent} =~ m/\h+/
+        )
+        );
 
     $logger->trace("*one sentence per line: sentence INDENTATION active, finding code blocks");
-        # loop back through the sentenceStorage and replace with the sentence, adjusting line breaks
-        # before and after appropriately
-        foreach my $sentenceObj ( @{ ${$self}{children} } ) {
-            next unless ${$sentenceObj}{modifyLineBreaksYamlName} eq "sentence";
-            my $sentenceStorageID    = ${$sentenceObj}{id};
-            my $sentenceStorageValue = ${$sentenceObj}{value};
 
-            ${$sentenceObj}{follows} =~ s/(.*?\R)//s;
+    # loop back through the sentenceStorage and replace with the sentence, adjusting line breaks
+    # before and after appropriately
+    foreach my $sentenceObj ( @{ ${$self}{children} } ) {
+        next unless ${$sentenceObj}{modifyLineBreaksYamlName} eq "sentence";
+        my $sentenceStorageID    = ${$sentenceObj}{id};
+        my $sentenceStorageValue = ${$sentenceObj}{value};
 
-            ${$self}{body} =~ m/^(\h*)$sentenceStorageID/m;
-            my $surroundingIndentation = ($1?$1:q());
+        ${$sentenceObj}{follows} =~ s/(.*?\R)//s;
 
-            ${$sentenceObj}{follows} = $surroundingIndentation;
+        ${$self}{body} =~ m/^(\h*)$sentenceStorageID/m;
+        my $surroundingIndentation = ( $1 ? $1 : q() );
 
-            # option to text wrap (and option to indent) sentences
-            if ( ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences} ) {
-                # text wrapping
-                if ( ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} == 0 ) {
-                    $logger->warn("*Sentence text wrap warning:");
-                    $logger->info("You have specified oneSentencePerLine:textWrapSentences, but columns is set to 0");
-                    $logger->info(
-                        "You might wish to specify, for example: modifyLineBreaks: textWrapOptions: columns: 80");
-                    $logger->info(
-                        "The value of oneSentencePerLine:textWrapSentences will now be set to 0, so you won't see this message again"
-                    );
-                    ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences} = 0;
-                }
-                else {
-                    $sentenceObj->text_wrap if ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences};
-                    $surroundingIndentation = q() unless ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentenceIndent} =~ m/\h+/;
-                }
-              }
+        ${$sentenceObj}{follows} = $surroundingIndentation;
 
-              ${$sentenceObj}{body} = _find_all_code_blocks( ${$sentenceObj}{body}, "");
+        # option to text wrap (and option to indent) sentences
+        if ( ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences} ) {
 
-                # indentation of sentences
-                if (${$sentenceObj}{body} =~ m/
+            # text wrapping
+            if ( ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} == 0 ) {
+                $logger->warn("*Sentence text wrap warning:");
+                $logger->info("You have specified oneSentencePerLine:textWrapSentences, but columns is set to 0");
+                $logger->info("You might wish to specify, for example: modifyLineBreaks: textWrapOptions: columns: 80");
+                $logger->info(
+                    "The value of oneSentencePerLine:textWrapSentences will now be set to 0, so you won't see this message again"
+                );
+                ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences} = 0;
+            }
+            else {
+                $sentenceObj->text_wrap if ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences};
+                $surroundingIndentation = q()
+                    unless ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentenceIndent} =~ m/\h+/;
+            }
+        }
+
+        ${$sentenceObj}{body} = _find_all_code_blocks( ${$sentenceObj}{body}, "" );
+
+        # indentation of sentences
+        if (${$sentenceObj}{body} =~ m/
                                            (.*?)      # content of first line
                                            \R         # first line break
                                            (.*$)      # rest of body
                                            /sx
-                    )
-                {
-                    my $bodyFirstLine = $1;
-                    my $remainingBody = $2;
-                    my $indentation   = ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentenceIndent}.$surroundingIndentation;
-                    $bodyFirstLine =~ s/^\h*//s;
-                    $logger->trace("first line of sentence:  $bodyFirstLine")                if $is_tt_switch_active;
-                    $logger->trace("remaining body (before indentation):\n'$remainingBody'") if ($is_tt_switch_active);
+            )
+        {
+            my $bodyFirstLine = $1;
+            my $remainingBody = $2;
+            my $indentation
+                = ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentenceIndent} . $surroundingIndentation;
+            $bodyFirstLine =~ s/^\h*//s;
+            $logger->trace("first line of sentence:  $bodyFirstLine")                if $is_tt_switch_active;
+            $logger->trace("remaining body (before indentation):\n'$remainingBody'") if ($is_tt_switch_active);
 
-                    # add the indentation to all the body except first line
-                    $remainingBody =~ s/^/$indentation/mg unless ( $remainingBody eq '' );    # add indentation
-                    $logger->trace("remaining body (after indentation):\n$remainingBody'") if ($is_tt_switch_active);
+            # add the indentation to all the body except first line
+            $remainingBody =~ s/^/$indentation/mg unless ( $remainingBody eq '' );    # add indentation
+            $logger->trace("remaining body (after indentation):\n$remainingBody'") if ($is_tt_switch_active);
 
-                    # put the body back together
-                    ${$sentenceObj}{body} = $bodyFirstLine . "\n" . $remainingBody;
-                }
-
-                $sentenceStorageValue = ${$sentenceObj}{body};
-
-            # indented sentences
-            ${$self}{body} =~ s/^(\h*)$sentenceStorageID/$1$sentenceStorageValue/m;
-
+            # put the body back together
+            ${$sentenceObj}{body} = $bodyFirstLine . "\n" . $remainingBody;
         }
+
+        $sentenceStorageValue = ${$sentenceObj}{body};
+
+        # indented sentences
+        ${$self}{body} =~ s/^(\h*)$sentenceStorageID/$1$sentenceStorageValue/m;
+
+    }
 }
+
 sub create_unique_id {
     my $self = shift;
 

@@ -497,6 +497,7 @@ sub _mlb_verbatim {
                         .= ( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ? $tokens{blanklines} : "\n" )
                         . "\n";
                 }
+
                 # remove trailing space from end statement
                 ${$child}{end} =~ s/\s*$//s;
 
@@ -507,7 +508,7 @@ sub _mlb_verbatim {
 
     # m-switch linebreaks/comments tokens need accomodating here
     ${$self}{body} =~ s/($tokens{mAfterEndRemove})\h+/$1 /sg;
-    ${$self}{body}= &_mlb_line_break_token_adjust(${$self}{body});
+    ${$self}{body} = &_mlb_line_break_token_adjust( ${$self}{body} );
 }
 
 sub _mlb_line_break_token_adjust {

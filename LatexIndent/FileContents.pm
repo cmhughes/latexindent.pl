@@ -150,13 +150,13 @@ sub find_file_contents_environments_and_preamble {
 
         # create a new Verbatim object
         my $verbatimBlock = LatexIndent::Verbatim->new(
-            begin           => q(),
-            body            => $1,
-            end             => q(),
-            name            => "preamble",
-            type            => "special",
+            begin                   => q(),
+            body                    => $1,
+            end                     => q(),
+            name                    => "preamble",
+            type                    => "special",
             horizontalTrailingSpace => q(),
-            linebreaksAtEnd => {
+            linebreaksAtEnd         => {
                 begin => q(),
                 body  => q(),
                 end   => q(),
@@ -178,25 +178,26 @@ sub find_file_contents_environments_and_preamble {
         $verbatimStorage{ ${$verbatimBlock}{id} } = $verbatimBlock;
 
         # replace filecontents in preamble body
-    foreach (@fileContentsStorageArray) {
+        foreach (@fileContentsStorageArray) {
             ${$verbatimBlock}{body} =~ s/${$_}{id}/${$_}{begin}${$_}{body}${$_}{end}/s;
-    }
+        }
 
         # remove preamble, and replace with unique ID
         ${$self}{body} =~ s/$preambleRegExp/${$verbatimBlock}{replacementText}$2/s;
 
         # filecontents *not* in preamble
-    foreach (@fileContentsStorageArray) {
+        foreach (@fileContentsStorageArray) {
             ${$self}{body} =~ s/${$_}{id}/${$_}{begin}${$_}{body}${$_}{end}/s;
-    }
+        }
 
     }
     else {
         ${$self}{preamblePresent} = 0;
-        $logger->trace("*preamble not stored, so putting filecontents back in") if (scalar @fileContentsStorageArray> 0 and $is_t_switch_active);
+        $logger->trace("*preamble not stored, so putting filecontents back in")
+            if ( scalar @fileContentsStorageArray > 0 and $is_t_switch_active );
         foreach (@fileContentsStorageArray) {
             $logger->trace("${$_}{name} put back in document") if $is_t_switch_active;
-                ${$self}{body} =~ s/${$_}{id}/${$_}{begin}${$_}{body}${$_}{end}/s;
+            ${$self}{body} =~ s/${$_}{id}/${$_}{begin}${$_}{body}${$_}{end}/s;
         }
     }
 

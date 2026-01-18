@@ -158,7 +158,9 @@ sub align_at_ampersand {
     my $self  = shift;
     my %input = @_;
 
-    $logger->trace("*alignAtAmpersand routine for ${$self}{name} (type: ${$self}{modifyLineBreaksYamlName})")         if $is_t_switch_active;
+    $logger->trace("*alignAtAmpersand routine for ${$self}{name} (type: ${$self}{modifyLineBreaksYamlName})")
+        if $is_t_switch_active;
+
     # some blocks may contain verbatim to be measured
     ${$self}{measureVerbatim} = ( ${$self}{body} =~ m/$tokens{verbatim}/ ? 1 : 0 );
 
@@ -174,16 +176,16 @@ sub align_at_ampersand {
         }
         else {
             my $commandStorageName = ${$self}{name} . ${$self}{modifyLineBreaksYamlName};
-            $DBSStartsOnOwnLine
-                = (
+            $DBSStartsOnOwnLine = (
                 defined ${ $previouslyFoundSettings{$commandStorageName} }{DBSStartsOnOwnLine}
                 ? ${ $previouslyFoundSettings{$commandStorageName} }{DBSStartsOnOwnLine}
-                : 0 );
-            $DBSFinishesWithLineBreak
-                = (
+                : 0
+            );
+            $DBSFinishesWithLineBreak = (
                 defined ${ $previouslyFoundSettings{$commandStorageName} }{DBSFinishesWithLineBreak}
                 ? ${ $previouslyFoundSettings{$commandStorageName} }{DBSFinishesWithLineBreak}
-                : 0 );
+                : 0
+            );
         }
         $self->double_back_slash_else( $DBSStartsOnOwnLine, $DBSFinishesWithLineBreak )
             if ( $DBSStartsOnOwnLine or $DBSFinishesWithLineBreak );
@@ -202,29 +204,29 @@ sub align_at_ampersand {
     # stores '\begin{align*}    ' as the begin statement (note the trailing h-space)
     #
     # note: check ${$self}{begin} as well because of poly-switch adjustment (see pmatrix2-mod1.tex)
-    ${$self}{linebreaksAtEnd}{begin} = (${$self}{body} =~ m/\A\h*\R/s ? 1 : 0 );
-    if ($is_m_switch_active and defined ${$self}{begin} and !${$self}{linebreaksAtEnd}{begin}){ 
-        ${$self}{linebreaksAtEnd}{begin} = (${$self}{begin} =~ m/\h*\R$/s ? 1 : 0 );
+    ${$self}{linebreaksAtEnd}{begin} = ( ${$self}{body} =~ m/\A\h*\R/s ? 1 : 0 );
+    if ( $is_m_switch_active and defined ${$self}{begin} and !${$self}{linebreaksAtEnd}{begin} ) {
+        ${$self}{linebreaksAtEnd}{begin} = ( ${$self}{begin} =~ m/\h*\R$/s ? 1 : 0 );
     }
-    if (   !${ ${$self}{linebreaksAtEnd} }{begin}){
+    if ( !${ ${$self}{linebreaksAtEnd} }{begin} ) {
         ${$self}{body} =~ s/\A(\h*)//s;
-        ${$self}{begin} .= ($1?$1:q());
+        ${$self}{begin} .= ( $1 ? $1 : q() );
     }
 
     # check for line breaks at end of body
     ${$self}{linebreaksAtEnd}{body} = ( ${$self}{body} =~ m/\h*\R$/s ? 1 : 0 );
 
     # find and store \\ [ but only temporarily; we need to do this before the hidden children routine
-    if (${$self}{lookForChildCodeBlocks}){
-    my @DBSstorage = ();
-    ${$self}{body} =~ s/(\\\\\h+\[)/
+    if ( ${$self}{lookForChildCodeBlocks} ) {
+        my @DBSstorage = ();
+        ${$self}{body} =~ s/(\\\\\h+\[)/
                $hiddenChildCount++; 
                my $output = $tokens{alignmentBlock}.$hiddenChildCount.$tokens{endOfToken}; 
                push(@DBSstorage,{id=>$output, value=>$1 });
                $output;/sgex;
 
-    # find and store hidden children
-    ${$self}{body} =~ s/
+        # find and store hidden children
+        ${$self}{body} =~ s/
            (?<ALLCODEBLOCKS>
              $allCodeBlocks 
            )/
@@ -247,10 +249,10 @@ sub align_at_ampersand {
            $output = $leadingSpace.$output.$trailingSpace; 
       $output;/sgex;
 
-    # put DBS with h-space [ back in
-    foreach (@DBSstorage){
-        ${$self}{body} =~ s/${$_}{id}/${$_}{value}/s;
-    }
+        # put DBS with h-space [ back in
+        foreach (@DBSstorage) {
+            ${$self}{body} =~ s/${$_}{id}/${$_}{value}/s;
+        }
     }
 
     my $maximumNumberOfAmpersands = 0;
@@ -597,7 +599,7 @@ sub align_at_ampersand {
     if ( ${$self}{alignContentAfterDoubleBackSlash} ) {
 
         # check linebreaks at end of body
-        ${$self}{linebreaksAtEnd}{body} = (${$self}{body} =~ s/\R$//s ? 1 : 0);
+        ${$self}{linebreaksAtEnd}{body} = ( ${$self}{body} =~ s/\R$//s ? 1 : 0 );
 
         # check that spacesAfterDoubleBackSlash>=0
         ${$self}{spacesAfterDoubleBackSlash} = max( ${$self}{spacesAfterDoubleBackSlash}, 0 );
@@ -609,9 +611,9 @@ sub align_at_ampersand {
         foreach (@originalFormattedBody) {
             ${$_}{beforeDBS} = q();
             ${$_}{DBS}       = q();
-            if (${$_}{row} =~ s/(.*?)(${${$mainSettings{fineTuning}}{modifyLineBreaks}}{doubleBackSlash})\h*//s){
-               ${$_}{beforeDBS} = $1;
-               ${$_}{DBS}       = $2;
+            if ( ${$_}{row} =~ s/(.*?)(${${$mainSettings{fineTuning}}{modifyLineBreaks}}{doubleBackSlash})\h*//s ) {
+                ${$_}{beforeDBS} = $1;
+                ${$_}{DBS}       = $2;
             }
             ${$_}{DBS} .= " " x ( ${$self}{spacesAfterDoubleBackSlash} ) if ( ${$_}{DBS} ne '' );
             $afterDBSbody .= ${$_}{row} . "\n";
@@ -692,12 +694,12 @@ sub align_at_ampersand {
 
     # finally finally, put hidden children back in
     foreach (@hiddenChildrenStorage) {
-       ${$self}{body} =~ m/^(.*?)${$_}{id}/m;
-       my $addedIndentation = ($1 ? " "x&get_column_width($1) : q());
-       my $hiddenChildContent = ${$_}{value};
-       $hiddenChildContent =~ s"^"$addedIndentation"mg;
-       $hiddenChildContent =~ s"^$addedIndentation""s;
-       ${$self}{body} =~ s/${$_}{id}/$hiddenChildContent/s;
+        ${$self}{body} =~ m/^(.*?)${$_}{id}/m;
+        my $addedIndentation   = ( $1 ? " " x &get_column_width($1) : q() );
+        my $hiddenChildContent = ${$_}{value};
+        $hiddenChildContent =~ s"^"$addedIndentation"mg;
+        $hiddenChildContent =~ s"^$addedIndentation""s;
+        ${$self}{body}      =~ s/${$_}{id}/$hiddenChildContent/s;
     }
 
 }
@@ -844,8 +846,8 @@ sub dont_measure {
     if (    $input{mode} eq "cell"
         and ref( \${$self}{dontMeasure} ) eq "SCALAR"
         and ${$self}{dontMeasure} eq "largest"
-        and defined ${ $cellStorage[ $input{row} ][ $input{column} ] }{width} 
-        and defined $maxColumnWidth[ $input{column} ] 
+        and defined ${ $cellStorage[ $input{row} ][ $input{column} ] }{width}
+        and defined $maxColumnWidth[ $input{column} ]
         and ${ $cellStorage[ $input{row} ][ $input{column} ] }{width} == $maxColumnWidth[ $input{column} ] )
     {
         # dontMeasure stored as largest, for example
@@ -1761,10 +1763,9 @@ sub hidden_child_cell_row_width {
     my ( $tmpCellEntry, $rowCounter, $columnCounter ) = @_;
 
     foreach (@hiddenChildrenStorage) {
-        my $hiddenChildID = ${$_}{id};
+        my $hiddenChildID      = ${$_}{id};
         my $hiddenChildContent = ${$_}{value};
-        if ( $tmpCellEntry =~ m/.*?$hiddenChildID/s )
-        {
+        if ( $tmpCellEntry =~ m/.*?$hiddenChildID/s ) {
             $tmpCellEntry =~ s/$hiddenChildID/$hiddenChildContent/s;
         }
     }
@@ -1848,17 +1849,14 @@ sub hidden_child_row_width {
         $tmpRow = ( "." x $lengthOfBegin ) . $tmpRow;
 
         foreach (@hiddenChildrenStorage) {
-            my $hiddenChildID = ${$_}{id};
+            my $hiddenChildID      = ${$_}{id};
             my $hiddenChildContent = ${$_}{value};
-            if ( $tmpRow =~ m/(^.*)?$hiddenChildID/m )
-            {
+            if ( $tmpRow =~ m/(^.*)?$hiddenChildID/m ) {
                 my $partBeforeId       = $1;
                 my $lengthPartBeforeId = &get_column_width($partBeforeId);
 
-                my $tmpBodyToMeasure = join(
-                    "\n" . ( "." x ($lengthPartBeforeId) ),
-                    split( "\n", $hiddenChildContent)
-                );
+                my $tmpBodyToMeasure
+                    = join( "\n" . ( "." x ($lengthPartBeforeId) ), split( "\n", $hiddenChildContent ) );
 
                 # remove trailing \\
                 $tmpBodyToMeasure =~ s/(\\\\\h*$)//mg;

@@ -194,19 +194,19 @@ sub operate_on_file {
 
         # ---------- one sentence per line, text wrap (BEFORE) -------------------
         $self->mlb_PRE_indent_sentence_and_text_wrap if $is_m_switch_active;
-        
+
         # ---------- marked-up alignment blocks: %*\begin{tabular}...%*\end{tabular} ----------
-        $self->_align_mark_down_block if $alignMarkUpBlockPresent;    
+        $self->_align_mark_down_block if $alignMarkUpBlockPresent;
 
         # ---------- main code blocks  -------------------
         ${$self}{body} = _find_all_code_blocks( ${$self}{body}, "" );
         ${$self}{body} =~ s/\r\n/\n/sg             if $mainSettings{dos2unixlinebreaks};
-        $self->mlb_one_sentence_per_line_indent if $is_m_switch_active;
+        $self->mlb_one_sentence_per_line_indent    if $is_m_switch_active;
         $self->_mlb_after_indentation_token_adjust if $is_m_switch_active;
 
         # ---------- headings -------------------
-        $self->find_heading; 
-    
+        $self->find_heading;
+
         $self->condense_blank_lines
             if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks} }{condenseMultipleBlankLinesInto} );
         $self->unprotect_blank_lines
@@ -235,7 +235,7 @@ sub construct_regular_expressions {
     my $self = shift;
     $self->construct_trailing_comment_regexp;
     $self->_construct_code_blocks_regex;
-    $self->construct_headings_levels;                          # to be ditched
+    $self->construct_headings_levels;    # to be ditched
 
     # $self->construct_environments_regexp;                      # to be ditched
     # $self->construct_ifelsefi_regexp;                          # to be ditched
@@ -336,7 +336,8 @@ sub mlb_PRE_indent_sentence_and_text_wrap {
     my $self = shift;
 
     # one sentence per line: sentences are objects, as of V3.5.1
-    $self->one_sentence_per_line if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences} );
+    $self->one_sentence_per_line
+        if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences} );
 
     # text wrapping
     #
@@ -373,9 +374,9 @@ sub mlb_PRE_indent_sentence_and_text_wrap {
 
 sub mlb_POST_indent_sentence_and_text_wrap {
     my $self = shift;
-    
+
     # option for text wrap
-    if ( !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
+    if (    !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
         and !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}
         and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} != 0
         and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' )
@@ -386,7 +387,7 @@ sub mlb_POST_indent_sentence_and_text_wrap {
 
     # option for comment text wrap
     $self->text_wrap_comment_blocks()
-        if ( ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}
+        if (${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}
         and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' );
     return;
 }

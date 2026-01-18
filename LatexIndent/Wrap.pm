@@ -43,9 +43,9 @@ sub text_wrap {
 
     my $headingsRegEx = q();
 
-    if (defined ${$blocksFollowHash}{filecontents}){
-    delete ${$blocksFollowHash}{filecontents};
-    $logger->warn("* textWrapOptions: blocksEndFollow: filecontents depreciated, use other instead");
+    if ( defined ${$blocksFollowHash}{filecontents} ) {
+        delete ${$blocksFollowHash}{filecontents};
+        $logger->warn("* textWrapOptions: blocksEndFollow: filecontents depreciated, use other instead");
     }
 
     foreach my $blocksFollowEachPart ( sort keys %{$blocksFollowHash} ) {
@@ -180,9 +180,9 @@ sub text_wrap {
     my $blocksEndBefore     = q();
     my $blocksEndBeforeHash = \%{ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksEndBefore} };
 
-    if (defined ${$blocksEndBeforeHash}{filecontents}){
-       delete ${$blocksEndBeforeHash}{filecontents} if defined ${$blocksEndBeforeHash}{filecontents};
-       $logger->warn("* textWrapOptions: blocksEndBefore: filecontents depreciated, use other instead");
+    if ( defined ${$blocksEndBeforeHash}{filecontents} ) {
+        delete ${$blocksEndBeforeHash}{filecontents} if defined ${$blocksEndBeforeHash}{filecontents};
+        $logger->warn("* textWrapOptions: blocksEndBefore: filecontents depreciated, use other instead");
     }
 
     foreach my $blocksEndBeforeEachPart ( sort keys %{$blocksEndBeforeHash} ) {
@@ -225,13 +225,15 @@ sub text_wrap {
 
     # sentences need special treatment
     if ( ${$self}{modifyLineBreaksYamlName} eq 'sentence' ) {
-        if (${$self}{body} =~ m/$tokens{blanklines}/s){
-           # sentences with blank lines
-           @textWrapBlockStorage = split(/($tokens{blanklines})/s,${$self}{body});
-        } else {
-           # sentences withOUT blank lines
-        @textWrapBlockStorage = ( ${$self}{body} );
-      }
+        if ( ${$self}{body} =~ m/$tokens{blanklines}/s ) {
+
+            # sentences with blank lines
+            @textWrapBlockStorage = split( /($tokens{blanklines})/s, ${$self}{body} );
+        }
+        else {
+            # sentences withOUT blank lines
+            @textWrapBlockStorage = ( ${$self}{body} );
+        }
     }
 
     # call the text wrapping routine
@@ -638,10 +640,11 @@ sub text_wrap {
 
             # append blocksEndBefore and the stuff following it
             if ( scalar @textWrapBeforeEndWith > 1 ) {
+
                 # comment line break issues, see
                 # latexindent.pl -s -r -m -l wrap-comments,addruler1 issue-389c -o=+-mod1
                 # latexindent.pl -s -r -m -l wrap-comments2,addruler1 issue-389c -o=+-mod2
-                if ($textWrapBeforeEndWith[1] =~ m/^\h*\R/s){
+                if ( $textWrapBeforeEndWith[1] =~ m/^\h*\R/s ) {
                     $textWrapBlockStorageValue =~ s/($trailingComments)\R\Z/$1/s;
                 }
                 $textWrapBlockStorageValue .= $textWrapBeforeEndWith[1] . $textWrapBeforeEndWith[2];
@@ -661,9 +664,10 @@ sub text_wrap {
             $textWrapBlockStorageValue =~ s/${$_}{tmpVerbatimID}/${$_}{origVerbatimID}/s foreach (@putVerbatimBackIn);
         }
 
-        if ($textWrapBlockStorageValue =~ m/\A\R+/s and ${$self}{body} =~ m/\R\Z/s){
-           $textWrapBlockStorageValue =~ s/\A\R//s; 
+        if ( $textWrapBlockStorageValue =~ m/\A\R+/s and ${$self}{body} =~ m/\R\Z/s ) {
+            $textWrapBlockStorageValue =~ s/\A\R//s;
         }
+
         # update the body
         ${$self}{body} .= $textWrapBlockStorageValue;
     }
@@ -692,9 +696,9 @@ sub text_wrap_comment_blocks {
     #
     # into:
     #
-    #   % first comment 
+    #   % first comment
     #   % second comment
-    #   % third comment 
+    #   % third comment
     #   % fourth comment
     #   % fifth comment
     ${$self}{body} =~ s&($trailingCommentRegExp)\h*($trailingCommentRegExp)&$1\n$2&mg;

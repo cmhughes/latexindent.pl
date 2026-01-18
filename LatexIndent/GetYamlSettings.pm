@@ -537,8 +537,11 @@ sub yaml_read_settings {
                             shift @{$firstLevelValue} if ${ $mainSettings{$firstLevelKey}[0] }{amalgamate};
                         }
 
-                        if ( ref( ${$firstLevelValue}[0] ) eq "HASH" and defined ${$firstLevelValue}[0]{specialBeforeCommand} ) {
-                          ${ $mainSettings{$firstLevelKey}[0] }{specialBeforeCommand} = ${$firstLevelValue}[0]{specialBeforeCommand};
+                        if ( ref( ${$firstLevelValue}[0] ) eq "HASH"
+                            and defined ${$firstLevelValue}[0]{specialBeforeCommand} )
+                        {
+                            ${ $mainSettings{$firstLevelKey}[0] }{specialBeforeCommand}
+                                = ${$firstLevelValue}[0]{specialBeforeCommand};
                         }
 
                         # if amalgamate is set to 1, then append
@@ -808,14 +811,17 @@ sub yaml_read_settings {
                 my $child      = $keysValues[1];
                 my $grandchild = $keysValues[2];
 
-                if (ref $mainSettings{$parent} eq 'HASH'){
-                delete $mainSettings{$parent}{$child}
-                    if ( defined $mainSettings{$parent}{$child} and ref $mainSettings{$parent}{$child} ne "HASH" );
+                if ( ref $mainSettings{$parent} eq 'HASH' ) {
+                    delete $mainSettings{$parent}{$child}
+                        if ( defined $mainSettings{$parent}{$child} and ref $mainSettings{$parent}{$child} ne "HASH" );
 
                     $logger->info("Updating mainSettings with $parent: $child: $grandchild: $value");
                     $mainSettings{$parent}{$child}{$grandchild} = $value;
-                } else {
-                    $logger->warn("*-y:$parent:$child:$grandchild:$value ignored, as mainSettings{$parent} should be specified as a list");
+                }
+                else {
+                    $logger->warn(
+                        "*-y:$parent:$child:$grandchild:$value ignored, as mainSettings{$parent} should be specified as a list"
+                    );
                 }
             }
             elsif ( scalar(@keysValues) == 5 ) {
@@ -1073,7 +1079,9 @@ sub yaml_read_settings {
             { BeginStartsOnOwnLine => "ItemStartsOnOwnLine", BodyStartsOnOwnLine => "ItemFinishesWithLineBreak" }
         ),
         verbatim => (
-            { BeginStartsOnOwnLine => "VerbatimBeginStartsOnOwnLine", EndFinishesWithLineBreak => "VerbatimEndFinishesWithLineBreak" }
+            {   BeginStartsOnOwnLine     => "VerbatimBeginStartsOnOwnLine",
+                EndFinishesWithLineBreak => "VerbatimEndFinishesWithLineBreak"
+            }
         ),
         DBS => ( { BeginStartsOnOwnLine => "DBSStartsOnOwnLine", BodyStartsOnOwnLine => "DBSFinishesWithLineBreak" } ),
         UnNamedGroupingBracesBrackets => ( { BeginStartsOnOwnLineAlias => undef, } ),
@@ -1106,8 +1114,8 @@ sub yaml_get_indentation_settings_for_this_object {
         my $name = ${$self}{name};
 
         # check for noAdditionalIndent OR indentRules OR defaultIndent
-        my $indentationAttribute = (${$self}{modifyLineBreaksYamlName} eq "afterHeading" ? "afterHeading" : "body");
-        my $indentation = $self->yaml_get_indentation_information( thing => $indentationAttribute );
+        my $indentationAttribute = ( ${$self}{modifyLineBreaksYamlName} eq "afterHeading" ? "afterHeading" : "body" );
+        my $indentation          = $self->yaml_get_indentation_information( thing => $indentationAttribute );
 
         # check for alignment at ampersand settings
         $self->yaml_alignment_at_ampersand_settings;
@@ -1238,10 +1246,10 @@ sub yaml_get_indentation_settings_for_this_object {
                 if ( defined ${$self}{ ${$_}{name} } );
         }
 
-    # headings
-    if ( ${$self}{modifyLineBreaksYamlName} eq 'afterHeading' and defined ${$self}{blocksEndBefore} ) {
-        @{ ${$self}{additionalAssignments} } = ( "blocksEndBefore");
-    }
+        # headings
+        if ( ${$self}{modifyLineBreaksYamlName} eq 'afterHeading' and defined ${$self}{blocksEndBefore} ) {
+            @{ ${$self}{additionalAssignments} } = ("blocksEndBefore");
+        }
 
         # some objects, e.g ifElseFi, can have extra assignments, e.g ElseStartsOnOwnLine
         # these need to be stored as well!
@@ -1420,7 +1428,7 @@ sub yaml_modify_line_breaks_settings {
         push( @toBeAssignedTo,
             ( "ElseStartsOnOwnLine", "ElseFinishesWithLineBreak", "OrStartsOnOwnLine", "OrFinishesWithLineBreak" ) );
     }
-    
+
     # we can efficiently loop through the following
     foreach (@toBeAssignedTo) {
         $self->yaml_poly_switch_get_every_or_custom_value(
@@ -1528,12 +1536,10 @@ sub yaml_get_indentation_information {
         if ( defined ${ $mainSettings{$indentationAbout} }{$name} ) {
             if ( ref ${ $mainSettings{$indentationAbout} }{$name} eq "HASH" ) {
                 $logger->trace(
-                    "$indentationAbout indentation specified with multiple fields for $name (see $indentationAbout)"
-                ) if $is_t_switch_active;
-                $logger->trace(
-                    "searching for $indentationAbout: $name: $YamlName"
-                ) if $is_t_switch_active;
-                $logger->trace( Dumper( \%{${ $mainSettings{$indentationAbout} }{$name} }) ) if $is_t_switch_active;
+                    "$indentationAbout indentation specified with multiple fields for $name (see $indentationAbout)")
+                    if $is_t_switch_active;
+                $logger->trace("searching for $indentationAbout: $name: $YamlName")            if $is_t_switch_active;
+                $logger->trace( Dumper( \%{ ${ $mainSettings{$indentationAbout} }{$name} } ) ) if $is_t_switch_active;
                 $indentationInformation = ${ ${ $mainSettings{$indentationAbout} }{$name} }{$YamlName};
             }
             else {
