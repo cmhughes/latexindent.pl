@@ -684,6 +684,21 @@ sub text_wrap_comment_blocks {
         return;
     }
 
+    # pre-work:
+    #
+    # from:
+    #
+    #   % fifth comment% fourth comment% third comment% second comment% first comment
+    #
+    # into:
+    #
+    #   % first comment 
+    #   % second comment
+    #   % third comment 
+    #   % fourth comment
+    #   % fifth comment
+    ${$self}{body} =~ s&($trailingCommentRegExp)\h*($trailingCommentRegExp)&$1\n$2&mg;
+
     #
     # text wrap comment blocks
     #
@@ -752,66 +767,5 @@ sub text_wrap_comment_blocks {
           $trailingComments;
     &xemg;
 
-    #
-    # text wrap multiple comments on a line
-    #
-    # from:
-    #
-    #   % fifth comment% fourth comment% third comment% second comment% first comment
-    #
-    # into:
-    #
-    #   % first comment second comment
-    #   % third comment fourth comment
-    #   % fifth comment
-    #
-    ${$self}{body} =~ s&((?:$trailingCommentRegExp\h*)+)&
-          my @commentBlocks = $1;
-          my $trailingComments = q();
-
-          # loop through comment blocks
-          foreach my $commentBlock (@commentBlocks){
-
-                  my $leadingHorizontalSpace = ($commentBlock =~ m|^(\h*\t*)|s? $1 : q());
-                  my $numberOfTABS = () = $leadingHorizontalSpace =~ m/\t/g;
-                  $leadingHorizontalSpace =~ s/\t/    /g;
-
-                  my $commentValue = q();
-                  $trailingComments = q();
-
-                  # split the trailing comments, and put the *values* together
-                  foreach (split(/([0-9]+)$tokens{endOfToken}/,$commentBlock)){
-                     next unless $_ =~ m/[0-9]/;
-
-                     $commentValue .= " ".${$trailingComments[$_-1]}{value};
-                  }
-
-                  # very first space
-                  $commentValue =~ s|^\h||s;
-
-                  # leading space
-                  $commentValue =~ s|^(\h*)||s;
-                  my $leadingSpace =  (${${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments}}{inheritLeadingSpace}? $1: ' ' );
-
-                  $commentValue =~ s/\h{2,}/ /sg if ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{multipleSpacesToSingle};
-
-                  # reset columns
-                  $Text::Wrap::columns = $columns - length($leadingHorizontalSpace)-length($leadingSpace);
-                  #                                                                ^^
-                  #                                                                for the space added after comment symbol below
-                  
-                  # tab adjustment
-                  for (my $i=1; $i<=$numberOfTABS;$i++){
-                      $leadingHorizontalSpace =~ s/    /\t/;
-                  }
-
-                  # wrap the comments
-                  $commentValue = wrap( '', '', $commentValue );
-
-                  # put them into storage
-                  $trailingComments .= $leadingHorizontalSpace."%".$self->add_comment_symbol(value=>$leadingSpace.$_) foreach (split( /\R/, $commentValue ) );
-          }
-          $trailingComments;
-    &xemg;
 }
 1;

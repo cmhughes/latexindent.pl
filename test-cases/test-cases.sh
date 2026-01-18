@@ -3,8 +3,8 @@
 # latexindent.pl test-cases script to ensure that, as much as possible, 
 # the script behaves as intended.
 #----------------------------------------------------------------------
-# total number of test cases: 3524
-# total number of test cases last updated: 2026-01-14
+# total number of test cases: 3627
+# total number of test cases last updated: 2026-01-18
 #-----------------------------
 #
 # sample usage
@@ -131,13 +131,13 @@ dirExec=(
   "text-wrap;text-wrap-remove-PLB.sh"
   "verbatim;verbatim-test-cases.sh"
   "filecontents;filecontents-test-cases.sh"
-  # "oneSentencePerLine;one-sentence-per-line.sh"
+  "oneSentencePerLine;one-sentence-per-line.sh"
+  # "texexchange;texexchange-test-cases.sh"
   # "path-tests;path-tests.sh"
   # "diacritics;diacritics-test-cases.sh"
   # "tokenChecks;token-checks.sh"
   # "cruftdirectory;cruft-directory-test-cases.sh"
   # "STDIN;stdin-test-cases.sh"
-  # "texexchange;texexchange-test-cases.sh"
   # "horizontalWhiteSpace;whitespace-test-cases.sh"
   # "fine-tuning;fine-tuning-test-cases.sh"
   # "replacements;replacement-test-cases.sh"
@@ -181,6 +181,8 @@ do
   egrep -i --color=auto 'BEGIN failed--compilation aborted' latexindent-count.log
   egrep -i --color=auto 'Compilation failed in require' latexindent-count.log
   egrep -i --color=auto 'Global symbol' latexindent-count.log
+  egrep -i --color=auto 'Not a hash reference' latexindent-count.log
+  egrep -i --color=auto 'Useless use of' latexindent-count.log
 
   echo -e "./$directory/${BGreen}$executable SUCCESS ($dirExecCount of $dirExecCountTotal) [$currentCount tests]${COLOR_OFF}\r"
 

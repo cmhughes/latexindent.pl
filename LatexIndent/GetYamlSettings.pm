@@ -808,11 +808,15 @@ sub yaml_read_settings {
                 my $child      = $keysValues[1];
                 my $grandchild = $keysValues[2];
 
+                if (ref $mainSettings{$parent} eq 'HASH'){
                 delete $mainSettings{$parent}{$child}
                     if ( defined $mainSettings{$parent}{$child} and ref $mainSettings{$parent}{$child} ne "HASH" );
 
-                $logger->info("Updating mainSettings with $parent: $child: $grandchild: $value");
-                $mainSettings{$parent}{$child}{$grandchild} = $value;
+                    $logger->info("Updating mainSettings with $parent: $child: $grandchild: $value");
+                    $mainSettings{$parent}{$child}{$grandchild} = $value;
+                } else {
+                    $logger->warn("*-y:$parent:$child:$grandchild:$value ignored, as mainSettings{$parent} should be specified as a list");
+                }
             }
             elsif ( scalar(@keysValues) == 5 ) {
 
@@ -1510,6 +1514,9 @@ sub yaml_get_indentation_information {
     # mean that *every* field will receive the same treatment
 
     my $name = ${$self}{name};
+
+    # unnamed arguments use 'always-un-named'
+    $name = "always-un-named" if $name eq "";
 
     # body, optionalArguments, or mandatoryArguments
     my $YamlName = $input{thing};

@@ -38,7 +38,7 @@ use LatexIndent::BackUpFileProcedure qw/create_back_up_file check_if_different/;
 use LatexIndent::BlankLines          qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
 use LatexIndent::ModifyLineBreaks
     qw/_mlb_line_break_token_adjust _mlb_file_starts_with_line_break _mlb_begin_starts_on_own_line _mlb_body_starts_on_own_line _mlb_end_starts_on_own_line _mlb_end_finishes_with_line_break adjust_line_breaks_end_parent _mlb_verbatim _mlb_after_indentation_token_adjust /;
-use LatexIndent::Sentence qw/one_sentence_per_line/;
+use LatexIndent::Sentence qw/one_sentence_per_line mlb_one_sentence_per_line_indent/;
 use LatexIndent::Wrap     qw/text_wrap text_wrap_comment_blocks/;
 use LatexIndent::TrailingComments
     qw/remove_trailing_comments put_trailing_comments_back_in add_comment_symbol construct_trailing_comment_regexp $alignMarkUpBlockPresent/;
@@ -193,7 +193,7 @@ sub operate_on_file {
         $self->remove_leading_space;
 
         # ---------- one sentence per line, text wrap (BEFORE) -------------------
-        $self->mlb_pre_indent_sentence_and_text_wrap if $is_m_switch_active;
+        $self->mlb_PRE_indent_sentence_and_text_wrap if $is_m_switch_active;
         
         # ---------- marked-up alignment blocks: %*\begin{tabular}...%*\end{tabular} ----------
         $self->_align_mark_down_block if $alignMarkUpBlockPresent;    
@@ -201,6 +201,7 @@ sub operate_on_file {
         # ---------- main code blocks  -------------------
         ${$self}{body} = _find_all_code_blocks( ${$self}{body}, "" );
         ${$self}{body} =~ s/\r\n/\n/sg             if $mainSettings{dos2unixlinebreaks};
+        $self->mlb_one_sentence_per_line_indent if $is_m_switch_active;
         $self->_mlb_after_indentation_token_adjust if $is_m_switch_active;
 
         # ---------- headings -------------------
@@ -328,33 +329,14 @@ sub output_logfile {
 sub process_body_of_text {
     my $self = shift;
 
-    # find objects recursively
-    $logger->info('*Phase 1: searching for objects');
-    $self->find_objects;
-
-    # find all hidden child
-    $logger->info('*Phase 2: finding surrounding indentation');
-    $self->find_surrounding_indentation_for_children;
-
-    # indentation recursively
-    $logger->info('*Phase 3: indenting objects');
-    $self->indent_children_recursively;
-
-    # final indentation check
-    $logger->info('*Phase 4: final indentation check');
-    $self->final_indentation_check;
-
     return;
 }
 
-sub mlb_pre_indent_sentence_and_text_wrap {
+sub mlb_PRE_indent_sentence_and_text_wrap {
     my $self = shift;
 
     # one sentence per line: sentences are objects, as of V3.5.1
-    $self->one_sentence_per_line(
-        textWrap => ( ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'before' ) )
-        if ( $is_m_switch_active
-        and ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences} );
+    $self->one_sentence_per_line if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences} );
 
     # text wrapping
     #
@@ -392,15 +374,6 @@ sub mlb_pre_indent_sentence_and_text_wrap {
 sub mlb_POST_indent_sentence_and_text_wrap {
     my $self = shift;
     
-    # one sentence per line: sentences are objects, as of V3.5.1
-    if ( ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
-        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' )
-    {
-        $logger->trace("*one-sentence-per-line text wrapping routine, textWrapOptions:when set to 'after'")
-            if $is_tt_switch_active;
-        $self->one_sentence_per_line( textWrap => 1 );
-    }
-
     # option for text wrap
     if ( !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
         and !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}

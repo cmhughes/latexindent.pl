@@ -17,3 +17,8 @@ modifyLineBreaks:
 lookForAlignDelims:
    tabular: 
       multiColumnGrouping: 1
+fineTuning:
+  items:
+    itemRegEx: |-
+      (?x)
+        \\(?:item)
