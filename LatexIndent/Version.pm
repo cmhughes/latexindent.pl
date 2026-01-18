@@ -12,7 +12,7 @@ package LatexIndent::Version;
 #
 #	See http://www.gnu.org/licenses/.
 #
-#	Chris Hughes, 2017
+#	Chris Hughes, 2017-2025
 #
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
@@ -20,6 +20,6 @@ use warnings;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/$versionNumber $versionDate/;
 
-our $versionNumber = '3.24.4';
-our $versionDate   = '2024-07-18';
+our $versionNumber = '3.24.7';
+our $versionDate   = '2025-08-15';
 1

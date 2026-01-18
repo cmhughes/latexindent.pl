@@ -21,7 +21,7 @@ and [pre-commit](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.h
 
 ## version
 
-    latexindent.pl, version 3.24.4, 2024-07-18
+    latexindent.pl, version 3.24.7, 2025-08-15
 
 ## author
 Chris Hughes (cmhughes)
@@ -157,7 +157,7 @@ framework](https://pre-commit.com) by adding this to your
 
 ```yaml
   - repo: https://github.com/cmhughes/latexindent.pl.git
-    rev: V3.24.4
+    rev: V3.24.7
     hooks:
       - id: latexindent
 ```
@@ -234,7 +234,7 @@ I align with many of the approaches and details at [Dramatically increase your p
 
 ## perl version
 
-I develop latexindent.pl on Ubuntu Linux, using [perlbrew](https://perlbrew.pl/); I currently develop on perl version v5.40.0
+I develop latexindent.pl on Ubuntu Linux, using [perlbrew](https://perlbrew.pl/); I currently develop on perl version v5.42.0
 
 ## GitHub Actions
 The standalone executables `latexindent.exe`, `latexindent-linux`, `latexindent-macos` are created and released by [GitHub Actions](https://github.com/features/actions); the
@@ -282,6 +282,8 @@ I find that the following quotes resonate with me with regards to my approach to
 - *Do the best you can until you know better. Then when you know better, do better.* Maya Angelou
 - *Gwneuwch y pethau bychain, do the little things*, Dewi Sant
 - *We are our mistakes. Sometimes they are the best part of us*. Harlen Coben, Think Twice
+- *Formatting. Indentation. Style. Code layout. Whatever you choose to call it, it's one of the most contentious aspects of programming discipline.* Damian Conway, Perl Best Practices, chapter 2.
+- *If you're not making mistakes, then you're not doing anything*, John Woodern
 
 ## changelog
 [changelog.md](documentation/changelog.md) provides details of the history of the project.

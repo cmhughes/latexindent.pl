@@ -98,5 +98,8 @@ latexindent.pl -s -l issue-572 -m -r issue-572 -o=+-mod1
 latexindent.pl -s -l issue-477 issue-477 -o=+-mod1
 latexindent.pl -s -l issue-480 issue-480 -o=+-mod1
 
+latexindent.pl -s -m -l issue-567.yaml issue-567.tex -o=+-mod1
+latexindent.pl -s -r -m -l issue-567a.yaml issue-567a.tex -o=+-mod1
+latexindent.pl -s -l issue-597.yaml issue-597.tex -o=+-mod1
 set +x 
 wrapuptasks

@@ -184,7 +184,6 @@ latexindent.pl -s ifnextchar -o=+-mod1 -l=com-name-special1.yaml
 
 # issue 379
 latexindent.pl -s issue-379.tex -o=+-default.tex
-
 latexindent.pl -s -t issue-379.tex -l issue-379.yaml -o=+-mod1.tex
 egrep 'found:' indent.log > issue-379-mod1.txt
 
@@ -233,6 +232,8 @@ latexindent.pl -s sub-super-scripts -o=+-mod55 -m -l=../mand-args/mand-args-mod5
 
 # named grouping bracket test case
 latexindent.pl commands-four-special-characters -o=+-mod1 -s -l=fine-tuning-args1
+
+latexindent.pl -s issue-605.tex -l issue-605.yaml -o=+-mod1.tex
 
 set +x 
 wrapuptasks

@@ -1,4 +1,4 @@
-<!-- announcement: graceful fail for columns=0 text wrapping-->
+<!-- announcement: bug fix for named braces -->
 
 # changelog.md
 
@@ -164,6 +164,16 @@ noAdditionalIndent:
 </table>
 
 
+## V3.24.7, August 15, 2025
+* bug fix for named braces, see [issue 563](https://github.com/cmhughes/latexindent.pl/issues/563), thanks to @torik42
+
+## V3.24.6, August 8, 2025
+* bug fix for align at ampersand, see [issue 595](https://github.com/cmhughes/latexindent.pl/issues/595)
+
+## V3.24.5, March 13, 2025
+* aarch64 linux binary to releases, see [issue 560](https://github.com/cmhughes/latexindent.pl/issues/560), thanks to @life00
+* `oneSentencePerLine` update, see [issue 579](https://github.com/cmhughes/latexindent.pl/issues/579), thanks to @desk7
+* update to `JSON` schema, see [pull 573](https://github.com/cmhughes/latexindent.pl/pull/573), thanks to @arodomanov 
 
 ## V3.24.4, July 18, 2024
 graceful fail for `columns=0` when text wrapping block comments, see [issue 552](https://github.com/cmhughes/latexindent.pl/issues/552)

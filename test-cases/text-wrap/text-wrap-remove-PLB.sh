@@ -291,5 +291,7 @@ latexindent.pl -s -l issue-556 -m issue-556 -o=+-mod1
 latexindent.pl -s -l issue-556a -m -r issue-556 -o=+-mod2
 
 latexindent.pl -s -l issue-562 -m issue-562 -o=+-mod1
+latexindent.pl -s -l issue-608.yaml -m issue-608.tex -o=+-mod1
+latexindent.pl -s -r -l issue-608a.yaml -m issue-608.tex -o=+-mod2
 set +x 
 wrapuptasks

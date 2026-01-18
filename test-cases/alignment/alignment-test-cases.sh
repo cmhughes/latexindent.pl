@@ -385,5 +385,13 @@ latexindent.pl -s pmatrix -o=+-special-mod1 -m -l=../specials/special-mod1
 latexindent.pl -s pmatrix -o=+-pmatrix-mod1 -m -l=pmatrix-mod1
 latexindent.pl -s pmatrix -o=+-pmatrix-mod2 -m -l=pmatrix-mod1,special-left-right
 latexindent.pl -s pmatrix -o=+-special-mod0 -m -l=pmatrix-mod1,../specials/special-mod1
+latexindent.pl -y="lookForAlignDelims:tblr:alignFinalDoubleBackSlash:1" -s issue-551.tex -o=+-mod1
+
+latexindent.pl -s issue-611.tex -o=+-mod1
+latexindent.pl -s -l issue-611a issue-611.tex -o=+-mod2
+
+latexindent.pl -s te-752552.tex -o=+-mod1
+latexindent.pl -s -r -l te-752552a.yaml te-752552.tex -o=+-mod2
+
 set +x 
 wrapuptasks
