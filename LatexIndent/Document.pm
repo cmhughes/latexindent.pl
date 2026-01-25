@@ -32,7 +32,7 @@ use LatexIndent::Check       qw/simple_diff/;
 use LatexIndent::Lines       qw/lines_body_selected_lines lines_verbatim_create_line_block/;
 use LatexIndent::Replacement qw/make_replacements/;
 use LatexIndent::GetYamlSettings
-    qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings %mainSettings yaml_get_alignment_at_ampersand_from_parent/;
+    qw/yaml_obsolete_checks yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings %mainSettings yaml_get_alignment_at_ampersand_from_parent/;
 use LatexIndent::FileExtension       qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file check_if_different/;
 use LatexIndent::BlankLines          qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;

@@ -1,1 +1,2 @@
 WARN:  fineTuning environment begin specified and *NOT* end, ignoring this and using default environment regex
+WARN:  itemNames obsolete, use fineTuning: items: itemRegex instead

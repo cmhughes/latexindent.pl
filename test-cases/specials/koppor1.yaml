@@ -7,4 +7,4 @@ specialBeginEnd:
         nested: 1
 fineTuning:
   commands:
-    name: (?!Procedure|If|While|ElsIf)[+a-zA-Z@\*0-9_\:]+
+    name: (?!begin|end|Procedure|If|While|ElsIf)[+a-zA-Z@\*0-9_\:]+

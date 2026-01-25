@@ -1,199 +1,189 @@
 #!/bin/bash
 loopmax=0
+verbatimTest=1
 . ../common.sh
 
-[[ $silentMode == 0 ]] && set -x 
-# =======  tabular tag  =========
-# =======  tabular tag  =========
-# =======  tabular tag  =========
-latexindent.pl -s  2441-Bernard.tex -o  +-default.tex
-latexindent.pl -s 31672-Werner.tex -o +-default.tex
-latexindent.pl -s 31672-s1l3n0.tex -o +-default.tex
-latexindent.pl -s 31672-Bernard.tex -o +-default.tex -l indentPreamble.yaml
-latexindent.pl -s 112343-Tom-Bombadil.tex -o +-default.tex
-latexindent.pl -s 112343-dcmst.tex -o +-default.tex -l indentPreamble.yaml,tcolorboxAlignDelims.yaml
-latexindent.pl -s 112343-jon.tex -o +-default.tex -l indentPreamble.yaml -m 
-latexindent.pl -s 112343-gekkostate.tex -o +-default.tex -l indentPreamble.yaml
-latexindent.pl -s 112343-morbusg.tex -o +-default.tex -l indentPreamble.yaml,halignDelims.yaml
-latexindent.pl -s 112343-gonzalo.tex -o +-default.tex -l indentPreamble.yaml
-latexindent.pl -s 112343-quinmars.tex -o +-default.tex -l indentPreamble.yaml -m
+openingtasks
 
-# =======  tikz tag  ========= 
+# =======  tabular tag  =========
+latexindent.pl -s  2441-Bernard -o +-default
+latexindent.pl -s 31672-Werner -o +-default
+latexindent.pl -s 31672-s1l3n0 -o +-default
+latexindent.pl -s 31672-Bernard -o +-default -l indentPreamble
+latexindent.pl -s 112343-Tom-Bombadil -l 112343.yaml -o +-mod1
+latexindent.pl -s 112343-dcmst -o +-default -l indentPreamble,tcolorboxAlignDelims
+latexindent.pl -s 112343-jon -o +-default -l indentPreamble -m 
+latexindent.pl -s 112343-gekkostate -o +-default -l indentPreamble
+latexindent.pl -s 112343-morbusg -o +-default -l indentPreamble,halignDelims
+latexindent.pl -s 112343-gonzalo -o +-default -l indentPreamble
+latexindent.pl -s 112343-quinmars -o +-default -l indentPreamble,112343 -m
+
 # =======  tikz tag  =========
-# =======  tikz tag  =========
-latexindent.pl -s 74878.tex -o +-default.tex
-latexindent.pl -s -l indentPreamble.yaml 350144.tex -o +-default.tex
-latexindent.pl -s -l indentPreamble.yaml,nextGroupPlot.yaml 350144.tex -o +-default-ngp.tex 
-latexindent.pl -s -l indentPreamble.yaml,nextGroupPlot-headings.yaml 350144.tex -o +-default-ngp-headings.tex 
-latexindent.pl -s 5461.tex -o +-default.tex
+latexindent.pl -s 74878 -o +-default
+latexindent.pl -s -l indentPreamble 350144 -o +-default
+latexindent.pl -s -l indentPreamble,nextGroupPlot 350144 -o +-default-ngp -t
+egrep 'WARN' indent.log > nextgroupplot.txt
+latexindent.pl -s -l indentPreamble,nextGroupPlot-headings 350144 -o +-default-ngp-headings 
+latexindent.pl -s 5461 -o +-default
+
 # christmas tree
-latexindent.pl -s 39149-alain.tex -outputfile +-default.tex -l indentPreamble.yaml
-latexindent.pl -s 39149-alain.tex -outputfile +-draw.tex -l indentPreamble.yaml,draw.yaml
-latexindent.pl -s 39149-loop-space.tex -outputfile +-default.tex -l indentPreamble.yaml
-latexindent.pl -s 39149-loop-space.tex -outputfile +-no-add-named.tex -l indentPreamble.yaml,no-add-named-braces.yaml
-latexindent.pl -s 39149-loop-space2.tex -outputfile +-default.tex -l indentPreamble.yaml
-latexindent.pl -s 39149-ruler-compass.sty -outputfile +-default.sty 
-latexindent.pl -s 39149-jake.tex -outputfile +-default.tex -l indentPreamble.yaml
-latexindent.pl -s 39149-morbusg.tex -outputfile +-default.tex -l indentPreamble.yaml
-latexindent.pl -s 39149-mark-wibrow1.tex -outputfile +-default.tex -l indentPreamble.yaml
-latexindent.pl -s 39149-mark-wibrow2.tex -outputfile +-default.tex -l indentPreamble.yaml
-latexindent.pl -s 39149-SztupY.tex -outputfile +-default.tex -l=indentPreamble.yaml,fine-tuning-args1
-latexindent.pl -s 103863-kiss-my-armpit1.tex -o=+-default.tex -l indentPreamble.yaml
-latexindent.pl -s 135683-kiss-my-armpit1.tex -o=+-default.tex -l indentPreamble.yaml
-latexindent.pl -s 348-cmhughes1.tex -o=+-default.tex -l=indentPreamble.yaml
-latexindent.pl -s 348-cmhughes2.tex -o=+-default.tex -l=indentPreamble.yaml
-latexindent.pl -s 348-cmhughes2.tex -o=+-addplot-indent-rules.tex -l addplot3.yaml,indentPreamble.yaml
-latexindent.pl -s 348-cmhughes1.tex -o=+-mod5.tex -m -l=348.yaml,indentPreamble.yaml
-latexindent.pl -s 43884.tex -o=+-default.tex -l indentPreamble.yaml
-latexindent.pl -s 104498.tex -o=+-default.tex -l indentPreamble.yaml
-latexindent.pl -s 353493.tex -o=+-default.tex -l indentPreamble.yaml
-latexindent.pl -s 49814.tex -o=+-default -y="indentPreamble:1"
-latexindent.pl -s 49814-old.tex -o=+-default -y="indentPreamble:1" -l=fine-tune.yaml
-latexindent.pl -s 571012.tex -o=+-default -l=fine-tune.yaml
-latexindent.pl -s 571012.tex -o=+-mod1 -l=draw-filldraw.yaml
-latexindent.pl -s 578179.tex -o=+-default
-latexindent.pl -s 578179.tex -o=+-mod1 -y="defaultIndent:'  ';indentPreamble:1" -l 578179.yaml
+latexindent.pl -s 39149-alain -outputfile +-default -l indentPreamble
+latexindent.pl -s 39149-alain -outputfile +-draw -l indentPreamble,draw
+latexindent.pl -s 39149-alain -outputfile +-draw1 -l indentPreamble,draw1 -t
+egrep 'found: ' indent.log > 39149.txt
+latexindent.pl -s 39149-loop-space -outputfile +-default -l indentPreamble
+latexindent.pl -s 39149-loop-space -outputfile +-no-add-named -l indentPreamble,no-add-named-braces
+latexindent.pl -s 39149-loop-space2 -outputfile +-default -l indentPreamble,beamer
+latexindent.pl -s 39149-ruler-compass.sty -outputfile +-default.sty -l beamer
+latexindent.pl -s 39149-jake -outputfile +-default -l indentPreamble
+latexindent.pl -s 39149-morbusg -outputfile +-default -l indentPreamble
+latexindent.pl -s 39149-mark-wibrow1 -outputfile +-default -l indentPreamble
+latexindent.pl -s 39149-mark-wibrow2 -outputfile +-default -l indentPreamble
+latexindent.pl -s 39149-SztupY -outputfile +-default -l=indentPreamble,fine-tuning-args1
+latexindent.pl -s 103863-kiss-my-armpit1 -o=+-default -l indentPreamble,pstricks
+latexindent.pl -s 135683-kiss-my-armpit1 -o=+-default -l indentPreamble,pstricks
+latexindent.pl -s 348-cmhughes1 -o=+-default -l=indentPreamble,pstricks
+latexindent.pl -s 348-cmhughes2 -o=+-default -l=indentPreamble
+latexindent.pl -s 348-cmhughes2 -o=+-addplot-indent-rules -l addplot3,indentPreamble
+latexindent.pl -s 348-cmhughes1 -o=+-mod5 -m -l=348,indentPreamble,pstricks
+latexindent.pl -s 43884 -o=+-default -l indentPreamble,round-brackets-args
+latexindent.pl -s 104498 -o=+-default -l indentPreamble
+latexindent.pl -s 353493 -o=+-default -l indentPreamble
+latexindent.pl -s 49814 -o=+-default -y="indentPreamble:1" -l round-brackets-args
+latexindent.pl -s 49814-old -o=+-default -y="indentPreamble:1" -l=round-brackets-args
+latexindent.pl -s 571012 -o=+-default -l=fine-tune
+latexindent.pl -s 571012 -o=+-mod1 -l=draw-filldraw
+latexindent.pl -s 578179 -o=+-default 
+latexindent.pl -s 578179 -o=+-mod1 -y="defaultIndent:'  ';indentPreamble:1" -l 578179,nextGroupPlot
 
 # =======  pgfplots tag  =========
-# =======  pgfplots tag  =========
-# =======  pgfplots tag  =========
-latexindent.pl -s 36297-jake.tex -outputfile 36297-jake-default.tex -l indentPreamble.yaml 
-latexindent.pl -s 36297-patrick-hacker.tex -outputfile +-default.tex -l indentPreamble.yaml 
-latexindent.pl -s 52987-jake.tex -outputfile +-default.tex -l indentPreamble.yaml 
-latexindent.pl -s 52987-anton.tex -outputfile +-default.tex -l indentPreamble.yaml 
-latexindent.pl -s 46422-michi.tex -outputfile +-default.tex -l indentPreamble.yaml 
-latexindent.pl -s 29293-christian-feuersanger.tex -outputfile +-default.tex -l indentPreamble.yaml 
-latexindent.pl -s 29359-jake.tex -outputfile +-default.tex -l indentPreamble.yaml
-latexindent.pl -s 29359-marco-daniel.tex -outputfile +-default.tex -l indentPreamble.yaml
-latexindent.pl -s 29359-christian-feuersanger.tex -outputfile +-default.tex -l indentPreamble.yaml
-latexindent.pl -s 31276-peter-grill.tex -outputfile +-default.tex -l indentPreamble.yaml
-latexindent.pl -s 11368-jake.tex -outputfile +-default.tex -l indentPreamble.yaml
-latexindent.pl -s 127375-jake.tex -outputfile +-default.tex -l indentPreamble.yaml
-latexindent.pl -s 127375-thomas.tex -outputfile +-default.tex -l indentPreamble.yaml 
-latexindent.pl -s 12207-christian-feuersanger.tex -o +-default.tex -l indentPreamble.yaml 
-latexindent.pl -s 12207-christian-feuersanger.tex -o +-pin-mlb1.tex -m -l mlb-pin.yaml,indentPreamble.yaml  
-latexindent.pl -s 12207-jake.tex -o +-default.tex -l indentPreamble.yaml 
-latexindent.pl -s 155194-andrew-swan.tex -o +-default.tex -l indentPreamble.yaml 
-latexindent.pl -s 352549.tex -o +-default.tex -l indentPreamble.yaml 
-latexindent.pl -s 351457-CarLaTeX.tex -o +-default.tex -l indentPreamble.yaml 
-latexindent.pl -s 351457-Andrew.tex -o +-default.tex -l indentPreamble.yaml,preambleCommandsBeforeEnvironments.yaml
-latexindent.pl -s 352502.tex -o +-default.tex -l indentPreamble.yaml 
-latexindent.pl -s 352495.tex -o +-default.tex -l indentPreamble.yaml 
-latexindent.pl -s 352396-Zarko1.tex -o +-default.tex -l indentPreamble.yaml
-latexindent.pl -s 354010.tex -o=+-default.tex -l indentPreamble.yaml
+latexindent.pl -s 36297-jake -outputfile 36297-jake-default -l indentPreamble 
+latexindent.pl -s 36297-patrick-hacker -outputfile +-default -l indentPreamble 
+latexindent.pl -s 52987-jake -outputfile +-default -l indentPreamble 
+latexindent.pl -s 52987-anton -outputfile +-default -l indentPreamble 
+latexindent.pl -s 46422-michi -outputfile +-default -l indentPreamble 
+latexindent.pl -s 29293-christian-feuersanger -outputfile +-default -l indentPreamble 
+latexindent.pl -s 29359-jake -outputfile +-default -l indentPreamble
+latexindent.pl -s 29359-marco-daniel -outputfile +-default -l indentPreamble
+latexindent.pl -s 29359-christian-feuersanger -outputfile +-default -l indentPreamble
+latexindent.pl -s 31276-peter-grill -outputfile +-default -l indentPreamble
+latexindent.pl -s 11368-jake -outputfile +-default -l indentPreamble
+latexindent.pl -s 127375-jake -outputfile +-default -l indentPreamble
+latexindent.pl -s 127375-thomas -outputfile +-default -l indentPreamble 
+latexindent.pl -s 12207-christian-feuersanger -o +-default -l indentPreamble
+latexindent.pl -s 12207-christian-feuersanger -o +-pin-mlb1 -m -l mlb-pin,indentPreamble  
+latexindent.pl -s 12207-jake -o +-default -l indentPreamble 
+latexindent.pl -s 155194-andrew-swan -o +-default -l indentPreamble 
+latexindent.pl -s 352549 -o +-default -l indentPreamble 
+latexindent.pl -s 351457-CarLaTeX -o +-default -l indentPreamble,round-brackets-args
+latexindent.pl -s 351457-Andrew -o +-default -l indentPreamble,preambleCommandsBeforeEnvironments
+latexindent.pl -s 352502 -o +-default -l indentPreamble 
+latexindent.pl -s 352495 -o +-default -l indentPreamble 
+latexindent.pl -s 352396-Zarko1 -o +-default -l indentPreamble
+latexindent.pl -s 354010 -o=+-default -l indentPreamble
 
 # =======  latex3/expl3 tag  =========
-# =======  latex3/expl3 tag  =========
-# =======  latex3/expl3 tag  =========
-latexindent.pl -s 350642 -o +-default.tex 
-latexindent.pl -s 353035 -o +-default.tex -l indentPreamble.yaml
-latexindent.pl -s 253693 -o +-default.tex
-latexindent.pl -s 253693-Sean-Allred.tex -o +-default.tex -local=indentPreamble.yaml
-latexindent.pl -s -m 253693-Sean-Allred.tex -o +-mod1.tex -local=indentPreamble.yaml,253693.yaml,groupBeginEnd.yaml
-latexindent.pl -s 253693-John-Kormylo -o +-default.tex -l indentPreamble.yaml
-latexindent.pl -s 253693-Manuel -o +-default.tex -local indentPreamble.yaml
-latexindent.pl -s 96768-A-Ellett.tex -o +-default.tex 
-latexindent.pl -s 96768-A-Ellett.tex -o +-always-un-named.tex -l always-un-named.yaml
-latexindent.pl -s 96768-egreg.tex -o +-default.tex 
-latexindent.pl -s 96768-egreg.tex -o +-always-un-named.tex -l always-un-named.yaml
-latexindent.pl -s 56294-will-robertson.tex -outputfile=+-default.tex
-latexindent.pl -s 56294-will-robertson.tex -outputfile=+-groupBegEnd.tex -l=groupBeginEnd.yaml
-latexindent.pl -s 56294-Ahmed-Musa.tex -o +-default.tex -l indentPreamble.yaml
-latexindent.pl -s 56294-Ahmed-Musa.tex -o +-groupBegEnd.tex -l indentPreamble.yaml,groupBeginEnd.yaml
-latexindent.pl -s 56294-Ahmed-Musa2.tex -o +-default.tex -tt
+latexindent.pl -s 350642 -o +-default 
+latexindent.pl -s 353035 -o +-default -l indentPreamble
+latexindent.pl -s 253693 -o +-default -l eq-bet-args -t
+egrep 'found: ' indent.log > 253693.txt
+latexindent.pl -s 253693-Sean-Allred -o +-default -local=indentPreamble
+latexindent.pl -s -m 253693-Sean-Allred -o +-mod1 -local=indentPreamble,253693,groupBeginEnd
+latexindent.pl -s 253693-John-Kormylo -o +-default -l indentPreamble
+latexindent.pl -s 253693-Manuel -o +-default -local indentPreamble
+latexindent.pl -s 96768-A-Ellett -o +-default 
+latexindent.pl -s 96768-A-Ellett -o +-always-un-named -l always-un-named
+latexindent.pl -s 96768-egreg -o +-default 
+latexindent.pl -s 96768-egreg -o +-always-un-named -l always-un-named
+latexindent.pl -s 56294-will-robertson -outputfile=+-default
+latexindent.pl -s 56294-will-robertson -outputfile=+-groupBegEnd -l=groupBeginEnd
+latexindent.pl -s 56294-Ahmed-Musa -o +-default -l indentPreamble
+latexindent.pl -s 56294-Ahmed-Musa -o +-groupBegEnd -l indentPreamble,groupBeginEnd
+latexindent.pl -s 56294-Ahmed-Musa2 -o +-default
 
 # =======  macros tag  =========
-# =======  macros tag  =========
-# =======  macros tag  =========
-latexindent.pl -s 353559-james-fennell.tex -o +-default.tex -l indentPreamble.yaml
-latexindent.pl -s 353559-werner.tex -o +-default.tex -l indentPreamble.yaml
-latexindent.pl -s 353559-egreg.tex -o +-default.tex -l indentPreamble.yaml
-latexindent.pl -s 353559-egreg-1.tex -o +-default.tex -l indentPreamble.yaml
+latexindent.pl -s 353559-james-fennell -o +-default -l indentPreamble
+latexindent.pl -s 353559-werner -o +-default -l indentPreamble
+latexindent.pl -s 353559-egreg -o +-default -l indentPreamble
+latexindent.pl -s 353559-egreg-1 -o +-default -l indentPreamble
 
 # =======  beamer tag  =========
-# =======  beamer tag  =========
-# =======  beamer tag  =========
-latexindent.pl -s 158638-cmhughes.tex -o=+-default.tex -l indentPreamble.yaml
-latexindent.pl -s 158638-cmhughes.tex -o=+-items.tex -l indentPreamble.yaml,158638-cmhughes.yaml
+latexindent.pl -s 158638-cmhughes -o=+-default -l indentPreamble
+latexindent.pl -s 158638-cmhughes -o=+-items -l indentPreamble,158638-cmhughes
 
 # =======  multicolumn tag  =========
-# =======  multicolumn tag  =========
-# =======  multicolumn tag  =========
-latexindent.pl -s 372580.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 371998.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 371998.tex -o=+-multicol5.tex -l ../alignment/multiColumnGrouping.yaml,../alignment/tabular5.yaml
-latexindent.pl -s 371998.tex -o=+-multicol1.tex -l ../alignment/multiColumnGrouping1.yaml
-latexindent.pl -s 371998.tex -o=+-multicol15.tex -l ../alignment/multiColumnGrouping1.yaml,../alignment/tabular5.yaml
-latexindent.pl -s 371998-heiko.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 371319.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 369242.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 368176.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 367696.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 367278.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 366841-zarko.tex -o=+-out.tex -l=longtabu.yaml
-latexindent.pl -s 365928.tex -o=+-default.tex 
-latexindent.pl -s 365928.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 365901.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 365620.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 364871.tex -o=+-default.tex -m
+latexindent.pl -s 372580 -o=+-multicol -l ../alignment/multiColumnGrouping
+latexindent.pl -s 371998 -o=+-multicol -l ../alignment/multiColumnGrouping
+latexindent.pl -s 371998 -o=+-multicol5 -l ../alignment/multiColumnGrouping,../alignment/tabular5
+latexindent.pl -s 371998 -o=+-multicol1 -l ../alignment/multiColumnGrouping1
+latexindent.pl -s 371998 -o=+-multicol15 -l ../alignment/multiColumnGrouping1,../alignment/tabular5
+latexindent.pl -s 371998-heiko -o=+-multicol -l ../alignment/multiColumnGrouping
+latexindent.pl -s 371319 -o=+-multicol -l ../alignment/multiColumnGrouping
+latexindent.pl -s 369242 -o=+-multicol -l ../alignment/multiColumnGrouping
+latexindent.pl -s 368176 -o=+-multicol -l ../alignment/multiColumnGrouping
+latexindent.pl -s 367696 -o=+-multicol -l ../alignment/multiColumnGrouping
+latexindent.pl -s 367278-min -o=+-mod1 
+latexindent.pl -s 367278 -o=+-multicol -l ../alignment/multiColumnGrouping
+latexindent.pl -s 366841-zarko -o=+-out -l=longtabu
+latexindent.pl -s 365928 -o=+-default 
+latexindent.pl -s 365928 -o=+-multicol -l ../alignment/multiColumnGrouping
+latexindent.pl -s 365901 -o=+-multicol -l ../alignment/multiColumnGrouping
+latexindent.pl -s 365620 -o=+-multicol -l ../alignment/multiColumnGrouping
+latexindent.pl -s 364871 -o=+-default -m
 # perhaps the script should do better with the next one? I'm not sure...
-latexindent.pl -s 364871.tex -o=+-multicol.tex -m -l ../alignment/multiColumnGrouping.yaml 
-latexindent.pl -s 364071.tex -o=+-default.tex -l ../filecontents/indentPreambleYes.yaml
-latexindent.pl -s 364071.tex -o=+-multicol.tex -l tabu.yaml,../filecontents/indentPreambleYes.yaml
-latexindent.pl -s 359791.tex -o=+-default.tex 
-latexindent.pl -s 359791.tex -o=+-multicol.tex -l longtable.yaml
-latexindent.pl -s 359294.tex -o=+-multicol.tex -l tabularx.yaml
-latexindent.pl -s 349480.tex -o=+-default.tex
-latexindent.pl -s 349480.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 348102.tex -o=+-default.tex
-latexindent.pl -s 348102.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 348102-mod.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 347155.tex -o=+-default.tex
-latexindent.pl -s 347155.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 345211.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 342914.tex -o=+-default.tex 
-latexindent.pl -s 342914.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 342697.tex -o=+-default.tex 
-latexindent.pl -s 342697.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 342679.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 342288.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 340141.tex -o=+-multicol.tex -l tabularx.yaml
-latexindent.pl -s 335633.tex -o=+-default.tex
-latexindent.pl -s 335633.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 333469.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 333469.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 331415.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 330385.tex -o=+-multicol.tex -l ../alignment/multiColumnGrouping.yaml
-latexindent.pl -s 329346.tex -o=+-multicol.tex -l tabularstar.yaml -m
+latexindent.pl -s 364871 -o=+-multicol -m -l ../alignment/multiColumnGrouping 
+latexindent.pl -s 364071 -o=+-default -l ../filecontents/indentPreambleYes,longtabu
+latexindent.pl -s 364071 -o=+-multicol -l tabu,../filecontents/indentPreambleYes,longtabu
+latexindent.pl -s 359791 -o=+-default 
+latexindent.pl -s 359791 -o=+-multicol -l longtable
+latexindent.pl -s 359294 -o=+-multicol -l tabularx
+latexindent.pl -s 349480 -o=+-default -l at-bet-args
+latexindent.pl -s 349480 -o=+-multicol -l ../alignment/multiColumnGrouping,at-bet-args
+latexindent.pl -s 348102 -o=+-default
+latexindent.pl -s 348102 -o=+-multicol -l ../alignment/multiColumnGrouping
+latexindent.pl -s 348102-mod -o=+-multicol -l ../alignment/multiColumnGrouping
+latexindent.pl -s 347155 -o=+-default
+latexindent.pl -s 347155 -o=+-multicol -l ../alignment/multiColumnGrouping
+latexindent.pl -s 345211 -o=+-multicol -l ../alignment/multiColumnGrouping
+latexindent.pl -s 342914 -o=+-default 
+latexindent.pl -s 342914 -o=+-multicol -l ../alignment/multiColumnGrouping
+latexindent.pl -s 342697 -o=+-default 
+latexindent.pl -s 342697 -o=+-multicol -l ../alignment/multiColumnGrouping
+latexindent.pl -s 342679 -o=+-multicol -l ../alignment/multiColumnGrouping
+latexindent.pl -s 342288 -o=+-multicol -l ../alignment/multiColumnGrouping
+latexindent.pl -s 340141 -o=+-multicol -l tabularx
+latexindent.pl -s 335633 -o=+-default
+latexindent.pl -s 335633 -o=+-multicol -l ../alignment/multiColumnGrouping
+latexindent.pl -s 333469 -o=+-multicol -l ../alignment/multiColumnGrouping
+latexindent.pl -s 333469 -o=+-multicol -l ../alignment/multiColumnGrouping
+latexindent.pl -s 331415 -o=+-multicol -l ../alignment/multiColumnGrouping
+latexindent.pl -s 330385-min -o=+-mod1
+latexindent.pl -s 330385 -o=+-multicol -l ../alignment/multiColumnGrouping
+latexindent.pl -s 329346 -o=+-multicol -l tabularstar -m
 # page 7 of multicolumn tag below here
 
 # =======  tabular tag  =========
-# =======  tabular tag  =========
-# =======  tabular tag  =========
-latexindent.pl -s 248166.tex -o=+-out.tex 
-latexindent.pl -s 141087.tex -o=+-out.tex -l=pgfplotstableread.yaml
+latexindent.pl -s 248166 -o=+-out 
+latexindent.pl -s 141087 -o=+-out -l=pgfplotstableread
 
 # =======  no specific tag =========
-# =======  no specific tag =========
-# =======  no specific tag =========
-latexindent.pl -s 587491.tex -o=+-default.tex 
-latexindent.pl -s 627902.tex -o=+-mod1.tex -l 627902.yaml
+latexindent.pl -s 587491 -o=+-mod1 
+latexindent.pl -s 587491 -o=+-mod2 -l sizefeatures
+latexindent.pl -s 627902 -o=+-mod1 -l 627902
+
+latexindent.pl -s 645096 -o=+-default
+latexindent.pl -s 645096 -l 645096 -o=+-mod1
 
 # =======  not from tex exchange, but seemed appropriate here  =========
-# =======  not from tex exchange, but seemed appropriate here  =========
-# =======  not from tex exchange, but seemed appropriate here  =========
-latexindent.pl -s pcc-pr.tex -o=+-default.tex -l indentPreamble.yaml
-latexindent.pl -s pcc-pr-presentation.tex -o=pcc-pr-presentation-default.tex -l indentPreamble.yaml
-latexindent.pl -s pcc-pr.tex -o=+-max-indentation -l indentPreamble.yaml,../environments/max-indentation1.yaml
+latexindent.pl -s pcc-pr -o=+-default -l indentPreamble
+latexindent.pl -s pcc-pr-presentation -o=pcc-pr-presentation-default -l indentPreamble
+latexindent.pl -s pcc-pr -o=+-max-indentation -l indentPreamble,../environments/max-indentation1
 
-latexindent.pl -s 645096.tex -o=+-default
-latexindent.pl -s 645096.tex -l 645096.yaml -o=+-mod1
+latexindent.pl -m -s 667013 -l 667013 -o=+-mod1
 
-latexindent.pl -m -s 667013.tex -l 667013 -o=+-mod1
+latexindent.pl -s -l 709049 -m 709049 -o=+-mod1
+latexindent.pl -s -l 709049a -m 709049 -o=+-mod2
 
-latexindent.pl -s -l 709049.yaml -m 709049.tex -o=+-mod1
-latexindent.pl -s -l 709049a.yaml -m 709049.tex -o=+-mod2
-
-latexindent.pl -s -rv -l 83663.yaml 83663.tex -o=+-mod1
-[[ $noisyMode == 1 ]] && makenoise
-[[ $gitStatus == 1 ]] && git status
+latexindent.pl -s -rv -l 83663 83663 -o=+-mod1
+set +x 
+wrapuptasks

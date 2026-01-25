@@ -13,10 +13,11 @@ specialBeginEnd:
 
 fineTuning:
   commands:
-    name: (?!draw)[+a-zA-Z@\*0-9_\:]+
+    name: (?!begin|end|draw)[+a-zA-Z@\*0-9_\:]+
 
 lookForAlignDelims:
     draw:
+        lookForChildCodeBlocks: 0
         delimiterRegEx: |-
           (?x)
           (                    # main capturing group

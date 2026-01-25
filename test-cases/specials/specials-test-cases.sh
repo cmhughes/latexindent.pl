@@ -105,5 +105,6 @@ latexindent.pl -s -l issue-597.yaml issue-597.tex -o=+-mod1
 latexindent.pl -s -t issue-614 -o=+-mod1
 egrep 'found:' indent.log > issue-614.txt
 
+latexindent.pl -s -l no-specials.yaml commands2 -o=+-mod1
 set +x 
 wrapuptasks

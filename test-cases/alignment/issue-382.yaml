@@ -15,6 +15,7 @@ specialBeginEnd:
 
 lookForAlignDelims:
     draw:
+        lookForChildCodeBlocks: 0
         delimiterRegEx: |-
           (?x)
           (                    # main capturing group
@@ -40,7 +41,7 @@ lookForAlignDelims:
 
 fineTuning:
   commands:
-    name: (?!draw)[+a-zA-Z@\*0-9_\:]+
+    name: (?!draw|begin|end)[+a-zA-Z@\*0-9_\:]+
 
 replacements:
   -

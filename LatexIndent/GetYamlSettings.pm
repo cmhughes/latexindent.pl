@@ -26,7 +26,7 @@ use Cwd;
 use Exporter             qw/import/;
 use LatexIndent::LogFile qw/$logger/;
 our @EXPORT_OK
-    = qw/yaml_get_alignment_at_ampersand_from_parent yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings %mainSettings %previouslyFoundSettings $argumentsBetweenCommands $commaPolySwitchExists $equalsPolySwitchExists %polySwitchNames/;
+    = qw/yaml_obsolete_checks yaml_get_alignment_at_ampersand_from_parent yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings %mainSettings %previouslyFoundSettings $argumentsBetweenCommands $commaPolySwitchExists $equalsPolySwitchExists %polySwitchNames/;
 
 # Read in defaultSettings.YAML file
 our $defaultSettings;
@@ -1094,7 +1094,17 @@ sub yaml_read_settings {
         )
     );
 
+    $self->yaml_obsolete_checks;
     return;
+}
+
+sub yaml_obsolete_checks {
+
+  if (defined $mainSettings{itemNames}){
+      $logger->warn("*itemNames obsolete, use fineTuning: items: itemRegex instead");
+      delete $mainSettings{itemNames};
+  }
+  return;
 }
 
 sub yaml_get_indentation_settings_for_this_object {

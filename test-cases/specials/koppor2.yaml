@@ -13,4 +13,4 @@ specialBeginEnd:
         nested: 1
 fineTuning:
   commands:
-    name: (?!If|While|ElsIf)[+a-zA-Z@\*0-9_\:]+
+    name: (?!begin|end|If|While|ElsIf)[+a-zA-Z@\*0-9_\:]+

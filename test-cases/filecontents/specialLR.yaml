@@ -7,7 +7,7 @@ specialBeginEnd:
     nested: 1
 fineTuning:
   commands:
-    name: (?!left)[+a-zA-Z@\*0-9_\:]+
+    name: (?!begin|end|left)[+a-zA-Z@\*0-9_\:]+
 
 noAdditionalIndent:
   inlineMath: 1

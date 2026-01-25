@@ -45,5 +45,5 @@ specialBeginEnd:
 
 fineTuning:
   commands:
-    name: (?!Procedure|For|While)[+a-zA-Z@\*0-9_\:]+
+    name: (?!begin|end|Procedure|For|While)[+a-zA-Z@\*0-9_\:]+
 

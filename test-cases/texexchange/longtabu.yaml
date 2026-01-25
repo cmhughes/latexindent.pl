@@ -2,3 +2,17 @@ lookForAlignDelims:
     longtabu:
       multiColumnGrouping: 1
       alignRowsWithoutMaxDelims: 1
+
+fineTuning:
+  arguments:
+    between: |-                               #
+      (?x)                                    #
+      (?:                                     # 
+        [_^*#0-9(),+-.]                       #
+        |                                     #
+        (?:node|at|to|decoration)             #
+        |
+        \\textwidth
+      )                                       #
+  commands:
+    name: (?!(?:begin|end|textwidth))[+a-zA-Z@\*0-9_\:]+

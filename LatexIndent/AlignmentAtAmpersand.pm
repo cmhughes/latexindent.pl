@@ -239,7 +239,9 @@ sub align_at_ampersand {
            my $trailingSpace = ($1?$1:q());
            my $output = $anyCodeBlock; 
            # check for internal line breaks or \\
-           if ($anyCodeBlock =~ m"\R"s or $anyCodeBlock =~m"(${${$mainSettings{fineTuning}}{modifyLineBreaks}}{doubleBackSlash})"s){
+           if ($anyCodeBlock =~ m"\R"s 
+                    or $anyCodeBlock =~m"(${${$mainSettings{fineTuning}}{modifyLineBreaks}}{doubleBackSlash})"s
+                    or $anyCodeBlock =~m"${$self}{delimiterRegEx}"s){
                $hiddenChildCount++; 
                $output = $tokens{alignmentBlock}.$hiddenChildCount.$tokens{endOfToken}; 
                push(@hiddenChildrenStorage,{id=>$output,value=>$anyCodeBlock});

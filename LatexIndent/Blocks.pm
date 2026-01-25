@@ -295,8 +295,11 @@ sub _construct_code_blocks_regex {
     # (commands, named, key=value, unnamed) <ARGUMENTS> regex
     #
     if ( $specialAllRegEx ne '' ) {
+        $logger->trace("*specialBeginEnd: at least one specialBeginEnd code block present") if $is_t_switch_active;
         $allCodeBlocks = qr{
-            (\s*)                                                 # $1 leading space
+            (?<LEADINGSPACE>
+              \s*
+            )                                                     # $1 leading space
             (?:
                (?<THINGWITHARGS>                                  # $2 <thing><arguments>
                   (?>                                             #    prevent backtracking
@@ -304,7 +307,7 @@ sub _construct_code_blocks_regex {
                       (?<COMMAND>
                         \\                                        # $4 command
                         (?<COMMANDNAME>
-                          (?!(?:begin|end))$commandName
+                          $commandName
                         )                                         # $5 command name
                       )                                           #
                       |                                           #
@@ -342,24 +345,36 @@ sub _construct_code_blocks_regex {
          }x;
     }
     else {
+        $logger->trace("*specialBeginEnd empty, NO specialBeginEnd code blocks present") if $is_t_switch_active;
         $allCodeBlocks = qr{
-            (\s*)                                                 # $1 leading space
+            (?<LEADINGSPACE>
+              \s*
+            )                                                     # $1 leading space
             (?:
-               (                                                  # $2 <thing><arguments>
+               (?<THINGWITHARGS>                                  # $2 <thing><arguments>
                   (?>                                             #    prevent backtracking
                     (                                             # $3 name
-                      (\\                                         # $4 command
-                        ((?!(?:begin|end))$commandName)           # $5 command name
+                      (?<COMMAND>
+                        \\                                        # $4 command
+                        (?<COMMANDNAME>
+                          $commandName
+                        )                                         # $5 command name
                       )                                           #
                       |                                           #
-                      ($keyEqVal)                                 # $6 key=value name
+                      (?<KEYEQVAL>
+                         $keyEqVal
+                      )                                           # $6 key=value name
                       |                                           #
-                      ((?<!\\)(?<![a-zA-Z])$namedBracesBrackets)  # $7 named braces name
+                      (?<NAMEDBRACESBRACKETS>
+                          (?<!\\)(?<![a-zA-Z])$namedBracesBrackets
+                      )                                           # $7 named braces name
                       |                                           #
-                      (?<![a-zA-Z])$unNamed                       #    unnamed braces or brackets
+                      (?<UNNAMEDBRACESBRACKETS>
+                         (?<![a-zA-Z])$unNamed                    #    unnamed braces or brackets
+                      )
                     )                                             #
                   )
-                  (                                               # $8 arguments
+                  (?<ARGUMENTS>                                   # $8 arguments
                    (?:                                            #
                     $allArgumentRegEx                             #
                    )+                                             #
@@ -477,11 +492,15 @@ sub _construct_args_with_between {
               \\(?:begin|end)\{$environmentName\}
               |
               (?:
-                \\[{}\[\]] # \{, \}, \[, \] OK
+                \\\\\h*\[[^]]*\] # \\[ ... ]
               )
-              |            #  
-              [^{}\[\]]    # anything except {, }, [, ]
-            )              # 
+              |
+              (?:
+                \\[{}\[\]]       # \{, \}, \[, \] OK
+              )
+              |                  #  
+              [^{}\[\]]          # anything except {, }, [, ]
+            )                    # 
     }x;
 
     my $allArgumentRegEx = qr{
@@ -541,7 +560,7 @@ sub _find_all_code_blocks {
     $body =~ s/$allCodeBlocks/
        
        my $name;
-       my $begin = $1;
+       my $begin = $+{LEADINGSPACE};
        my $body;
        my $end;
        my $modifyLineBreaksName;
@@ -711,15 +730,18 @@ sub _find_all_code_blocks {
              #
              if ($lookForAlignDelims){
                  # environment argument or body needs care, see alignment SLASH environments.tex for example
+                 my $argumentsPresent = 0;
                  if (!$is_m_switch_active and $argBody and ${$codeBlockObj}{body} !~ m@^\R@s){
                      ${$codeBlockObj}{body} = $argBody.${$codeBlockObj}{body};
                      $argBody = q();
+                     $argumentsPresent = 1;
                  }
 
                  $codeBlockObj->align_at_ampersand;  
                  $begin = ${$codeBlockObj}{begin} if ${$codeBlockObj}{beginAdjusted};
                  $body = ${$codeBlockObj}{body};
                  $addedIndentation = ${$codeBlockObj}{indentation} if defined ${$codeBlockObj}{indentation};
+                 $linebreaksAtEndBegin = ($body =~ m@^\h*\R@ ? 1 : 0) if $argumentsPresent;
              }
 
              # prepend argument body
@@ -999,22 +1021,25 @@ sub _find_all_code_blocks {
           # argument body is always in $8
           my $argBody = $+{ARGUMENTS};
           my $keyEqualsValue = q();
+          my $parentBegin = q();
 
           #
           # command
           #
           if ($+{COMMAND}) {                                                    # 
-             $begin = $1.q(\\);                                        # \\
+             $begin = $+{LEADINGSPACE}.q(\\);                          # \\
              $name = $+{COMMANDNAME};                                  # <command name>
              $modifyLineBreaksName="commands";                         # 
+             $parentBegin = q(\\).$name;                               # for alignAtAmpersand
           } elsif ($+{NAMEDBRACESBRACKETS}) {                          # <name of named braces brackets>
           #                                                            # 
           # named braces or brackets                                   # 
           #                                                            # 
-             $begin = $1;                                              # <possible leading space> 
+             $begin = $+{LEADINGSPACE};                                # <possible leading space> 
              $name = $+{NAMEDBRACESBRACKETS} ;                         # <name of named braces brackets>
              $modifyLineBreaksName="namedGroupingBracesBrackets";      # 
-          } elsif($+{KEYEQVAL})  {                                               # -------------------------------- 
+             $parentBegin = $name;                                     # for alignAtAmpersand
+          } elsif($+{KEYEQVAL})  {                                     # -------------------------------- 
           #                                                            # 
           # key = braces or brackets                                   # 
           #                                                            # 
@@ -1023,11 +1048,12 @@ sub _find_all_code_blocks {
              $keyEqualsValue = $1;
              $begin = $begin.$name;
              $modifyLineBreaksName="keyEqualsValuesBracesBrackets";    # 
+             $parentBegin = $name;                                     # for alignAtAmpersand
           } else {                                                     # -------------------------------- 
           #                                                            # 
           # unnamed braces and brackets                                # 
           #                                                            # 
-             $begin = $1;                                              # <possible leading space> 
+             $begin = $+{LEADINGSPACE};                                # <possible leading space> 
              $name = q();                                              # 
              $modifyLineBreaksName="UnNamedGroupingBracesBrackets";    # 
           }
@@ -1105,11 +1131,18 @@ sub _find_all_code_blocks {
                if ( $modifyLineBreaksName eq "keyEqualsValuesBracesBrackets"){
                    $keyEqualsValue =~ s^=(.*)$^=^s;
                    $argBody = $1.$argBody;
+
+                   # EqualsFinishesWithLineBreak can add line break tokens
+                   if ($is_m_switch_active and $argBody =~ m@^($trailingCommentRegExp?$tokens{mAfterEndLineBreak})@s)
+                   {
+                       $argBody =~ s@^($trailingCommentRegExp?$tokens{mAfterEndLineBreak})@@s;
+                       $keyEqualsValue .= $1;
+                   }
                }
           }
 
           # argument indentation
-          $argBody = _indent_all_args($name, $modifyLineBreaksName, $argBody,$currentIndentation);
+          $argBody = _indent_all_args($name, $modifyLineBreaksName, $argBody,$currentIndentation, $parentBegin);
           
           $argBody = $keyEqualsValue.$argBody if $modifyLineBreaksName eq "keyEqualsValuesBracesBrackets";
 
@@ -1144,7 +1177,7 @@ sub _find_all_code_blocks {
 
 sub _indent_all_args {
 
-    my ( $name, $modifyLineBreaksName, $body, $indentation ) = @_;
+    my ( $name, $modifyLineBreaksName, $body, $indentation, $parentBegin ) = @_;
 
     my $commandStorageName = $name . $modifyLineBreaksName;
 
@@ -1264,6 +1297,7 @@ sub _indent_all_args {
                                                 DBSFinishesWithLineBreak=>$DBSFinishesWithLineBreak,
                                                 horizontalTrailingSpace=>$horizontalTrailingSpace,
                                                 trailingComment=>$trailingComment,
+                                                parentBegin=>$parentBegin,
                                                 linebreaksAtEnd=>{
                                                   end=>$linebreaksAtEnd,
                                                 },
@@ -1283,6 +1317,7 @@ sub _indent_all_args {
             if ($lookForAlignDelims){
                $argument->yaml_get_alignment_at_ampersand_from_parent($commandStorageName);
                $argument->align_at_ampersand;
+               $currentIndentation = ${$argument}{indentation} if defined ${$argument}{indentation};
             }
 
             # get updated begin, body, end
@@ -1306,8 +1341,12 @@ sub _indent_all_args {
        # put it all together
        $begin.$argBody.$end;|sgex;
 
+
     # m switch conflicting linebreak addition or removal handled by tokens
-    $body = _mlb_line_break_token_adjust($body) if $is_m_switch_active;
+    if ($is_m_switch_active){
+       $body =~ s/($tokens{mBeforeBeginLineBreakREMOVE})($argumentsBetween*)\R?/$2$1/sg if ${${$mainSettings{fineTuning}}{arguments}}{between} ne '';
+       $body = _mlb_line_break_token_adjust($body);
+    }
     return $body;
 }
 
@@ -1547,6 +1586,33 @@ sub _find_env_items {
     my ( $body, $name, $modifyLineBreaksName, $currentIndentation ) = @_;
     $logger->trace("looking for items for $name")                           if $is_t_switch_active;
     $logger->trace( ${ ${ $mainSettings{fineTuning} }{items} }{itemRegEx} ) if $is_t_switch_active;
+
+    #
+    # content BEFORE first item needs attention; see, for example
+    #    texexchange/350144.tex
+    #
+    my $itemRegExNoSpace = qr{
+         (?:
+           (?<ITEMBEGIN>
+              ${${$mainSettings{fineTuning}}{items}}{itemRegEx}
+           )
+           (?<ITEMBODY>                                   # body
+              (?>                                         # 
+                  (??{ $environmentRegEx })               # 
+                  |                                       # 
+                  (?!                                     # 
+                      (?:${${$mainSettings{fineTuning}}{items}}{itemRegEx})
+                  ).                                      # 
+              )*                                          # 
+           )
+         )
+        }xs;
+
+    my @envBodySplitByItem = split(/$itemRegExNoSpace/,$body);
+    my $beforeFirstItem = shift(@envBodySplitByItem);
+    my $afterFirstItem = join("",@envBodySplitByItem);
+    $beforeFirstItem = _find_all_code_blocks($beforeFirstItem,$currentIndentation);
+    $body = $beforeFirstItem.$afterFirstItem;
 
     my $itemRegEx = qr{
          (\s*)

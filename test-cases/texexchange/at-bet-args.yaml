@@ -1,0 +1,21 @@
+fineTuning:
+  arguments:
+    between: |-                               #
+      (?x)                                    #
+      (?:                                     # 
+        [_^*#0-9(),+-]                        #
+        |                                     #
+        (?:node|at|to|decoration)             #
+        |
+        @                                     # <!--NEW
+      )                                       #
+noAdditionalIndentGlobal:
+  namedGroupingBracesBrackets: 1
+
+noAdditionalIndent:
+  tabular:
+    mandatoryArguments: 1
+  S:
+    mandatoryArguments: 1
+  l:
+    mandatoryArguments: 1
