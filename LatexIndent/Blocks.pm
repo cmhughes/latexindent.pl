@@ -335,10 +335,12 @@ sub _construct_code_blocks_regex {
                (?<ENVIRONMENT>
                    $environmentRegEx 
                )
+               (*PRUNE)
                |
                (?<IFELSEFI>
                    $ifElseFiRegEx 
                )
+               (*PRUNE)
                |
                $specialAllRegEx 
             )
@@ -385,10 +387,12 @@ sub _construct_code_blocks_regex {
                (?<ENVIRONMENT>
                    $environmentRegEx 
                )
+               (*PRUNE)
                |
                (?<IFELSEFI>
                    $ifElseFiRegEx 
                )
+               (*PRUNE)
             )
          }x;
     }

@@ -185,5 +185,7 @@ latexindent.pl -s -l 709049 -m 709049 -o=+-mod1
 latexindent.pl -s -l 709049a -m 709049 -o=+-mod2
 
 latexindent.pl -s -rv -l 83663 83663 -o=+-mod1
+
+latexindent.pl -s broken -o=+-mod1
 set +x 
 wrapuptasks

@@ -3,8 +3,8 @@
 # latexindent.pl test-cases script to ensure that, as much as possible, 
 # the script behaves as intended.
 #----------------------------------------------------------------------
-# total number of test cases: 3792
-# total number of test cases last updated: 2026-01-25
+# total number of test cases: 3799
+# total number of test cases last updated: 2026-01-29
 #-----------------------------
 #
 # sample usage
@@ -133,6 +133,7 @@ dirExec=(
   "filecontents;filecontents-test-cases.sh"
   "oneSentencePerLine;one-sentence-per-line.sh"
   "texexchange;texexchange-test-cases.sh"
+  "broken;broken-test-cases.sh"
   # "path-tests;path-tests.sh"
   # "diacritics;diacritics-test-cases.sh"
   # "tokenChecks;token-checks.sh"

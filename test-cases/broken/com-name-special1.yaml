@@ -1,0 +1,9 @@
+fineTuning:
+  commands:
+    name: |-
+      (?x)
+      @ifnextchar\[
+      |
+      (?:
+        [+a-zA-Z@\*0-9_\:]+
+      )
