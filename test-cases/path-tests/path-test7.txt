@@ -37,3 +37,4 @@ YAML settings, reading from the following files:
        ---
        defaultIndent: ''
 
+WARN:  itemNames obsolete, use fineTuning: items: itemRegex instead

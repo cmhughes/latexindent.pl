@@ -1,8 +1,6 @@
 #!/bin/bash
 . ../common.sh
-
-# if silentMode is not active, verbose
-[[ $silentMode == 0 ]] && set -x 
+openingtasks
 
 # with -w switch
 latexindent.pl -s -w env-batch*.tex -g env-batch.log -y 'onlyOneBackUp:1'
@@ -49,5 +47,5 @@ cat local-settings-friend-4/indent.log | grep "WARN:  yaml" > local-settings-fri
 latexindent.pl -s -l local-settings-nofriend/mwe.tex
 cat local-settings-nofriend/indent.log | grep "WARN:  yaml" > local-settings-nofriend/warnings.txt
 
-[[ $gitStatus == 1 ]] && git status
-[[ $noisyMode == 1 ]] && makenoise
+set +x 
+wrapuptasks

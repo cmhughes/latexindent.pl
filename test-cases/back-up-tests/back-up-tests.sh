@@ -1,6 +1,5 @@
 #!/bin/bash
 . ../common.sh
-
 openingtasks
 
 latexindent.pl -s -w -l backup1.yaml -g one.log myfile

@@ -3,8 +3,8 @@
 # latexindent.pl test-cases script to ensure that, as much as possible, 
 # the script behaves as intended.
 #----------------------------------------------------------------------
-# total number of test cases: 3799
-# total number of test cases last updated: 2026-01-29
+# total number of test cases: 3932
+# total number of test cases last updated: 2026-02-04
 #-----------------------------
 #
 # sample usage
@@ -134,17 +134,17 @@ dirExec=(
   "oneSentencePerLine;one-sentence-per-line.sh"
   "texexchange;texexchange-test-cases.sh"
   "broken;broken-test-cases.sh"
-  # "path-tests;path-tests.sh"
-  # "diacritics;diacritics-test-cases.sh"
-  # "tokenChecks;token-checks.sh"
-  # "cruftdirectory;cruft-directory-test-cases.sh"
-  # "STDIN;stdin-test-cases.sh"
-  # "horizontalWhiteSpace;whitespace-test-cases.sh"
+  "path-tests;path-tests.sh"
+  "diacritics;diacritics-test-cases.sh"
+  "tokenChecks;token-checks.sh"
+  "cruftdirectory;cruft-directory-test-cases.sh"
+  "STDIN;stdin-test-cases.sh"
+  "line-switch-test-cases;line-switch-test-cases.sh"
+  "check-switch-tests;check-switch-test-cases.sh"
+  "replacements;replacement-test-cases.sh"
+  "batch-tests;batch-tests.sh"
+  "horizontalWhiteSpace;whitespace-test-cases.sh"
   # "fine-tuning;fine-tuning-test-cases.sh"
-  # "replacements;replacement-test-cases.sh"
-  # "check-switch-tests;check-switch-test-cases.sh"
-  # "line-switch-test-cases;line-switch-test-cases.sh"
-  # "batch-tests;batch-tests.sh"
   # "demonstrations;documentation-test-cases.sh"
   # "documentation;doc-indent.sh"
   ) 

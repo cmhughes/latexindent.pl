@@ -1,8 +1,7 @@
 #!/bin/bash
-loopmax=0
 . ../common.sh
 
-[[ $silentMode == 0 ]] && set -x 
+openingtasks
 cat myfile.tex | latexindent.pl -s -o=myfile-default 
 cat myfile.tex | latexindent.pl -s -o=myfile-default -l=dontMeasure.yaml -
 
@@ -14,4 +13,5 @@ cat issue-493.tex| latexindent.pl -s -m -l issue-493a.yaml -o=issue-493-mod3 -
 cat issue-528.tex| latexindent.pl -s -o=issue-528-mod1 -
 cat 713971.tex| latexindent.pl -s -o=713971-mod1 -
 
-[[ $gitStatus == 1 ]] && git status
+set +x 
+wrapuptasks
