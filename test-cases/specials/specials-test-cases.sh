@@ -105,5 +105,9 @@ latexindent.pl -s -r -m -l issue-567a.yaml issue-567a.tex -o=+-mod1
 latexindent.pl -s -l issue-572.yaml -m -r issue-572.tex -o=+-mod1
 
 latexindent.pl -s -l issue-597.yaml issue-597.tex -o=+-mod1
+
+latexindent.pl -s -l issue-615 -t issue-615 -o=+-mod1
+egrep -i 'found:' indent.log > issue-615.txt
+
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 [[ $gitStatus == 1 ]] && git status

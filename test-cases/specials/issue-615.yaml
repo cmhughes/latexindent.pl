@@ -1,0 +1,9 @@
+fineTuning:
+  ifElseFi:
+    name: (?!@?if[a-zA-Z@]*?\{)@?zz
+
+specialBeginEnd:
+  ifElseFi:
+    begin: (?<!\\else)\\if
+    middle: \\else
+    end: \\fi
