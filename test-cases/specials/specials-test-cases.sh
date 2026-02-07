@@ -12,12 +12,9 @@ latexindent.pl -s -m -o=+-mod1 -l special-mod1,../commands/unprotect-blank-lines
 
 set +x
 # modifyLineBreaks experiments
-[[ $silentMode == 0 ]] && set +x 
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do 
    set +x
-   [[ $showCounter == 1 ]] && echo $i of $loopmax
-   [[ $silentMode == 0 ]] && set -x 
    keepappendinglogfile
 
    # add line breaks
@@ -73,13 +70,14 @@ latexindent.pl -s algpseudocode -o=+-mod3 -l=koppor3
 latexindent.pl -s algpseudocode -o=+-mod4 -l=koppor4
 
 # specialMiddle polyswitch
+set +x
 [[ $loopmin -gt 10 ]] && loopmin=1
 [[ $loopmax -gt 10 ]] && loopmax=10
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do 
-   [[ $showCounter == 1 ]] && echo "$i of $loopmax"
    keepappendinglogfile
    latexindent.pl -m -s algpseudocode-mk2 -l=koppor,special-middle$i -t -o=+-mod$i
+   set +x
 done
 keepappendinglogfile
 
@@ -98,8 +96,6 @@ latexindent.pl -s -l issue-572 -m -r issue-572 -o=+-mod1
 latexindent.pl -s -l issue-477 issue-477 -o=+-mod1
 latexindent.pl -s -l issue-480 issue-480 -o=+-mod1
 
-latexindent.pl -s -m -l issue-567.yaml issue-567.tex -o=+-mod1
-latexindent.pl -s -r -m -l issue-567a.yaml issue-567a.tex -o=+-mod1
 latexindent.pl -s -l issue-597.yaml issue-597.tex -o=+-mod1
 
 latexindent.pl -s -t issue-614 -o=+-mod1

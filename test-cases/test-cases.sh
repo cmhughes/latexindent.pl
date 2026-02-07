@@ -3,8 +3,8 @@
 # latexindent.pl test-cases script to ensure that, as much as possible, 
 # the script behaves as intended.
 #----------------------------------------------------------------------
-# total number of test cases: 3932
-# total number of test cases last updated: 2026-02-04
+# total number of test cases: 3952
+# total number of test cases last updated: 2026-02-07
 #-----------------------------
 #
 # sample usage
@@ -144,7 +144,7 @@ dirExec=(
   "replacements;replacement-test-cases.sh"
   "batch-tests;batch-tests.sh"
   "horizontalWhiteSpace;whitespace-test-cases.sh"
-  # "fine-tuning;fine-tuning-test-cases.sh"
+  "fine-tuning;fine-tuning-test-cases.sh"
   # "demonstrations;documentation-test-cases.sh"
   # "documentation;doc-indent.sh"
   ) 

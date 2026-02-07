@@ -1,3 +1,4 @@
-fineTuning:
-  NamedGroupingBracesBrackets:
-      follow: '\R|\[|\$|\)|\('
+noAdditionalIndentGlobal:
+  optionalArguments: 1
+  mandatoryArguments: 1
+  namedGroupingBracesBrackets: 1

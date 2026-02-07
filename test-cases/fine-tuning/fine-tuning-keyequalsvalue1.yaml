@@ -1,3 +1,6 @@
 fineTuning:
   keyEqualsValuesBracesBrackets:
       name: '[A-Z@\*0-9_\\]+' 
+noAdditionalIndentGlobal:
+  optionalArguments: 1
+  mandatoryArguments: 1
