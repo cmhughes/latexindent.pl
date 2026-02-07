@@ -82,6 +82,8 @@ latexindent.pl -s -m href -l href4 -o=+-mod4 -g=two.log
 latexindent.pl -s -m href -l href5 -o=+-mod5
 latexindent.pl -s -m href -l href6 -o=+-mod6
 
+latexindent.pl -s -r -l issue-616.yaml issue-616.tex -o=+-mod1
+
 verbatimTest=0
 set +x 
 wrapuptasks
