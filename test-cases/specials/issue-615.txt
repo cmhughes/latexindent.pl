@@ -1,0 +1,3 @@
+TRACE: found: ifElseFi 	 type: specialBeginEnd
+TRACE: found: \else	 type: specialBeginEnd MIDDLE
+TRACE: found: \else	 type: specialBeginEnd MIDDLE
