@@ -3,8 +3,8 @@
 # latexindent.pl test-cases script to ensure that, as much as possible, 
 # the script behaves as intended.
 #----------------------------------------------------------------------
-# total number of test cases: 3952
-# total number of test cases last updated: 2026-02-07
+# total number of test cases: 3954
+# total number of test cases last updated: 2026-02-08
 #-----------------------------
 #
 # sample usage
@@ -185,6 +185,8 @@ do
   egrep -i --color=auto 'Not a hash reference' latexindent-count.log
   egrep -i --color=auto 'Useless use of' latexindent-count.log
   egrep -i --color=auto 'YAML::Tiny found illegal characters in plain scalar' latexindent-count.log
+  egrep -i --color=auto 'Unescaped left brace in regex is passed through in regex; marked by <-- HERE' latexindent-count.log
+  egrep -i --color=auto 'Unescaped right brace in regex is passed through in regex; marked by <-- HERE' latexindent-count.log
 
   echo -e "./$directory/${BGreen}$executable SUCCESS ($dirExecCount of $dirExecCountTotal) [$currentCount tests]${COLOR_OFF}\r"
 
