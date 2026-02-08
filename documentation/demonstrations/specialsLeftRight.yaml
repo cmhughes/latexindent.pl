@@ -1,5 +1,21 @@
 specialBeginEnd:
-    leftRightSquare:
-        begin: '\\left\['
-        end: '\\right\]'
-        lookForThis: 1
+  -
+   name: leftRightSquare
+   begin: \\left\[
+   end: \\right\]
+
+fineTuning:
+  commands:
+    name: |-
+      (?x)
+      (?!        #  NOT
+        (?:      # 
+          begin  # 
+          |      # 
+          end    # 
+          |      # 
+          left   # 
+          |      # 
+          right  # 
+          )      #
+      )[+a-zA-Z@*0-9_:]+

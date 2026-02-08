@@ -14,10 +14,15 @@ verbatimEnvironments:
     lstlisting: 1
 
 specialBeginEnd:
-    index:
-        begin: \\index\{
-        end: \}
-        lookForThis: verb
+  -
+   name: index
+   begin: \\index\{
+   end: \}
+   lookForThis: verbatim
+
+fineTuning:
+  commands:
+    name: (?!(?:begin|end|index))[+a-zA-Z@*0-9_:]+
 
 indentAfterHeadings:
     appendix:

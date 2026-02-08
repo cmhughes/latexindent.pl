@@ -1,3 +1,2 @@
 TRACE: found: parbox 	 type: commands
 TRACE: found: node 	 type: commands
-TRACE: found: west 	 type: namedGroupingBracesBrackets

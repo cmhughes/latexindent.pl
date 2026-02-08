@@ -1,6 +1,3 @@
-indentRules:
-    draw: 
-        body: "  "
 fineTuning:
   arguments:
     between: |-                               #
@@ -10,5 +7,5 @@ fineTuning:
         |                                     #
         (?:node|at|to|decoration)             #
         |
-        (?:\([^)]*\))
+        \([a-zA-Z]\)
       )                                       #

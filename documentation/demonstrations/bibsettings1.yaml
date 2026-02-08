@@ -1,9 +1,6 @@
 lookForAlignDelims:
-   online: 
+   @online: 
       delimiterRegEx: '(=)'
-
-fineTuning:
-    keyEqualsValuesBracesBrackets:
-      follow: '(?:(?<!\\)\{)|(?:(?<!\\)\[)'
-    UnNamedGroupingBracesBrackets: 
-      follow: '\{|\[|,|&|\)|\(|\$|='
+      lookForChildCodeBlocks: 0
+noAdditionalIndentGlobal:
+  namedGroupingBracesBrackets: 1

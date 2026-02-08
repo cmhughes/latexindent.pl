@@ -146,7 +146,7 @@ lookForAlignDelims:
     dontMeasure: 0
     delimiterRegEx: (?<!\\)(&)
     delimiterJustification: left
-    lookForChildCodeBlocks: 1
+    lookForChildCodeBlocks: 1             # <--------- IS THIS NEEDED????
     alignContentAfterDoubleBackSlash: 0
     spacesAfterDoubleBackSlash: 1
   tabularx:
@@ -529,21 +529,20 @@ fineTuning:
     follow: \{|\[|,|&|\)|\(|\$                #<!------------- DITCH, update obsolete warnings in GetYamlSettings.pm
   arguments:
     before: (?:#\d\h*;?,?\/?)+|\<.*?\>        #<!------------- DITCH, update obsolete warnings in GetYamlSettings.pm
-    between: |-                               #
-      (?x)                                    #
-      (?:                                     # 
-        [_^*#0-9(),+-]                        #
-        |                                     #
-        (?:node|at|to|decoration)             #
-      )                                       #
-    #                                         # ????
-    # adjust for beamer...?                       #<!-------- NEW FEATURE?
-    #
+    between: |-                               
+      (?x)                                    
+      (?:                                     
+        [_^*#0-9(),+-]                        
+        |                                     
+        (?:node|at|to|decoration)             
+        |                                     
+        (?:\([^)]*\))                         
+      )                                       
   trailingComments:
     notPrecededBy: (?<!\\)
     afterComment: .*?
-  modifyLineBreaks:
-    doubleBackSlash: \\\\(?:\h*\[\h*\d+\h*[a-zA-Z]+\h*\])?
+  modifyLineBreaks:                                        # <!----? should this not be MLB??
+    doubleBackSlash: \\\\(?:\h*\[\h*\d+\h*[a-zA-Z]+\h*\])? # <!----? should this not be MLB??
     comma: ','
     betterFullStop: |-
       (?x)                                # ignore spaces in the below

@@ -1,6 +1,11 @@
-commandCodeBlocks:
-    stringsAllowedBetweenArguments:
-      - 
-        amalgamate: 0
-      - '\\x\/\\y'
-      - 'in'
+fineTuning:
+  arguments:
+    between: |-                               #
+      (?x)                                    #
+      (?:                                     # 
+        [_^*#0-9(),+-]                        #
+        |                                     #
+        (?:node|at|to|decoration|in)          #
+        |
+        (?:\\(?:[xy]))
+      )                                       #

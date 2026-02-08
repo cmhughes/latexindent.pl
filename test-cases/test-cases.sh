@@ -145,7 +145,7 @@ dirExec=(
   "batch-tests;batch-tests.sh"
   "horizontalWhiteSpace;whitespace-test-cases.sh"
   "fine-tuning;fine-tuning-test-cases.sh"
-  # "demonstrations;documentation-test-cases.sh"
+  "demonstrations;documentation-test-cases.sh"
   # "documentation;doc-indent.sh"
   ) 
 

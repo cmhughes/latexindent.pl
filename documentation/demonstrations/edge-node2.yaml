@@ -2,8 +2,8 @@ specialBeginEnd:
     path:
         begin: '\\path'
         end: ';'
-    specialBeforeCommand: 1
 
 lookForAlignDelims:
    path: 
       delimiterRegEx: '(edge|node\h*\{[0-9,A-Z]+\})'
+      lookForChildCodeBlocks: 0
