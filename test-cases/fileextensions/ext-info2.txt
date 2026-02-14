@@ -1,0 +1,15 @@
+File extension work:
+       latexindent called to act upon cmh without a file extension;
+       searching for files in the following order (see fileExtensionPreference):
+       	cmh.tex
+       	cmh.sty
+       	cmh.cls
+       	cmh.bib
+       cmh.tex found!
+       Updated fileName to cmh.tex
+INFO:  -o switch active: output file check
+       -o switch called with file name without extension: three.
+       Updated to three.tex as the file extension of the input file is tex
+INFO:  Output routine:
+       Outputting to file three.tex
+       --------------

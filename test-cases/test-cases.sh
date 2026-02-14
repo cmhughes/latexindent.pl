@@ -145,6 +145,7 @@ dirExec=(
   "batch-tests;batch-tests.sh"
   "horizontalWhiteSpace;whitespace-test-cases.sh"
   "fine-tuning;fine-tuning-test-cases.sh"
+  "fileextensions;file-extension-test-cases.sh"
   "demonstrations;documentation-test-cases.sh"
   # "documentation;doc-indent.sh"
   ) 
@@ -193,11 +194,6 @@ do
   cd ..
   [[ $directory == 'demonstrations' ]] && cd ..
 done
-
-# file extension
-cd test-cases/fileextensions/
-[[ $fileExtensionMode == 1 ]] && [[ $silentMode == 1 ]] && echo "./fileextensions/file-extension-test-cases.sh"
-[[ $fileExtensionMode == 1 ]] && ./file-extension-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
 
 checkgitdiff
 

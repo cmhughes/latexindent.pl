@@ -1,0 +1,6 @@
+INFO:  -o switch active: output file check
+       -o switch called with file name without extension: one
+       Updated to one.bib as the file extension of the input file is bib
+INFO:  Output routine:
+       Outputting to file one.bib
+       --------------

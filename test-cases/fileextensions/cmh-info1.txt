@@ -1,0 +1,6 @@
+output file check
+       -o switch called with file name without extension: ++
+       Updated to ++.tex as the file extension of the input file is tex
+       -o switch called with file name ending with ++: ++.tex
+       will search for existence and increment counter, starting with cmh0.tex
+       cmh0.tex does not exist, and will be the output file

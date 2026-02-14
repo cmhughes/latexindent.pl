@@ -1,0 +1,9 @@
+FATAL: I couldn't find a match for another in fileExtensionPreference (see defaultSettings.yaml)
+      I searched for another.tex
+      I searched for another.sty
+      I searched for another.cls
+      I searched for another.bib
+      but couldn't find any of them.
+      Consider updating fileExtensionPreference.
+FATAL: Exiting, no indentation done.
+       --------------
