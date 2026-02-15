@@ -10,9 +10,6 @@
 #   silent mode, loopmin is 13, loopmax is 13
 #       commands-test-cases.sh -s -o 13
 # 
-# perl -d:NYTProf  ../../latexindent.pl -s commands-simple-big.tex -o=+-out1 -l arg-minimal-between -y="defaultIndent: '  '"
-# nytprofhtml --open
-
 loopmax=32
 . ../common.sh
 
@@ -36,13 +33,6 @@ latexindent.pl -s commands-four-nested.tex -o=+-mod1 -y="defaultIndent:'  '"
 
 latexindent.pl -s command-at-end-of-file.tex -o=+-mod1
 latexindent.pl -s -m command-at-end-of-file.tex -o=+-mod2
-
-# big test file, should be less than 4 seconds
-#
-#       time latexindent.pl -s commands-simple-big.tex -o=+-mod1 -y="defaultIndent: '  '"
-#
-{ time latexindent.pl -s commands-simple-big.tex -o=+-out1 -l arg-minimal-between -y="defaultIndent: '  '" ; } 2> commands-simple-big-timing.txt
-{ time latexindent.pl -s -m commands-simple-big.tex -o=+-out1 -l arg-minimal-between -y="defaultIndent: '  '" ; } 2> commands-simple-big-timing-m-switch.txt
 
 latexindent.pl -s -w commands-four-nested-mk1.tex
 
@@ -123,7 +113,7 @@ latexindent.pl commands-nested-multiple-remove-line-breaks -m -s -o=+-command-un
 latexindent.pl -s commands-four-special-characters -o=+-default
 
 # multiple brace test
-latexindent.pl -s -w multipleBraces.tex
+latexindent.pl -s multipleBraces.tex -o=+-mod0
 latexindent.pl -s -m multipleBraces -o=+-mod1 -l=../opt-args/opt-args-remove-all,mand-args-mod1 
 latexindent.pl -s -m multipleBraces -o=+-xapptocmd-none-mod1 -l=../opt-args/opt-args-remove-all,mand-args-mod1,xapptocmd-none
 latexindent.pl -s -m multipleBraces -o=+-xapptocmd-none-pagestyle-comments-mod1 -l=../opt-args/opt-args-remove-all,mand-args-mod1,xapptocmd-none,pagestyle

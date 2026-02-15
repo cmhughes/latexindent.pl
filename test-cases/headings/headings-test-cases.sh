@@ -63,5 +63,7 @@ latexindent.pl -s issue-448 -l issue-448a -o=+-mod1
 latexindent.pl -s -t -l sec-in-preamble1.yaml sec-in-preamble.tex -o=+-mod1
 egrep -i 'found:' indent.log > headings-info1.txt 
 
+latexindent.pl -s sample-large -o=+-mod1 -l indentHeadings
+
 set +x 
 wrapuptasks

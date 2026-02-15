@@ -23,3 +23,8 @@ indentAfterHeadings:
     subparagraph:
        indentAfterThisHeading: 1
        level: 7
+
+noAdditionalIndent:
+  problem: 1
+  widepage: 1
+  exercises: 1

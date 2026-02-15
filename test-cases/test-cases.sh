@@ -3,7 +3,7 @@
 # latexindent.pl test-cases script to ensure that, as much as possible, 
 # the script behaves as intended.
 #----------------------------------------------------------------------
-# total number of test cases: 4285
+# total number of test cases: 4286
 # total number of test cases last updated: 2026-02-15
 #-----------------------------
 #
@@ -11,11 +11,8 @@
 #   ./test-cases.sh 
 #   ./test-cases.sh -a              # do *all* test cases (toggles bench mark and file extension switches)
 #   ./test-cases.sh -b              # do the benchmark test cases
-#   ./test-cases.sh -c              # show the counter within loops
 #   ./test-cases.sh -d              # don't stop mode
-#   ./test-cases.sh -f              # do the file extension test cases
 #   ./test-cases.sh -n              # play a noise at the end of each batch of test cases
-#   ./test-cases.sh -o <INTEGER>    # only do the loops for <INTEGER>
 #   ./test-cases.sh -s              # silent mode, don't echo the latexindent command
 #
 #
@@ -56,14 +53,9 @@ dontStopMode=0
 updateTotalCount=1
 
 # check flags, and change defaults appropriately
-while getopts "abcdfgno:s" OPTION
+while getopts "abdgns" OPTION
 do
  case $OPTION in 
-  s)    
-   echo "Silent mode on..."
-   silentModeFlag='-s'
-   silentMode=1
-   ;;
   a)
     # all mode
     benchmarkMode=1
@@ -73,17 +65,9 @@ do
     # bench mark mode
     benchmarkMode=1
     ;;
-  c)    
-   echo "Show counter mode active!"
-   showCounterFlag='-c'
-   ;;
   d)
     # don't stop
     dontStopMode=1
-    ;;
-  f)
-    # file extension test mode
-    fileExtensionMode=1
     ;;
   g)
     # show git status
@@ -95,10 +79,10 @@ do
     noisyModeFlag="-n"
     noisyMode=1
    ;;
-  o)
-    # only do this one in the loop
-    loopminFlag="-o $OPTARG"
-    updateTotalCount=0
+  s)    
+   echo "Silent mode on..."
+   silentModeFlag='-s'
+   silentMode=1
    ;;
   ?)    printf "Usage: %s: [-s]  args\n" $(basename $0) >&2
         exit 2
@@ -113,6 +97,7 @@ done
 checkgitdiff
 
 dirExec=( 
+  "benchmarks;benchmarks.sh"
   "commands;commands-test-cases.sh"
   "opt-args;opt-args-test-cases.sh"
   "mand-args;mand-args-test-cases.sh"
@@ -148,9 +133,7 @@ dirExec=(
   "fileextensions;file-extension-test-cases.sh"
   "demonstrations;documentation-test-cases.sh"
   "documentation;doc-indent.sh"
-  ###"benchmarks;benchmarks.sh"
   ) 
-
 
 totalTestCases=0
 dirExecCount=0
@@ -172,6 +155,9 @@ do
   cd $directory
 
   [[ $silentMode == 1 ]] && echo -ne "./$directory/${YELLOW}$executable ($dirExecCount of $dirExecCountTotal)${COLOR_OFF}\r"
+
+  # benchmark mode, if appropriate
+  [[ $directory == 'benchmarks' ]] && [[ $benchmarkMode -eq 0 ]] && cd .. && ((dirExecCount--)) && ((dirExecCountTotal--)) && continue
 
   ./$executable $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
 
