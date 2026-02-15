@@ -1,0 +1,27 @@
+TRACE: found: documentclass 	 type: commands
+TRACE: found: titleformat 	 type: commands
+TRACE: found: centering 	 type: commands
+TRACE: found: ruleline 	 type: commands
+TRACE: found: includegraphics 	 type: commands
+TRACE: found: titleformat 	 type: commands
+TRACE: found: llap 	 type: commands
+TRACE: found: titleformat 	 type: commands
+TRACE: found: llap 	 type: commands
+TRACE: found: section 	 type: commands
+TRACE: found: subsection 	 type: commands
+TRACE: found: subsubsection 	 type: commands
+TRACE: found: contentsuse 	 type: commands
+TRACE: found: titleclass 	 type: commands
+TRACE: found: titleformat 	 type: commands
+TRACE: found: titlecontents 	 type: commands
+TRACE: found: addvspace 	 type: commands
+TRACE: found: llap 	 type: commands
+TRACE: found: titlerule* 	 type: commands
+TRACE: found: inlineMath 	 type: specialBeginEnd
+TRACE: found: document 	 type: environments
+TRACE: found: section 	 type: commands
+TRACE: found: subsection 	 type: commands
+TRACE: found: subsubsection 	 type: commands
+TRACE: found: preamble, storing as verbatim (indentPreamble: 0)
+TRACE: found: section heading
+TRACE: found: subsection heading

@@ -118,13 +118,20 @@ sub find_heading {
 
     # if there are no headings regexps, there's no point going any further
     return if !@headingsRegexpArray;
-
     my $self = shift;
 
     # otherwise loop through the headings regexp
     $logger->trace("*Searching ${$self}{name} for headings with following levels (see indentAfterHeadings)")
         if $is_t_switch_active;
     $logger->trace( Dumper( \%headingLevelLookUp ) ) if $is_t_switch_active;
+
+    # preamble has already been indented, so now make it verbatim
+    if ($mainSettings{indentPreamble}){
+       $logger->trace("*protecting preamble which can contain headings commands (indentPreamble: 1)");
+       $mainSettings{indentPreamble} = 0;
+       $self->find_file_contents_environments_and_preamble;
+       ${$self}{preambleIndentationWanted} = 1;
+    }
 
     my @bodyParts = &headings_get_body_parts( ${$self}{body} );
 
@@ -138,6 +145,7 @@ sub find_heading {
     ${$self}{body} = $newBody;
 
     $logger->trace("*headings indentation complete (see indentAfterHeadings)") if $is_t_switch_active;
+    $self->put_verbatim_back_in( match => "preamble" ) if ${$self}{preambleIndentationWanted};
 }
 
 sub headings_get_body_parts {

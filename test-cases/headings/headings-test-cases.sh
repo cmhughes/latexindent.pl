@@ -59,5 +59,9 @@ latexindent.pl -s headings1 -o=+-mod1 -y=' indentAfterHeadings:paragraph:indentA
 latexindent.pl -s -l issue-519 issue-519 -o=+-mod1
 latexindent.pl -s issue-448 -l issue-448a -o=+-mod1
 
+# preamble has heading commands
+latexindent.pl -s -t -l sec-in-preamble1.yaml sec-in-preamble.tex -o=+-mod1
+egrep -i 'found:' indent.log > headings-info1.txt 
+
 set +x 
 wrapuptasks

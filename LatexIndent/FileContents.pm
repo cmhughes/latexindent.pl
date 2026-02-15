@@ -34,7 +34,7 @@ our $fileContentsCounter;
 sub find_file_contents_environments_and_preamble {
     my $self = shift;
 
-    return unless !$mainSettings{indentPreamble};
+    return if $mainSettings{indentPreamble};
 
     # store the file contents blocks in an array which, depending on the value
     # of indentPreamble, will be put into the verbatim hash, or otherwise
@@ -154,7 +154,7 @@ sub find_file_contents_environments_and_preamble {
             body                    => $1,
             end                     => q(),
             name                    => "preamble",
-            type                    => "special",
+            type                    => "preamble",
             horizontalTrailingSpace => q(),
             linebreaksAtEnd         => {
                 begin => q(),
@@ -192,7 +192,6 @@ sub find_file_contents_environments_and_preamble {
 
     }
     else {
-        ${$self}{preamblePresent} = 0;
         $logger->trace("*preamble not stored, so putting filecontents back in")
             if ( scalar @fileContentsStorageArray > 0 and $is_t_switch_active );
         foreach (@fileContentsStorageArray) {

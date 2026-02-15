@@ -1,0 +1,21 @@
+indentPreamble: 1
+
+indentAfterHeadings:
+  section:
+    indentAfterThisHeading: 1
+    level: 1
+  subsection:
+    indentAfterThisHeading: 1
+    level: 1
+    blocksEndBefore: |-
+      (?x)
+        \\end\{document\}
+  subsection*:
+    indentAfterThisHeading: 1
+    level: 1
+
+indentRules:
+  titlecontents:
+    body: "  "
+  titleformat:
+    body: "  "

@@ -484,7 +484,10 @@ sub put_verbatim_back_in {
     my $verbatimCount = 0;
     my $toMatch       = q();
     if ( $input{match} eq "everything-except-commands" ) {
-        $toMatch = "noindentblockenvironmentspeciallinesprotect";
+        $toMatch = "noindentblockenvironmentspeciallinesprotectpreamble";
+    }
+    elsif ( $input{match} eq "preamble" ) {
+        $toMatch = "preamble";
     }
     else {
         $toMatch = "command";
