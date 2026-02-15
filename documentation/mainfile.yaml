@@ -4,3 +4,25 @@ noAdditionalIndentGlobal:
 modifyLineBreaks:
     textWrapOptions:
         columns: 0
+
+specialBeginEnd:
+  - name: tcbraster                                      # NEW specified as ORDERED array
+    begin: \\begin\{tcbraster
+    end: \}
+    lookForThis: verbatim
+
+indentAfterHeadings:
+    appendix:
+       indentAfterThisHeading: 0
+    section:
+       indentAfterThisHeading: 0
+    subsection:
+       indentAfterThisHeading: 0
+    yamltitle:
+       indentAfterThisHeading: 0
+    flagbox:
+       indentAfterThisHeading: 0
+    subsubsection:
+       indentAfterThisHeading: 0
+    paragraph:
+       indentAfterThisHeading: 0

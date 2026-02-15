@@ -209,13 +209,14 @@ sub operate_on_file {
 
         $self->condense_blank_lines
             if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks} }{condenseMultipleBlankLinesInto} );
+            
+        # ---------- one sentence per line, text wrap (AFTER) -------------------
+        $self->mlb_POST_indent_sentence_and_text_wrap if $is_m_switch_active;
+
         $self->unprotect_blank_lines
             if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} );
         $self->un_dodge_double_backslash;
         $self->final_indentation_check;
-
-        # ---------- one sentence per line, text wrap (AFTER) -------------------
-        $self->mlb_POST_indent_sentence_and_text_wrap if $is_m_switch_active;
 
         $self->remove_trailing_whitespace( when => "after" );
         $self->make_replacements( when => "after" ) if $is_rv_switch_active;

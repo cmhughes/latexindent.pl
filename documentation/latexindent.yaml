@@ -4,8 +4,6 @@ onlyOneBackUp: 1
 
 indentPreamble: 1
 
-preambleCommandsBeforeEnvironments: 1
-
 verbatimEnvironments:
     cmhlistings: 1
     yaml: 1
@@ -13,16 +11,9 @@ verbatimEnvironments:
     dosprompt: 1
     lstlisting: 1
 
-specialBeginEnd:
-  -
-   name: index
-   begin: \\index\{
-   end: \}
-   lookForThis: verbatim
-
 fineTuning:
   commands:
-    name: (?!(?:begin|end|index))[+a-zA-Z@*0-9_:]+
+    name: (?!(?:begin|end))[+a-zA-Z@*0-9_:]+
 
 indentAfterHeadings:
     appendix:
@@ -60,11 +51,6 @@ noAdditionalIndent:
 noAdditionalIndentGlobal:
     mandatoryArguments: 1
 
-commandCodeBlocks:
-    roundParenthesesAllowed: 1
-    stringsAllowedBetweenArguments:
-      - '\*'
-
 modifyLineBreaks:
     textWrapOptions:
         when: after
@@ -97,7 +83,7 @@ modifyLineBreaks:
            VerbatimEndFinishesWithLineBreak: 4
     mandatoryArguments:
       cmhlistingsfromfile*:
-        RCuBFinishesWithLineBreak: 1
+        RCuBFinishesWithLineBreak: 0
     commands:
        cmhlistingsfromfile*:
            CommandStartsOnOwnLine: 1

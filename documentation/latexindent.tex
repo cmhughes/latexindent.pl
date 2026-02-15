@@ -66,9 +66,9 @@
 
 % shortcut command for displaying star in documentation
 \newcommand{\stardemo}[1][]{\begin{tikzpicture}
- \node at (10:.1cm)[very thin,cmhstar,scale=0.25,rotate=20,#1]{};
- \node at (120:.1cm)[very thin,cmhstar,scale=0.15,rotate=-10,#1]{};
- \node at (235:.1cm)[very thin,cmhstar,scale=0.2,rotate=-20,#1]{};
+  \node at (10:.1cm)[very thin,cmhstar,scale=0.25,rotate=20,#1]{};
+  \node at (120:.1cm)[very thin,cmhstar,scale=0.15,rotate=-10,#1]{};
+  \node at (235:.1cm)[very thin,cmhstar,scale=0.2,rotate=-20,#1]{};
  \end{tikzpicture}}
 
 % totalcount
@@ -251,12 +251,12 @@
 }
 
 \DeclareDocumentEnvironment{cmhtcbraster}{O{}}{\begin{tcbraster}[
-  new-to-this-version/.style={
-    enhanced,
-    overlay app={\node[anchor=south east] at ([yshift=-3mm,xshift=3mm]frame.north east) {\stardemo[scale=1.2]}; },
-    addtololstar,
-   },
-  raster valign=top,raster columns=2,#1]}{\end{tcbraster}}
+   new-to-this-version/.style={
+     enhanced,
+     overlay app={\node[anchor=south east] at ([yshift=-3mm,xshift=3mm]frame.north east) {\stardemo[scale=1.2]}; },
+     addtololstar,
+    },
+   raster valign=top,raster columns=2,#1]}{\end{tcbraster}}
 
 % \cmhlistingsfromfile
 %                   * no star: not new, star: new   #1
@@ -653,34 +653,34 @@
 
 % custom section
 \titleformat% Formatting the header
-{\section} % command
-[block] % shape - Only managed to get it working with block
-{\normalfont\bfseries\huge} % format - Change here as needed
-{\centering {\scshape Section \thesection}\\} % the section
-{0pt} % sep
-{\centering \ruleline{\includegraphics{\imagetouse}}\\ % The horizontal rule
- \centering} % And the actual title
+  {\section} % command
+  [block] % shape - Only managed to get it working with block
+  {\normalfont\bfseries\huge} % format - Change here as needed
+  {\centering {\scshape Section \thesection}\\} % the section
+  {0pt} % sep
+  {\centering \ruleline{\includegraphics{\imagetouse}}\\ % The horizontal rule
+   \centering} % And the actual title
 
 % custom subsection
 \titleformat{\subsection}
-{\normalfont\bfseries}
-{\llap{\thesubsection\hskip.5cm}}
-{0pt}
-{}
+  {\normalfont\bfseries}
+  {\llap{\thesubsection\hskip.5cm}}
+  {0pt}
+  {}
 
 % custom subsubsection
 \titleformat{\subsubsection}
-{\normalfont\bfseries}
-{\llap{\thesubsubsection\hskip.5cm}}
-{0pt}
-{}
+  {\normalfont\bfseries}
+  {\llap{\thesubsubsection\hskip.5cm}}
+  {0pt}
+  {}
 
 % custom paragraph
 \titleformat{\paragraph}
-{\normalfont\bfseries}
-{\llap{\theparagraph\hskip.5cm}}
-{0pt}
-{}
+  {\normalfont\bfseries}
+  {\llap{\theparagraph\hskip.5cm}}
+  {0pt}
+  {}
 
 % title spacing
 \titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{34pt plus 2pt minus 2pt}
@@ -810,10 +810,10 @@
 \tableofcontents
 % start sections on new page
 \newcommand{\sectionbreak}{\clearpage\thispagestyle{plain}}
- \iftestdefaultsettings
+\iftestdefaultsettings
  \input{test-default-settings}
  \input{sec-references}
- \else
+\else
  \input{sec-introduction}
  \input{sec-demonstration}
  \input{sec-how-to-use}
@@ -842,5 +842,5 @@
  \input{sec-appendices}
  {\clearpage\addcontentsline{toc}{section}{List of listings}\small\lstlistoflistings}
  \printindex
- \fi
+\fi
 \end{document}

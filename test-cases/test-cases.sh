@@ -3,8 +3,8 @@
 # latexindent.pl test-cases script to ensure that, as much as possible, 
 # the script behaves as intended.
 #----------------------------------------------------------------------
-# total number of test cases: 3954
-# total number of test cases last updated: 2026-02-08
+# total number of test cases: 4284
+# total number of test cases last updated: 2026-02-15
 #-----------------------------
 #
 # sample usage
@@ -147,7 +147,8 @@ dirExec=(
   "fine-tuning;fine-tuning-test-cases.sh"
   "fileextensions;file-extension-test-cases.sh"
   "demonstrations;documentation-test-cases.sh"
-  # "documentation;doc-indent.sh"
+  "documentation;doc-indent.sh"
+  ###"benchmarks;benchmarks.sh"
   ) 
 
 
@@ -193,13 +194,9 @@ do
 
   cd ..
   [[ $directory == 'demonstrations' ]] && cd ..
+  [[ $directory == 'documentation' ]] && cd ./test-cases
 done
 
-checkgitdiff
-
-# benchmark mode, if appropriate
-cd ../benchmarks
-[[ $benchmarkMode == 1 ]] && ./benchmarks.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
 checkgitdiff
 
 #
