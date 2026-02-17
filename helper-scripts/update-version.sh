@@ -287,6 +287,7 @@ filesToUpdate=(
   LatexIndent/Version.pm 
   readme.md
   Dockerfile
+  .pre-commit-hooks.yaml
   documentation/conf.py 
   documentation/readme.txt
   documentation/latexindent-yaml-schema.json
