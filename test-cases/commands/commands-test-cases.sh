@@ -225,5 +225,8 @@ latexindent.pl commands-four-special-characters -o=+-mod1 -s -l=fine-tuning-args
 
 latexindent.pl -s issue-605.tex -l issue-605.yaml -o=+-mod1.tex
 
+latexindent.pl -s -t issue-620 -o=+-mod1
+egrep 'found:' indent.log > issue-620.txt
+
 set +x 
 wrapuptasks

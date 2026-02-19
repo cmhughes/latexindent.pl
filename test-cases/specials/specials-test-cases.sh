@@ -108,5 +108,9 @@ egrep -i 'found:' indent.log > issue-615.txt
 
 latexindent.pl -s -l preamble1 -t spec-preamble1 -o=+-mod1
 egrep -i 'found:' indent.log > spec-preamble1.txt
+
+latexindent.pl -s -l issue-619 -t issue-619 -o=+-mod1
+egrep -i 'found:' indent.log > issue-619.txt
+
 set +x 
 wrapuptasks

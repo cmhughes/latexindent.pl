@@ -1,0 +1,5 @@
+TRACE: found: NewDocumentCommand 	 type: commands
+TRACE: found: O 	 type: namedGroupingBracesBrackets
+TRACE: found: O 	 type: namedGroupingBracesBrackets
+TRACE: found: NewDocumentCommand 	 type: commands
+TRACE: found: O 	 type: namedGroupingBracesBrackets

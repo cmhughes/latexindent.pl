@@ -1,0 +1,22 @@
+fineTuning:
+  environments:
+    begin: |-
+      (?x)                      # environment 
+        (?:\\\[)?\\begin\{               # regex
+          (?<ENVNAME>           # NON default
+           [a-zA-Z@\*0-9_\\]+   #
+          )                     #
+        \}
+    end: \\end\{\g{ENVNAME}\}(?:\\\])?
+  commands:
+    name: (?!begin|end)[+a-zA-Z@\*0-9_\:]+?
+
+specialBeginEnd:
+  -
+    name: tikzcdDispMath
+    begin: (?<!\\)\\\[\\begin\{tikzcd\}
+    end: \\end\{tikzcd\}\\\]
+  -
+    name: displayMath
+    begin: (?<!\\)\\\[(?!\\begin)
+    end: (?<!tikzcd\})\\\]
