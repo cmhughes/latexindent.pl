@@ -11,14 +11,14 @@ name: Release GitHub Container Registry Package
 
 on:
   push:
-    tags:
-      - '*'
+    branches:
+      - main
 
 jobs:
   latexindent-ghcr:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: docker/setup-buildx-action@v3
         id: buildx
         with:
