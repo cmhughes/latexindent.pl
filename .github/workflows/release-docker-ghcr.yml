@@ -11,8 +11,8 @@ name: Release GitHub Container Registry Package
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - '*'
 
 jobs:
   latexindent-ghcr:
