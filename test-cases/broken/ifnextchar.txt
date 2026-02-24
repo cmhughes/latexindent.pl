@@ -1,0 +1,3 @@
+TRACE: VERBATIM special found: ifnextchar
+TRACE: found: parbox 	 type: commands
+TRACE: found: END 	 type: namedGroupingBracesBrackets

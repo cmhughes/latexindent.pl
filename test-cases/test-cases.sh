@@ -3,8 +3,8 @@
 # latexindent.pl test-cases script to ensure that, as much as possible, 
 # the script behaves as intended.
 #----------------------------------------------------------------------
-# total number of test cases: 4286
-# total number of test cases last updated: 2026-02-15
+# total number of test cases: 4289
+# total number of test cases last updated: 2026-02-22
 #-----------------------------
 #
 # sample usage

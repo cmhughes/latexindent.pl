@@ -6,3 +6,4 @@ TRACE: found: new-to-this-version/.style 	 type: keyEqualsValuesBracesBrackets
 TRACE: found: overlay app 	 type: keyEqualsValuesBracesBrackets
 TRACE: found: node 	 type: commands
 TRACE: found: stardemo 	 type: commands
+TRACE: found: end 	 type: commands

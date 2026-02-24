@@ -515,7 +515,7 @@ fineTuning:
     name: (?!@?if[a-zA-Z@]*?\{)@?if[a-zA-Z@]*
     elseOrRegEx: \\(?:else|or)               #<!---------- NEW
   commands:
-    name: (?!(?:begin|end))[+a-zA-Z@*0-9_:]+
+    name: [+a-zA-Z@*0-9_:]+
   items:
     itemRegEx: \\(?:item|myitem)             #<!---------- NEW
     canBeFollowedBy: (?:\[[^]]*?\])|(?:<[^>]*?>)  #<!------------- DITCH, update obsolete warnings in GetYamlSettings.pm

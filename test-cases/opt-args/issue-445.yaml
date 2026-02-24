@@ -8,6 +8,8 @@ fineTuning:
   environments:
     begin: \\begin\{(?!cases)[^}]+\}
     end: \\end\{\2\}
+  commands:
+    name: (?!begin|end)[+a-zA-Z@*0-9_:]+
 
 specialBeginEnd:
   - name: cases

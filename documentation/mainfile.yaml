@@ -5,12 +5,6 @@ modifyLineBreaks:
     textWrapOptions:
         columns: 0
 
-specialBeginEnd:
-  - name: tcbraster                                      # NEW specified as ORDERED array
-    begin: \\begin\{tcbraster
-    end: \}
-    lookForThis: verbatim
-
 indentAfterHeadings:
     appendix:
        indentAfterThisHeading: 0

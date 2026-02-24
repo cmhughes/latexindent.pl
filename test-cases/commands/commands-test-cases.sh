@@ -69,8 +69,6 @@ set +x
 [[ $silentMode == 0 ]] && set +x 
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do 
-   [[ $showCounter == 1 ]] && echo $i of $loopmax
-   [[ $silentMode == 0 ]] && set -x 
    keepappendinglogfile
    
    # add line breaks
@@ -114,9 +112,9 @@ latexindent.pl -s commands-four-special-characters -o=+-default
 
 # multiple brace test
 latexindent.pl -s multipleBraces.tex -o=+-mod0
-latexindent.pl -s -m multipleBraces -o=+-mod1 -l=../opt-args/opt-args-remove-all,mand-args-mod1 
-latexindent.pl -s -m multipleBraces -o=+-xapptocmd-none-mod1 -l=../opt-args/opt-args-remove-all,mand-args-mod1,xapptocmd-none
-latexindent.pl -s -m multipleBraces -o=+-xapptocmd-none-pagestyle-comments-mod1 -l=../opt-args/opt-args-remove-all,mand-args-mod1,xapptocmd-none,pagestyle
+latexindent.pl -s -m multipleBraces -o=+-mod1 -l=../opt-args/opt-args-remove-all,mand-args-mod1,no-end
+latexindent.pl -s -m multipleBraces -o=+-xapptocmd-none-mod1 -l=../opt-args/opt-args-remove-all,mand-args-mod1,xapptocmd-none,no-end
+latexindent.pl -s -m multipleBraces -o=+-xapptocmd-none-pagestyle-comments-mod1 -l=../opt-args/opt-args-remove-all,mand-args-mod1,xapptocmd-none,pagestyle,no-end
 
 # multiple trailing comment
 latexindent.pl just-one-command-multiple-trailing-comments -m -s -o=+-mod17 -l=../opt-args/opt-args-remove-all,mand-args-mod17 
@@ -150,8 +148,6 @@ set +x
 [[ $silentMode == 0 ]] && set +x 
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do 
-   [[ $showCounter == 1 ]] && echo $i of $loopmax
-   [[ $silentMode == 0 ]] && set -x 
    keepappendinglogfile
    # multiple commands
    latexindent.pl commands-nested-multiple -m  -s -o=+-mod$i -l=../opt-args/opt-args-mod$i,mand-args-mod$i
