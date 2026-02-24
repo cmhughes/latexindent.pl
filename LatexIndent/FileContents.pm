@@ -21,9 +21,6 @@ use LatexIndent::Tokens          qw/%tokens/;
 use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Switches        qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use LatexIndent::LogFile         qw/$logger/;
-use LatexIndent::Environment     qw/$environmentBasicRegExp/;
-use LatexIndent::IfElseFi        qw/$ifElseFiBasicRegExp/;
-use LatexIndent::Heading         qw/$allHeadingsRegexp/;
 use LatexIndent::Verbatim        qw/%verbatimStorage/;
 use Data::Dumper;
 use Exporter qw/import/;
@@ -213,16 +210,7 @@ sub create_unique_id {
 
 sub tasks_particular_to_each_object {
     my $self = shift;
-
-    # search for environments
-    $self->find_environments if ${$self}{body} =~ m/$environmentBasicRegExp/s;
-
-    # search for ifElseFi blocks
-    $self->find_ifelsefi if ${$self}{body} =~ m/$ifElseFiBasicRegExp/s;
-
-    # search for headings (part, chapter, section, setc)
-    $self->find_heading if ${$self}{body} =~ m/$allHeadingsRegexp/s;
-
+    return;
 }
 
 1;

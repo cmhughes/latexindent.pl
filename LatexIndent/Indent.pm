@@ -19,7 +19,6 @@ use strict;
 use warnings;
 use LatexIndent::Tokens          qw/%tokens/;
 use LatexIndent::Switches        qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
-use LatexIndent::HiddenChildren  qw/%familyTree/;
 use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::LogFile         qw/$logger/;
 use Text::Tabs;

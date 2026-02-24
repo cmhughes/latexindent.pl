@@ -30,26 +30,11 @@ my $ifelsefiSpecial = "!-!";
 our %tokens = (
 
     # user-facing naming convention
-    environments                  => $beginningToken . "ENVIRONMENT",
-    commands                      => $beginningToken . "COMMAND",
-    optionalArguments             => $beginningToken . "OPTIONAL-ARGUMENT",
-    mandatoryArguments            => $beginningToken . "MANDATORY-ARGUMENT",
-    ifElseFi                      => $ifelsefiSpecial . $beginningToken . "IFELSEFI",
-    else                          => $beginningToken . "ELSE",
-    items                         => $beginningToken . "ITEMS",
-    keyEqualsValuesBracesBrackets => $beginningToken . "KEY-VALUE-BRACES",
-    namedGroupingBracesBrackets   => $beginningToken . "GROUPING-BRACES",
-    UnNamedGroupingBracesBrackets => $beginningToken . "UN-NAMED-GROUPING-BRACES",
-    specialBeginEnd               => $beginningToken . "SPECIAL",
-    afterHeading                  => $beginningToken . "HEADING",
     filecontents                  => $beginningToken . "FILECONTENTS",
 
     # internal-facing naming convention
     trailingComment => "tc",
-    ifelsefiSpecial => $ifelsefiSpecial,
     blanklines      => $beginningToken . "bl",
-    arguments       => $beginningToken . "ARGUMENTS",
-    roundBracket    => $beginningToken . "ROUND-BRACKET",
     verbatim        => $beginningToken . "VERBATIM",
     verbatimInline  => $beginningToken . "VERBATIM-inline",
     preamble        => $beginningToken . "preamble",

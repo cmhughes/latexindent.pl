@@ -30,7 +30,6 @@ use LatexIndent::Switches         qw/$is_m_switch_active $is_t_switch_active $is
 use LatexIndent::Tokens           qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp @trailingComments/;
 use LatexIndent::Verbatim         qw/%verbatimStorage/;
-use LatexIndent::HiddenChildren   qw/%familyTree/;
 our @ISA = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK
     = qw/align_at_ampersand _align_mark_down_block double_back_slash_else main_formatting individual_padding multicolumn_padding multicolumn_pre_check multicolumn_post_check dont_measure hidden_child_cell_row_width hidden_child_row_width get_column_width/;
@@ -822,20 +821,6 @@ sub main_formatting {
             !( ${ $formattedBody[$rowCount] }{numberOfAmpersands} == 0 and !${ $formattedBody[$rowCount] }{endPiece} ) )
         {
             ${$self}{maximumRowWidth} = $rowWidth;
-        }
-    }
-
-    # log file information
-    if ( $is_tt_switch_active and ${$self}{measureHiddenChildren} ) {
-        $logger->info('*FamilyTree after align for ampersand');
-        $logger->trace( Dumper( \%familyTree ) ) if ($is_tt_switch_active);
-
-        $rowCount = -1;
-
-        # row loop
-        foreach my $row (@cellStorage) {
-            $rowCount++;
-            $logger->trace("row $rowCount row width: ${$formattedBody[$rowCount]}{rowWidth}");
         }
     }
 }

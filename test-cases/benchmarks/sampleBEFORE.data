@@ -1,5 +1,5 @@
 + latexindent.pl -s -l sample sampleBEFORE
 
-real	0m1.749s
-user	0m1.733s
-sys	0m0.016s
+real	0m1.740s
+user	0m1.729s
+sys	0m0.011s

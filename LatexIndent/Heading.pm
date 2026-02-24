@@ -23,7 +23,6 @@ use LatexIndent::Switches         qw/$is_m_switch_active $is_t_switch_active $is
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::GetYamlSettings  qw/%mainSettings %previouslyFoundSettings/;
 use LatexIndent::LogFile          qw/$logger/;
-use LatexIndent::Special          qw/$specialBeginBasicRegExp/;
 use Exporter                      qw/import/;
 our @ISA = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK
@@ -304,105 +303,6 @@ sub after_heading_indentation {
 
     $body = join( "", @newBody );
     return $body;
-}
-
-sub get_replacement_text {
-    my $self = shift;
-
-    # the replacement text for a heading (chapter, section, etc) needs to put the trailing part back in
-    $logger->trace("Custom replacement text routine for ${$self}{name}") if $is_t_switch_active;
-    ${$self}{replacementText} = ${$self}{id} . ${$self}{afterbit};
-    delete ${$self}{afterbit};
-}
-
-sub create_unique_id {
-    my $self = shift;
-
-    $headingCounter++;
-
-    ${$self}{id} = "$tokens{afterHeading}$headingCounter";
-    return;
-}
-
-sub adjust_replacement_text_line_breaks_at_end {
-    return;
-}
-
-sub yaml_get_object_attribute_for_indentation_settings {
-
-    # when looking for noAdditionalIndent or indentRules, we may need to determine
-    # which thing we're looking for, e.g
-    #
-    #   chapter:
-    #       body: 0
-    #       optionalArguments: 1
-    #       mandatoryArguments: 1
-    #       afterHeading: 0
-    #
-    # this method returns 'body' by default, but the other objects (optionalArgument, mandatoryArgument, afterHeading)
-    # return their appropriate identifier.
-    my $self = shift;
-
-    return ${$self}{modifyLineBreaksYamlName};
-}
-
-sub tasks_particular_to_each_object {
-    my $self = shift;
-
-    # search for commands, keys, named grouping braces
-    $self->find_commands_or_key_equals_values_braces;
-
-    # we need to transfer the details from the modifyLineBreaks of the command
-    # child object to the heading object.
-    #
-    # for example, if we have
-    #
-    #   \chapter{some heading here}
-    #
-    # and we want to modify the linebreak before the \chapter command using, for example,
-    #
-    # commands:
-    #     CommandStartsOnOwnLine: 1
-    #
-    # then we need to transfer this information to the heading object
-    if ($is_m_switch_active) {
-        $logger->trace("Searching for linebreak preferences immediately infront of ${$self}{parent}")
-            if $is_t_switch_active;
-        foreach ( @{ ${$self}{children} } ) {
-            if ( ${$_}{name} eq ${$self}{parent} ) {
-                $logger->trace("Named child found: ${$_}{name}") if $is_t_switch_active;
-                if ( defined ${$_}{BeginStartsOnOwnLine} ) {
-                    $logger->trace(
-                        "Transferring information from ${$_}{id} (${$_}{name}) to ${$self}{id} (${$self}{name}) for BeginStartsOnOwnLine"
-                    ) if $is_t_switch_active;
-                    ${$self}{BeginStartsOnOwnLine} = ${$_}{BeginStartsOnOwnLine};
-                }
-                else {
-                    $logger->trace("No information found in ${$_}{name} for BeginStartsOnOwnLine")
-                        if $is_t_switch_active;
-                }
-                last;
-            }
-        }
-    }
-
-    # search for special begin/end
-    $self->find_special if ${$self}{body} =~ m/$specialBeginBasicRegExp/s;
-
-    return;
-}
-
-sub add_surrounding_indentation_to_begin_statement {
-
-    # almost all of the objects add surrounding indentation to the 'begin' statements,
-    # but some (e.g HEADING) have their own method
-    my $self = shift;
-
-    $logger->trace(
-        "Adding surrounding indentation after (empty, by design!) begin statement of ${$self}{name} (${$self}{id})")
-        if $is_t_switch_active;
-    ${$self}{begin} .= ${$self}{surroundingIndentation};    # add indentation
-
 }
 
 1;

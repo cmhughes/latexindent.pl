@@ -46,8 +46,6 @@ use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leadi
 use LatexIndent::Indent
     qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check  get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement post_indentation_check replace_id_with_begin_body_end/;
 use LatexIndent::Tokens qw/token_check %tokens/;
-use LatexIndent::HiddenChildren
-    qw/find_surrounding_indentation_for_children update_family_tree get_family_tree check_for_hidden_children hidden_children_preparation_for_alignment unpack_children_into_body/;
 use LatexIndent::AlignmentAtAmpersand
     qw/align_at_ampersand _align_mark_down_block double_back_slash_else main_formatting individual_padding multicolumn_padding multicolumn_pre_check  multicolumn_post_check dont_measure hidden_child_cell_row_width hidden_child_row_width /;
 use LatexIndent::DoubleBackSlash qw/dodge_double_backslash un_dodge_double_backslash/;
@@ -55,21 +53,17 @@ use LatexIndent::DoubleBackSlash qw/dodge_double_backslash un_dodge_double_backs
 # code blocks
 use LatexIndent::Verbatim
     qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  find_verbatim_special verbatim_common_tasks %verbatimStorage/;
-use LatexIndent::Environment qw/find_environments $environmentBasicRegExp construct_environments_regexp/;
-use LatexIndent::IfElseFi    qw/find_ifelsefi construct_ifelsefi_regexp $ifElseFiBasicRegExp/;
-use LatexIndent::Else        qw/check_for_else_statement/;
-use LatexIndent::Arguments   qw/get_arguments_regexp find_opt_mand_arguments construct_arguments_regexp comma_else/;
-use LatexIndent::OptionalArgument      qw/find_optional_arguments/;
-use LatexIndent::MandatoryArgument     qw/find_mandatory_arguments get_mand_arg_reg_exp/;
-use LatexIndent::RoundBrackets         qw/find_round_brackets/;
-use LatexIndent::Item                  qw/find_items construct_list_of_items/;
+use LatexIndent::Environment;
+use LatexIndent::IfElseFi;
+use LatexIndent::Arguments;
+use LatexIndent::OptionalArgument;
+use LatexIndent::MandatoryArgument;
 use LatexIndent::Blocks                qw/$braceBracketRegExpBasic _find_all_code_blocks _construct_code_blocks_regex/;
-use LatexIndent::Command               qw/construct_command_regexp/;
-use LatexIndent::KeyEqualsValuesBraces qw/construct_key_equals_values_regexp/;
-use LatexIndent::NamedGroupingBracesBrackets   qw/construct_grouping_braces_brackets_regexp/;
-use LatexIndent::UnNamedGroupingBracesBrackets qw/construct_unnamed_grouping_braces_brackets_regexp/;
-use LatexIndent::Special
-    qw/find_special construct_special_begin $specialBeginAndBracesBracketsBasicRegExp $specialBeginBasicRegExp/;
+use LatexIndent::Command;
+use LatexIndent::KeyEqualsValuesBraces;
+use LatexIndent::NamedGroupingBracesBrackets;
+use LatexIndent::UnNamedGroupingBracesBrackets;
+use LatexIndent::Special;
 use LatexIndent::Heading      qw/find_heading construct_headings_levels $allHeadingsRegexp after_heading_indentation/;
 use LatexIndent::FileContents qw/find_file_contents_environments_and_preamble/;
 
@@ -237,15 +231,6 @@ sub construct_regular_expressions {
     $self->construct_trailing_comment_regexp;
     $self->_construct_code_blocks_regex;
     $self->construct_headings_levels;    # to be ditched
-
-    # $self->construct_environments_regexp;                      # to be ditched
-    # $self->construct_ifelsefi_regexp;                          # to be ditched
-    # $self->construct_list_of_items;                            # to be ditched
-    # $self->construct_special_begin;                            # to be ditched
-    # $self->construct_arguments_regexp;                         # to be ditched
-    # $self->construct_key_equals_values_regexp;                 # to be ditched
-    # $self->construct_grouping_braces_brackets_regexp;          # to be ditched
-    # $self->construct_unnamed_grouping_braces_brackets_regexp;  # to be ditched
 }
 
 sub output_indented_text {
@@ -327,12 +312,6 @@ sub output_logfile {
     }
 }
 
-sub process_body_of_text {
-    my $self = shift;
-
-return;
-}
-
 sub mlb_PRE_indent_sentence_and_text_wrap {
     my $self = shift;
 
@@ -390,34 +369,6 @@ sub mlb_POST_indent_sentence_and_text_wrap {
     $self->text_wrap_comment_blocks()
         if (${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}
         and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' );
-    return;
-}
-
-sub find_commands_or_key_equals_values_braces_and_special {
-    my $self = shift;
-
-    # the order in which we search for specialBeginEnd and commands/key/braces
-    # can change depending upon specialBeforeCommand
-    if ( ${ $mainSettings{specialBeginEnd} }{specialBeforeCommand} ) {
-
-        # search for special begin/end
-        $logger->trace('looking for SPECIAL begin/end *before* looking for commands (see specialBeforeCommand)')
-            if $is_t_switch_active;
-        $self->find_special if ${$self}{body} =~ m/$specialBeginBasicRegExp/s;
-
-        # search for commands with arguments
-        $logger->trace('looking for COMMANDS and key = {value}') if $is_t_switch_active;
-        $self->find_commands_or_key_equals_values_braces         if ${$self}{body} =~ m/$braceBracketRegExpBasic/s;
-    }
-    else {
-        # search for commands with arguments
-        $logger->trace('looking for COMMANDS and key = {value}') if $is_t_switch_active;
-        $self->find_commands_or_key_equals_values_braces         if ${$self}{body} =~ m/$braceBracketRegExpBasic/s;
-
-        # search for special begin/end
-        $logger->trace('looking for SPECIAL begin/end') if $is_t_switch_active;
-        $self->find_special                             if ${$self}{body} =~ m/$specialBeginBasicRegExp/s;
-    }
     return;
 }
 

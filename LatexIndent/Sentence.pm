@@ -23,10 +23,6 @@ use LatexIndent::GetYamlSettings  qw/%mainSettings/;
 use LatexIndent::Switches         qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use LatexIndent::LogFile          qw/$logger/;
 use LatexIndent::Blocks           qw/_find_all_code_blocks/;
-use LatexIndent::Environment      qw/$environmentBasicRegExp/;
-use LatexIndent::IfElseFi         qw/$ifElseFiBasicRegExp/;
-use LatexIndent::Heading          qw/$allHeadingsRegexp/;
-use LatexIndent::Special          qw/$specialBeginAndBracesBracketsBasicRegExp/;
 use Exporter                      qw/import/;
 our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/one_sentence_per_line mlb_one_sentence_per_line_indent/;

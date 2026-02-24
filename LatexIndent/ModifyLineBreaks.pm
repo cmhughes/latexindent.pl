@@ -22,7 +22,6 @@ use LatexIndent::GetYamlSettings  qw/%mainSettings $argumentsBetweenCommands %po
 use LatexIndent::Tokens           qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches         qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
-use LatexIndent::Item             qw/$listOfItems/;
 use LatexIndent::LogFile          qw/$logger/;
 use LatexIndent::Verbatim         qw/%verbatimStorage/;
 our @EXPORT_OK
