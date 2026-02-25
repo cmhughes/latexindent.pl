@@ -25,7 +25,7 @@ use LatexIndent::Switches         qw/$is_m_switch_active $is_t_switch_active $is
 use LatexIndent::LogFile          qw/$logger/;
 use LatexIndent::Verbatim         qw/%verbatimStorage/;
 our @EXPORT_OK
-    = qw/_mlb_line_break_token_adjust _mlb_file_starts_with_line_break _mlb_begin_starts_on_own_line _mlb_body_starts_on_own_line _mlb_end_starts_on_own_line _mlb_end_finishes_with_line_break adjust_line_breaks_end_parent _mlb_verbatim _mlb_after_indentation_token_adjust _mlb_line_break_token_adjust/;
+    = qw/_mlb_line_break_token_adjust _mlb_file_starts_with_line_break _mlb_begin_starts_on_own_line _mlb_body_starts_on_own_line _mlb_end_starts_on_own_line _mlb_end_finishes_with_line_break adjust_line_breaks_end_parent _mlb_verbatim _mlb_after_indentation_token_adjust _mlb_line_break_token_adjust mlb_PRE_indent_sentence_and_text_wrap mlb_POST_indent_sentence_and_text_wrap /;
 our $paragraphRegExp = q();
 
 sub _mlb_begin_starts_on_own_line {
@@ -614,4 +614,65 @@ sub _mlb_file_starts_with_line_break {
         ${$self}{body} =~ s/\A\h*\R+//s if !${$self}{fileStartsWithLineBreak};
     }
 }
+
+sub mlb_PRE_indent_sentence_and_text_wrap {
+    my $self = shift;
+
+    # one sentence per line: sentences are objects, as of V3.5.1
+    $self->one_sentence_per_line
+        if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences} );
+
+    # text wrapping
+    #
+    # note: this routine will *not* be called if
+    #
+    #    modifyLineBreaks:
+    #        oneSentencePerLine:
+    #            manipulateSentences: 1
+    #            textWrapSentences: 1
+    #
+    if (    $is_m_switch_active
+        and !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
+        and !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}
+        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} != 0
+        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'before' )
+    {
+        $self->text_wrap();
+
+        # text wrapping can affect verbatim poly-switches, so we run it again
+        $self->_mlb_verbatim( when => "afterTextWrap" );
+    }
+
+    # option for comment text wrap
+    $self->text_wrap_comment_blocks()
+        if ( $is_m_switch_active
+        and ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}
+        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'before' );
+
+    # logfile information
+    $logger->trace( Dumper( \%{$self} ) ) if ($is_tt_switch_active);
+
+    return;
+}
+
+sub mlb_POST_indent_sentence_and_text_wrap {
+    my $self = shift;
+
+    # option for text wrap
+    if (    !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
+        and !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}
+        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} != 0
+        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' )
+    {
+        $logger->trace("*textWrap AFTER indentation") if $is_t_switch_active;
+        $self->text_wrap();
+    }
+
+    # option for comment text wrap
+    $self->text_wrap_comment_blocks()
+        if (${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}
+        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' );
+    return;
+}
+
 1;

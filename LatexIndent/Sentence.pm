@@ -494,38 +494,6 @@ sub tasks_particular_to_each_object {
     return;
 }
 
-sub indent_body {
-    return unless ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentenceIndent} =~ m/\h+/;
-
-    my $self = shift;
-
-    # indentation of sentences
-    if (${$self}{body} =~ m/
-                          (.*?)      # content of first line
-                          \R         # first line break
-                          (.*$)      # rest of body
-                          /sx
-        )
-    {
-        my $bodyFirstLine = $1;
-        my $remainingBody = $2;
-        my $indentation   = ${$self}{indentation};
-        $logger->trace("first line of sentence  $bodyFirstLine")                 if $is_tt_switch_active;
-        $logger->trace("remaining body (before indentation):\n'$remainingBody'") if ($is_tt_switch_active);
-
-        # add the indentation to all the body except first line
-        $remainingBody =~ s/^/$indentation/mg unless ( $remainingBody eq '' );    # add indentation
-        $logger->trace("remaining body (after indentation):\n$remainingBody'") if ($is_tt_switch_active);
-
-        # put the body back together
-        ${$self}{body} = $bodyFirstLine . "\n" . $remainingBody;
-    }
-}
-
-sub yaml_get_indentation_settings_for_this_object {
-    return;
-}
-
 sub add_surrounding_indentation_to_begin_statement {
 
     # specific method for sentences

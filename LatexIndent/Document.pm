@@ -37,7 +37,7 @@ use LatexIndent::FileExtension       qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file check_if_different/;
 use LatexIndent::BlankLines          qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
 use LatexIndent::ModifyLineBreaks
-    qw/_mlb_line_break_token_adjust _mlb_file_starts_with_line_break _mlb_begin_starts_on_own_line _mlb_body_starts_on_own_line _mlb_end_starts_on_own_line _mlb_end_finishes_with_line_break adjust_line_breaks_end_parent _mlb_verbatim _mlb_after_indentation_token_adjust /;
+    qw/_mlb_line_break_token_adjust _mlb_file_starts_with_line_break _mlb_begin_starts_on_own_line _mlb_body_starts_on_own_line _mlb_end_starts_on_own_line _mlb_end_finishes_with_line_break adjust_line_breaks_end_parent _mlb_verbatim _mlb_after_indentation_token_adjust mlb_PRE_indent_sentence_and_text_wrap mlb_POST_indent_sentence_and_text_wrap/;
 use LatexIndent::Sentence qw/one_sentence_per_line mlb_one_sentence_per_line_indent/;
 use LatexIndent::Wrap     qw/text_wrap text_wrap_comment_blocks/;
 use LatexIndent::TrailingComments
@@ -167,7 +167,8 @@ sub operate_on_file {
     $self->make_replacements( when => "before" )                if ( $is_r_switch_active and !$is_rv_switch_active );
     $self->_mlb_file_starts_with_line_break( when => "before" ) if $is_m_switch_active;
     unless ($is_rr_switch_active) {
-        $self->construct_regular_expressions;
+        $self->construct_trailing_comment_regexp;
+        $self->_construct_code_blocks_regex;
 
         # ---------- verbatim -------------------
         $self->find_noindent_block;
@@ -223,13 +224,6 @@ sub operate_on_file {
     }
     $self->output_indented_text;
     return;
-}
-
-sub construct_regular_expressions {
-    my $self = shift;
-    $self->construct_trailing_comment_regexp;
-    $self->_construct_code_blocks_regex;
-    $self->construct_headings_levels;    # to be ditched
 }
 
 sub output_indented_text {
@@ -311,65 +305,6 @@ sub output_logfile {
     }
 }
 
-sub mlb_PRE_indent_sentence_and_text_wrap {
-    my $self = shift;
-
-    # one sentence per line: sentences are objects, as of V3.5.1
-    $self->one_sentence_per_line
-        if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences} );
-
-    # text wrapping
-    #
-    # note: this routine will *not* be called if
-    #
-    #    modifyLineBreaks:
-    #        oneSentencePerLine:
-    #            manipulateSentences: 1
-    #            textWrapSentences: 1
-    #
-    if (    $is_m_switch_active
-        and !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
-        and !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}
-        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} != 0
-        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'before' )
-    {
-        $self->text_wrap();
-
-        # text wrapping can affect verbatim poly-switches, so we run it again
-        $self->_mlb_verbatim( when => "afterTextWrap" );
-    }
-
-    # option for comment text wrap
-    $self->text_wrap_comment_blocks()
-        if ( $is_m_switch_active
-        and ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}
-        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'before' );
-
-    # logfile information
-    $logger->trace( Dumper( \%{$self} ) ) if ($is_tt_switch_active);
-
-    return;
-}
-
-sub mlb_POST_indent_sentence_and_text_wrap {
-    my $self = shift;
-
-    # option for text wrap
-    if (    !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
-        and !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}
-        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} != 0
-        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' )
-    {
-        $logger->trace("*textWrap AFTER indentation") if $is_t_switch_active;
-        $self->text_wrap();
-    }
-
-    # option for comment text wrap
-    $self->text_wrap_comment_blocks()
-        if (${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}
-        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' );
-    return;
-}
 
 sub tasks_particular_to_each_object {
     my $self = shift;
@@ -390,14 +325,6 @@ sub get_settings_and_store_new_object {
 
     # store children in special hash
     push( @{ ${$self}{children} }, $latexIndentObject );
-
-    # possible alignment preparation for hidden children
-    $self->hidden_children_preparation_for_alignment($latexIndentObject)
-        if ( ${$latexIndentObject}{lookForAlignDelims} and ${$latexIndentObject}{measureHiddenChildren} );
-
-    # possible decoration in log file
-    $logger->trace( ${ $mainSettings{logFilePreferences} }{showDecorationFinishCodeBlockTrace} )
-        if ${ $mainSettings{logFilePreferences} }{showDecorationFinishCodeBlockTrace};
 }
 
 sub tasks_common_to_each_object {
@@ -406,100 +333,19 @@ sub tasks_common_to_each_object {
     # grab the parent information
     my %parent = @_;
 
-    # update/create the ancestor information
-    if ( $parent{ancestors} ) {
-        $logger->trace("Ancestors *have* been found for ${$self}{name}") if ($is_t_switch_active);
-        push( @{ ${$self}{ancestors} }, @{ $parent{ancestors} } );
-    }
-    else {
-        $logger->trace("No ancestors found for ${$self}{name}") if ($is_t_switch_active);
-        if ( defined $parent{id} and $parent{id} ne '' ) {
-            $logger->trace("Creating ancestors with $parent{id} as the first one") if ($is_t_switch_active);
-            push(
-                @{ ${$self}{ancestors} },
-                {   ancestorID          => $parent{id},
-                    ancestorIndentation => \$parent{indentation},
-                    type                => "natural",
-                    name                => ${$self}{name}
-                }
-            );
-        }
-    }
-
-    # natural ancestors
-    ${$self}{naturalAncestors} = q();
-    if ( ${$self}{ancestors} ) {
-        ${$self}{naturalAncestors} .= "---" . ${$_}{ancestorID} . "\n" for @{ ${$self}{ancestors} };
-    }
-
-    # in what follows, $self can be an environment, ifElseFi, etc
-
-    # count linebreaks in body
-    my $bodyLineBreaks = 0;
-    $bodyLineBreaks++ while ( ${$self}{body} =~ m/\R/sxg );
-    ${$self}{bodyLineBreaks} = $bodyLineBreaks;
-
-    # get settings for this object
-    $self->yaml_get_indentation_settings_for_this_object;
-
     # give unique id
     $self->create_unique_id;
 
     # add trailing text to the id to stop, e.g LATEX-INDENT-ENVIRONMENT1 matching LATEX-INDENT-ENVIRONMENT10
     ${$self}{id} .= $tokens{endOfToken};
 
-    # text wrapping can make the ID split across lines
-    ${$self}{idRegExp} = ${$self}{id};
-
-    if ( $is_m_switch_active
-        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{huge} ne "overflow" )
-    {
-        my $IDwithLineBreaks = join( "\\R?\\h*", split( //, ${$self}{id} ) );
-        ${$self}{idRegExp} = qr/$IDwithLineBreaks/s;
-    }
-
     # the replacement text can be just the ID, but the ID might have a line break at the end of it
-    $self->get_replacement_text;
+    ${$self}{replacementText} = ${$self}{id};
 
     # the above regexp, when used below, will remove the trailing linebreak in ${$self}{linebreaksAtEnd}{end}
     # so we compensate for it here
     $self->adjust_replacement_text_line_breaks_at_end;
 
-    # modify line breaks on body and end statements
-    $self->_mlb_body_starts_on_own_line
-        if ( $is_m_switch_active and defined ${$self}{BodyStartsOnOwnLine} and ${$self}{BodyStartsOnOwnLine} != 0 );
-
-    # modify line breaks end statements
-    $self->_mlb_end_starts_on_own_line
-        if ( $is_m_switch_active and defined ${$self}{EndStartsOnOwnLine} and ${$self}{EndStartsOnOwnLine} != 0 );
-    $self->_mlb_end_finishes_with_line_break
-        if ( $is_m_switch_active
-        and defined ${$self}{EndFinishesWithLineBreak}
-        and ${$self}{EndFinishesWithLineBreak} != 0 );
-
-    # check the body for current children
-    $self->check_for_hidden_children if ${$self}{body} =~ m/$tokens{beginOfToken}/;
-
-    # double back slash poly-switch check
-    $self->double_back_slash_else
-        if (
-        $is_m_switch_active
-        and (  ${$self}{lookForAlignDelims}
-            or ( defined ${$self}{DBSStartsOnOwnLine}       and ${$self}{DBSStartsOnOwnLine} != 0 )
-            or ( defined ${$self}{DBSFinishesWithLineBreak} and ${$self}{DBSFinishesWithLineBreak} != 0 ) )
-        );
-
-    # some objects can format their body to align at the & character
-    $self->align_at_ampersand if ( ${$self}{lookForAlignDelims} and !${$self}{measureHiddenChildren} );
-
-    return;
-}
-
-sub get_replacement_text {
-    my $self = shift;
-
-    # the replacement text can be just the ID, but the ID might have a line break at the end of it
-    ${$self}{replacementText} = ${$self}{id};
     return;
 }
 
@@ -516,31 +362,6 @@ sub adjust_replacement_text_line_breaks_at_end {
             and ${$self}{EndFinishesWithLineBreak} == 2 );
     }
     ${$self}{replacementText} .= "\n" if ( ${$self}{linebreaksAtEnd}{end} );
-
-}
-
-sub count_body_line_breaks {
-    my $self = shift;
-
-    my $oldBodyLineBreaks = ( defined ${$self}{bodyLineBreaks} ) ? ${$self}{bodyLineBreaks} : 0;
-
-    # count linebreaks in body
-    my $bodyLineBreaks = 0;
-    $bodyLineBreaks++ while ( ${$self}{body} =~ m/\R/sxg );
-    ${$self}{bodyLineBreaks} = $bodyLineBreaks;
-}
-
-sub wrap_up_tasks {
-    my $self = shift;
-
-    # most recent child object
-    my $child = @{ ${$self}{children} }[-1];
-
-    # check if the last object was the last thing in the body, and if it has adjusted linebreaks
-    $self->adjust_line_breaks_end_parent if $is_m_switch_active;
-
-    $logger->trace( Dumper( \%{$child} ) )            if ($is_tt_switch_active);
-    $logger->trace("replaced with ID: ${$child}{id}") if $is_t_switch_active;
 
 }
 

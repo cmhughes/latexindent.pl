@@ -116,8 +116,9 @@ sub construct_headings_levels {
 sub find_heading {
 
     # if there are no headings regexps, there's no point going any further
-    return if !@headingsRegexpArray;
     my $self = shift;
+    $self->construct_headings_levels; 
+    return if !@headingsRegexpArray;
 
     # otherwise loop through the headings regexp
     $logger->trace("*Searching ${$self}{name} for headings with following levels (see indentAfterHeadings)")

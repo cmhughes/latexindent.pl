@@ -100,10 +100,7 @@ sub find_file_contents_environments_and_preamble {
             }
 
             # the replacement text can be just the ID, but the ID might have a line break at the end of it
-            $fileContentsBlock->get_replacement_text;
-
-            # count body line breaks
-            $fileContentsBlock->count_body_line_breaks;
+            ${$fileContentsBlock}{replacementText} = ${$fileContentsBlock}{id};
 
             # the above regexp, when used below, will remove the trailing linebreak in ${$self}{linebreaksAtEnd}{end}
             # so we compensate for it here
