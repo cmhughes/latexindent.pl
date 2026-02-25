@@ -141,18 +141,6 @@ sub yaml_modify_line_breaks_settings {
     return;
 }
 
-sub tasks_particular_to_each_object {
-    return;
-}
-
-sub create_unique_id {
-    my $self = shift;
-
-    $alignmentBlockCounter++;
-    ${$self}{id} = "$tokens{alignmentBlock}$alignmentBlockCounter";
-    return;
-}
-
 sub align_at_ampersand {
     my $self  = shift;
     my %input = @_;

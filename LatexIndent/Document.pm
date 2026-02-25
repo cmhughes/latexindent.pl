@@ -38,7 +38,7 @@ use LatexIndent::BackUpFileProcedure qw/create_back_up_file check_if_different/;
 use LatexIndent::BlankLines          qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
 use LatexIndent::ModifyLineBreaks
     qw/_mlb_line_break_token_adjust _mlb_file_starts_with_line_break _mlb_begin_starts_on_own_line _mlb_body_starts_on_own_line _mlb_end_starts_on_own_line _mlb_end_finishes_with_line_break adjust_line_breaks_end_parent _mlb_verbatim _mlb_after_indentation_token_adjust mlb_PRE_indent_sentence_and_text_wrap mlb_POST_indent_sentence_and_text_wrap/;
-use LatexIndent::Sentence qw/one_sentence_per_line mlb_one_sentence_per_line_indent/;
+use LatexIndent::Sentence qw/one_sentence_per_line mlb_one_sentence_per_line_indent one_sentence_per_line_store /;
 use LatexIndent::Wrap     qw/text_wrap text_wrap_comment_blocks/;
 use LatexIndent::TrailingComments
     qw/remove_trailing_comments put_trailing_comments_back_in add_comment_symbol construct_trailing_comment_regexp $alignMarkUpBlockPresent/;
@@ -303,66 +303,6 @@ sub output_logfile {
             print "       No logfile will be produced.\n";
         }
     }
-}
-
-
-sub tasks_particular_to_each_object {
-    my $self = shift;
-    $logger->trace("There are no tasks particular to ${$self}{name}") if $is_t_switch_active;
-}
-
-sub get_settings_and_store_new_object {
-    my $self = shift;
-
-    # grab the object to be operated upon
-    my ($latexIndentObject) = @_;
-
-    # there are a number of tasks common to each object
-    $latexIndentObject->tasks_common_to_each_object( %{$self} );
-
-    # tasks particular to each object
-    $latexIndentObject->tasks_particular_to_each_object;
-
-    # store children in special hash
-    push( @{ ${$self}{children} }, $latexIndentObject );
-}
-
-sub tasks_common_to_each_object {
-    my $self = shift;
-
-    # grab the parent information
-    my %parent = @_;
-
-    # give unique id
-    $self->create_unique_id;
-
-    # add trailing text to the id to stop, e.g LATEX-INDENT-ENVIRONMENT1 matching LATEX-INDENT-ENVIRONMENT10
-    ${$self}{id} .= $tokens{endOfToken};
-
-    # the replacement text can be just the ID, but the ID might have a line break at the end of it
-    ${$self}{replacementText} = ${$self}{id};
-
-    # the above regexp, when used below, will remove the trailing linebreak in ${$self}{linebreaksAtEnd}{end}
-    # so we compensate for it here
-    $self->adjust_replacement_text_line_breaks_at_end;
-
-    return;
-}
-
-sub adjust_replacement_text_line_breaks_at_end {
-    my $self = shift;
-
-    # the above regexp, when used below, will remove the trailing linebreak in ${$self}{linebreaksAtEnd}{end}
-    # so we compensate for it here
-    $logger->trace("Putting linebreak after replacementText for ${$self}{name}") if ($is_t_switch_active);
-    if ( defined ${$self}{horizontalTrailingSpace} ) {
-        ${$self}{replacementText} .= ${$self}{horizontalTrailingSpace}
-            unless ( !${$self}{endImmediatelyFollowedByComment}
-            and defined ${$self}{EndFinishesWithLineBreak}
-            and ${$self}{EndFinishesWithLineBreak} == 2 );
-    }
-    ${$self}{replacementText} .= "\n" if ( ${$self}{linebreaksAtEnd}{end} );
-
 }
 
 1;

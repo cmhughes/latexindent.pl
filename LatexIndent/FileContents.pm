@@ -104,7 +104,7 @@ sub find_file_contents_environments_and_preamble {
 
             # the above regexp, when used below, will remove the trailing linebreak in ${$self}{linebreaksAtEnd}{end}
             # so we compensate for it here
-            $fileContentsBlock->adjust_replacement_text_line_breaks_at_end;
+            ${$fileContentsBlock}{replacementText} .= "\n" if ( ${$fileContentsBlock}{linebreaksAtEnd}{end} );
 
             # store the fileContentsBlock, and determine location afterwards
             push( @fileContentsStorageArray, $fileContentsBlock );
@@ -202,11 +202,6 @@ sub create_unique_id {
 
     $fileContentsCounter++;
     ${$self}{id} = "$tokens{filecontents}$fileContentsCounter$tokens{endOfToken}";
-    return;
-}
-
-sub tasks_particular_to_each_object {
-    my $self = shift;
     return;
 }
 

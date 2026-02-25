@@ -25,7 +25,7 @@ use LatexIndent::LogFile          qw/$logger/;
 use LatexIndent::Blocks           qw/_find_all_code_blocks/;
 use Exporter                      qw/import/;
 our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/one_sentence_per_line mlb_one_sentence_per_line_indent/;
+our @EXPORT_OK = qw/one_sentence_per_line mlb_one_sentence_per_line_indent one_sentence_per_line_store/;
 our $sentenceCounter;
 our @sentenceStorage;
 
@@ -307,7 +307,7 @@ sub one_sentence_per_line {
                                 $logger->trace("*sentence found: $middle.$end") if $is_tt_switch_active;
 
                                 # the settings and storage of most objects has a lot in common
-                                $self->get_settings_and_store_new_object($sentenceObj);
+                                $self->one_sentence_per_line_store($sentenceObj);
                                 ${@{${$self}{children}}[-1]}{replacementText} = $beginning.$h_space.$tokens{sentence}.$sentenceCounter.$tokens{endOfToken}.$trailingComments.$trailing.($lineBreaksAtEnd ? q() : "\n");
                                 $replacementText = ${@{${$self}{children}}[-1]}{replacementText};
                             } else {
@@ -494,14 +494,26 @@ sub tasks_particular_to_each_object {
     return;
 }
 
-sub add_surrounding_indentation_to_begin_statement {
-
-    # specific method for sentences
+sub one_sentence_per_line_store {
     my $self = shift;
 
-    my $surroundingIndentation = ${$self}{surroundingIndentation};
-    ${$self}{body} =~ s/^(\h*)?/$surroundingIndentation/s;    # add indentation
+    # grab the object to be operated upon
+    my ($latexIndentObject) = @_;
 
+    # give unique id
+    $latexIndentObject->create_unique_id;
+    
+    # add trailing text to the id to stop, e.g LATEX-INDENT-ENVIRONMENT1 matching LATEX-INDENT-ENVIRONMENT10
+    ${$latexIndentObject}{id} .= $tokens{endOfToken};
+    
+    # the replacement text can be just the ID, but the ID might have a line break at the end of it
+    ${$latexIndentObject}{replacementText} = ${$self}{id};
+    
+    # tasks particular to each object
+    $latexIndentObject->tasks_particular_to_each_object;
+
+    # store children in special hash
+    push( @{ ${$self}{children} }, $latexIndentObject );
 }
 
 1;

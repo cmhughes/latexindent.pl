@@ -16,7 +16,6 @@ latexindent.pl -s unicode1 -o unicode1-default
 set +x
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do 
-    [[ $showCounter == 1 ]] && echo "$i of $loopmax"
     keepappendinglogfile
 
     # basic tests
