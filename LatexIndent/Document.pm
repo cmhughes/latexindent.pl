@@ -42,8 +42,7 @@ use LatexIndent::Sentence qw/one_sentence_per_line mlb_one_sentence_per_line_ind
 use LatexIndent::Wrap     qw/text_wrap text_wrap_comment_blocks/;
 use LatexIndent::TrailingComments
     qw/remove_trailing_comments put_trailing_comments_back_in add_comment_symbol construct_trailing_comment_regexp $alignMarkUpBlockPresent/;
-use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
-use LatexIndent::Indent qw/final_indentation_check/;
+use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space max_indentation_check/;
 use LatexIndent::Tokens qw/token_check %tokens/;
 use LatexIndent::AlignmentAtAmpersand
     qw/align_at_ampersand _align_mark_down_block double_back_slash_else main_formatting individual_padding multicolumn_padding multicolumn_pre_check  multicolumn_post_check dont_measure hidden_child_cell_row_width hidden_child_row_width /;
@@ -210,7 +209,7 @@ sub operate_on_file {
         $self->unprotect_blank_lines
             if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} );
         $self->un_dodge_double_backslash;
-        $self->final_indentation_check;
+        $self->max_indentation_check;
 
         $self->remove_trailing_whitespace( when => "after" );
         $self->make_replacements( when => "after" ) if $is_rv_switch_active;

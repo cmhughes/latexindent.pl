@@ -20,9 +20,10 @@ use warnings;
 use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Switches        qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile         qw/$logger/;
+use Text::Tabs;
 use Exporter                     qw/import/;
 use Data::Dumper;
-our @EXPORT_OK = qw/remove_trailing_whitespace remove_leading_space/;
+our @EXPORT_OK = qw/remove_trailing_whitespace remove_leading_space max_indentation_check /;
 
 sub remove_trailing_whitespace {
     my $self  = shift;
@@ -89,4 +90,56 @@ sub remove_leading_space {
     return;
 }
 
+sub max_indentation_check {
+
+    # problem:
+    #       if a tab is appended to spaces, it will look different
+    #       from spaces appended to tabs (see test-cases/items/spaces-and-tabs.tex)
+    # solution:
+    #       move all of the tabs to the beginning of ${$self}{indentation}
+    # notes;
+    #       this came to light when studying test-cases/items/items1.tex
+
+    my $self = shift;
+
+    my $indentation;
+    my $numberOfTABS;
+    my $after;
+    $logger->trace("*Tab indentation work") if ($is_tt_switch_active);
+    ${$self}{body} =~ s/
+                        ^((\h*|\t*)((\h+)(\t+))+)
+                        /   
+                        # fix the indentation
+                        $indentation = $1;
+
+                        # count the number of tabs
+                        $numberOfTABS = () = $indentation=~ \/\t\/g;
+                        $logger->trace("Number of tabs: $numberOfTABS") if($is_tt_switch_active);
+
+                        # log the after
+                        ($after = $indentation) =~ s|\t||g;
+                        $after = "TAB"x$numberOfTABS.$after;
+                        $logger->trace("Indentation after: '$after'") if($is_tt_switch_active);
+                        ($indentation = $after) =~s|TAB|\t|g;
+
+                        $indentation;
+                       /xsmeg;
+
+    return unless ( $mainSettings{maximumIndentation} =~ m/^\h+$/ );
+
+    # maximum indentation check
+    $logger->trace("*Maximum indentation check") if ($is_t_switch_active);
+
+    # replace any leading tabs with spaces, and update the body
+    my @expanded_lines = expand( ${$self}{body} );
+    ${$self}{body} = join( "", @expanded_lines );
+
+    # grab the maximum indentation
+    my $maximumIndentation       = $mainSettings{maximumIndentation};
+    my $maximumIndentationLength = length($maximumIndentation) + 1;
+
+    # replace any leading space that is greater than the
+    # specified maximum indentation with the maximum indentation
+    ${$self}{body} =~ s/^\h{$maximumIndentationLength,}/$maximumIndentation/smg;
+}
 1;

@@ -99,6 +99,9 @@ function wrapuptasks
     egrep -i --color=auto 'YAML::Tiny found illegal characters in plain scalar' latexindent-count.log
     egrep -i --color=auto 'Unescaped left brace in regex is passed through in regex; marked by <-- HERE' latexindent-count.log
     egrep -i --color=auto 'Unescaped right brace in regex is passed through in regex; marked by <-- HERE' latexindent-count.log
+    egrep -i --color=auto 'Undefined subroutine' latexindent-count.log
+    egrep -i --color=auto "Can't locate object method" latexindent-count.log
+    
     set +x
     [[ $noisyMode == 1 ]] && makenoise
     [[ $gitStatus == 1 ]] && set -x && git status
