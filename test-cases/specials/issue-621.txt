@@ -1,0 +1,4 @@
+TRACE: found: tikzPath 	 type: specialBeginEnd
+TRACE: found:  	 type: UnNamedGroupingBracesBrackets
+TRACE: found: tikzPath 	 type: specialBeginEnd
+TRACE: found:  	 type: UnNamedGroupingBracesBrackets

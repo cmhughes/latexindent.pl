@@ -1,0 +1,5 @@
+specialBeginEnd:
+  - name: leftRightDot
+    begin: \\left\\\{
+    end: \\right\.
+    nested: 1

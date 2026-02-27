@@ -187,5 +187,18 @@ latexindent.pl -s -l 709049a -m 709049 -o=+-mod2
 latexindent.pl -s -rv -l 83663 83663 -o=+-mod1
 
 latexindent.pl -s broken -o=+-mod1
+
+latexindent.pl -s -m -l tex-fmt-issue-32 tex-fmt-issue-32 -o=+-mod1
+latexindent.pl -s -l tex-fmt-issue-72.yaml tex-fmt-issue-72.tex -o=+-mod1
+latexindent.pl -s -m -l tex-fmt-issue-74 tex-fmt-issue-74 -o=+-mod1
+latexindent.pl -s tex-fmt-issue-85.tex -o=+-mod1
+latexindent.pl -s -r -l tex-fmt-issue-88.yaml tex-fmt-issue-88.tex -o=+-mod1
+latexindent.pl -s -l tex-fmt-issue-107.yaml tex-fmt-issue-107.tex -o=+-mod1
+latexindent.pl -s tex-fmt-issue-114 -o=+-mod1
+latexindent.pl -s tex-fmt-issue-114a -o=+-mod1
+latexindent.pl -s -l tex-fmt-issue-120.yaml tex-fmt-issue-120.tex -o=+-mod1
+latexindent.pl -s tex-fmt-issue-121 -o=+-mod1
+latexindent.pl -s tex-fmt-issue-124 -o=+-mod1
+
 set +x 
 wrapuptasks

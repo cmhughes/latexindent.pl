@@ -1,0 +1,3 @@
+replacements:
+  - 
+   substitution: s/(\w)\h+(\w)/$1 $2/sg

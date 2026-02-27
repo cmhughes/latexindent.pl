@@ -1,0 +1,13 @@
+indentPreamble: 1
+
+modifyLineBreaks:
+  optionalArguments:
+    usepackage:
+      CommaFinishesWithLineBreak: 1
+    captionsetup:
+      CommaFinishesWithLineBreak: 1
+  mandatoryArguments:
+    usepackage:
+      CommaFinishesWithLineBreak: 1
+    captionsetup:
+      CommaFinishesWithLineBreak: 1
