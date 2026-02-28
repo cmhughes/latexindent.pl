@@ -116,13 +116,6 @@ lookForPreamble:
   .bib: 0
   STDIN: 1
 
-# some preambles can contain \begin and \end statements
-# that are not in their 'standard environment block', for example, # <---- PROBABLY DITCH, update obsolete warnings in GetYamlSettings.pm?
-# consider the following key = values:                             # <---- PROBABLY DITCH, update obsolete warnings in GetYamlSettings.pm?
-#    preheadhook={\begin{mdframed}[style=myframedstyle]},          # <---- PROBABLY DITCH, update obsolete warnings in GetYamlSettings.pm?
-#    postfoothook=\end{mdframed},                                  # <---- PROBABLY DITCH, update obsolete warnings in GetYamlSettings.pm?
-preambleCommandsBeforeEnvironments: 0                              # <---- PROBABLY DITCH, update obsolete warnings in GetYamlSettings.pm?
-
 # default value of indentation
 defaultIndent: "\t"
 
@@ -225,31 +218,20 @@ indentAfterItems:
   description*: 1
   list: 1
 
-# if you want to use other names for your items (for example, \part)
-# then populate them here; note that you can trick latexindent.pl
-# into indenting all kinds of commands (within environments specified in
-# indentAfterItems) using this technique.
-itemNames:                         #<---- DITCH, update obsolete warnings in GetYamlSettings.pm !!!!!!!!!!!!!!!!
-  item: 1                          #<---- DITCH, update obsolete warnings in GetYamlSettings.pm !!!!!!!!!!!!!!!!
-  myitem: 1                        #<---- DITCH, update obsolete warnings in GetYamlSettings.pm !!!!!!!!!!!!!!!!
-
-# specialBeginEnd is, by default, mathmode focus, although
-# there's no restrictions
+# specialBeginEnd defaults are mathmode focus, but no restrictions
 specialBeginEnd:
   - amalgamate: 1
-  - name: displayMath                                      # NEW specified as ORDERED array
-    begin: (?<!\\)\\\[            # \[ but *not* \\[       # NEW specified as ORDERED array
-    end: \\\]                     # \]                     # NEW specified as ORDERED array
-  - name: inlineMath                                       # NEW specified as ORDERED array
-    begin: (?<!\$)(?<!\\)\$(?!\$) # $ but *not* \$ or $$   # NEW specified as ORDERED array
-    body: [^$]*?                  # anything *except* $    # <!---- PROBABLY DITCH, update obsolete warnings in GetYamlSettings.pm
-    end: (?<!\\)\$(?!\$)          # $ but *not* \$ or $$   # NEW specified as ORDERED array
-  - name: displayMathTeX                                   # NEW specified as ORDERED array
-    begin: \$\$                   # $$                     # NEW specified as ORDERED array
-    end: \$\$                     # $$                     # NEW specified as ORDERED array
-    lookForThis: 1                                         # NEW specified as ORDERED array
-    # nested: 0/1                                          # NEW: needs documentation
-  ### specialBeforeCommand: 0                              # <!---- PROBABLY DITCH, update obsolete warnings in GetYamlSettings.pm 
+  - name: displayMath                                    
+    begin: (?<!\\)\\\[            # \[ but *not* \\[     
+    end: \\\]                     # \]                   
+  - name: inlineMath                                     
+    begin: (?<!\$)(?<!\\)\$(?!\$) # $ but *not* \$ or $$ 
+    end: (?<!\\)\$(?!\$)          # $ but *not* \$ or $$ 
+  - name: displayMathTeX                                 
+    begin: \$\$                   # $$                   
+    end: \$\$                     # $$                   
+    lookForThis: 1                # 0/1, default 1
+    nested: 0                     # 0/1, default 0
 
 # if you want to add indentation after
 # a heading, such as \part, \chapter, etc
@@ -327,10 +309,9 @@ noAdditionalIndentGlobal:
   items: 0                          # 0/1
   keyEqualsValuesBracesBrackets: 0  # 0/1
   namedGroupingBracesBrackets: 0    # 0/1
-  UnNamedGroupingBracesBrackets: 1  # 0/1                <!---------- updated V4.0
+  UnNamedGroupingBracesBrackets: 1  # 0/1 <!---------- updated V4.0
   specialBeginEnd: 0                # 0/1
   afterHeading: 0                   # 0/1
-  filecontents: 0                   # 0/1     # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
 
 # set indentRules globally for codeblocks; these need
 # to be horizontal spaces, if they are to be used
@@ -346,23 +327,6 @@ indentRulesGlobal:
   UnNamedGroupingBracesBrackets: 0  # 0/h-space
   specialBeginEnd: 0                # 0/h-space
   afterHeading: 0                   # 0/h-space
-  filecontents: 0                   # 0/h-space    # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
-
-# command code block details
-commandCodeBlocks:                # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
-  roundParenthesesAllowed: 1      # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
-  stringsAllowedBetweenArguments: # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
-    - amalgamate: 1               # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
-    - node                        # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
-    - at                          # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
-    - to                          # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
-    - decoration                  # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
-    - \+\+                        # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
-    - \-\-                        # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
-    - \#\#\d                      # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
-  commandNameSpecial:             # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
-    - amalgamate: 1               # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
-    - '@ifnextchar\['             # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
 
 # change dos line breaks into unix
 dos2unixlinebreaks: 0
@@ -418,7 +382,6 @@ modifyLineBreaks:
       par: 1                            # 0/1
       blankLine: 1                      # 0/1
       verbatim: 1                       # 0/1
-      filecontents: 1                   # 0/1        # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
       other: \\\]|\\item(?:\h|\[)       # regex
     blocksBeginWith:
       A-Z: 1                            # 0/1
@@ -428,7 +391,6 @@ modifyLineBreaks:
     blocksEndBefore:
       commentOnOwnLine: 1               # 0/1
       verbatim: 1                       # 0/1
-      filecontents: 1                   # 0/1        # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
       other: \\begin\{|\\\[|\\end\{     # regex
     huge: overflow                      # forbid mid-word line breaks
     separator: ""
@@ -513,22 +475,16 @@ fineTuning:
     name: [a-zA-Z@\*0-9_\\]+
   ifElseFi:
     name: (?!@?if[a-zA-Z@]*?\{)@?if[a-zA-Z@]*
-    elseOrRegEx: \\(?:else|or)               #<!---------- NEW
+    elseOrRegEx: \\(?:else|or)
   commands:
     name: [+a-zA-Z@*0-9_:]+
   items:
-    itemRegEx: \\(?:item|myitem)             #<!---------- NEW
-    canBeFollowedBy: (?:\[[^]]*?\])|(?:<[^>]*?>)  #<!------------- DITCH, update obsolete warnings in GetYamlSettings.pm
+    itemRegEx: \\(?:item|myitem)
   keyEqualsValuesBracesBrackets:
     name: [a-zA-Z@\*0-9_\/.:\#-]+[a-zA-Z@\*0-9_\/.\h:\#-]*
-    follow: (?:(?<!\\)\{)|,|(?:(?<!\\)\[)     #<!------------- DITCH, update obsolete warnings in GetYamlSettings.pm
   namedGroupingBracesBrackets:
     name: [0-9\.a-zA-Z@\*><]+
-    follow: \h|\R|\{|\[|\$|\)|\(              #<!------------- DITCH, update obsolete warnings in GetYamlSettings.pm
-  UnNamedGroupingBracesBrackets:
-    follow: \{|\[|,|&|\)|\(|\$                #<!------------- DITCH, update obsolete warnings in GetYamlSettings.pm
   arguments:
-    before: (?:#\d\h*;?,?\/?)+|\<.*?\>        #<!------------- DITCH, update obsolete warnings in GetYamlSettings.pm
     between: |-                               
       (?x)                                    
       (?:                                     

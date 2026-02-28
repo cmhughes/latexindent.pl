@@ -80,7 +80,9 @@ latexindent.pl -m -s jowens-short-multi-line-stop -l removeParaLineBreaks0,../he
 
 # file contents
 latexindent.pl -m -s jowens-short-multi-line-stop -l removeParaLineBreaks0,stopParaAtFileContents -o=+-mod10
-egrep 'WARN' indent.log > file-contents-warn1.txt
+cp indent.log file-contents-warn1.txt
+perl -p0i -e 's/.*?(WARN:\s*Obsolete)/$1/s' file-contents-warn1.txt
+perl -p0i -e 's/INFO:.*//s' file-contents-warn1.txt
 
 # heading
 latexindent.pl -m -s jowens-follow-ups -l removeParaLineBreaks0,jowens-follow-up -o=+-mod0
@@ -281,9 +283,6 @@ latexindent.pl -s -m -r -l issue-502a,addruler2 issue-502a -o=+-mod1
 latexindent.pl -s -l issue-506 -m issue-506 -o=+-mod1
 
 latexindent.pl -l issue-552 -m issue-552 -s
-cp indent.log issue-552.txt
-perl -p0i -e 's/.*?(WARN)/$1/s' issue-552.txt
-perl -p0i -e 's/INFO:.*//s' issue-552.txt
 
 latexindent.pl -s -l issue-553 -m issue-553 -o=+-mod1
 

@@ -21,5 +21,10 @@ egrep 'found:' indent.log > broken3.txt
 latexindent.pl -s broken4 -o=+-mod1 -t
 egrep 'found:' indent.log > broken4.txt
 
+latexindent.pl -s -l obsolete.yaml obsolete.tex
+cp indent.log obsolete.txt
+perl -p0i -e 's/.*?(WARN:\s*Obsolete)/$1/s' obsolete.txt
+perl -p0i -e 's/INFO:.*//s' obsolete.txt
+
 set +x 
 wrapuptasks

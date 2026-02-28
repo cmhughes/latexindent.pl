@@ -22,7 +22,9 @@ latexindent.pl -s 112343-quinmars -o +-default -l indentPreamble,112343 -m
 latexindent.pl -s 74878 -o +-default
 latexindent.pl -s -l indentPreamble 350144 -o +-default
 latexindent.pl -s -l indentPreamble,nextGroupPlot 350144 -o +-default-ngp -t
-egrep 'WARN' indent.log > nextgroupplot.txt
+cp indent.log nextgroupplot.txt
+perl -p0i -e 's/.*?(WARN:\s*Obsolete)/$1/s' nextgroupplot.txt
+perl -p0i -e 's/INFO:.*//s' nextgroupplot.txt
 latexindent.pl -s -l indentPreamble,nextGroupPlot-headings 350144 -o +-default-ngp-headings 
 latexindent.pl -s 5461 -o +-default
 

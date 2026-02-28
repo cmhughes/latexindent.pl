@@ -4,7 +4,10 @@
 
 ## V4.0, MAJOR release
 
+<details>
+<summary>V4.0 verbose details</summary>
 <table>
+<!-- ---------------- table row ---------------- -->
 <tr><th>old</th><th>new</th><th>notes</th></tr>
 <tr>
   <td>
@@ -16,6 +19,7 @@
   <td>
   </td>
 </tr>
+<!-- ---------------- table row ---------------- -->
 <tr>
   <td>
 <pre>
@@ -34,6 +38,7 @@ fineTuning:
   <td>
   </td>
 </tr>
+<!-- ---------------- table row ---------------- -->
 <tr>
   <td>
   <pre>
@@ -58,6 +63,22 @@ specialBeginEnd:
   old formatting will be read, but recommend moving to new format
   </td>
 </tr>
+<!-- ---------------- table row ---------------- -->
+<tr>
+  <td>
+  <pre>
+specialBeginEnd:
+  specialBeforeCommand: 0
+  </pre>
+  </td>
+  <td>
+none
+  </td>
+  <td>
+obsolete
+  </td>
+</tr>
+<!-- ---------------- table row ---------------- -->
 <tr>
   <td>
   partnering poly-switch behaviour
@@ -71,6 +92,7 @@ specialBeginEnd:
   the code block is encountered
   </td>
 </tr>
+<!-- ---------------- table row ---------------- -->
 <tr>
 <td>
 <pre>
@@ -82,13 +104,22 @@ commandCodeBlocks:
 <pre>
 fineTuning:
   arguments:
-    between: [_^*#0-9(),]
+    between: |-                               
+      (?x)                                    
+      (?:                                     
+        [_^*#0-9(),+-]                        
+        |                                     
+        (?:node|at|to|decoration)             
+        |                                     
+        (?:\([^)]*\))                         
+      )                                       
 </pre>
 </td>
 <td>
 behaviour should be unchanged, controlled by fineTuning
 </td>
 </tr>
+<!-- ---------------- table row ---------------- -->
 <tr>
   <td>
 <pre>
@@ -115,6 +146,7 @@ fineTuning:
 behaviour should be unchanged, controlled by fineTuning
   </td>
 </tr>
+<!-- ---------------- table row ---------------- -->
 <tr>
 <td>
 <pre>
@@ -126,6 +158,7 @@ modifyLineBreaks:
 <td><i>none</i></td>
 <td>this poly-switch NO LONGER DOES ANYTHING, control goes to argument poly-switch instead</td>
 </tr>
+<!-- ---------------- table row ---------------- -->
 <tr>
   <td>
 <pre>
@@ -137,6 +170,7 @@ modifyLineBreaks:
 <td><i>none</i></td>
 <td>this poly-switch NO LONGER DOES ANYTHING, control goes to argument poly-switch instead</td>
 </tr>
+<!-- ---------------- table row ---------------- -->
 <tr>
 <td>
 <pre>
@@ -161,7 +195,85 @@ noAdditionalIndent:
 </td>
 <td>feel free to add these back in to your own settings</td>
 </tr>
+<!-- ---------------- table row ---------------- -->
+<tr>
+<td>
+<pre>
+preambleCommandsBeforeEnvironments: 0
+</pre>
+</td>
+<td>
+none
+</td>
+<td>obsolete</td>
+</tr>
+<!-- ---------------- table row ---------------- -->
+<tr>
+<td>
+<pre>
+noAdditionalIndentGlobal:
+  filecontents: 0
+</pre>
+</td>
+<td>
+none
+</td>
+<td>obsolete</td>
+</tr>
+<!-- ---------------- table row ---------------- -->
+<tr>
+<td>
+<pre>
+indentRulesGlobal:
+  filecontents: 0
+</pre>
+</td>
+<td>
+none
+</td>
+<td>obsolete</td>
+</tr>
+<!-- ---------------- table row ---------------- -->
+<tr>
+<td>
+<pre>
+modifyLineBreaks:
+  textWrapOptions:
+    blocksFollow:
+      filecontents: 1
+    blocksEndBefore:
+      filecontents: 1
+</pre>
+</td>
+<td>
+none
+</td>
+<td>obsolete</td>
+</tr>
+<!-- ---------------- table row ---------------- -->
+<tr>
+<td>
+<pre>
+fineTuning:
+  items:
+    canBeFollowedBy: 
+  keyEqualsValuesBracesBrackets:
+    follow: 
+  namedGroupingBracesBrackets:
+    follow: 
+  UnNamedGroupingBracesBrackets:
+    follow: 
+  arguments:
+    before: 
+</pre>
+</td>
+<td>
+none
+</td>
+<td>obsolete</td>
+</tr>
 </table>
+</details>
 
 
 ## V3.24.7, August 15, 2025

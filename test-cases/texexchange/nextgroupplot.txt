@@ -1,1 +1,2 @@
-WARN:  itemNames obsolete, use fineTuning: items: itemRegex instead
+WARN:  Obsolete YAML
+       itemNames obsolete, use fineTuning: items: itemRegex instead

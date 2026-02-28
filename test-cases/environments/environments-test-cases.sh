@@ -79,18 +79,15 @@ latexindent.pl -s environments-special-characters -o +-default
 
 # loop! this file was the first test-case file I created, and I hadn't yet explored looping. better late than never
 # modifyLineBreaks test cases
-[[ $silentMode == 0 ]] && set +x 
+set +x 
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do 
-   [[ $showCounter == 1 ]] && echo $i of $loopmax
-   [[ $silentMode == 0 ]] && set -x 
    keepappendinglogfile
-
    latexindent.pl -s env-single-line -o +-mod$i -m -l=env-mod$i
    latexindent.pl -s -o=+-protect-mod$i -m -l=env-mod$i  environments-modify-multiple-line-breaks
    latexindent.pl -s -o=+-un-protect-mod$i -m -l=env-mod$i,unprotect-blank-lines  environments-modify-multiple-line-breaks
    latexindent.pl -s env-no-blank-after-end -o +-mod$i -m -l=env-mod$i 
-   [[ $silentMode == 0 ]] && set +x 
+   set +x 
 done
 
 keepappendinglogfile

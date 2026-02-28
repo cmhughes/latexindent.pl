@@ -43,11 +43,6 @@ sub text_wrap {
 
     my $headingsRegEx = q();
 
-    if ( defined ${$blocksFollowHash}{filecontents} ) {
-        delete ${$blocksFollowHash}{filecontents};
-        $logger->warn("* textWrapOptions: blocksEndFollow: filecontents depreciated, use other instead");
-    }
-
     foreach my $blocksFollowEachPart ( sort keys %{$blocksFollowHash} ) {
         last if ${$self}{modifyLineBreaksYamlName} eq 'sentence';
 
@@ -179,11 +174,6 @@ sub text_wrap {
     #
     my $blocksEndBefore     = q();
     my $blocksEndBeforeHash = \%{ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksEndBefore} };
-
-    if ( defined ${$blocksEndBeforeHash}{filecontents} ) {
-        delete ${$blocksEndBeforeHash}{filecontents} if defined ${$blocksEndBeforeHash}{filecontents};
-        $logger->warn("* textWrapOptions: blocksEndBefore: filecontents depreciated, use other instead");
-    }
 
     foreach my $blocksEndBeforeEachPart ( sort keys %{$blocksEndBeforeHash} ) {
         last if ${$self}{modifyLineBreaksYamlName} eq 'sentence';

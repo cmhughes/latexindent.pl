@@ -1,1 +1,0 @@
-WARN:  itemNames obsolete, use fineTuning: items: itemRegex instead
