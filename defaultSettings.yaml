@@ -126,24 +126,8 @@ removeTrailingWhitespace:
 
 # name of code blocks that should have their body aligned at ampersand delimiters
 lookForAlignDelims:
-  tabular:
-    delims: 1
-    alignDoubleBackSlash: 1
-    spacesBeforeDoubleBackSlash: 1
-    multiColumnGrouping: 0
-    alignRowsWithoutMaxDelims: 1
-    spacesBeforeAmpersand: 1
-    spacesAfterAmpersand: 1
-    justification: left
-    alignFinalDoubleBackSlash: 0
-    dontMeasure: 0
-    delimiterRegEx: (?<!\\)(&)
-    delimiterJustification: left
-    lookForChildCodeBlocks: 1             # <--------- IS THIS NEEDED????
-    alignContentAfterDoubleBackSlash: 0
-    spacesAfterDoubleBackSlash: 1
-  tabularx:
-    delims: 1
+  tabular: 1
+  tabularx: 1
   longtable: 1
   tabu: 1
   array: 1
@@ -487,6 +471,22 @@ fineTuning:
   trailingComments:
     notPrecededBy: (?<!\\)
     afterComment: .*?
+  lookForAlignDelimsDefaults:
+    delims: 1
+    alignDoubleBackSlash: 1
+    spacesBeforeDoubleBackSlash: 1
+    multiColumnGrouping: 0
+    alignRowsWithoutMaxDelims: 1
+    spacesBeforeAmpersand: 1
+    spacesAfterAmpersand: 1
+    justification: left
+    alignFinalDoubleBackSlash: 0
+    dontMeasure: 0
+    delimiterRegEx: (?<!\\)(&)
+    delimiterJustification: left
+    lookForChildCodeBlocks: 1             # <--------- IS THIS NEEDED????
+    alignContentAfterDoubleBackSlash: 0
+    spacesAfterDoubleBackSlash: 1
   modifyLineBreaks:                                        # <!----? should this not be MLB??
     doubleBackSlash: \\\\(?:\h*\[\h*\d+\h*[a-zA-Z]+\h*\])? # <!----? should this not be MLB??
     comma: ','

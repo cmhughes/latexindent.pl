@@ -396,5 +396,7 @@ latexindent.pl -s issue-599 -o=+-mod1
 latexindent.pl -s issue-599a -o=+-mod1
 latexindent.pl -s issue-599b -o=+-mod1
 
+latexindent.pl -s -l issue-583 simple -o=+-mod1
+latexindent.pl -s -l issue-583a simple -o=+-mod2
 set +x 
 wrapuptasks

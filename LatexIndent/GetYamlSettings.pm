@@ -42,24 +42,7 @@ use utf8;
 our %previouslyFoundSettings;
 
 # default values for align at ampersand routine
-our @alignAtAmpersandInformation = (
-    { name => "lookForAlignDelims",               yamlname => "delims", default => 1 },
-    { name => "alignDoubleBackSlash",             default  => 1 },
-    { name => "spacesBeforeDoubleBackSlash",      default  => 1 },
-    { name => "multiColumnGrouping",              default  => 0 },
-    { name => "alignRowsWithoutMaxDelims",        default  => 1 },
-    { name => "spacesBeforeAmpersand",            default  => 1 },
-    { name => "spacesAfterAmpersand",             default  => 1 },
-    { name => "justification",                    default  => "left" },
-    { name => "alignFinalDoubleBackSlash",        default  => 0 },
-    { name => "dontMeasure",                      default  => 0 },
-    { name => "delimiterRegEx",                   default  => "(?<!\\\\)(&)" },
-    { name => "delimiterJustification",           default  => "left" },
-    { name => "leadingBlankColumn",               default  => -1 },
-    { name => "lookForChildCodeBlocks",           default  =>  1 },
-    { name => "alignContentAfterDoubleBackSlash", default  =>  0 },
-    { name => "spacesAfterDoubleBackSlash",       default  =>  1 },
-);
+our @alignAtAmpersandInformation;
 
 our $argumentsBetweenCommands;
 our $commaPolySwitchExists  = 0;
@@ -1093,6 +1076,26 @@ sub yaml_read_settings {
             }
         )
     );
+
+    # configure lookForAlignDelimsDefaults
+    @alignAtAmpersandInformation = (
+    { name => "lookForAlignDelims",               yamlname => "delims", default => ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{delims}},
+    { name => "alignDoubleBackSlash",             default  => ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{alignDoubleBackSlash} },
+    { name => "spacesBeforeDoubleBackSlash",      default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{spacesBeforeDoubleBackSlash} },
+    { name => "multiColumnGrouping",              default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{multiColumnGrouping} },
+    { name => "alignRowsWithoutMaxDelims",        default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{alignRowsWithoutMaxDelims} },
+    { name => "spacesBeforeAmpersand",            default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{spacesBeforeAmpersand} },
+    { name => "spacesAfterAmpersand",             default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{spacesAfterAmpersand} },
+    { name => "justification",                    default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{justification} },
+    { name => "alignFinalDoubleBackSlash",        default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{alignFinalDoubleBackSlash} },
+    { name => "dontMeasure",                      default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{dontMeasure} },
+    { name => "delimiterRegEx",                   default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{delimiterRegEx} },
+    { name => "delimiterJustification",           default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{delimiterJustification} },
+    { name => "leadingBlankColumn",               default  =>  -1},
+    { name => "lookForChildCodeBlocks",           default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{lookForChildCodeBlocks} },
+    { name => "alignContentAfterDoubleBackSlash", default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{alignContentAfterDoubleBackSlash} },
+    { name => "spacesAfterDoubleBackSlash",       default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{spacesAfterDoubleBackSlash} },
+);
 
     $self->yaml_obsolete_checks;
     return;

@@ -1,0 +1,4 @@
+fineTuning:
+  lookForAlignDelimsDefaults:
+    spacesBeforeAmpersand: 3
+    spacesAfterAmpersand: 0
