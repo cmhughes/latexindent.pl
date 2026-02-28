@@ -1,0 +1,3 @@
+TRACE: found: pmatrix 	 type: environments
+TRACE: found: arguments for pmatrix environment
+TRACE: found: \\[0.2cm] 	 type: DBS

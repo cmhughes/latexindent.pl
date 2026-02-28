@@ -3,6 +3,19 @@
 # changelog.md
 
 ## V4.0, MAJOR release
+A major release that overhauls the way `latexindent.pl` finds code blocks. 
+
+Some user settings have changed or are now obsolete; full details below.
+
+enhancements:
+* all users should notice better performance, more natural interaction of poly-switches, and less scaffolding needed
+* fineTuning specifies defaults for `lookForAlignDelims`, see [issue-583](https://github.com/cmhughes/latexindent.pl/issues/583)
+* double back slash regex allows `.` between `[...]`, see [issue-564](https://github.com/cmhughes/latexindent.pl/issues/564)
+
+bug fixes 
+* [issue-599](https://github.com/cmhughes/latexindent.pl/issues/599)
+* [issue-620](https://github.com/cmhughes/latexindent.pl/issues/620)
+* [issue-621](https://github.com/cmhughes/latexindent.pl/issues/621)
 
 <details>
 <summary>V4.0 verbose details</summary>

@@ -1095,6 +1095,7 @@ sub yaml_read_settings {
     { name => "lookForChildCodeBlocks",           default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{lookForChildCodeBlocks} },
     { name => "alignContentAfterDoubleBackSlash", default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{alignContentAfterDoubleBackSlash} },
     { name => "spacesAfterDoubleBackSlash",       default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{spacesAfterDoubleBackSlash} },
+    { name => "doubleBackSlash",                  default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{doubleBackSlash} },
 );
 
     $self->yaml_obsolete_checks;

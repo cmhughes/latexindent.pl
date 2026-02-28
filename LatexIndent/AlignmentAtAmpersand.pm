@@ -227,7 +227,7 @@ sub align_at_ampersand {
            my $output = $anyCodeBlock; 
            # check for internal line breaks or \\
            if ($anyCodeBlock =~ m"\R"s 
-                    or $anyCodeBlock =~m"(${${$mainSettings{fineTuning}}{modifyLineBreaks}}{doubleBackSlash})"s
+                    or $anyCodeBlock =~m"(${$self}{doubleBackSlash})"s
                     or $anyCodeBlock =~m"${$self}{delimiterRegEx}"s){
                $hiddenChildCount++; 
                $output = $tokens{alignmentBlock}.$hiddenChildCount.$tokens{endOfToken}; 
@@ -600,7 +600,7 @@ sub align_at_ampersand {
         foreach (@originalFormattedBody) {
             ${$_}{beforeDBS} = q();
             ${$_}{DBS}       = q();
-            if ( ${$_}{row} =~ s/(.*?)(${${$mainSettings{fineTuning}}{modifyLineBreaks}}{doubleBackSlash})\h*//s ) {
+            if ( ${$_}{row} =~ s/(.*?)(${$self}{doubleBackSlash})\h*//s ) {
                 ${$_}{beforeDBS} = $1;
                 ${$_}{DBS}       = $2;
             }
@@ -1649,7 +1649,7 @@ sub double_back_slash_else {
          (?:
            (?<DBS>
              (?<DBSSTATEMENT>
-               ${${$mainSettings{fineTuning}}{modifyLineBreaks}}{doubleBackSlash}
+               ${$self}{doubleBackSlash}
              )
              $mSwitchOnlyTrailing 
            )
