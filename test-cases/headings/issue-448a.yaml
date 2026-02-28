@@ -5,8 +5,8 @@ indentRules:
 
 indentAfterHeadings:
   chapter:
-    indentAfterThisHeading: 1
+    lookForThis: 1
     level: 2
   section:
-    indentAfterThisHeading: 1
+    lookForThis: 1
     level: 3

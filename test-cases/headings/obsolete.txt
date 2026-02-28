@@ -1,0 +1,36 @@
+WARN:  Obsolete indentAfterHeadings YAML syntax used, changed to the following:
+       {
+         chapter => {
+           level => 2,
+           lookForThis => 1
+         },
+         paragraph => {
+           level => 2,
+           lookForThis => 1
+         },
+         part => {
+           level => 2,
+           lookForThis => 1
+         },
+         section => {
+           level => 2,
+           lookForThis => 1
+         },
+         subparagraph => {
+           level => 2,
+           lookForThis => 1
+         },
+         subsection => {
+           level => 2,
+           lookForThis => 1
+         },
+         "subsection*" => {
+           level => 2,
+           lookForThis => 1
+         },
+         subsubsection => {
+           level => 2,
+           lookForThis => 1
+         }
+       }
+

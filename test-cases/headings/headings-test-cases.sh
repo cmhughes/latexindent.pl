@@ -65,5 +65,10 @@ egrep -i 'found:' indent.log > headings-info1.txt
 
 latexindent.pl -s sample-large -o=+-mod1 -l indentHeadings
 
+latexindent.pl -s testHeadings -l obsolete.yaml
+cp indent.log obsolete.txt
+perl -p0i -e 's/.*?(WARN:\s*Obsolete)/$1/s' obsolete.txt
+perl -p0i -e 's/INFO:.*//s' obsolete.txt
+
 set +x 
 wrapuptasks

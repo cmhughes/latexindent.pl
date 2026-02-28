@@ -1,7 +1,7 @@
 indentAfterHeadings:
     myheading:
-       indentAfterThisHeading: 1
+       lookForThis: 1
        level: 1
     otherheading: 
-       indentAfterThisHeading: 1
+       lookForThis: 1
        level: 2

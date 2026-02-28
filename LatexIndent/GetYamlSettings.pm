@@ -631,14 +631,14 @@ sub yaml_read_settings {
 
         # it is possible to specify, for example,
         #
-        #   -y=indentAfterHeadings:paragraph:indentAfterThisHeading:1;level:1
+        #   -y=indentAfterHeadings:paragraph:lookForThis:1;level:1
         #   -y=specialBeginEnd:displayMath:begin:'\\\[';end: '\\\]';lookForThis: 1
         #
         # which should be translated into
         #
         #   indentAfterHeadings:
         #       paragraph:
-        #           indentAfterThisHeading:1
+        #           lookForThis:1
         #           level:1
         #
         # so we need to loop through the comma separated list and search
@@ -673,12 +673,12 @@ sub yaml_read_settings {
                 # get rid of the last *two* elements, which will be
                 #   key: value
                 # for example, in
-                #   -y=indentAfterHeadings:paragraph:indentAfterThisHeading:1;level:1
+                #   -y=indentAfterHeadings:paragraph:lookForThis:1;level:1
                 # then @keysValues holds
-                #   indentAfterHeadings:paragraph:indentAfterThisHeading:1
+                #   indentAfterHeadings:paragraph:lookForThis:1
                 # so we need to get rid of both
                 #    1
-                #    indentAfterThisHeading
+                #    lookForThis
                 # so that we are in a position to concatenate
                 #   indentAfterHeadings:paragraph
                 # with
@@ -689,9 +689,9 @@ sub yaml_read_settings {
                 pop(@keysValues);
 
                 # update the appropriate piece of the -y switch, for example:
-                #   -y=indentAfterHeadings:paragraph:indentAfterThisHeading:1;level:1
+                #   -y=indentAfterHeadings:paragraph:lookForThis:1;level:1
                 # needs to be changed to
-                #   -y=indentAfterHeadings:paragraph:indentAfterThisHeading:1
+                #   -y=indentAfterHeadings:paragraph:lookForThis:1
                 # the
                 #   indentAfterHeadings:paragraph:level:1
                 # will be added in the next part

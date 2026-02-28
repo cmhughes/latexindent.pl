@@ -1,25 +1,25 @@
 indentAfterHeadings:
     part:
-       lookForThis: 1
+       indentAfterThisHeading: 1
        level: 2
     chapter: 
-       lookForThis: 1
+       indentAfterThisHeading: 1
        level: 2
     section:
-       lookForThis: 1
+       indentAfterThisHeading: 1
        level: 2
     subsection:
-       lookForThis: 1
+       indentAfterThisHeading: 1
        level: 2
     subsection*:
-       lookForThis: 1
+       indentAfterThisHeading: 1
        level: 2
     subsubsection:
-       lookForThis: 1
+       indentAfterThisHeading: 1
        level: 2
     paragraph:
-       lookForThis: 1
+       indentAfterThisHeading: 1
        level: 2
     subparagraph:
-       lookForThis: 1
+       indentAfterThisHeading: 1
        level: 2

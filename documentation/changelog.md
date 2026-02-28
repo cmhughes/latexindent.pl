@@ -80,20 +80,6 @@ obsolete
 </tr>
 <!-- ---------------- table row ---------------- -->
 <tr>
-  <td>
-  partnering poly-switch behaviour
-  </td>
-  <td>
-  sequential in order of appearance
-  </td>
-  <td>
-  natural behaviour: poly-switches are 
-  obeyed in the natural order in which 
-  the code block is encountered
-  </td>
-</tr>
-<!-- ---------------- table row ---------------- -->
-<tr>
 <td>
 <pre>
 commandCodeBlocks:              
@@ -131,44 +117,16 @@ commandCodeBlocks:
   </td>
   <td>
 <pre>
-fineTuning:
-  commands:
-    name: |-
-      (?x)
-      (?:
-        [+a-zA-Z@\*0-9_\:]+?
-      )
-      |
-      @ifnextchar\[
+specialBeginEnd:
+  - name: ifnextchar
+    begin: \@ifnextchar
+    end: \[
+    lookForThis: verbatim
 </pre>
   </td>
   <td>
-behaviour should be unchanged, controlled by fineTuning
+add this to your YAML when appropriate
   </td>
-</tr>
-<!-- ---------------- table row ---------------- -->
-<tr>
-<td>
-<pre>
-modifyLineBreaks:
-  commands:
-    CommandNameFinishesWithLineBreak: 0
-</pre>
-</td>
-<td><i>none</i></td>
-<td>this poly-switch NO LONGER DOES ANYTHING, control goes to argument poly-switch instead</td>
-</tr>
-<!-- ---------------- table row ---------------- -->
-<tr>
-  <td>
-<pre>
-modifyLineBreaks:
-  namedGroupingBracesBrackets:
-    NameFinishesWithLineBreak: 0
-</pre>
-  </td>
-<td><i>none</i></td>
-<td>this poly-switch NO LONGER DOES ANYTHING, control goes to argument poly-switch instead</td>
 </tr>
 <!-- ---------------- table row ---------------- -->
 <tr>
@@ -206,6 +164,24 @@ preambleCommandsBeforeEnvironments: 0
 none
 </td>
 <td>obsolete</td>
+</tr>
+<!-- ---------------- table row ---------------- -->
+<tr>
+<td>
+<pre>
+indentAfterHeadings:
+  part:
+    indentAfterThisHeading: 0
+</pre>
+</td>
+<td>
+<pre>
+indentAfterHeadings:
+  part:
+    lookForThis: 0
+</pre>
+</td>
+<td>old syntax still supported, with warning</td>
 </tr>
 <!-- ---------------- table row ---------------- -->
 <tr>
@@ -254,6 +230,30 @@ none
 <tr>
 <td>
 <pre>
+modifyLineBreaks:
+  commands:
+    CommandNameFinishesWithLineBreak: 0
+</pre>
+</td>
+<td><i>none</i></td>
+<td>this poly-switch NO LONGER DOES ANYTHING, control goes to argument poly-switch instead</td>
+</tr>
+<!-- ---------------- table row ---------------- -->
+<tr>
+  <td>
+<pre>
+modifyLineBreaks:
+  namedGroupingBracesBrackets:
+    NameFinishesWithLineBreak: 0
+</pre>
+  </td>
+<td><i>none</i></td>
+<td>this poly-switch NO LONGER DOES ANYTHING, control goes to argument poly-switch instead</td>
+</tr>
+<!-- ---------------- table row ---------------- -->
+<tr>
+<td>
+<pre>
 fineTuning:
   items:
     canBeFollowedBy: 
@@ -271,6 +271,20 @@ fineTuning:
 none
 </td>
 <td>obsolete</td>
+</tr>
+<!-- ---------------- table row ---------------- -->
+<tr>
+  <td>
+  partnering poly-switch behaviour
+  </td>
+  <td>
+  sequential in order of appearance
+  </td>
+  <td>
+  natural behaviour: poly-switches are 
+  obeyed in the natural order in which 
+  the code block is encountered
+  </td>
 </tr>
 </table>
 </details>

@@ -42,10 +42,23 @@ sub construct_headings_levels {
     $logger->trace("*Constructing headings reg exp for example, chapter, section, etc (see indentAfterThisHeading)")
         if $is_t_switch_active;
 
-    # delete the values that have indentAfterThisHeading set to 0
+            my $oldYAMLHeadingSyntax = 0;
     while ( my ( $headingName, $headingInfo ) = each %headingsLevels ) {
-        if ( !${ $headingsLevels{$headingName} }{indentAfterThisHeading} ) {
-            $logger->trace("Not indenting after $headingName (see indentAfterThisHeading)") if $is_t_switch_active;
+        if ( defined ${ $headingsLevels{$headingName} }{indentAfterThisHeading} ) {
+            ${ $headingsLevels{$headingName} }{lookForThis}  = ${ $headingsLevels{$headingName} }{indentAfterThisHeading}; 
+            delete ${ $headingsLevels{$headingName} }{indentAfterThisHeading};
+            $oldYAMLHeadingSyntax = 1;
+        }
+    }
+            if ($oldYAMLHeadingSyntax){ 
+        $logger->warn("*Obsolete indentAfterHeadings YAML syntax used, changed to the following:");
+            $logger->warn(Dumper( \%headingsLevels ));
+    }
+
+    # delete the values that have lookForThis set to 0
+    while ( my ( $headingName, $headingInfo ) = each %headingsLevels ) {
+        if ( !${ $headingsLevels{$headingName} }{lookForThis} ) {
+            $logger->trace("Not indenting after $headingName (see lookForThis)") if $is_t_switch_active;
             delete $headingsLevels{$headingName};
         }
         else {
