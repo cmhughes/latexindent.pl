@@ -83,6 +83,8 @@ latexindent.pl -s -m href -l href5 -o=+-mod5
 latexindent.pl -s -m href -l href6 -o=+-mod6
 
 latexindent.pl -s -r -l issue-616.yaml issue-616.tex -o=+-mod1
+latexindent.pl -s -m -t -l issue-602.yaml issue-602.tex -o=+-mod1
+egrep -i --color=auto 'found:' indent.log > issue-602.txt
 
 verbatimTest=0
 set +x 

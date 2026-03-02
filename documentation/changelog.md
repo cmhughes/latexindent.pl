@@ -55,25 +55,24 @@ fineTuning:
 <tr>
   <td>
   <pre>
-specialBeginEnd:
-  displayMathTeX:
-    begin: \$\$                   
-    end: \$\$                     
+inlineMath:
+    begin: (?<!\$)(?<!\\)\$(?!\$) 
+    body: [^$]*?                 
+    end: (?<!\\)\$(?!\$)        
     lookForThis: 1
   </pre>
   </td>
   <td>
 <pre>
 specialBeginEnd:
-  -
-    name: displayMathTeX:
-    begin: \$\$                   
-    end: \$\$                     
-    lookForThis: 1
+  - name: inlineMath                                     
+    begin: (?<!\$)(?<!\\)\$(?!\$) # $ but *not* \$ or $$ 
+    end: (?<!\\)\$(?!\$)          # $ but *not* \$ or $$ 
   </pre>
   </td>
   <td>
-  old formatting will be read, but recommend moving to new format
+  old formatting (unordered) will be read, but recommend moving to new format (ordered);
+  `body` no longer does anything
   </td>
 </tr>
 <!-- ---------------- table row ---------------- -->
