@@ -14,6 +14,7 @@ enhancements:
 
 bug fixes 
 * [issue-599](https://github.com/cmhughes/latexindent.pl/issues/599)
+* [issue-602](https://github.com/cmhughes/latexindent.pl/issues/602)
 * [issue-620](https://github.com/cmhughes/latexindent.pl/issues/620)
 * [issue-621](https://github.com/cmhughes/latexindent.pl/issues/621)
 
