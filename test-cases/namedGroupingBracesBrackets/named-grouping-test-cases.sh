@@ -16,8 +16,6 @@ latexindent.pl -m -s contributors-remove-line-breaks -o=+-vo-name-finishes-lb-mo
 set +x 
  for (( i=$loopmin ; i <= $loopmax ; i++ )) 
  do 
-    [[ $showCounter == 1 ]] && echo $i of $loopmax
-    [[ $silentMode == 0 ]] && set -x 
     keepappendinglogfile
 
     # just linebreak modification

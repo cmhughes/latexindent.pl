@@ -1,4 +1,4 @@
-<!-- announcement: bug fix for named braces -->
+<!-- announcement: Major release -->
 
 # changelog.md
 

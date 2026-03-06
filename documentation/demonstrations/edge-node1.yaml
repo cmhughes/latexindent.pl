@@ -1,7 +1,8 @@
 specialBeginEnd:
-    path:
-        begin: '\\path'
-        end: ';'
+  -
+   name: path
+   begin: '\\path'
+   end: ';'
 
 lookForAlignDelims:
    path: 

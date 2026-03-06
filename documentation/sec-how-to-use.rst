@@ -13,73 +13,6 @@ In what follows, we will always refer to ``latexindent.pl``, but depending on yo
 
 There are two ways to use ``latexindent.pl``: from the command line, and using ``arara``; we discuss these in :numref:`sec:commandline` and :numref:`sec:arara` respectively. We will discuss how to change the settings and behaviour of the script in :numref:`sec:defuseloc`.
 
-Requirements
-------------
-
-Perl users
-~~~~~~~~~~
-
-Perl users will need a few standard Perl modules – see :numref:`sec:requiredmodules` for details; in particular, note that a module installer helper script is shipped with ``latexindent.pl``.
-
-.. label follows
-
-.. _subsubsec:latexindent:exe:
-
-Windows users without perl
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-``latexindent.pl`` ships with ``latexindent.exe`` for Windows users, so that you can use the script with or without a Perl distribution.
-
-``latexindent.exe`` is available from (“Home of Latexindent.pl” n.d.).
-
-MiKTeX users on Windows may like to see (“How to Use Latexindent on Windows?” n.d.) for details of how to use ``latexindent.exe`` without a Perl installation.
-
-.. index:: MiKTeX
-
-.. index:: latexindent.exe
-
-.. index:: Windows
-
-Ubuntu Linux users without perl
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-``latexindent.pl`` ships with ``latexindent-linux`` for Ubuntu Linux users, so that you can use the script with or without a Perl distribution.
-
-.. index:: latexindent-linux
-
-.. index:: linux
-
-.. index:: TeXLive
-
-``latexindent-linux`` is available from (“Home of Latexindent.pl” n.d.).
-
-macOS users without perl
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-``latexindent.pl`` ships with ``latexindent-macos`` for macOS users, so that you can use the script with or without a Perl distribution.
-
-.. index:: latexindent-macos
-
-.. index:: macOS
-
-.. index:: TeXLive
-
-``latexindent-macOS`` is available from (“Home of Latexindent.pl” n.d.).
-
-conda users
-~~~~~~~~~~~
-
-Users of ``conda`` should see the details given in :numref:`sec:app:conda`.
-
-.. index:: conda
-
-docker users
-~~~~~~~~~~~~
-
-Users of ``docker`` should see the details given in :numref:`sec:app:docker`.
-
-.. index:: docker
-
 .. label follows
 
 .. _sec:commandline:
@@ -251,7 +184,7 @@ There is no need to specify a file extension when using the ``++`` feature, but 
 
    latexindent.pl myfile.tex -o=+out++.tex
 
-See :numref:`app:differences` for details of how the interface has changed from Version 2.2 to Version 3.0 for this flag. .. describe:: -s, –silent
+.. describe:: -s, –silent
 
 .. index:: switches;-s, –silent definition and details
 
@@ -649,11 +582,6 @@ then ``latexindent.pl`` can exit with the exit codes given in :numref:`tab:exit-
       :name: ref-latexindent-home
 
       “Home of Latexindent.pl.” n.d. Accessed January 23, 2017. https://github.com/cmhughes/latexindent.pl.
-
-   .. container::
-      :name: ref-miktex-guide
-
-      “How to Use Latexindent on Windows?” n.d. Accessed January 8, 2022. https://tex.stackexchange.com/questions/577250/how-to-use-latexindent-on-windows.
 
    .. container::
       :name: ref-xu-cheng

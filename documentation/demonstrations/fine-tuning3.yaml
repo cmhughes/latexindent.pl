@@ -3,10 +3,14 @@ fineTuning:
     notPrecededBy: (?<!\\)
     afterComment: (?!(?:\hend)).*?
   commands:
-    name: (?!(?:begin|end|chapter|section))[+a-zA-Z@*0-9_:]+
+    name: |-
+      (?x)
+       (?!(?:begin|end|chapter|section))
+       [+a-zA-Z@*0-9_:]+
 
 specialBeginEnd:
-  customHeading:
-    begin: \\(?:chapter|section)
-    end: \%\h+end
-    nested: 1
+ -
+  name: customHeading
+  begin: \\(?:chapter|section)
+  end: \%\h+end
+  nested: 1

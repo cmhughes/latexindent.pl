@@ -8,15 +8,12 @@
  \paragraph{keyEqualsValuesBracesBrackets}
   \texttt{latexindent.pl} defines this type of code block by the following criteria:
   \begin{itemize}
-   \item it must immediately follow either \lstinline!{! OR \lstinline![! OR
-         \lstinline!,! with comments and blank lines allowed.
-   \item then it has a name made up of the characters detailed in \vref{tab:code-blocks};
+   \item it has a name made up of the characters detailed in \vref{tab:code-blocks};
    \item then an $=$ symbol;
    \item then at least one set of curly braces or square brackets (comments and line
          breaks allowed throughout).
   \end{itemize}
-  See the \texttt{keyEqualsValuesBracesBrackets: follow} and
-  \texttt{keyEqualsValuesBracesBrackets: name} fields of the fine tuning section in
+  See the \texttt{keyEqualsValuesBracesBrackets: name} field of the fine tuning section in
   \vref{lst:fineTuning} \announce{2019-07-13}{fine tuning: keyEqualsValuesBracesBrackets}%
 
   \begin{example}
@@ -43,15 +40,11 @@
  \paragraph{namedGroupingBracesBrackets} This type of code block is mostly motivated by
   tikz-based code; we define this code block as follows:
   \begin{itemize}
-   \item it must immediately follow either \emph{horizontal space} OR \emph{one or more
-         line breaks} OR \lstinline!{! OR \lstinline![! OR \lstinline!$! OR \lstinline!)!
-         OR \lstinline!(!
    \item the name may contain the characters detailed in \vref{tab:code-blocks};
    \item then at least one set of curly braces or square brackets (comments and line
          breaks allowed throughout).
   \end{itemize}
-  See the \texttt{NamedGroupingBracesBrackets: follow} and
-  \texttt{NamedGroupingBracesBrackets: name} fields of the fine tuning section in
+  See the \texttt{NamedGroupingBracesBrackets: name} field of the fine tuning section in
   \vref{lst:fineTuning} \announce{2019-07-13}{fine tuning: namedGroupingBracesBrackets}%
 
   \begin{example}
@@ -63,33 +56,147 @@
    \cmhlistingsfromfile[showtabs=true]{demonstrations/child1-default.tex}{\texttt{child1.tex} default output}{lst:child1:default}
   \end{cmhtcbraster}
 
-  In particular, \texttt{latexindent.pl} considers \texttt{child}, \texttt{parent} and
-  \texttt{node} all to be \texttt{namedGroupingBracesBrackets}\footnote{ You may like to
-  verify this by using the \texttt{-tt} option and checking \texttt{indent.log}! }.
-  Referencing \cref{lst:child1:default}, note that the maximum indentation is two tabs,
+  In particular, \texttt{latexindent.pl} considers \texttt{child} and \texttt{parent} 
+  to be \texttt{namedGroupingBracesBrackets}\footnote{ You may like to
+  verify this by using the \texttt{-t} option and checking \texttt{indent.log}! }.
+  Referencing \cref{lst:child1:default}, note that the maximum indentation is three tabs,
   and these come from:
   \begin{itemize}
    \item the \lstinline!child!'s mandatory argument;
    \item the \lstinline!child!'s body, which is defined as any lines following the name
          of the \texttt{namedGroupingBracesBrackets} that include its arguments. This is
          the part controlled by the \emph{body} field for \texttt{noAdditionalIndent} and
-         friends from \cpageref{sec:noadd-indent-rules}.
+         friends from \cpageref{sec:noadd-indent-rules};
+     \item the \lstinline!parent!'s body, which is defined as any lines following the name
+         that include its arguments.
   \end{itemize}
   \end{example}
+
+\begin{example}
+ Consider the file given in \cref{lst:named1}, together with its
+ default output using the command
+
+ \begin{commandshell}
+latexindent.pl named1.tex 
+\end{commandshell}
+
+ is given in \cref{lst:named1-default}.
+
+ \begin{cmhtcbraster}[raster column skip=.01\linewidth]
+  \cmhlistingsfromfile{demonstrations/named1.tex}{\texttt{named1.tex}}{lst:named1}
+  \cmhlistingsfromfile{demonstrations/named1-default.tex}{\texttt{named1.tex} default}{lst:named1-default}
+ \end{cmhtcbraster}
+
+ \end{example}
+
+ 
+ \begin{example}
+ Consider the file given in \cref{lst:finetuning2},
+ together with its default output using the command
+
+ \begin{commandshell}
+latexindent.pl finetuning2.tex 
+\end{commandshell}
+
+ is given in \cref{lst:finetuning2-default}.
+
+ \begin{cmhtcbraster}[raster column skip=.01\linewidth,
+   raster left skip=-3.75cm,
+   raster right skip=0cm,]
+  \cmhlistingsfromfile{demonstrations/finetuning2.tex}{\texttt{finetuning2.tex}}{lst:finetuning2}
+  \cmhlistingsfromfile{demonstrations/finetuning2-default.tex}{\texttt{finetuning2.tex} default}{lst:finetuning2-default}
+ \end{cmhtcbraster}
+
+ \end{example}
+
+ \begin{example}
+
+ Starting with the file in \cref{lst:bib1} and running the command
+ \index{bibliography files} \index{regular expressions!delimiterRegEx}
+ \index{regular expressions!capturing parenthesis} \index{regular expressions!ampersand
+ alignment} \index{delimiters!delimiterRegEx}
+
+ \begin{commandshell}
+latexindent.pl bib1.tex -o=+-mod1 
+   \end{commandshell}
+
+ gives the output in \cref{lst:bib1-mod1}.
+
+ \begin{widepage}
+  \begin{cmhtcbraster}[raster column skip=.01\linewidth]
+   \cmhlistingsfromfile{demonstrations/bib1.bib}{\texttt{bib1.bib}}{lst:bib1}
+   \cmhlistingsfromfile{demonstrations/bib1-mod1.bib}{\texttt{bib1-mod1.bib}}{lst:bib1-mod1}
+  \end{cmhtcbraster}
+ \end{widepage}
+
+ Let's assume that we would like to format the output so as to align the \texttt{=}
+ symbols. Using the settings in \cref{lst:bibsettings1} and running the command
+
+ \begin{commandshell}
+latexindent.pl bib1.bib -l bibsettings1.yaml -o=+-mod2 
+     \end{commandshell}
+
+ gives the output in \cref{lst:bib1-mod2}.
+
+ \begin{widepage}
+  \begin{cmhtcbraster}[raster column skip=.1\linewidth]
+   \cmhlistingsfromfile{demonstrations/bib1-mod2.bib}{\texttt{bib1.bib} using \cref{lst:bibsettings1}}{lst:bib1-mod2}
+   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/bibsettings1.yaml}[yaml-TCB]{\texttt{bibsettings1.yaml}}{lst:bibsettings1}
+  \end{cmhtcbraster}
+ \end{widepage}
+ we have populated the \texttt{lookForAlignDelims} field with the \texttt{online}
+        command, and have used the \texttt{delimiterRegEx}, discussed in
+        \vref{sec:delimiter-reg-ex}.
+  \end{example}
+
+ \begin{example}
+ We can build upon \cref{lst:bibsettings1} for slightly more complicated bibliography
+ files.
+
+ Starting with the file in \cref{lst:bib2} and running the command
+
+ \begin{commandshell}
+latexindent.pl bib2.bib -l bibsettings1.yaml -o=+-mod1 
+   \end{commandshell}
+
+ gives the output in \cref{lst:bib2-mod1}.
+
+ \begin{widepage}
+  \cmhlistingsfromfile{demonstrations/bib2.bib}{\texttt{bib2.bib}}{lst:bib2}
+  \cmhlistingsfromfile{demonstrations/bib2-mod1.bib}{\texttt{bib2-mod1.bib}}{lst:bib2-mod1}
+ \end{widepage}
+
+ The output in \cref{lst:bib2-mod1} is not ideal, as the \texttt{=} symbol within the url
+ field has been incorrectly used as an alignment delimiter.
+
+ We address this by tweaking the \texttt{delimiterRegEx} field in
+ \cref{lst:bibsettings2}.
+
+ \cmhlistingsfromfile[style=yaml-LST]{demonstrations/bibsettings2.yaml}[yaml-TCB]{\texttt{bibsettings2.yaml}}{lst:bibsettings2}
+
+ Upon running the command
+
+ \begin{commandshell}
+latexindent.pl bib2.bib -l bibsettings1.yaml,bibsettings2.yaml -o=+-mod2 
+         \end{commandshell}
+
+ we receive the \emph{desired} output in \cref{lst:bib2-mod2}.
+
+ \cmhlistingsfromfile{demonstrations/bib2-mod2.bib}{\texttt{bib2-mod2.bib}}{lst:bib2-mod2}
+
+ With reference to \cref{lst:bibsettings2} we note that the \texttt{delimiterRegEx} has
+ been adjusted so that \texttt{=} symbols are used as the delimiter, but only when they
+ are \emph{not preceded} by either \texttt{v} or \texttt{spfreload}.
+ \end{example}
 
  \paragraph{UnNamedGroupingBracesBrackets} occur in a variety of situations;
   specifically, we define this type of code block as satisfying the following
   criteria:
   \begin{itemize}
-   \item it must immediately follow either \lstinline!{! OR \lstinline![! OR
-         \lstinline!,! OR \lstinline!&! OR \lstinline!)! OR \lstinline!(! OR
-         \lstinline!$!;
-   \item then at least one set of curly braces or square brackets (comments and line
+      \item it isn't a \texttt{command}, \texttt{keyEqualsValuesBracesBrackets} or \texttt{namedGroupingBracesBrackets}
+   \item and it has at least one set of curly braces or square brackets (comments and line
          breaks allowed throughout).
   \end{itemize}
-  See the \texttt{UnNamedGroupingBracesBrackets: follow} field of the fine tuning section
-  in \vref{lst:fineTuning} \announce{2019-07-13}{fine tuning:
-  namedGroupingBracesBrackets}%
 
   \begin{example}
   An example is shown in \cref{lst:psforeach1} with default output give in
@@ -100,16 +207,12 @@
    \cmhlistingsfromfile[showtabs=true]{demonstrations/psforeach1-default.tex}{\texttt{psforeach1.tex} default output}{lst:psforeach:default}
   \end{cmhtcbraster}
 
-  Referencing \cref{lst:psforeach:default}, there are \emph{three} sets of unnamed
-  braces. Note also that the maximum value of indentation is three tabs, and these come
+  Referencing \cref{lst:psforeach:default}, there are \emph{two} sets of unnamed
+  braces. Note also that the maximum value of indentation is two tabs, and these come
   from:
   \begin{itemize}
    \item the \lstinline!\psforeach! command's mandatory argument;
-   \item the \emph{first} un-named braces mandatory argument;
-   \item the \emph{first} un-named braces \emph{body}, which we define as any lines
-         following the first opening \lstinline!{! or \lstinline![! that defined the code
-         block. This is the part controlled by the \emph{body} field for
-         \texttt{noAdditionalIndent} and friends from \cpageref{sec:noadd-indent-rules}.
+   \item the \emph{first} un-named braces mandatory argument.
   \end{itemize}
   \end{example}
 
@@ -117,8 +220,24 @@
   basis for the \texttt{UnNamedGroupingBracesBrackets} should use
   \texttt{always-un-named}.
 
- \paragraph{filecontents} code blocks behave just as \texttt{environments}, except that
-  neither arguments nor items are sought.
+  \begin{example}
+      Starting with the file in \cref{lst:unnamed1} we receive the default output in \cref{lst:unnamed1:mod0}.
+
+  \begin{cmhtcbraster}
+   \cmhlistingsfromfile*{demonstrations/unnamed1.tex}{\texttt{unnamed1.tex}}{lst:unnamed1}
+   \cmhlistingsfromfile*[showtabs=true]{demonstrations/unnamed1-mod0.tex}{\texttt{unnamed1.tex} default output}{lst:unnamed1:mod0}
+  \end{cmhtcbraster}
+
+  We can customise the output using, for example, \cref{lst:unnamed1:yaml} and running
+ \begin{commandshell}
+latexindent.pl unnamed1 -l unnamed1.yaml unnamed1
+         \end{commandshell}
+         gives the output in \cref{lst:unnamed1:mod0}
+  \begin{cmhtcbraster}
+   \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/unnamed1.yaml}[yaml-TCB]{\texttt{unnamed1.yaml}}{lst:unnamed1:yaml}
+   \cmhlistingsfromfile*[showspaces=true]{demonstrations/unnamed1-mod1.tex}{\texttt{unnamed1.tex} mod1 output}{lst:unnamed1:mod1}
+  \end{cmhtcbraster}
+  \end{example}
 
 \subsubsection{Summary}
  \index{indentation!summary}
@@ -128,11 +247,11 @@
  \index{specialBeginEnd!indentRulesGlobal}
 
  \begin{widepage}
-  \begin{minipage}{.47\linewidth}
+  \begin{minipage}{.45\linewidth}
    \cmhlistingsfromfile[style=noAdditionalIndentGlobal]{../defaultSettings.yaml}[before=\centering,yaml-TCB]{\texttt{noAdditionalIndentGlobal}}{lst:noAdditionalIndentGlobal}
   \end{minipage}%
   \hfill
-  \begin{minipage}{.47\linewidth}
+  \begin{minipage}{.49\linewidth}
    \cmhlistingsfromfile[style=indentRulesGlobal]{../defaultSettings.yaml}[before=\centering,yaml-TCB]{\texttt{indentRulesGlobal}}{lst:indentRulesGlobal}
   \end{minipage}%
  \end{widepage}

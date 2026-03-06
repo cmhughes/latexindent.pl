@@ -1,22 +1,5 @@
 % arara: pdflatex: { files: [latexindent]}
 \section{Introduction}
-\subsection{Thanks}
- I first created \texttt{latexindent.pl} to help me format chapter files in a big project.
- After I blogged about it on the \TeX{} stack exchange \cite{cmhblog} I received some
- positive feedback and follow-up feature requests. A big thank you to Harish Kumar
- \cite{harish} who helped to develop and test the initial versions of the script.
-
- The \texttt{YAML}-based interface of \texttt{latexindent.pl} was inspired by the
- wonderful \texttt{arara} tool; any similarities are deliberate, and I hope that it is
- perceived as the compliment that it is. Thank you to Paulo Cereda and the team for
- releasing this awesome tool; I initially worried that I was going to have to make a GUI
- for \texttt{latexindent.pl}, but the release of \texttt{arara} has meant there is no
- need.
-
- There have been several contributors to the project so far (and hopefully more in the
- future!); thank you very much to the people detailed in \vref{sec:contributors} for
- their valued contributions, and thank you to those who report bugs and request features
- at \cite{latexindent-home}.
 
 \subsection{License}
  \texttt{latexindent.pl} is free and open source, and it always will be; it
@@ -47,10 +30,6 @@
   sample files in the \texttt{test-case} directory \cite{latexindent-home}.
   \index{warning!be sure to test before use}
  \end{warning}
-
- \emph{If you have used any version 2.* of \texttt{latexindent.pl}, there
- are a few changes to the interface; see \vref{app:differences} and the comments
- throughout this document for details}.
 
 \subsection{Quick start}\label{sec:quickstart}
  When \texttt{latexindent.pl} reads and writes files, the files are read and written in UTF-8 format by default.
@@ -228,23 +207,48 @@ latexindent.pl -l quick-start9.yaml quick-start.tex
  See \cref{sec:noadd-indent-rules}.
  \end{example}
 
-\subsection{Required perl modules}
- If you receive an error message such as that given in
- \cref{lst:poss-errors}, then you need to install the missing perl modules.
- \begin{cmhlistings}[style=tcblatex,language=Perl]{Possible error messages}{lst:poss-errors}
-Can't locate File/HomeDir.pm in @INC (@INC contains: /Library/Perl/5.12/darwin-thread-multi-2level /Library/Perl/5.12 /Network/Library/Perl/5.12/darwin-thread-multi-2level /Network/Library/Perl/5.12 /Library/Perl/Updates/5.12.4/darwin-thread-multi-2level /Library/Perl/Updates/5.12.4 /System/Library/Perl/5.12/darwin-thread-multi-2level /System/Library/Perl/5.12 /System/Library/Perl/Extras/5.12/darwin-thread-multi-2level /System/Library/Perl/Extras/5.12 .) at helloworld.pl line 10.
-BEGIN failed--compilation aborted at helloworld.pl line 10.
-\end{cmhlistings}
- \texttt{latexindent.pl} ships with a script to help with this process; if you run the
- following script, you should be prompted to install the appropriate modules.
-
- \begin{commandshell}
-perl latexindent-module-installer.pl
-\end{commandshell}
-
+\subsection{Requirements}
+\subsubsection{Perl users}
+ Perl users will need a few standard Perl modules -- see \vref{sec:requiredmodules} for
+ details; \announce{2018-01-13}{perl module installer helper script} in particular, note
+ that a module installer helper script is shipped with \texttt{latexindent.pl}.%
  You might also like to see
- \href{https://stackoverflow.com/questions/19590042/error-cant-locate-file-homedir-pm-in-inc}{https://stackoverflow.com/questions/19590042/error-cant-locate-file-homedir-pm-in-inc},
- for example, as well as \vref{sec:requiredmodules}.
+ \href{https://stackoverflow.com/questions/19590042/error-cant-locate-file-homedir-pm-in-inc}{https://stackoverflow.com/questions/19590042/error-cant-locate-file-homedir-pm-in-inc}.
+
+\subsubsection{Windows users without perl}\label{subsubsec:latexindent:exe}
+ \texttt{latexindent.pl} ships with \texttt{latexindent.exe} for Windows
+ users, so that you can use the script with or without a Perl distribution.
+
+ \texttt{latexindent.exe} is available from \cite{latexindent-home}.
+
+ MiKTeX users on Windows may like to see \cite{miktex-guide} for details of how to use
+ \texttt{latexindent.exe} without a Perl installation. \index{MiKTeX}
+ \index{latexindent.exe} \index{Windows}
+
+\subsubsection{Ubuntu Linux users without perl}
+ \texttt{latexindent.pl} ships with \texttt{latexindent-linux} for Ubuntu
+ Linux users, so that you can use the script with or without a Perl distribution.
+ \index{latexindent-linux} \index{linux} \index{TeXLive}
+
+ \texttt{latexindent-linux} is available from \cite{latexindent-home}.
+ \announce{2022-10-30}{Linux Ubuntu standalone executable}
+
+\subsubsection{macOS users without perl}
+ \texttt{latexindent.pl} ships with \texttt{latexindent-macos} for macOS
+ users, so that you can use the script with or without a Perl distribution.
+ \index{latexindent-macos} \index{macOS} \index{TeXLive}
+
+ \texttt{latexindent-macOS} is available from \cite{latexindent-home}.
+ \announce{2022-10-30}{macOS standalone executable}
+
+\subsubsection{conda users}
+ Users of \texttt{conda} should see the details given in \cref{sec:app:conda}.
+ \index{conda}
+
+\subsubsection{docker users}
+ Users of \texttt{docker} should see the details given in \cref{sec:app:docker}.
+ \index{docker}
+
 
 \subsection{About this documentation}
  As you read through this documentation, you will see many listings; in this version of

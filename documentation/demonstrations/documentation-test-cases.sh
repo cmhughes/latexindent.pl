@@ -164,6 +164,8 @@ latexindent.pl -s child1 -o=+-default
 # unnamedbraces
 #
 latexindent.pl -s psforeach1 -o=psforeach1-default
+latexindent.pl -s unnamed1.tex -o=+-mod0
+latexindent.pl -s unnamed1.tex -l unnamed1 -o=+-mod1
 
 # 
 # -m switch #
@@ -340,7 +342,7 @@ latexindent.pl -s special-align -l edge-node1.yaml -o=+-mod1
 latexindent.pl -s special-align -l edge-node2.yaml -o=+-mod2
 
 # specialBeginEnd body demonstration
-latexindent.pl -s -t special-body -l special-body1.yaml -o=+-mod1
+latexindent.pl -s -t special-body -l special-nested1.yaml -o=+-mod1
 
 # one sentence per line
 latexindent.pl -s multiple-sentences -m -l=manipulate-sentences.yaml -o=+-mod1
@@ -399,7 +401,7 @@ latexindent.pl -s -r amalg1 -l=amalg1-yaml.yaml,amalg2-yaml.yaml -o=+-mod12
 latexindent.pl -s -r amalg1 -l=amalg1-yaml.yaml,amalg3-yaml,amalg3-yaml.yaml -o=+-mod123
 
 # fine tuning
-latexindent.pl -s finetuning1 -t -o=+-default
+latexindent.pl -s named1 -t -o=+-default
 egrep 'found:' indent.log > finetuning1.txt
 latexindent.pl -s finetuning1 -o=+-mod1 -l=fine-tuning1
 latexindent.pl -s finetuning2 -o=+-default

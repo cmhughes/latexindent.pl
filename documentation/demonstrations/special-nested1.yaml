@@ -1,0 +1,7 @@
+defaultIndent: "  "
+specialBeginEnd:
+  -
+   name: parentheses
+   begin: \(
+   end: \)
+   nested: 1

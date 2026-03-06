@@ -1,6 +1,0 @@
-defaultIndent: "  "
-specialBeginEnd:
-  parentheses:
-    begin: \(
-    end: \)
-    nested: 1
