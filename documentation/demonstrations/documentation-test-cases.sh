@@ -416,6 +416,13 @@ latexindent.pl -s bib2.bib -l bibsettings1.yaml -o=+-mod1
 latexindent.pl -s bib2.bib -l bibsettings1.yaml,bibsettings2.yaml -o=+-mod2 
 latexindent.pl -s finetuning5 -o=+-mod1 -l=fine-tuning3
 latexindent.pl -s -m finetuning6 -o=+-mod1 -l=fine-tuning4
+latexindent.pl -s items2 -o=+-mod1 -l=ft-itemsRegex
+latexindent.pl -s -t beamer1 -o=+-mod1 -l=ft-args
+egrep 'found:' indent.log > beamer1.txt
+latexindent.pl -s ft-ifelsefi -o=+-mod1 -l=ft-ifelsefi
+latexindent.pl -s align1.tex -o=+-mod1 -l=align1
+latexindent.pl -s align1.tex -o=+-mod2 -l=align2
+latexindent.pl -s align1.tex -o=+-mod3 -l=align3
 
 # blank line poly-switches
 latexindent.pl -s -m env-mlb1 -l env-beg4.yaml -o=+-beg4

@@ -2907,10 +2907,10 @@ Note also that, by design, line breaks involving, ``filecontents`` and ‘commen
    \                             ``}``\ ♣                               ♣ RCuBFinishesWithLineBreak
    \                             ``...``                                  
    commands                      ``before words``\ ♠                    ♠ CommandStartsOnOwnLine
-   \                             ``\mycommand``\ ♥                      ♥ CommandNameFinishesWithLineBreak
+   \                             ``\mycommand``                           
    \                             <arguments>                              
    namedGroupingBracesBrackets   before words♠                          ♠ NameStartsOnOwnLine
-   \                             myname♥                                ♥ NameFinishesWithLineBreak
+   \                             myname                                   
    \                             <braces/brackets>                        
    keyEqualsValuesBracesBrackets before words♠                          ♠ KeyStartsOnOwnLine
    \                             key●=♥                                 ● EqualsStartsOnOwnLine
@@ -3082,7 +3082,7 @@ To understand it, let’s talk about how ``latexindent.pl`` has processed :numre
 
    #. searches ``two`` for code blocks, finds none
 
-   #. does the poly-switch work for ``two`` instructed by :numref:`lst:nested-env-mlb1`: remove the line break before the end statement, and adds a line break *after* the end statement.
+   #. does the poly-switch work for ``two`` instructed by :numref:`lst:nested-env-mlb1-yaml`: remove the line break before the end statement, and adds a line break *after* the end statement.
 
 #. does the poly-switch work for ``one`` instructed by :numref:`lst:nested-env-mlb1` which is: remove line breaks before the end statement, and add a line break *after* the end statement;
 
@@ -3110,6 +3110,20 @@ To understand it, let’s talk about how ``latexindent.pl`` has processed :numre
 		:class: .mlbyaml
 		:caption: ``nested-env-mlb2.yaml`` 
 		:name: lst:nested-env-mlb2
+	
+	To understand it, let’s talk about how ``latexindent.pl`` has processed :numref:`lst:nested-env-mlb2-output`; specifically ``latexindent.pl``:
+	
+	#. finds the ``environment`` named ``one``
+	
+	#. searches ``one`` for code blocks
+	
+	   #. finds the ``environment`` named ``two``
+	
+	   #. searches ``two`` for code blocks, finds none
+	
+	   #. does the poly-switch work for ``two`` instructed by :numref:`lst:nested-env-mlb1-yaml`: add a line break before the end statement, and remove line breaks *after* the end statement.
+	
+	#. does the poly-switch work for ``one`` instructed by :numref:`lst:nested-env-mlb2` which is: add a line break before the end statement, and remove line breaks *after* the end statement.
 	
 
 

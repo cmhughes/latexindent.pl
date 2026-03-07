@@ -2,10 +2,10 @@
 
 .. _sec:defuseloc:
 
-defaultSettings.yaml
-====================
+Config
+======
 
-``latexindent.pl`` loads its settings from ``defaultSettings.yaml``. The idea is to separate the behaviour of the script from the internal working – this is very similar to the way that we separate content from form when writing our documents in LaTeX.
+``latexindent.pl`` loads its default settings from ``defaultSettings.yaml``. The idea is to separate the behaviour of the script from the internal working – this is very similar to the way that we separate content from form when writing our documents in LaTeX. *All of these settings can be changed by you, the user; demonstrations are given throughout this documentation using the -l switch*.
 
 If you look in ``defaultSettings.yaml`` you’ll find the switches that govern the behaviour of ``latexindent.pl``. If you’re not sure where ``defaultSettings.yaml`` resides on your computer, don’t worry as ``indent.log`` will tell you where to find it. ``defaultSettings.yaml`` is commented, but here is a description of what each switch is designed to do. The default value is given in each case; whenever you see *integer* in *this* section, assume that it must be greater than or equal to ``0``
 unless otherwise stated.
@@ -417,7 +417,7 @@ If, for example, you wish to remove the alignment of the ``\\`` within a delimit
 	:caption: ``lookForAlignDelims`` (advanced) 
 	:name: lst:aligndelims:advanced
 
-Note that you can use a mixture of the basic and advanced form: in :numref:`lst:aligndelims:basic` the entries are basic; in :numref:`lst:aligndelims:advanced` the entry for ``tabular`` is advanced. The default values for the advanced form are controlled in ``fineTuning``, see :numref:`sec:finetuning`. When using the advanced form, each field should receive at least 1 sub-field, and *can* (but does not have to) receive any of the following fields:
+Note that you can use a mixture of the basic and advanced form: in :numref:`lst:aligndelims:basic` the entries are basic; in :numref:`lst:aligndelims:advanced` the entry for ``tabular`` is advanced. The default values for the advanced form are controlled in ``fineTuning``, see :numref:`subsec:finetuning:lookForAlignDelims`. When using the advanced form, each field should receive at least 1 sub-field, and *can* (but does not have to) receive any of the following fields:
 
 -  ``delims``: binary switch (0 or 1) equivalent to simply specifying, for example, ``tabular: 1`` in the basic version shown in :numref:`lst:aligndelims:basic`. If ``delims`` is set to ``0`` then the align at ampersand routine will not be called for this code block (default: 1);
 
@@ -1283,9 +1283,7 @@ The environment names specified in ``indentAfterItems`` tell ``latexindent.pl`` 
 	:caption: ``items1.tex`` default output 
 	:name: lst:itemsafter
 
-If you have your own ``item`` commands (perhaps you prefer to use ``myitem``, for example) then you can put adjust ``itemRegEx`` in the ``fineTuning`` field, discussed in :numref:`sec:finetuning`.
-
-.. describe:: specialBeginEnd:fields
+If you have your own ``item`` commands (perhaps you prefer to use ``myitem``, for example) then you can put adjust ``itemRegEx`` in the ``fineTuning`` field, discussed in :numref:`subsec:finetuning:itemsRegex`... describe:: specialBeginEnd:fields
 
 .. label follows
 
@@ -1729,6 +1727,11 @@ Comparing the output in :numref:`lst:mult-nested-default` and :numref:`lst:mult-
 
 In general, when using the ``maximumIndentation`` feature, any leading tabs will be replaced by equivalent spaces except, of course, those found in ``verbatimEnvironments`` (see :numref:`lst:verbatimEnvironments`) or ``noIndentBlock`` (see :numref:`lst:noIndentBlock`).
 
+Arguments and the strings allowed between them
+----------------------------------------------
+
+The strings allowed between arguments for ``commands``, ``namedGroupingBracesBrackets``, ``keyEqualsValuesBracesBrackets`` and ``UnNamedGroupingBracesBrackets`` are controlled by ``fineTuning``; specific demonstrations are given in :numref:`subsec:finetuning:arguments`.
+
 .. label follows
 
 .. _subsubsec:code-blocks:
@@ -1750,22 +1753,22 @@ As of Version 3.0, ``latexindent.pl`` processes documents using code blocks; eac
 
 .. table:: Code blocks known to ``latexindent.pl``
 
-   ============================= ================================================================================== =====================================================================================
-   Code block                    characters allowed in name                                                         example
-   ============================= ================================================================================== =====================================================================================
-   environments                  ``a-zA-Z@\*0-9_``                                                                  ``\begin{myenv}body of myenv\end{myenv}``
-   optionalArguments             *inherits* name from parent (e.g environment name)                                 ``[opt arg text]``
-   mandatoryArguments            *inherits* name from parent (e.g environment name)                                 ``{mand arg text}``
-   commands                      ``+a-zA-Z@\*0-9_\:``                                                               ``\mycommand``\ <arguments>
-   keyEqualsValuesBracesBrackets ``a-zA-Z@\*0-9_\/.\h\{\}:\#-``                                                     ``my key/.style=``\ <arguments>
-   namedGroupingBracesBrackets   ``0-9\.a-zA-Z@\*><``                                                               ``in``\ <arguments>
-   UnNamedGroupingBracesBrackets *No name!*                                                                         ``\{`` or ``[`` or ``,`` or ``\&`` or ``)`` or ``(`` or ``$`` followed by <arguments>
-   ifElseFi                      ``@a-zA-Z`` but must begin with either ``\if`` of ``\@if``                         ``\ifnum......\else...\fi``
-   items                         User specified, see :numref:`lst:indentafteritems` and :numref:`lst:itemNames`     ``\begin{enumerate}  \item ...\end{enumerate}``
-   specialBeginEnd               User specified, see :numref:`lst:specialBeginEnd`                                  ``\[  ...\]``
-   afterHeading                  User specified, see :numref:`lst:indentAfterHeadings`                              ``\chapter{title}  ...\section{title}``
-   filecontents                  User specified, see :numref:`lst:fileContentsEnvironments`                         ``\begin{filecontents}...\end{filecontents}``
-   ============================= ================================================================================== =====================================================================================
+   ============================= ============================================================ =====================================================================================
+   Code block                    characters allowed in name                                   example
+   ============================= ============================================================ =====================================================================================
+   environments                  ``a-zA-Z@\*0-9_``                                            ``\begin{myenv}body of myenv\end{myenv}``
+   optionalArguments             *inherits* name from parent (e.g environment name)           ``[opt arg text]``
+   mandatoryArguments            *inherits* name from parent (e.g environment name)           ``{mand arg text}``
+   commands                      ``+a-zA-Z@\*0-9_\:``                                         ``\mycommand``\ <arguments>
+   keyEqualsValuesBracesBrackets ``a-zA-Z@\*0-9_\/.\h\{\}:\#-``                               ``my key/.style=``\ <arguments>
+   namedGroupingBracesBrackets   ``0-9\.a-zA-Z@\*><``                                         ``in``\ <arguments>
+   UnNamedGroupingBracesBrackets *No name!*                                                   ``\{`` or ``[`` or ``,`` or ``\&`` or ``)`` or ``(`` or ``$`` followed by <arguments>
+   ifElseFi                      ``@a-zA-Z`` but must begin with either ``\if`` of ``\@if``   ``\ifnum......\else...\fi``
+   items                         User specified, see :numref:`lst:indentafteritems`           ``\begin{enumerate}  \item ...\end{enumerate}``
+   specialBeginEnd               User specified, see :numref:`lst:specialBeginEnd`            ``\[  ...\]``
+   afterHeading                  User specified, see :numref:`lst:indentAfterHeadings`        ``\chapter{title}  ...\section{title}``
+   filecontents                  User specified, see :numref:`lst:fileContentsEnvironments`   ``\begin{filecontents}...\end{filecontents}``
+   ============================= ============================================================ =====================================================================================
 
 We will refer to these code blocks in what follows. Note that the fine tuning of the definition of the code blocks detailed in :numref:`tab:code-blocks` is discussed in :numref:`sec:finetuning`.
 
@@ -2516,6 +2519,8 @@ ifelsefi code blocks
 		:name: lst:ifelsefi2-default
 	
 
+
+Fine tuning of ``ifElseFi`` is demonstrated in :numref:`subsec:finetuning:ifElseFi`.
 
 specialBeginEnd code blocks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~

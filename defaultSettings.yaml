@@ -447,17 +447,17 @@ replacements:
 fineTuning:
   environments:
     name: [a-zA-Z@\*0-9_\\]+
+  items:
+    itemRegEx: \\(?:item|myitem)
   ifElseFi:
     name: (?!@?if[a-zA-Z@]*?\{)@?if[a-zA-Z@]*
     elseOrRegEx: \\(?:else|or)
   commands:
     name: [+a-zA-Z@*0-9_:]+
-  items:
-    itemRegEx: \\(?:item|myitem)
-  keyEqualsValuesBracesBrackets:
-    name: [a-zA-Z@\*0-9_\/.:\#-]+[a-zA-Z@\*0-9_\/.\h:\#-]*
   namedGroupingBracesBrackets:
     name: [0-9\.a-zA-Z@\*><]+
+  keyEqualsValuesBracesBrackets:
+    name: [a-zA-Z@\*0-9_\/.:\#-]+[a-zA-Z@\*0-9_\/.\h:\#-]*
   arguments:
     between: |-                               
       (?x)                                    

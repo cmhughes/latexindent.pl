@@ -1,9 +1,10 @@
 % arara: pdflatex: { files: [latexindent]}
-\section{defaultSettings.yaml}\label{sec:defuseloc}
- \texttt{latexindent.pl} loads its settings from \texttt{defaultSettings.yaml}. The idea
+\section{Config}\label{sec:defuseloc}
+ \texttt{latexindent.pl} loads its default settings from \texttt{defaultSettings.yaml}. The idea
  is to separate the behaviour of the script from the internal working -- this is very
  similar to the way that we separate content from form when writing our documents in
- \LaTeX.
+ \LaTeX. \emph{All of these settings can be changed by you, the user; demonstrations
+ are given throughout this documentation using the -l switch}.
 
  If you look in \texttt{defaultSettings.yaml} you'll find the switches that govern the
  behaviour of \texttt{latexindent.pl}. If you're not sure where
@@ -87,7 +88,6 @@ copy myfile.bak4 to myfile.bak3
 \end{commandshell}
 
  The default value of \texttt{cycleThroughBackUps} is \texttt{0}.
-
 
 \subsection{Verbatim code blocks}
 \yamltitle{verbatimEnvironments}*{fields}
@@ -336,9 +336,9 @@ latexindent.pl -l noindent3.yaml noindent1
  \cref{lst:aligndelims:advanced}; we will discuss each in turn.
  \index{delimiters!advanced settings of lookForAlignDelims}
 
-     \cmhlistingsfromfile*[style=lookForAlignDelims]{../defaultSettings.yaml}[width=.1\linewidth,before=\centering,yaml-TCB]{\texttt{lookForAlignDelims} (basic)}{lst:aligndelims:basic}
- 
-     Specifying code blocks in this field instructs \texttt{latexindent.pl} to try and align
+ \cmhlistingsfromfile*[style=lookForAlignDelims]{../defaultSettings.yaml}[width=.1\linewidth,before=\centering,yaml-TCB]{\texttt{lookForAlignDelims} (basic)}{lst:aligndelims:basic}
+
+ Specifying code blocks in this field instructs \texttt{latexindent.pl} to try and align
  each column by its alignment delimiters. It does have some limitations (discussed
  further in \cref{sec:knownlimitations}), but in many cases it will produce results such
  as those in \cref{lst:tabularbefore:basic,lst:tabularafter:basic}; running the command
@@ -370,11 +370,12 @@ latexindent.pl tabular1.tex
  \cmhlistingsfromfile*{demonstrations/tabular-adv.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{lookForAlignDelims} (advanced)}{lst:aligndelims:advanced}
 
  Note that you can use a mixture of the basic and advanced form: in
- \cref{lst:aligndelims:basic} the entries are basic; in \cref{lst:aligndelims:advanced} 
- the entry for \texttt{tabular} is advanced. \announce{NEW}{fineTuning controls defaults for advanced form of lookForAlignDelims} 
- The default values for the advanced form are controlled in \texttt{fineTuning}, see \vref{sec:finetuning}. When using the advanced form, each field should receive at
- least 1 sub-field, and \emph{can} (but does not have to) receive any of the following
- fields:
+ \cref{lst:aligndelims:basic} the entries are basic; in \cref{lst:aligndelims:advanced}
+ the entry for \texttt{tabular} is advanced. \announce{NEW}{fineTuning controls defaults
+ for advanced form of lookForAlignDelims} The default values for the advanced form are
+ controlled in \texttt{fineTuning}, see \vref{subsec:finetuning:lookForAlignDelims}. When
+ using the advanced form, each field should receive at least 1 sub-field, and \emph{can}
+ (but does not have to) receive any of the following fields:
  \begin{itemize}
   \item \texttt{delims}: binary switch (0 or 1) equivalent to simply specifying, for
         example, \texttt{tabular: 1} in the basic version shown in \cref{lst:aligndelims:basic}.
@@ -1074,8 +1075,8 @@ latexindent.pl -s tabular5.tex -l alignContentAfterDBS2 -o=+-mod2
  \end{cmhtcbraster}
 
  If you have your own \texttt{item} commands (perhaps you prefer to use \texttt{myitem},
- for example) then you can put adjust \texttt{itemRegEx} in the 
- \texttt{fineTuning} field, discussed in \vref{sec:finetuning}.
+ for example) then you can put adjust \texttt{itemRegEx} in the \texttt{fineTuning}
+ field, discussed in \vref{subsec:finetuning:itemsRegex}.\announce{NEW}{itemsRegex controls item}
 
 \yamltitle{specialBeginEnd}*{fields}\label{yaml:specialBeginEnd}
  The fields specified \index{specialBeginEnd!introduction}
@@ -1083,6 +1084,7 @@ latexindent.pl -s tabular5.tex -l alignContentAfterDBS2 -o=+-mod2
  default state, focused on math mode begin and end statements, but there is no
  requirement for this to be the case; \cref{lst:specialBeginEnd} shows the default
  settings of \texttt{specialBeginEnd}. \index{specialBeginEnd!default settings}%
+ \announce{NEW}{specialBeginEnd specified as list}
 
  \cmhlistingsfromfile*[style=specialBeginEnd]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialBeginEnd}}{lst:specialBeginEnd}
 
@@ -1116,8 +1118,7 @@ latexindent.pl special1.tex -o=+-default
 
  \cmhlistingsfromfile{demonstrations/specialLR.tex}{\texttt{specialLR.tex}}{lst:specialLRbefore}
 
- Now consider the YAML file shown in
- \cref{lst:specialsLeftRight-yaml}
+ Now consider the YAML file shown in \cref{lst:specialsLeftRight-yaml}
  \index{specialBeginEnd!searching for special before commands}
 
  \begin{cmhtcbraster}
@@ -1134,7 +1135,7 @@ latexindent.pl specialLR.tex -l=specialsLeftRight.yaml
  \end{widepage}
  we receive the output in \cref{lst:specialLR-comm-first-tex}.
 
-  \cmhlistingsfromfile{demonstrations/specialLR-comm-first.tex}{\texttt{specialLR.tex} using \cref{lst:specialsLeftRight-yaml}}{lst:specialLR-comm-first-tex}
+ \cmhlistingsfromfile{demonstrations/specialLR-comm-first.tex}{\texttt{specialLR.tex} using \cref{lst:specialsLeftRight-yaml}}{lst:specialLR-comm-first-tex}
 
  \end{example}
 
@@ -1311,17 +1312,15 @@ latexindent.pl special-body.tex -l=special-nested1.yaml
 \yamltitle{indentAfterHeadings}*{fields}
  This field enables the user to specify indentation rules that take effect after heading
  commands such as \lstinline!\part!, \lstinline!\chapter!, \lstinline!\section!,
- \lstinline!\subsection*!, or indeed any user-specified command written in this
- field.
+ \lstinline!\subsection*!, or indeed any user-specified command written in this field.
 
  \cmhlistingsfromfile*[style=indentAfterHeadings]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{indentAfterHeadings}}{lst:indentAfterHeadings}
 
  The default settings do \emph{not} place indentation after a heading, but you can easily
- switch them on by changing \texttt{lookForThis} from 0 to 1. The
- \texttt{level} field tells \texttt{latexindent.pl} the hierarchy of the heading
- structure in your document. You might, for example, like to have both \texttt{section}
- and \texttt{subsection} set with \texttt{level: 3} because you do not want the
- indentation to go too deep.
+ switch them on by changing \texttt{lookForThis} from 0 to 1. The \texttt{level} field
+ tells \texttt{latexindent.pl} the hierarchy of the heading structure in your document.
+ You might, for example, like to have both \texttt{section} and \texttt{subsection} set
+ with \texttt{level: 3} because you do not want the indentation to go too deep.
 
  You can add any of your own custom heading commands to this field, specifying the
  \texttt{level} as appropriate. You can also specify your own indentation in
@@ -1411,6 +1410,11 @@ latexindent.pl mult-nested.tex -l=max-indentation1
  \texttt{verbatimEnvironments} (see \vref{lst:verbatimEnvironments}) or
  \texttt{noIndentBlock} (see \vref{lst:noIndentBlock}).
 
+\subsection{Arguments and the strings allowed between them}
+ The strings allowed between arguments for \texttt{commands}, \texttt{namedGroupingBracesBrackets},
+ \texttt{keyEqualsValuesBracesBrackets} and \texttt{UnNamedGroupingBracesBrackets}
+ are controlled by \texttt{fineTuning}; specific demonstrations are given in \vref{subsec:finetuning:arguments}.
+
 \subsection{The code blocks known to latexindent.pl}\label{subsubsec:code-blocks}
 
  As of Version 3.0, \texttt{latexindent.pl} processes documents using code blocks; each
@@ -1460,7 +1464,7 @@ mand arg text
 ...
 \fi
   \end{lstlisting}                                                                                                                                                                                                                                                                      \\\cmidrule{2-3}
-    items                         & User specified, see \vref{lst:indentafteritems}                               &
+    items                         & User specified, see \vref{lst:indentafteritems}                                             &
     \begin{lstlisting}[,nolol=true,]
 \begin{enumerate}
   \item ...

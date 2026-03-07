@@ -84,22 +84,6 @@ We make the following comments with reference to :numref:`lst:fineTuning`:
 
    #. the ``?`` the end means *non-greedy*, which means ‘stop the match as soon as possible’
 
-#. the ``keyEqualsValuesBracesBrackets`` contains some interesting syntax:
-
-   #. ``|`` means ‘or’
-
-   #. ``(?:(?<!\\)\{)`` the ``(?:...)`` uses a *non-capturing* group – you don’t necessarily need to worry about what this means, but just know that for the ``fineTuning`` feature you should only ever use *non*-capturing groups, and *not* capturing groups, which are simply ``(...)``
-
-   #. ``(?<!\\)\{)`` means a ``{`` but it can *not* be immediately preceded by a ``\``
-
-#. in the ``arguments:before`` field
-
-   #. ``\d\h*`` means a digit (i.e. a number), followed by 0 or more horizontal spaces
-
-   #. ``;?,?`` means *possibly* a semi-colon, and possibly a comma
-
-   #. ``\<.*?\>`` is designed for ’beamer’-type commands; the ``.*?`` means anything in between ``<...>``
-
 #. the ``modifyLineBreaks`` field refers to fine tuning settings detailed in :numref:`sec:modifylinebreaks`. In particular:
 
    #. ``betterFullStop`` is in relation to the one sentence per line routine, detailed in :numref:`sec:onesentenceperline`
@@ -108,14 +92,15 @@ We make the following comments with reference to :numref:`lst:fineTuning`:
 
    #. ``comma`` is in relation to the ``CommaStartsOnOwnLine`` and ``CommaFinishesWithLineBreak`` polyswitches surrounding commas in optional and mandatory arguments; see :numref:`tab:poly-switch-mapping`
 
-It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``before`` and ``between`` fields allow trailing comments, line breaks, and horizontal spaces between each character.
-
 .. index:: warning;capture groups
 
 .. warning::	
 	
-	For the ``fineTuning`` feature you should only ever use *non*-capturing groups, such as ``(?:...)`` and *not* capturing groups, which are ``(...)``
+	For the ``fineTuning`` feature you should usually use *non*-capturing groups, such as ``(?:...)`` and *not* capturing groups, which are ``(...)``
 
+
+fineTuning trailing comments
+----------------------------
 
 .. proof:example::	
 	
@@ -219,6 +204,9 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	The settings in :numref:`lst:fine-tuning3` detail that trailing comments can *not* be followed by a single space, and then the text ‘end’. This means that the ``specialBeginEnd`` routine will be able to find the pattern ``% end`` as the ``end`` part. The trailing comments ``123`` and ``456`` are still treated as trailing comments.
 
 
+fineTuning environments
+-----------------------
+
 .. proof:example::	
 	
 	We can use the ``fineTuning`` settings to tweak how ``latexindent.pl`` finds environments.
@@ -253,6 +241,146 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	
 	Referencing :numref:`lst:fine-tuning4`, unless both ``begin`` and ``end`` are specified, then the default value of ``name`` will be used.
 
+
+.. label follows
+
+.. _subsec:finetuning:itemsRegex:
+
+fineTuning itemsRegex
+---------------------
+
+In :numref:`lst:itemsafter` we demonstrated the default indentation after items. You can customise the ``itemsRegex`` in the ``fineTuning``, which we demonstrate next.
+
+.. proof:example::	
+	
+	We begin with the code in :numref:`lst:items2` and use the settings in :numref:`lst:ft-itemsRegex`. Upon running
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -l ft-itemsRegex items2-o=+-mod1
+	
+	we receive the output in :numref:`lst:items2-mod1`.
+	
+	.. literalinclude:: demonstrations/items2.tex
+		:class: .tex
+		:caption: ``items2.tex`` 
+		:name: lst:items2
+	
+	.. literalinclude:: demonstrations/ft-itemsRegex.yaml
+		:class: .baseyaml
+		:caption: ``ft-itemsRegex.yaml`` 
+		:name: lst:ft-itemsRegex
+	
+	.. literalinclude:: demonstrations/items2-mod1.tex
+		:class: .tex
+		:caption: ``items2-mod1.tex`` 
+		:name: lst:items2-mod1
+	
+
+
+.. label follows
+
+.. _subsec:finetuning:arguments:
+
+fineTuning arguments
+--------------------
+
+The strings allowed between arguments for ``commands``, ``namedGroupingBracesBrackets``, ``keyEqualsValuesBracesBrackets`` and ``UnNamedGroupingBracesBrackets`` are controlled by ``fineTuning``. We demonstrate with an example next.
+
+.. proof:example::	
+	
+	We begin with the code in :numref:`lst:beamer1` and use the settings in :numref:`lst:ft-args`. Upon running
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -l ft-args beamer1-o=+-mod1
+	
+	we receive the output in :numref:`lst:beamer1-mod1`.
+	
+	.. literalinclude:: demonstrations/beamer1.tex
+		:class: .tex
+		:caption: ``beamer1.tex`` 
+		:name: lst:beamer1
+	
+	.. literalinclude:: demonstrations/ft-args.yaml
+		:class: .baseyaml
+		:caption: ``ft-args.yaml`` 
+		:name: lst:ft-args
+	
+	.. literalinclude:: demonstrations/beamer1-mod1.tex
+		:class: .tex
+		:caption: ``beamer1-mod1.tex`` 
+		:name: lst:beamer1-mod1
+	
+
+
+.. label follows
+
+.. _subsec:finetuning:ifElseFi:
+
+fineTuning ifElseFi
+-------------------
+
+We can fine tune the ``elseOrRegEx`` for ``ifElseFi`` blocks as we demonstrate next.
+
+.. proof:example::	
+	
+	We begin with the code in :numref:`lst:ft-ifelsefi` and use the settings in :numref:`lst:ft-ifelsefi-yaml`. Upon running
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -l ft-ifelsefi ft-ifelsefi-o=+-mod1
+	
+	we receive the output in :numref:`lst:ft-ifelsefi-mod1`.
+	
+	.. literalinclude:: demonstrations/ft-ifelsefi.tex
+		:class: .tex
+		:caption: ``ft-ifelsefi.tex`` 
+		:name: lst:ft-ifelsefi
+	
+	.. literalinclude:: demonstrations/ft-ifelsefi.yaml
+		:class: .baseyaml
+		:caption: ``ft-ifelsefi.yaml`` 
+		:name: lst:ft-ifelsefi-yaml
+	
+	.. literalinclude:: demonstrations/ft-ifelsefi-mod1.tex
+		:class: .tex
+		:caption: ``ft-ifelsefi-mod1.tex`` 
+		:name: lst:ft-ifelsefi-mod1
+	
+
+
+.. label follows
+
+.. _subsec:finetuning:lookForAlignDelims:
+
+fineTuning lookForAlignDelims
+-----------------------------
+
+As detailed in :numref:`subsec:align-at-delimiters` there is a basic and an advanced way to specify the entries in ``lookForAlignDelims``; any entries not specified explicitly, will be read from the default values specified in ``fineTuning``.
+
+As an example, the settings in :numref:`lst:ft-align1` and :numref:`lst:ft-align2` and :numref:`lst:ft-align3` are equivalent.
+
+.. literalinclude:: demonstrations/align1.yaml
+	:class: .baseyaml
+	:caption: ``align1.yaml`` 
+	:name: lst:ft-align1
+
+.. literalinclude:: demonstrations/align2.yaml
+	:class: .baseyaml
+	:caption: ``align2.yaml`` 
+	:name: lst:ft-align2
+
+.. literalinclude:: demonstrations/align3.yaml
+	:class: .baseyaml
+	:caption: ``align3.yaml`` 
+	:name: lst:ft-align3
+
+fineTuning using -y switch
+--------------------------
 
 .. proof:example::	
 	

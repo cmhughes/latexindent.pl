@@ -1,0 +1,3 @@
+fineTuning:
+  ifElseFi:
+    elseOrRegEx: \\(?:else|or|cmh)

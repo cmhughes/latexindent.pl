@@ -22,18 +22,6 @@ bug fixes
 <summary>V4.0 verbose details</summary>
 <table>
 <!-- ---------------- table row ---------------- -->
-<tr><th>old</th><th>new</th><th>notes</th></tr>
-<tr>
-  <td>
-
-  </td>
-  <td>
-
-  </td>
-  <td>
-  </td>
-</tr>
-<!-- ---------------- table row ---------------- -->
 <tr>
   <td>
 <pre>

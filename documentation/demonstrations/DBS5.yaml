@@ -1,13 +1,12 @@
 specialBeginEnd:
-    cmhMath:
-        lookForThis: 1
-        begin: '\\<'
-        end: '\\>'
+  - name: cmhMath
+    begin: '\\<'
+    end: '\\>'
 lookForAlignDelims:
     cmhMath: 1
 modifyLineBreaks:
-    specialBeginEnd:
-        cmhMath:
-            DBSFinishesWithLineBreak: 1
-            SpecialBodyStartsOnOwnLine: 1
-            SpecialEndStartsOnOwnLine: 2
+ specialBeginEnd:
+  cmhMath:
+   DBSFinishesWithLineBreak: 1
+   SpecialBodyStartsOnOwnLine: 1
+   SpecialEndStartsOnOwnLine: 2

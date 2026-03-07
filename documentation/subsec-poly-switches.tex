@@ -913,11 +913,11 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
                                                          & \verb!...!                                                        &                                         &                                                                   \\
   \cmidrule{2-4}
   commands                                               & \verb!before words!$\BeginStartsOnOwnLine$                        & $\BeginStartsOnOwnLine$                 & CommandStartsOnOwnLine                                            \\
-                                                         & \verb!\mycommand!$\BodyStartsOnOwnLine$                           & $\BodyStartsOnOwnLine$                  & CommandNameFinishesWithLineBreak                                  \\
+                                                         & \verb!\mycommand!                                                 &                                         &                                                                   \\
                                                          & $\langle$\itshape{arguments}$\rangle$                             &                                         &                                                                   \\
   \cmidrule{2-4}
   namedGroupingBracesBrackets                            & before words$\BeginStartsOnOwnLine$                               & $\BeginStartsOnOwnLine$                 & NameStartsOnOwnLine                                               \\
-                                                         & myname$\BodyStartsOnOwnLine$                                      & $\BodyStartsOnOwnLine$                  & NameFinishesWithLineBreak                                         \\
+                                                         & myname                                                            &                                         &                                                                   \\
                                                          & $\langle$\itshape{braces/brackets}$\rangle$                       &                                         &                                                                   \\
   \cmidrule{2-4}
   keyEqualsValuesBraces\newline Brackets                 & before words$\BeginStartsOnOwnLine$                               & $\BeginStartsOnOwnLine$                 & KeyStartsOnOwnLine                                                \\
@@ -944,17 +944,17 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
  \end{longtable}
 
 \subsubsection{Conflicting poly-switches: sequential code blocks}
-It is very easy to have conflicting poly-switches. The most poly-switch corresponding to the 
-most-recently-found code block will be respected.
+ It is very easy to have conflicting poly-switches. The most poly-switch corresponding to
+ the most-recently-found code block will be respected.
 
  \begin{example}
  We use the \cref{lst:mycommand1}
 
  \cmhlistingsfromfile{demonstrations/mycommand1.tex}{\texttt{mycommand1.tex}}{lst:mycommand1}
 
-and consider the YAML settings given in
- \cref{lst:mycom-mlb4}. The output from running \index{poly-switches!conflicting
- switches} \index{switches!-l demonstration} \index{switches!-m demonstration}
+ and consider the YAML settings given in \cref{lst:mycom-mlb4}. The output from running
+ \index{poly-switches!conflicting switches} \index{switches!-l demonstration}
+ \index{switches!-m demonstration}
 
  \begin{commandshell}
 latexindent.pl -m -l=mycom-mlb4.yaml mycommand1.tex
@@ -1054,21 +1054,21 @@ latexindent.pl -m -l=nested-env-mlb1.yaml nested-env.tex
  has had its leading line break removed.
  \end{example}
 
- To understand it, let's talk about how \texttt{latexindent.pl} 
- has processed \cref{lst:nested-env}; specifically \texttt{latexindent.pl}:
+ To understand it, let's talk about how \texttt{latexindent.pl} has processed
+ \cref{lst:nested-env}; specifically \texttt{latexindent.pl}:
  \begin{enumerate}
-     \item finds the \texttt{environment} named \texttt{one} 
-     \item   searches \texttt{one} for code blocks 
-         \begin{enumerate}
-     \item finds the \texttt{environment} named \texttt{two} 
-     \item searches \texttt{two} for code blocks, finds none
-     \item does the poly-switch work for \texttt{two} instructed by \cref{lst:nested-env-mlb1}: remove 
-         the line break before the end statement, and adds a line break \emph{after} the 
-         end statement.
-         \end{enumerate}
-     \item does the poly-switch work for \texttt{one}
-         instructed by \cref{lst:nested-env-mlb1} which is: remove line breaks 
-         before the end statement, and add a line break \emph{after} the end statement;
+  \item finds the \texttt{environment} named \texttt{one}
+  \item   searches \texttt{one} for code blocks
+        \begin{enumerate}
+         \item finds the \texttt{environment} named \texttt{two}
+         \item searches \texttt{two} for code blocks, finds none
+         \item does the poly-switch work for \texttt{two} instructed by
+               \cref{lst:nested-env-mlb1-yaml}: remove the line break before the end
+               statement, and adds a line break \emph{after} the end statement.
+        \end{enumerate}
+  \item does the poly-switch work for \texttt{one} instructed by
+        \cref{lst:nested-env-mlb1} which is: remove line breaks before the end statement,
+        and add a line break \emph{after} the end statement;
  \end{enumerate}
 
  \begin{example}
@@ -1082,7 +1082,25 @@ latexindent.pl -m -l=nested-env-mlb2.yaml nested-env.tex
  we obtain the output given in \cref{lst:nested-env-mlb2-output}.
 
  \begin{cmhtcbraster}
-  \cmhlistingsfromfile{demonstrations/nested-env-mlb2.tex}{\texttt{nested-env.tex} using \cref{lst:nested-env-mlb2}}{lst:nested-env-mlb2-output}
+  \cmhlistingsfromfile*{demonstrations/nested-env-mlb2.tex}{\texttt{nested-env.tex} using \cref{lst:nested-env-mlb2}}{lst:nested-env-mlb2-output}
   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/nested-env-mlb2.yaml}[MLB-TCB,width=\linewidth]{\texttt{nested-env-mlb2.yaml}}{lst:nested-env-mlb2}
  \end{cmhtcbraster}
+
+ To understand it, let's talk about how \texttt{latexindent.pl} has processed
+ \cref{lst:nested-env-mlb2-output}; specifically \texttt{latexindent.pl}:
+ \begin{enumerate}
+  \item finds the \texttt{environment} named \texttt{one}
+  \item   searches \texttt{one} for code blocks
+        \begin{enumerate}
+         \item finds the \texttt{environment} named \texttt{two}
+         \item searches \texttt{two} for code blocks, finds none
+         \item does the poly-switch work for \texttt{two} instructed by
+               \cref{lst:nested-env-mlb1-yaml}: add a line break before the end
+               statement, and remove line breaks \emph{after} the end statement.
+        \end{enumerate}
+  \item does the poly-switch work for \texttt{one} instructed by
+        \cref{lst:nested-env-mlb2} which is: add a line break before the end statement,
+        and remove line breaks \emph{after} the end statement.
+ \end{enumerate}
+
  \end{example}
