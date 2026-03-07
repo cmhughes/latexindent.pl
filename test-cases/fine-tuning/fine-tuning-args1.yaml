@@ -1,3 +1,2 @@
-fineTuning:
-    arguments:
-      before: '(?:;?,?\/?)+'
+noAdditionalIndent:
+    always-un-named: 1

@@ -1,0 +1,4 @@
+modifyLineBreaks:
+  mandatoryArguments:
+    MandArgBodyStartsOnOwnLine: 1       # -1,0,1,2,3,4
+    RCuBStartsOnOwnLine: 1              # -1,0,1,2,3,4

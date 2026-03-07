@@ -16,46 +16,6 @@
  respectively. We will discuss how to change the settings and behaviour of the script in
  \vref{sec:defuseloc}.
 
-\subsection{Requirements}
-\subsubsection{Perl users}
- Perl users will need a few standard Perl modules -- see \vref{sec:requiredmodules} for
- details; \announce{2018-01-13}{perl module installer helper script} in particular, note
- that a module installer helper script is shipped with \texttt{latexindent.pl}.%
-
-\subsubsection{Windows users without perl}\label{subsubsec:latexindent:exe}
- \texttt{latexindent.pl} ships with \texttt{latexindent.exe} for Windows
- users, so that you can use the script with or without a Perl distribution.
-
- \texttt{latexindent.exe} is available from \cite{latexindent-home}.
-
- MiKTeX users on Windows may like to see \cite{miktex-guide} for details of how to use
- \texttt{latexindent.exe} without a Perl installation. \index{MiKTeX}
- \index{latexindent.exe} \index{Windows}
-
-\subsubsection{Ubuntu Linux users without perl}
- \texttt{latexindent.pl} ships with \texttt{latexindent-linux} for Ubuntu
- Linux users, so that you can use the script with or without a Perl distribution.
- \index{latexindent-linux} \index{linux} \index{TeXLive}
-
- \texttt{latexindent-linux} is available from \cite{latexindent-home}.
- \announce{2022-10-30}{Linux Ubuntu standalone executable}
-
-\subsubsection{macOS users without perl}
- \texttt{latexindent.pl} ships with \texttt{latexindent-macos} for macOS
- users, so that you can use the script with or without a Perl distribution.
- \index{latexindent-macos} \index{macOS} \index{TeXLive}
-
- \texttt{latexindent-macOS} is available from \cite{latexindent-home}.
- \announce{2022-10-30}{macOS standalone executable}
-
-\subsubsection{conda users}
- Users of \texttt{conda} should see the details given in \cref{sec:app:conda}.
- \index{conda}
-
-\subsubsection{docker users}
- Users of \texttt{docker} should see the details given in \cref{sec:app:docker}.
- \index{docker}
-
 \subsection{From the command line}\label{sec:commandline}
  \texttt{latexindent.pl} has a number of different switches/flags/options, which
  can be combined in any way that you like, either in short or long form as detailed below.
@@ -243,8 +203,7 @@ latexindent.pl myfile.tex -o=+out++
 latexindent.pl myfile.tex -o=+out++.tex
 \end{commandshell}
 
- See \vref{app:differences} for details of how the interface has changed from Version 2.2
- to Version 3.0 for this flag. \flagbox{-s, --silent} \index{switches!-s, --silent
+\flagbox{-s, --silent} \index{switches!-s, --silent
  definition and details}
 
  \begin{commandshell}

@@ -1,3 +1,7 @@
 fineTuning:
   NamedGroupingBracesBrackets:
       name: '[A-Z@\*0-9_\\]+' 
+
+noAdditionalIndent:
+    case: 1
+    mycommand: 1

@@ -22,21 +22,22 @@ use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::GetYamlSettings  qw/%mainSettings/;
 use LatexIndent::Switches         qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use LatexIndent::LogFile          qw/$logger/;
-use LatexIndent::Environment      qw/$environmentBasicRegExp/;
-use LatexIndent::IfElseFi         qw/$ifElseFiBasicRegExp/;
-use LatexIndent::Heading          qw/$allHeadingsRegexp/;
-use LatexIndent::Special          qw/$specialBeginAndBracesBracketsBasicRegExp/;
+use LatexIndent::Blocks           qw/_find_all_code_blocks/;
 use Exporter                      qw/import/;
-our @ISA       = "LatexIndent::Document";     # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/one_sentence_per_line/;
+our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
+our @EXPORT_OK = qw/one_sentence_per_line mlb_one_sentence_per_line_indent one_sentence_per_line_store/;
 our $sentenceCounter;
+our @sentenceStorage;
 
 sub one_sentence_per_line {
-    my $self  = shift;
-    my %input = @_;
+    my $self = shift;
 
+    $logger->trace("*one sentence per line info:") if $is_t_switch_active;
+    $logger->trace("\ttext-wrap sentences: ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}")
+        if $is_t_switch_active;
+    $logger->trace("\tindent sentences: 0") if $is_t_switch_active;
     $logger->trace(
-        "*One sentence per line regular expression construction: (see oneSentencePerLine: manipulateSentences)")
+        "one sentence per line regular expression construction: (see oneSentencePerLine: manipulateSentences)")
         if $is_t_switch_active;
 
     #
@@ -247,10 +248,17 @@ sub one_sentence_per_line {
                         /sx;
     }
 
-    # initiate the sentence counter
-    my @sentenceStorage;
-
-    # make the sentence manipulation
+    # ------------------------------------------
+    # one sentence per line routine (finally)
+    # ------------------------------------------
+    my $sentenceWorkAfterIndentation = 0;
+    $sentenceWorkAfterIndentation = 1
+        if (
+        (       ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}
+            and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after'
+        )
+        or ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentenceIndent} =~ m/\h+/
+        );
     ${$self}{body} =~ s/$sentenceRegEx/
                             my $beginning = $1;
                             my $h_space   = ($2?$2:q());
@@ -263,23 +271,28 @@ sub one_sentence_per_line {
                                 # remove trailing comments from within the body of the sentence
                                 while($middle =~ m|$trailingCommentRegExp|){
                                     $middle =~ s|\h*($trailingCommentRegExp)||s;
-                                    $trailingComments .= $1;
+                                    # trailing comments can be wrapped
+                                    if (${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}){
+                                       $trailingComments .= ( $trailingComments eq q() ? q(): "\n").$1;
+                                    } else {
+                                       $trailingComments .= $1;
+                                    }
                                 }
                                 # remove line breaks from within a sentence
                                 $middle =~ s|
                                                 (?!\A)      # not at the *beginning* of a match
                                                 (\h*)\R     # possible horizontal space, then line break
-                                            |$1?$1:" ";|esgx 
+                                            |$1?$1:" ";|esgx;
                             }
                             $middle =~ s|\h{2,}| |sg if ${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{multipleSpacesToSingle};
                             $middle =~ s|$tokens{blanklines}\h*\R?|$tokens{blanklines}\n|sg;
                             $logger->trace("follows: $beginning") if $is_tt_switch_active;
                             $logger->trace("sentence: $middle") if $is_tt_switch_active;
                             $logger->trace("ends with: $end") if $is_tt_switch_active;
-                            # if indentation is specified for sentences, then we treat
-                            # them as objects; otherwise we don't
+                            # if indentation is specified for sentences, then we treat sentences as objects
                             my $replacementText = q();
-                            if(${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{sentenceIndent} =~ m|\h+|){
+                            my $sentenceBody = $middle.$end;
+                            if($sentenceWorkAfterIndentation){
                                 my $sentenceObj = LatexIndent::Sentence->new(
                                                             name=>"sentence",
                                                             begin=>q(),
@@ -288,17 +301,20 @@ sub one_sentence_per_line {
                                                             indentation=>${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{sentenceIndent},
                                                             modifyLineBreaksYamlName=>"sentence",
                                                             BeginStartsOnOwnLine=>1,
+                                                            follows=>$beginning,
                                                           );
                                 # log file output
-                                $logger->trace("*sentence found: $middle.$end") if $is_t_switch_active;
+                                $logger->trace("*sentence found: $middle.$end") if $is_tt_switch_active;
 
                                 # the settings and storage of most objects has a lot in common
-                                $self->get_settings_and_store_new_object($sentenceObj);
+                                $self->one_sentence_per_line_store($sentenceObj);
                                 ${@{${$self}{children}}[-1]}{replacementText} = $beginning.$h_space.$tokens{sentence}.$sentenceCounter.$tokens{endOfToken}.$trailingComments.$trailing.($lineBreaksAtEnd ? q() : "\n");
                                 $replacementText = ${@{${$self}{children}}[-1]}{replacementText};
                             } else {
                                 $sentenceCounter++;
-                                push(@sentenceStorage,{id=>$tokens{sentence}.$sentenceCounter.$tokens{endOfToken},value=>$middle.$end,leadingHorizontalSpace=>$h_space,follows=>$beginning});
+                                push(@sentenceStorage,{id=>$tokens{sentence}.$sentenceCounter.$tokens{endOfToken},
+                                                       value=>$middle.$end,leadingHorizontalSpace=>$h_space,
+                                                       follows=>$beginning});
                                 $replacementText = $beginning.$h_space.$tokens{sentence}.$sentenceCounter.$tokens{endOfToken}.$trailingComments.$trailing.($lineBreaksAtEnd ? q() : "\n");
                             };
                             $replacementText;
@@ -316,75 +332,144 @@ sub one_sentence_per_line {
     #
     #   % first comment%second comment
     #
-    ${$self}{body} =~ s/($trailingCommentRegExp)\h($trailingCommentRegExp)/$1$2/sg;
+    ${$self}{body} =~ s/($trailingCommentRegExp)\h($trailingCommentRegExp)/$1$2/sg
+        unless ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap};
 
-    if ( ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentenceIndent} !~ m/\h+/ ) {
+    #
+    # before:
+    #   \item LTXIN-TK-SENTENCE-117-END
+    # after
+    #   \item
+    #   LTXIN-TK-SENTENCE-117-END
+    ${$self}{body} =~ s/(\S)\h*($tokens{sentence}\d+$tokens{endOfToken})/$1\n$2/sg;
 
-        # loop back through the sentenceStorage and replace with the sentence, adjusting line breaks
-        # before and after appropriately
-        while ( my $sentence = pop @sentenceStorage ) {
-            my $sentenceStorageID    = ${$sentence}{id};
-            my $sentenceStorageValue = ${$sentence}{value};
+    #
+    # before:
+    #    LTXIN-TK-SENTENCE-117-END %tc-13
+    # after:
+    #    LTXIN-TK-SENTENCE-117-END
+    #    %tc-13
+    if ( ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap} ) {
+        ${$self}{body} =~ s/($tokens{sentence}\d+$tokens{endOfToken})\h*($trailingCommentRegExp)/$1\n$2/sg;
+    }
 
-            # option to text wrap (and option to indent) sentences
-            if ( ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences} ) {
-                my $sentenceObj = LatexIndent::Document->new(
-                    body                     => $sentenceStorageValue,
-                    name                     => "sentence",
-                    modifyLineBreaksYamlName => "sentence",
-                    leadingHorizontalSpace   => ${$sentence}{leadingHorizontalSpace},
-                    follows                  => ${$sentence}{follows},
+    # sentence indent means we do the sentence replacement later
+    return if $sentenceWorkAfterIndentation;
+
+    foreach my $sentence (@sentenceStorage) {
+        my $sentenceStorageID    = ${$sentence}{id};
+        my $sentenceStorageValue = ${$sentence}{value};
+
+        # possibly text wrap
+        if (    ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}
+            and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} != 0 )
+        {
+            ${$sentence}{follows} =~ s/.*?\R(\h*)$/$1/s;
+            my $sentenceObj = LatexIndent::Sentence->new(
+                name                     => "sentence",
+                begin                    => q(),
+                body                     => $sentenceStorageValue,
+                end                      => q(),
+                follows                  => ${$sentence}{follows},
+                indentation              => q(),
+                modifyLineBreaksYamlName => "sentence",
+                BeginStartsOnOwnLine     => 1,
+            );
+            $sentenceObj->text_wrap;
+            $sentenceStorageValue = ${$sentenceObj}{body};
+        }
+
+        # sentence at the very END
+        ${$self}{body} =~ s/\h*$sentenceStorageID\h*$/$sentenceStorageValue/s;
+
+        # sentence at the very BEGINNING
+        ${$self}{body} =~ s/^$sentenceStorageID\h*\R?/$sentenceStorageValue\n/s;
+
+        # all other sentences
+        ${$self}{body} =~ s/\R?\h*$sentenceStorageID\h*\R?/\n$sentenceStorageValue\n/s;
+    }
+}
+
+sub mlb_one_sentence_per_line_indent {
+    my $self = shift;
+    return
+        unless (
+        ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
+        and (
+            (       ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}
+                and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after'
+            )
+            or ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentenceIndent} =~ m/\h+/
+        )
+        );
+
+    $logger->trace("*one sentence per line: sentence INDENTATION active, finding code blocks");
+
+    # loop back through the sentenceStorage and replace with the sentence, adjusting line breaks
+    # before and after appropriately
+    foreach my $sentenceObj ( @{ ${$self}{children} } ) {
+        next unless ${$sentenceObj}{modifyLineBreaksYamlName} eq "sentence";
+        my $sentenceStorageID    = ${$sentenceObj}{id};
+        my $sentenceStorageValue = ${$sentenceObj}{value};
+
+        ${$sentenceObj}{follows} =~ s/(.*?\R)//s;
+
+        ${$self}{body} =~ m/^(\h*)$sentenceStorageID/m;
+        my $surroundingIndentation = ( $1 ? $1 : q() );
+
+        ${$sentenceObj}{follows} = $surroundingIndentation;
+
+        # option to text wrap (and option to indent) sentences
+        if ( ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences} ) {
+
+            # text wrapping
+            if ( ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} == 0 ) {
+                $logger->warn("*Sentence text wrap warning:");
+                $logger->info("You have specified oneSentencePerLine:textWrapSentences, but columns is set to 0");
+                $logger->info("You might wish to specify, for example: modifyLineBreaks: textWrapOptions: columns: 80");
+                $logger->info(
+                    "The value of oneSentencePerLine:textWrapSentences will now be set to 0, so you won't see this message again"
                 );
+                ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences} = 0;
+            }
+            else {
+                $sentenceObj->text_wrap if ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences};
+                $surroundingIndentation = q()
+                    unless ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentenceIndent} =~ m/\h+/;
+            }
+        }
 
-                # text wrapping
-                if ( ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} == 0 ) {
-                    $logger->warn("*Sentence text wrap warning:");
-                    $logger->info("You have specified oneSentencePerLine:textWrapSentences, but columns is set to 0");
-                    $logger->info(
-                        "You might wish to specify, for example: modifyLineBreaks: textWrapOptions: columns: 80");
-                    $logger->info(
-                        "The value of oneSentencePerLine:textWrapSentences will now be set to 0, so you won't see this message again"
-                    );
-                    ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences} = 0;
-                }
-                else {
-                    $sentenceObj->text_wrap if $input{textWrap};
-                }
+        ${$sentenceObj}{body} = _find_all_code_blocks( ${$sentenceObj}{body}, "" );
 
-                # indentation of sentences
-                if (${$sentenceObj}{body} =~ m/
+        # indentation of sentences
+        if (${$sentenceObj}{body} =~ m/
                                            (.*?)      # content of first line
                                            \R         # first line break
                                            (.*$)      # rest of body
                                            /sx
-                    )
-                {
-                    my $bodyFirstLine = $1;
-                    my $remainingBody = $2;
-                    my $indentation   = ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentenceIndent};
-                    $logger->trace("first line of sentence:  $bodyFirstLine")                if $is_tt_switch_active;
-                    $logger->trace("remaining body (before indentation):\n'$remainingBody'") if ($is_tt_switch_active);
+            )
+        {
+            my $bodyFirstLine = $1;
+            my $remainingBody = $2;
+            my $indentation
+                = ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentenceIndent} . $surroundingIndentation;
+            $bodyFirstLine =~ s/^\h*//s;
+            $logger->trace("first line of sentence:  $bodyFirstLine")                if $is_tt_switch_active;
+            $logger->trace("remaining body (before indentation):\n'$remainingBody'") if ($is_tt_switch_active);
 
-                    # add the indentation to all the body except first line
-                    $remainingBody =~ s/^/$indentation/mg unless ( $remainingBody eq '' );    # add indentation
-                    $logger->trace("remaining body (after indentation):\n$remainingBody'") if ($is_tt_switch_active);
+            # add the indentation to all the body except first line
+            $remainingBody =~ s/^/$indentation/mg unless ( $remainingBody eq '' );    # add indentation
+            $logger->trace("remaining body (after indentation):\n$remainingBody'") if ($is_tt_switch_active);
 
-                    # put the body back together
-                    ${$sentenceObj}{body} = $bodyFirstLine . "\n" . $remainingBody;
-                }
-
-                $sentenceStorageValue = ${$sentenceObj}{body};
-            }
-
-            # sentence at the very END
-            ${$self}{body} =~ s/\h*$sentenceStorageID\h*$/$sentenceStorageValue/s;
-
-            # sentence at the very BEGINNING
-            ${$self}{body} =~ s/^$sentenceStorageID\h*\R?/$sentenceStorageValue\n/s;
-
-            # all other sentences
-            ${$self}{body} =~ s/\R?\h*$sentenceStorageID\h*\R?/\n$sentenceStorageValue\n/s;
+            # put the body back together
+            ${$sentenceObj}{body} = $bodyFirstLine . "\n" . $remainingBody;
         }
+
+        $sentenceStorageValue = ${$sentenceObj}{body};
+
+        # indented sentences
+        ${$self}{body} =~ s/^(\h*)$sentenceStorageID/$1$sentenceStorageValue/m;
+
     }
 }
 
@@ -406,63 +491,29 @@ sub tasks_particular_to_each_object {
         $self->text_wrap;
     }
 
-    # search for environments
-    $logger->trace('looking for ENVIRONMENTS') if $is_t_switch_active;
-    $self->find_environments                   if ${$self}{body} =~ m/$environmentBasicRegExp/s;
-
-    # search for ifElseFi blocks
-    $logger->trace('looking for IFELSEFI') if $is_t_switch_active;
-    $self->find_ifelsefi                   if ${$self}{body} =~ m/$ifElseFiBasicRegExp/s;
-
-    # search for headings (part, chapter, section, setc)
-    $logger->trace('looking for HEADINGS (chapter, section, part, etc)') if $is_t_switch_active;
-    $self->find_heading                                                  if ${$self}{body} =~ m/$allHeadingsRegexp/s;
-
-    # the ordering of finding commands and special code blocks can change
-    $self->find_commands_or_key_equals_values_braces_and_special
-        if ${$self}{body} =~ m/$specialBeginAndBracesBracketsBasicRegExp/s;
-}
-
-sub indent_body {
-    return unless ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentenceIndent} =~ m/\h+/;
-
-    my $self = shift;
-
-    # indentation of sentences
-    if (${$self}{body} =~ m/
-                          (.*?)      # content of first line
-                          \R         # first line break
-                          (.*$)      # rest of body
-                          /sx
-        )
-    {
-        my $bodyFirstLine = $1;
-        my $remainingBody = $2;
-        my $indentation   = ${$self}{indentation};
-        $logger->trace("first line of sentence  $bodyFirstLine")                 if $is_tt_switch_active;
-        $logger->trace("remaining body (before indentation):\n'$remainingBody'") if ($is_tt_switch_active);
-
-        # add the indentation to all the body except first line
-        $remainingBody =~ s/^/$indentation/mg unless ( $remainingBody eq '' );    # add indentation
-        $logger->trace("remaining body (after indentation):\n$remainingBody'") if ($is_tt_switch_active);
-
-        # put the body back together
-        ${$self}{body} = $bodyFirstLine . "\n" . $remainingBody;
-    }
-}
-
-sub yaml_get_indentation_settings_for_this_object {
     return;
 }
 
-sub add_surrounding_indentation_to_begin_statement {
-
-    # specific method for sentences
+sub one_sentence_per_line_store {
     my $self = shift;
 
-    my $surroundingIndentation = ${$self}{surroundingIndentation};
-    ${$self}{body} =~ s/^(\h*)?/$surroundingIndentation/s;    # add indentation
+    # grab the object to be operated upon
+    my ($latexIndentObject) = @_;
 
+    # give unique id
+    $latexIndentObject->create_unique_id;
+
+    # add trailing text to the id to stop, e.g LATEX-INDENT-ENVIRONMENT1 matching LATEX-INDENT-ENVIRONMENT10
+    ${$latexIndentObject}{id} .= $tokens{endOfToken};
+
+    # the replacement text can be just the ID, but the ID might have a line break at the end of it
+    ${$latexIndentObject}{replacementText} = ${$self}{id};
+
+    # tasks particular to each object
+    $latexIndentObject->tasks_particular_to_each_object;
+
+    # store children in special hash
+    push( @{ ${$self}{children} }, $latexIndentObject );
 }
 
 1;

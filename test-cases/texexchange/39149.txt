@@ -1,0 +1,27 @@
+TRACE: found: documentclass 	 type: commands
+TRACE: found: usepackage 	 type: commands
+TRACE: found: usepackage 	 type: commands
+TRACE: found: usetikzlibrary 	 type: commands
+TRACE: found: newsavebox 	 type: commands
+TRACE: found: savebox 	 type: commands
+TRACE: found: tikzpicture 	 type: environments
+TRACE: found: arguments for tikzpicture environment
+TRACE: found: shade 	 type: commands
+TRACE: found: fill 	 type: commands
+TRACE: found: tikzset 	 type: commands
+TRACE: found: paint/.style 	 type: keyEqualsValuesBracesBrackets
+TRACE: found: my star/.style 	 type: keyEqualsValuesBracesBrackets
+TRACE: found: decoration 	 type: keyEqualsValuesBracesBrackets
+TRACE: found: document 	 type: environments
+TRACE: found: tikzpicture 	 type: environments
+TRACE: found: drawfillMaroonultrathick 	 type: ITEM
+TRACE: found: drawultrathickfillgreen50black 	 type: ITEM
+TRACE: found: in 	 type: namedGroupingBracesBrackets
+TRACE: found: candle 	 type: commands
+TRACE: found: usebox 	 type: commands
+TRACE: found: node 	 type: commands
+TRACE: found: scope 	 type: environments
+TRACE: found: arguments for scope environment
+TRACE: found: decoration 	 type: keyEqualsValuesBracesBrackets
+TRACE: found: drawmystar6paintred 	 type: ITEM
+TRACE: found: drawmystar6paintblue 	 type: ITEM

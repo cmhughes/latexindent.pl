@@ -1,0 +1,10 @@
+defaultIndent: ' '
+
+modifyLineBreaks:
+    textWrapOptions:
+        when: after
+        columns: 90
+        blocksFollow:
+           other: |-
+             (?xm)
+                \\end\{[^}]+?\}(?!\s*\\item)

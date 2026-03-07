@@ -1,0 +1,21 @@
+TRACE: found: preamble, storing as verbatim (indentPreamble: 0)
+TRACE: found: document 	 type: environments
+TRACE: found: in 	 type: namedGroupingBracesBrackets
+TRACE: found: tikzpicture 	 type: environments
+TRACE: found: filldraw 	 type: commands
+TRACE: found: filldraw 	 type: commands
+TRACE: found: filldraw 	 type: commands
+TRACE: found: filldraw 	 type: commands
+TRACE: found: pgfmathparse 	 type: commands
+TRACE: found: ifnum 	 type: ifElseFi
+TRACE: found: draw 	 type: commands
+TRACE: found: decoration 	 type: keyEqualsValuesBracesBrackets
+TRACE: found: pgfmathparse 	 type: commands
+TRACE: found: ifnum 	 type: ifElseFi
+TRACE: found: ifnum 	 type: ifElseFi
+TRACE: found: draw 	 type: commands
+TRACE: found: decoration 	 type: keyEqualsValuesBracesBrackets
+TRACE: found: pgfmathparse 	 type: commands
+TRACE: found: ifnum 	 type: ifElseFi
+TRACE: found: draw 	 type: commands
+TRACE: found: decoration 	 type: keyEqualsValuesBracesBrackets

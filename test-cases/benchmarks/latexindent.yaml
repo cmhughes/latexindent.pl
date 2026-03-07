@@ -1,0 +1,15 @@
+specialBeginEnd:
+  - name: split                                     
+    begin: \\begin\{split
+    end: \}
+    lookForThis: verbatim
+  - name: endsplit                                     
+    begin: \\end\{split
+    end: \}
+    lookForThis: verbatim
+  - name: beaa                                     
+    begin: \\beaa
+    end: \\eea
+
+lookForAlignDelims:
+  beaa: 1

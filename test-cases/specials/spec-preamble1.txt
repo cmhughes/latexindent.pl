@@ -1,0 +1,9 @@
+TRACE: VERBATIM special found: tcbraster
+TRACE: found: DeclareDocumentEnvironment 	 type: commands
+TRACE: found: O 	 type: namedGroupingBracesBrackets
+TRACE: found: END 	 type: namedGroupingBracesBrackets
+TRACE: found: new-to-this-version/.style 	 type: keyEqualsValuesBracesBrackets
+TRACE: found: overlay app 	 type: keyEqualsValuesBracesBrackets
+TRACE: found: node 	 type: commands
+TRACE: found: stardemo 	 type: commands
+TRACE: found: end 	 type: commands

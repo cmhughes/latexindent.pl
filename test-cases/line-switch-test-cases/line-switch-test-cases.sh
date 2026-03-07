@@ -1,7 +1,7 @@
 #!/bin/bash
 . ../common.sh
 
-[[ $silentMode == 0 ]] && set -x 
+openingtasks
 
 # single line ranges
 latexindent.pl --lines 3-5 -s environments-simple-nested.tex -o=+-mod1
@@ -60,5 +60,6 @@ latexindent.pl --lines 1 blank-lines.tex -s -o=+-mod1
 latexindent.pl --lines 4 blank-lines.tex -s -o=+-mod4
 latexindent.pl --lines 6 blank-lines.tex -s -o=+-mod6
 latexindent.pl --lines 8 blank-lines.tex -s -o=+-mod8
-[[ $gitStatus == 1 ]] && git status
-[[ $noisyMode == 1 ]] && makenoise
+
+set +x 
+wrapuptasks

@@ -1,9 +1,11 @@
 specialBeginEnd:
-    groupBG:
-        begin: '\\group_begin:'
-        end: '\\group_end:'
-        lookForThis: 1
-    groupBGLaTeX:
-        begin: '\\begingroup'
-        end: '\\endgroup'
-        lookForThis: 1
+  -
+   name: groupBG
+   begin: '\\group_begin:'
+   end: '\\group_end:'
+   nested: 1
+  -
+   name: groupBGLaTeX
+   begin: '\\begingroup'
+   end: '\\endgroup'
+   nested: 1

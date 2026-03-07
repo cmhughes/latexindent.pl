@@ -59,7 +59,7 @@ sub fatal {
     if ( $logfileline =~ m/^\*/s ) {
         $logfileline =~ s/^\*/FATAL /s;
         $logfileline =~ s/^/       /mg;
-        $logfileline =~ s/^\h+FATAL/FATAL/s;
+        $logfileline =~ s/^\h+FATAL/FATAL:/s;
     }
     else {
         $logfileline =~ s/^/      /mg;

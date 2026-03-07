@@ -24,3 +24,5 @@ modifyLineBreaks:
                     \}
                  | 
                     \]
+                 |
+                    \\begin\{filecontent

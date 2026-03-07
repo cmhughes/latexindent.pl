@@ -1,0 +1,6 @@
+output file check
+       -o switch called with + symbol at the beginning: +myfile++.tex
+       output file is now: cmhmyfile++.tex
+       -o switch called with file name ending with ++: cmhmyfile++.tex
+       will search for existence and increment counter, starting with cmhmyfile0.tex
+       cmhmyfile0.tex does not exist, and will be the output file

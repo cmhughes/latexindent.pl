@@ -1,0 +1,30 @@
+indentAfterHeadings:
+    part:
+       lookForThis: 1
+       level: 1
+    chapter: 
+       lookForThis: 1
+       level: 2
+    section:
+       lookForThis: 1
+       level: 3
+    subsection:
+       lookForThis: 1
+       level: 4
+    subsection*:
+       lookForThis: 1
+       level: 4
+    subsubsection:
+       lookForThis: 1
+       level: 5
+    paragraph:
+       lookForThis: 1
+       level: 6
+    subparagraph:
+       lookForThis: 1
+       level: 7
+
+noAdditionalIndent:
+  problem: 1
+  widepage: 1
+  exercises: 1

@@ -1,2 +1,7 @@
-commandCodeBlocks:
-    stringsAllowedBetweenArguments: 0
+fineTuning:
+  arguments:
+    between: |-                               #
+      (?x)                                    #
+      (?:                                     # 
+        [_^*#0-9(),+-]                        #
+      )                                       #

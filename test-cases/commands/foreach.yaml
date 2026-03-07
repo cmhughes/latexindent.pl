@@ -1,8 +1,13 @@
-commandCodeBlocks:
-    roundParenthesesAllowed: 1
-    stringsAllowedBetweenArguments:
-      - 
-        amalgamate: 0
-      - '\\x\/\\y'
-      - 'in'
-      - 'to'
+fineTuning:
+  arguments:
+    between: |-
+      (?x)
+      (?:
+        [_^*#0-9(),]
+        |
+        in
+        |
+        to
+        |
+        \\x\/\\y
+      )

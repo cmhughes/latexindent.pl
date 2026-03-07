@@ -1,8 +1,9 @@
 specialBeginEnd:
-    If:
-        begin: '\\If'
-        middle: 
-          - '\\ElsIf'
-          - '\\Else'
-        end: '\\EndIf'
-        lookForThis: 1
+  -
+    name: If
+    begin: '\\If'
+    middle: 
+      - '\\ElsIf'
+      - '\\Else'
+    end: '\\EndIf'
+    lookForThis: 1

@@ -1,0 +1,11 @@
+specialBeginEnd:
+  -
+   name: specialIfFi
+   begin: \\If\{[^}]*\}
+   end: \\EndIf\{[^}]*\}
+   middle: 
+     - \\ElseIf\{[^}]*\}
+     - \\Else\{[^}]*\}
+fineTuning:
+  commands:
+    name: (?!If|EndIf)[+a-zA-Z@\*0-9_\:]+

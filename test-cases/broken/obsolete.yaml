@@ -1,0 +1,61 @@
+preambleCommandsBeforeEnvironments: 0                              # <---- PROBABLY DITCH, update obsolete warnings in GetYamlSettings.pm?
+
+# if you want to use other names for your items (for example, \part)
+# then populate them here; note that you can trick latexindent.pl
+# into indenting all kinds of commands (within environments specified in
+# indentAfterItems) using this technique.
+itemNames:                         #<---- DITCH, update obsolete warnings in GetYamlSettings.pm !!!!!!!!!!!!!!!!
+  item: 1                          #<---- DITCH, update obsolete warnings in GetYamlSettings.pm !!!!!!!!!!!!!!!!
+  myitem: 1                        #<---- DITCH, update obsolete warnings in GetYamlSettings.pm !!!!!!!!!!!!!!!!
+
+# specialBeginEnd is, by default, mathmode focus, although
+# there's no restrictions
+specialBeginEnd:
+  specialBeforeCommand: 0                              # <!---- PROBABLY DITCH, update obsolete warnings in GetYamlSettings.pm 
+
+
+# set noAdditionalIndent globally for codeblocks
+noAdditionalIndentGlobal:
+  filecontents: 0                   # 0/1     # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
+
+# set indentRules globally for codeblocks; these need
+# to be horizontal spaces, if they are to be used
+indentRulesGlobal:
+  filecontents: 0                   # 0/h-space    # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
+
+# command code block details
+commandCodeBlocks:                # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
+  roundParenthesesAllowed: 1      # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
+  stringsAllowedBetweenArguments: # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
+    - amalgamate: 1               # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
+    - node                        # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
+    - at                          # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
+    - to                          # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
+    - decoration                  # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
+    - \+\+                        # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
+    - \-\-                        # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
+    - \#\#\d                      # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
+  commandNameSpecial:             # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
+    - amalgamate: 1               # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
+    - '@ifnextchar\['             # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
+
+# modifyLineBreaks will only be searched if the -m switch is active
+modifyLineBreaks:
+  textWrapOptions:
+    blocksFollow:
+      filecontents: 1                   # 0/1        # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
+    blocksEndBefore:
+      filecontents: 1                   # 0/1        # <!---  to be DITCH, update obsolete warnings in GetYamlSettings.pmED
+
+# fineTuning: tweak the internal pattern central to latexindent.pl
+fineTuning:
+  items:
+    canBeFollowedBy: (?:\[[^]]*?\])|(?:<[^>]*?>)  #<!------------- DITCH, update obsolete warnings in GetYamlSettings.pm
+  keyEqualsValuesBracesBrackets:
+    follow: (?:(?<!\\)\{)|,|(?:(?<!\\)\[)     #<!------------- DITCH, update obsolete warnings in GetYamlSettings.pm
+  namedGroupingBracesBrackets:
+    follow: \h|\R|\{|\[|\$|\)|\(              #<!------------- DITCH, update obsolete warnings in GetYamlSettings.pm
+  UnNamedGroupingBracesBrackets:
+    follow: \{|\[|,|&|\)|\(|\$                #<!------------- DITCH, update obsolete warnings in GetYamlSettings.pm
+  arguments:
+    before: (?:#\d\h*;?,?\/?)+|\<.*?\>        #<!------------- DITCH, update obsolete warnings in GetYamlSettings.pm

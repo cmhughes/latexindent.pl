@@ -1,0 +1,9 @@
+specialBeginEnd:
+  -
+   name: tikzPath
+   begin: '\\path'
+   end: ';'
+
+fineTuning:
+  commands:
+    name: (?!path)[+a-zA-Z@*0-9_:]+

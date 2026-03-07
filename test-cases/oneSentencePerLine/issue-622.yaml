@@ -1,0 +1,53 @@
+modifyLineBreaks:
+  # One sentence per line for clean diffs
+  oneSentencePerLine:
+    manipulateSentences: 1
+  mandatoryArguments:
+    privatenote:
+      RCuBFinishesWithLineBreak: 2
+
+# Extended betterFullStop: adds lookbehind for single-letter initials (A., Ph.D.)
+# and common abbreviations. Adds ' to the negative lookahead so that .'' is
+# handled by sentencesEndWith.other above rather than splitting here.
+fineTuning:
+  modifyLineBreaks:
+    betterFullStop: |-
+      (?x)                                # ignore spaces in the below
+      (?:                                 #
+        \.\)                              # .)
+        (?!\h*[a-z])                      # not *followed by* a-z
+      )                                   #
+      |                                   # OR
+      (?:                                 #
+        (?<!                              # not *preceded by*
+          (?:                             #
+            (?:[eE]\.[gG])                # e.g
+            |                             #
+            (?:[iI]\.[eE])                # i.e
+            |                             #
+            (?:etc)                       # etc
+            |                             #
+            (?:[wW]\.[rR]\.[tT])          # w.r.t
+            |                             #
+            (?:\b[a-zA-Z]{1,4}\.){1,2}    # single initial: A., Ph.D., M.D., etc.
+            |                             #
+            (?:\b(?:rev|fig|cf|pp|vol|no|ed|eds|trans|vs|dept|sec|para|chap|ibid))
+          )                               #
+        )                                 #
+      )                                   #
+      \.                                  # .
+      (?!                                 # not *followed by*
+        (?:                               #
+          [a-zA-Z0-9-~,']                 # ' defers .'' to sentencesEndWith.other
+          |                               #
+          \),                             # ),
+          |                               #
+          \)\.                            # ).
+        )                                 #
+      )                                   #
+
+replacements:
+  - 
+    when: after
+    substitution: |-
+      s/(\.\h*\R)\h*%+\R/$1/sg

@@ -1,0 +1,45 @@
+% !TeX encoding = UTF-8
+% !TEX TS-program = lualatex
+\documentclass[a4paper,12pt]{ctexrep}
+\usepackage{hyperref}
+\usepackage{tabularray}
+
+\begin{document}
+\begin{table}
+	\centering
+	\begin{tblr}[
+		tall,
+		note{$\dag$} = {Comment for tblr.},
+		]{
+		hlines,vlines,
+		cells={c,m},
+		row{1,3} = {10ex},
+				row{7} = {7ex},
+			}
+			{%
+		\href{127.0.0.1}{row1 line1}     \\
+		\href{127.0.0.1}{row1 line2}     \\
+				\href{127.0.0.1}{row1 line3}%
+		}                                \\
+		{row2 line4}\TblrNote{$\dag$}    \\
+		{%
+		\href{127.0.0.1}{row3 line5 (1)}、% This is because the line is too long to edit so i use "%" to break it.
+		\href{127.0.0.1}{row3 line5 (2)} \\
+		\href{127.0.0.1}{%This is becasue the content of the cell is too long to be indented.
+			row 3 line6 (1) longlong%
+			longlonglonglonglong%
+		}、%
+		\href{127.0.0.1}{row3 line6 (2)} \\
+		\href{127.0.0.1}{%
+			row3 line7}%
+		}                                \\
+		{row4 line8}                     \\
+		{%
+		{%
+				\href{127.0.0.1}{row5 line9}%
+			}
+		}                                \\
+	\end{tblr}
+\end{table}
+\end{document}
+

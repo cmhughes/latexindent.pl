@@ -1,0 +1,6 @@
+lookForAlignDelims:
+  align: 1
+
+fineTuning:
+  lookForAlignDelimsDefaults:
+    alignDoubleBackSlash: 1

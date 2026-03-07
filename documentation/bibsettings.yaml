@@ -8,8 +8,8 @@ lookForAlignDelims:
    online: 
       delimiterRegEx: '(?<!v)(?<!spfreload)(?<!tab)(=)'
 
-fineTuning:
-    keyEqualsValuesBracesBrackets:
-      follow: '(?:(?<!\\)\{)|(?:(?<!\\)\[)'
-    UnNamedGroupingBracesBrackets: 
-      follow: '\{|\[|,|&|\)|\(|\$|='
+noAdditionalIndent:
+  @online: 
+    body: 1
+  @book: 
+    body: 1

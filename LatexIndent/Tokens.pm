@@ -30,26 +30,11 @@ my $ifelsefiSpecial = "!-!";
 our %tokens = (
 
     # user-facing naming convention
-    environments                  => $beginningToken . "ENVIRONMENT",
-    commands                      => $beginningToken . "COMMAND",
-    optionalArguments             => $beginningToken . "OPTIONAL-ARGUMENT",
-    mandatoryArguments            => $beginningToken . "MANDATORY-ARGUMENT",
-    ifElseFi                      => $ifelsefiSpecial . $beginningToken . "IFELSEFI",
-    else                          => $beginningToken . "ELSE",
-    items                         => $beginningToken . "ITEMS",
-    keyEqualsValuesBracesBrackets => $beginningToken . "KEY-VALUE-BRACES",
-    namedGroupingBracesBrackets   => $beginningToken . "GROUPING-BRACES",
-    UnNamedGroupingBracesBrackets => $beginningToken . "UN-NAMED-GROUPING-BRACES",
-    specialBeginEnd               => $beginningToken . "SPECIAL",
-    afterHeading                  => $beginningToken . "HEADING",
-    filecontents                  => $beginningToken . "FILECONTENTS",
+    filecontents => $beginningToken . "FILECONTENTS",
 
     # internal-facing naming convention
-    trailingComment => "latexindenttrailingcomment",
-    ifelsefiSpecial => $ifelsefiSpecial,
-    blanklines      => $beginningToken . "blank-line",
-    arguments       => $beginningToken . "ARGUMENTS",
-    roundBracket    => $beginningToken . "ROUND-BRACKET",
+    trailingComment => "tc",
+    blanklines      => $beginningToken . "bl",
     verbatim        => $beginningToken . "VERBATIM",
     verbatimInline  => $beginningToken . "VERBATIM-inline",
     preamble        => $beginningToken . "preamble",
@@ -59,6 +44,20 @@ our %tokens = (
     paragraph       => $beginningToken . "PARA",
     sentence        => $beginningToken . "SENTENCE",
     endOfToken      => "-END",
+
+    # m-switch specific tokens
+    mBeforeBeginLineBreakADD    => "mBeforeBeginLineADD",
+    mBeforeBeginLineBreakREMOVE => "mBeforeBeginLineBreakREMOVE",
+    mAfterEndRemove             => "mAfterEndRemove",
+    mAfterEndLineBreak          => "mAfterEndLineBreak",
+    mSwitchComment              => "mSwitchComment",
+    mSwitchCommentFi            => "mSwitchCommentFi",
+
+    # specialBeginEnd Middle token
+    specialBeginEndMiddle => "specialMiddle",
+
+    # ifElseFi trailing singlespace
+    mElseTrailingSpace => "mElseTrailingSpace",
 );
 
 sub token_check {

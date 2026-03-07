@@ -1,0 +1,6 @@
+noAdditionalIndent:
+  00: 1
+  widepage: 1
+indentRules:
+  always-un-named:
+    optionalArguments: ''

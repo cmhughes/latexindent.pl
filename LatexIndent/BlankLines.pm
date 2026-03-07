@@ -52,9 +52,9 @@ sub condense_blank_lines {
 
         # log file information
         $logger->trace("Updating body to include blank line token, this requires preserveBlankLines = 1")
-            if ($is_tt_switch_active);
+            if ($is_t_switch_active);
         $logger->trace("(any blanklines that could have been removed, would have done so by this point)")
-            if ($is_tt_switch_active);
+            if ($is_t_switch_active);
 
         # make the call
         $self->protect_blank_lines;
@@ -100,7 +100,7 @@ sub unprotect_blank_lines {
     while ( ${$self}{body} =~ m/$blankLineToken/s ) {
 
         # when the blank line token occupies the whole line
-        ${$self}{body} =~ s/^\h*$blankLineToken$//mg;
+        ${$self}{body} =~ s/^\h*$blankLineToken\h*$//mg;
 
         # when there's stuff *after* the blank line token
         ${$self}{body} =~ s/(^\h*)$blankLineToken/"\n".$1/meg;

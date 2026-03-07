@@ -1,5 +1,23 @@
 modifyLineBreaks:
     environments:
         BodyStartsOnOwnLine: 2
+        cases:
+          BodyStartsOnOwnLine: 0
     optionalArguments:
         LSqBStartsOnOwnLine: 1
+
+fineTuning:
+  environments:
+    begin: \\begin\{(?!cases)[^}]+\}
+    end: \\end\{\2\}
+  commands:
+    name: (?!begin|end)[+a-zA-Z@*0-9_:]+
+
+specialBeginEnd:
+  - name: cases
+    begin: \\begin\{cases\}
+    end: \\end\{cases\}
+
+lookForAlignDelims:
+  cases: 
+    lookForChildCodeBlocks: 0

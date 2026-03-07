@@ -1,0 +1,3 @@
+WARN:  Obsolete YAML
+       modifyLineBreaks: textWrapOptions: blocksFollow: filecontents obsolete, no need for it from V4.0
+       modifyLineBreaks: textWrapOptions: blocksEndBefore: filecontents obsolete, no need for it from V4.0

@@ -499,8 +499,8 @@
 \newlength{\offsetpage}
 \setlength{\offsetpage}{3.0cm}
 \newenvironment{widepage}{\begin{adjustwidth}{-\offsetpage}{}%{-.5\offsetpage}%
-		\addtolength{\textwidth}{2\offsetpage}}%
-		{\end{adjustwidth}}
+	\addtolength{\textwidth}{2\offsetpage}}%
+{\end{adjustwidth}}
 
 % renew the quote environment to make it italic
 \let\oldquote\quote
@@ -509,13 +509,13 @@
 
 % for quotations with an attributed source
 \def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip2em
-			\hbox{}\nobreak\hfil#1%
-			\parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
+		\hbox{}\nobreak\hfil#1%
+		\parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
 
 \newsavebox\mybox
 \newenvironment{aquote}[1]
 {\savebox\mybox{#1}\begin{quote}}
-		{\signed{\usebox\mybox}\end{quote}}
+{\signed{\usebox\mybox}\end{quote}}
 
 % recommendations
 % recommendations

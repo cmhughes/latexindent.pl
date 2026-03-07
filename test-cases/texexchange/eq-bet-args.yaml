@@ -1,0 +1,9 @@
+fineTuning:
+  arguments:
+    between: |-                               #
+      (?x)                                    #
+      (?:                                     # 
+        [_^*#0-9(),+-=]                       # <!--- NEW
+        |                                     #
+        (?:node|at|to|decoration)             #
+      )                                       #

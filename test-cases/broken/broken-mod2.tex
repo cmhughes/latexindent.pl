@@ -1,0 +1,13 @@
+\pgfplotstableset{percentstyle/.style={
+		preproc/expr={##1*100},
+		dec sep align,fixed,fixed zerofill,
+		postproc cell content/.append code={
+				\ifx
+				\else
+					\ifnum1=\pgfplotstablepartno
+						\pgfkeysalso{@cell content/.add={}{\,\%}}%
+					\fi
+				\fi
+			},
+		precision=0,
+	},

@@ -1,4 +1,14 @@
 indentRules:
    part: "      "
-itemNames:
-    part: 1
+fineTuning:
+  items:
+    itemRegEx: |-
+      (?x)
+      \\
+      (?:
+        item
+        |
+        myitem
+        |
+        part
+      )

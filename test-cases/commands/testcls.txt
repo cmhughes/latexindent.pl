@@ -1,0 +1,5 @@
+TRACE: found: titlepage 	 type: environments
+TRACE: found: arguments for titlepage environment
+TRACE: found: mycommand 	 type: commands
+TRACE: found: center 	 type: environments
+TRACE: found: nested 	 type: environments

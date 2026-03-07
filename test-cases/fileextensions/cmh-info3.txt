@@ -1,0 +1,8 @@
+output file check
+       -o switch called with + symbol at the beginning: +output++
+       output file is now: cmhoutput++
+       -o switch called with file name without extension: +output++
+       Updated to cmhoutput++.tex as the file extension of the input file is tex
+       -o switch called with file name ending with ++: cmhoutput++.tex
+       will search for existence and increment counter, starting with cmhoutput0.tex
+       cmhoutput0.tex does not exist, and will be the output file

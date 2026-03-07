@@ -4,7 +4,10 @@
 \usepackage{lipsum}
 \usepackage{graphicx}
 \usepackage{environ}
-\usepackage[showframe=true]{geometry}
+\usepackage%
+[showframe=true%
+]%
+{geometry}
 
 \newsavebox{\vabox}
 
@@ -34,7 +37,7 @@
 \begin{document}
 
 \sbox{\vabox}{%
-	\begin{minipage}
+	\begin{minipage}%
 		[b%
 		]%
 		[%
@@ -49,7 +52,7 @@
 		{example-image-a}
 	\end{minipage}
 	%
-	\begin{minipage}
+	\begin{minipage}%
 		[b%
 		]%
 		[%
@@ -64,7 +67,7 @@
 		{example-image-b}
 	\end{minipage}
 	%
-	\begin{minipage}
+	\begin{minipage}%
 		[b%
 		]%
 		[%
@@ -79,7 +82,7 @@
 		{example-image-c}
 	\end{minipage}
 	%
-	\begin{minipage}
+	\begin{minipage}%
 		[b%
 		]%
 		[%
@@ -94,7 +97,7 @@
 		{example-image}
 	\end{minipage}
 	%
-	\begin{minipage}
+	\begin{minipage}%
 		[b%
 		]%
 		[%
@@ -112,7 +115,7 @@
 }%
 
 \noindent
-\begin{minipage}
+\begin{minipage}%
 	[b%
 	]%
 	[\ht\vabox%
@@ -128,7 +131,7 @@
 \end{minipage}
 %
 \hfill
-\begin{minipage}
+\begin{minipage}%
 	[b%
 	]%
 	[\ht\vabox%
@@ -144,7 +147,7 @@
 \end{minipage}
 %
 \hfill
-\begin{minipage}
+\begin{minipage}%
 	[b%
 	]%
 	[\ht\vabox%
@@ -160,7 +163,7 @@
 \end{minipage}
 %
 \hfill
-\begin{minipage}
+\begin{minipage}%
 	[b%
 	]%
 	[\ht\vabox%
@@ -176,7 +179,7 @@
 \end{minipage}
 %
 \hfill
-\begin{minipage}
+\begin{minipage}%
 	[b%
 	]%
 	[\ht\vabox%
@@ -195,7 +198,7 @@
 
 \begin{verticallyaligned}
 	\noindent
-	\begin{minipage}
+	\begin{minipage}%
 		[b%
 		]%
 		[\vamaxheight%
@@ -211,7 +214,7 @@
 	\end{minipage}
 	%
 	\hfill
-	\begin{minipage}
+	\begin{minipage}%
 		[b%
 		]%
 		[\vamaxheight%
@@ -227,7 +230,7 @@
 	\end{minipage}
 	%
 	\hfill
-	\begin{minipage}
+	\begin{minipage}%
 		[b%
 		]%
 		[\vamaxheight%
@@ -243,7 +246,7 @@
 	\end{minipage}
 	%
 	\hfill
-	\begin{minipage}
+	\begin{minipage}%
 		[b%
 		]%
 		[\vamaxheight%
@@ -259,7 +262,7 @@
 	\end{minipage}
 	%
 	\hfill
-	\begin{minipage}
+	\begin{minipage}%
 		[b%
 		]%
 		[\vamaxheight%
@@ -283,7 +286,7 @@
 \begin{figure}
 	\begin{verticallyaligned}
 		\noindent
-		\begin{minipage}
+		\begin{minipage}%
 			[b%
 			]%
 			[\vamaxheight%
@@ -300,7 +303,7 @@
 		\end{minipage}
 		%
 		\hfill
-		\begin{minipage}
+		\begin{minipage}%
 			[b%
 			]%
 			[\vamaxheight%

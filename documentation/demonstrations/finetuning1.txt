@@ -1,0 +1,9 @@
+TRACE: found: mycommand 	 type: commands
+TRACE: found: rule 	 type: commands
+TRACE: found: H 	 type: namedGroupingBracesBrackets
+TRACE: found: rule 	 type: commands
+TRACE: found: G 	 type: namedGroupingBracesBrackets
+TRACE: found: rule 	 type: commands
+TRACE: found: h 	 type: namedGroupingBracesBrackets
+TRACE: found: rule 	 type: commands
+TRACE: found: g 	 type: namedGroupingBracesBrackets

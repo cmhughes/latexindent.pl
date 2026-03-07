@@ -1,0 +1,13 @@
+WARN:  Obsolete YAML
+       preambleCommandsBeforeEnvironments obsolete, no need for it from V4.0
+       itemNames obsolete, use fineTuning: items: itemRegex instead
+       noAdditionalIndentGlobal: filecontents obsolete, no need for it from V4.0
+       indentRulesGlobal: filecontents obsolete, no need for it from V4.0
+       commandCodeBlocks obsolete, no need for it from V4.0
+       modifyLineBreaks: textWrapOptions: blocksFollow: filecontents obsolete, no need for it from V4.0
+       modifyLineBreaks: textWrapOptions: blocksEndBefore: filecontents obsolete, no need for it from V4.0
+       fineTuning: items: canBeFollowedBy obsolete, no need for it from V4.0
+       fineTuning: keyEqualsValuesBracesBrackets: follow obsolete, no need for it from V4.0
+       fineTuning: namedGroupingBracesBrackets: follow obsolete, no need for it from V4.0
+       fineTuning: UnNamedGroupingBracesBrackets: follow obsolete, no need for it from V4.0
+       fineTuning: arguments: before obsolete, no need for it from V4.0

@@ -4,3 +4,19 @@ noAdditionalIndentGlobal:
 modifyLineBreaks:
     textWrapOptions:
         columns: 0
+
+indentAfterHeadings:
+    appendix:
+       indentAfterThisHeading: 0
+    section:
+       indentAfterThisHeading: 0
+    subsection:
+       indentAfterThisHeading: 0
+    yamltitle:
+       indentAfterThisHeading: 0
+    flagbox:
+       indentAfterThisHeading: 0
+    subsubsection:
+       indentAfterThisHeading: 0
+    paragraph:
+       indentAfterThisHeading: 0

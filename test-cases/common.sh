@@ -22,6 +22,7 @@
 silentMode=0
 gitStatus=0
 loopmin=1
+userSpecifiedLoopMin=0
 [[ $verbatimTest == 1 ]] && loopmin=-1
 noisyMode=0
 
@@ -49,6 +50,7 @@ do
     # only do this one in the loop
     loopmin=$OPTARG
     loopmax=$OPTARG
+    userSpecifiedLoopMin=1
    ;;
   s)    
    silentMode=1
@@ -63,4 +65,44 @@ done
 function makenoise
 {
     paplay /usr/share/sounds/freedesktop/stereo/complete.oga
+}
+
+function openingtasks
+{
+    set +x
+    [[ $silentMode == 1 ]] && exec > latexindent-count.log 2>&1 && set -x
+    [[ $silentMode == 0 ]] && set -x
+}
+
+function keepappendinglogfile
+{
+    [[ $silentMode == 1 ]] && exec >> latexindent-count.log 2>&1 && set -x
+    [[ $silentMode == 0 ]] && set -x
+}
+
+function wrapuptasks
+{
+    set +x
+
+    # redirect exec back to terminal
+    # https://stackoverflow.com/questions/25474854/after-using-exec-1file-how-can-i-stop-this-redirection-of-the-stdout-to-file
+    exec 1>&0
+    exec 2>&0
+
+    # check log files for errors
+    egrep -i --color=auto 'Use of uninitialized value' latexindent-count.log
+    egrep -i --color=auto 'BEGIN failed--compilation aborted' latexindent-count.log
+    egrep -i --color=auto 'Compilation failed in require' latexindent-count.log
+    egrep -i --color=auto 'Global symbol' latexindent-count.log
+    egrep -i --color=auto 'Not a hash reference' latexindent-count.log
+    egrep -i --color=auto 'Useless use of' latexindent-count.log
+    egrep -i --color=auto 'YAML::Tiny found illegal characters in plain scalar' latexindent-count.log
+    egrep -i --color=auto 'Unescaped left brace in regex is passed through in regex; marked by <-- HERE' latexindent-count.log
+    egrep -i --color=auto 'Unescaped right brace in regex is passed through in regex; marked by <-- HERE' latexindent-count.log
+    egrep -i --color=auto 'Undefined subroutine' latexindent-count.log
+    egrep -i --color=auto "Can't locate object method" latexindent-count.log
+    
+    set +x
+    [[ $noisyMode == 1 ]] && makenoise
+    [[ $gitStatus == 1 ]] && set -x && git status
 }

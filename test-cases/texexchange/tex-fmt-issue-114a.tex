@@ -1,0 +1,22 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\Grad}{\nabla_{\!\bs{X}}}
+
+\begin{document}
+
+\begin{equation}
+    \begin{aligned}
+        \ldots ={}& \text{many terms} \\
+        & + \text{over multiple lines} \\
+        & + \int_{\Omega_f^0}\tau_\mathrm{sd}\rho_f J_f^{n+1}\biggl\{
+            \Bigl[{\Bigl(\bs{F}_f^{n+1}\Bigr)}^{-1}(\bs{u}^n-\bs{w}^{n+1})\cdot\Grad\psi_i\Bigr]
+            \\
+        & \hphantom{+ \int_{\Omega_f^0}\tau_\mathrm{sd}\rho_f J_f^{n+1}\biggl\{\ }
+            \Bigl[{\Bigl(\bs{F}_f^{n+1}\Bigr)}^{-1}(\bs{u}^n-\bs{w}^{n+1})\cdot\Grad\tilde{u}_i^{n+1}\Bigr]
+            \biggr\}
+    \end{aligned}
+\end{equation}
+
+\end{document}

@@ -1,0 +1,18 @@
+TRACE: found: ForStatement 	 type: specialBeginEnd
+TRACE: found: FORStatement 	 type: specialBeginEnd
+TRACE: found: FORStatement 	 type: specialBeginEnd
+TRACE: found: FORStatement 	 type: specialBeginEnd
+TRACE: found: STATE 	 type: commands
+TRACE: found: IfStatement 	 type: specialBeginEnd
+TRACE: found: WhileStatement 	 type: specialBeginEnd
+TRACE: found: \ElsIf{$quality\ge 7$}	 type: specialBeginEnd MIDDLE
+TRACE: found: \Else	 type: specialBeginEnd MIDDLE
+TRACE: found: ForAllStatement 	 type: specialBeginEnd
+TRACE: found: LoopStatement 	 type: specialBeginEnd
+TRACE: found: RepeatStatement 	 type: specialBeginEnd
+TRACE: found: FunctionStatement 	 type: specialBeginEnd
+TRACE: found: Comment 	 type: commands
+TRACE: found: WhileStatement 	 type: specialBeginEnd
+TRACE: found: Comment 	 type: commands
+TRACE: found: textbf 	 type: commands
+TRACE: found: Comment 	 type: commands

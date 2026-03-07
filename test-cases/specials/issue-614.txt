@@ -1,0 +1,17 @@
+TRACE: found: inlineMath 	 type: specialBeginEnd
+TRACE: found: tilde 	 type: commands
+TRACE: found: inlineMath 	 type: specialBeginEnd
+TRACE: found: tilde 	 type: commands
+TRACE: found: inlineMath 	 type: specialBeginEnd
+TRACE: found: inlineMath 	 type: specialBeginEnd
+TRACE: found: cref 	 type: commands
+TRACE: found: inlineMath 	 type: specialBeginEnd
+TRACE: found: inlineMath 	 type: specialBeginEnd
+TRACE: found: interior 	 type: commands
+TRACE: found: equation* 	 type: environments
+TRACE: found: interior 	 type: commands
+TRACE: found: int 	 type: commands
+TRACE: found: abs 	 type: commands
+TRACE: found: mtext 	 type: commands
+TRACE: found: inlineMath 	 type: specialBeginEnd
+TRACE: found: tilde 	 type: commands

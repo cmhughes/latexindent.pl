@@ -24,11 +24,12 @@ use LatexIndent::LogFile         qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @EXPORT_OK
-    = qw/remove_trailing_comments put_trailing_comments_back_in $trailingCommentRegExp add_comment_symbol construct_trailing_comment_regexp @trailingComments/;
+    = qw/remove_trailing_comments put_trailing_comments_back_in $trailingCommentRegExp add_comment_symbol construct_trailing_comment_regexp @trailingComments $alignMarkUpBlockPresent/;
 our @trailingComments;
 our $commentCounter = 0;
 our $notPrecededByRegExp;
 our $trailingCommentRegExp;
+our $alignMarkUpBlockPresent = 0;
 
 sub construct_trailing_comment_regexp {
     $notPrecededByRegExp = qr/${${$mainSettings{fineTuning}}{trailingComments}}{notPrecededBy}/;
@@ -86,11 +87,17 @@ sub remove_trailing_comments {
                             )
                             $                     # up to the end of a line
                         /   
+                            my $commentValue = $1;
+
+                            my $alignMarkUpBlock = ($commentValue =~m @^\*\h*\\(?:begin|end)\{([^}]+)\}*@ and ${ $mainSettings{lookForAlignDelims} }{$1} ? 1 : 0);
+
+                            $alignMarkUpBlockPresent = $alignMarkUpBlock unless $alignMarkUpBlockPresent;
+
                             # increment comment counter and store comment
                             $commentCounter++;
-                            push(@trailingComments,{id=>$tokens{trailingComment}.$commentCounter.$tokens{endOfToken},value=>$1});
+                            push(@trailingComments,{id=>$tokens{trailingComment}.$commentCounter.$tokens{endOfToken},value=>$commentValue,alignMarkUp=>$alignMarkUpBlock});
 
-                            # replace comment with dummy text
+                            # replace comment with token
                             "%".$tokens{trailingComment}.$commentCounter.$tokens{endOfToken};
                        /xsmeg;
     if (@trailingComments) {
@@ -100,6 +107,13 @@ sub remove_trailing_comments {
     else {
         $logger->trace("No trailing comments found") if ($is_t_switch_active);
     }
+
+    # check for body ENDING with trailing comment
+    # see, for example, test-cases/specials/env1.tex with EndFinishesWithLineBreak: 1
+    ${$self}{fileFinishesWithTrailingComment}
+        = ( $is_m_switch_active and ${$self}{body} =~ m/$trailingCommentRegExp\h*\Z/s ? 1 : 0 );
+    $logger->trace("file finishes with trailing comment, no line break after it")
+        if ( $is_t_switch_active and ${$self}{fileFinishesWithTrailingComment} );
     return;
 }
 
@@ -108,6 +122,13 @@ sub put_trailing_comments_back_in {
     return unless ( @trailingComments > 0 );
 
     $logger->trace("*Returning trailing comments to body") if $is_t_switch_active;
+
+    # check for body ENDING with trailing comment
+    # see, for example, test-cases/specials/env1.tex with EndFinishesWithLineBreak: 1
+    if ( ${$self}{fileFinishesWithTrailingComment} ) {
+        $logger->trace("file finishes with trailing comment, no line break after it") if ($is_t_switch_active);
+        ${$self}{body} =~ s/($trailingCommentRegExp)\s*$/$1\n/s;
+    }
 
     # loop through trailing comments in reverse so that, for example,
     # latexindenttrailingcomment1 doesn't match the first

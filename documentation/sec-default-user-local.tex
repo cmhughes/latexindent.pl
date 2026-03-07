@@ -1,9 +1,10 @@
 % arara: pdflatex: { files: [latexindent]}
-\section{defaultSettings.yaml}\label{sec:defuseloc}
- \texttt{latexindent.pl} loads its settings from \texttt{defaultSettings.yaml}. The idea
+\section{Config}\label{sec:defuseloc}
+ \texttt{latexindent.pl} loads its default settings from \texttt{defaultSettings.yaml}. The idea
  is to separate the behaviour of the script from the internal working -- this is very
  similar to the way that we separate content from form when writing our documents in
- \LaTeX.
+ \LaTeX. \emph{All of these settings can be changed by you, the user; demonstrations
+ are given throughout this documentation using the -l switch}.
 
  If you look in \texttt{defaultSettings.yaml} you'll find the switches that govern the
  behaviour of \texttt{latexindent.pl}. If you're not sure where
@@ -87,40 +88,6 @@ copy myfile.bak4 to myfile.bak3
 \end{commandshell}
 
  The default value of \texttt{cycleThroughBackUps} is \texttt{0}.
-
-\yamltitle{logFilePreferences}*{fields}
- \texttt{latexindent.pl} writes information to \texttt{indent.log}, some
- of which can be customized by changing \texttt{logFilePreferences}; see
- \cref{lst:logFilePreferences}. If you load your own user settings (see
- \vref{sec:indentconfig}) then \texttt{latexindent.pl} will detail them in
- \texttt{indent.log}; you can choose not to have the details logged by switching
- \texttt{showEveryYamlRead} to \texttt{0}. Once all of your settings have been loaded, you
- can see the amalgamated settings in the log file by switching
- \texttt{showAmalgamatedSettings} to \texttt{1}, if you wish.
-
- \cmhlistingsfromfile[style=logFilePreferences,]{../defaultSettings.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{logFilePreferences}}{lst:logFilePreferences}
-
- When \announce{2018-01-13}{showDecorationStartCodeBlockTrace feature for log file}
- either of the \texttt{trace} modes (see \cpageref{page:traceswitch}) are active, you
- will receive detailed information in \texttt{indent.log}. You can specify character
- strings to appear before and after the notification of a found code block using,
- respectively, \texttt{showDecorationStartCodeBlockTrace} and
- \texttt{showDecorationFinishCodeBlockTrace}. A demonstration is given in
- \vref{app:logfile-demo}.%
-
- The log file will end with the characters given in \texttt{endLogFileWith}, and will
- report the \texttt{GitHub} address of \texttt{latexindent.pl} to the log file if
- \texttt{showGitHubInfoFooter} is set to \texttt{1}.
-
- Note: \texttt{latexindent.pl} no longer uses the \texttt{log4perl} module to handle the
- creation of the logfile. \announce{2021-03-14}*{no longer using log4perl}%
-
- Some of the options \announce{2021-06-19}*{logFilePreferences updated to include Dumper
- options} for Perl's \texttt{Dumper} module can be specified in
- \cref{lst:logFilePreferences}; see \cite{dumper} and \cite{dumperdemo} for more
- information. These options will mostly be helpful for those calling
- \texttt{latexindent.pl} with the \texttt{-tt} option described in
- \cref{sec:commandline}.%
 
 \subsection{Verbatim code blocks}
 \yamltitle{verbatimEnvironments}*{fields}
@@ -328,19 +295,6 @@ latexindent.pl -l noindent3.yaml noindent1
  files.
 
  \cmhlistingsfromfile[style=lookForPreamble]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{lookForPreamble}{lst:lookForPreamble}
-\yamltitle{preambleCommandsBeforeEnvironments}{0|1}
- Assuming that \texttt{latexindent.pl} is asked to operate upon the preamble of a
- document, when this switch is set to \texttt{0} then environment code blocks will be
- sought first, and then command code blocks. When this switch is set to \texttt{1},
- commands will be sought first. The example that first motivated this switch contained
- the code given in \cref{lst:motivatepreambleCommandsBeforeEnvironments}.
-
- \begin{cmhlistings}{Motivating \texttt{preambleCommandsBeforeEnvironments}}{lst:motivatepreambleCommandsBeforeEnvironments}
-...
-preheadhook={\begin{mdframed}[style=myframedstyle]},
-postfoothook=\end{mdframed},
-...
-\end{cmhlistings}
 
  \index{indentation!defaultIndent description}
 
@@ -382,15 +336,7 @@ postfoothook=\end{mdframed},
  \cref{lst:aligndelims:advanced}; we will discuss each in turn.
  \index{delimiters!advanced settings of lookForAlignDelims}
 
- \begin{yaml}[numbers=none]{\texttt{lookForAlignDelims} (basic)}[width=.8\linewidth,before=\centering]{lst:aligndelims:basic}
-lookForAlignDelims:
-   tabular: 1
-   tabularx: 1
-   longtable: 1
-   array: 1
-   matrix: 1
-   ...
-	\end{yaml}
+ \cmhlistingsfromfile*[style=lookForAlignDelims]{../defaultSettings.yaml}[width=.1\linewidth,before=\centering,yaml-TCB]{\texttt{lookForAlignDelims} (basic)}{lst:aligndelims:basic}
 
  Specifying code blocks in this field instructs \texttt{latexindent.pl} to try and align
  each column by its alignment delimiters. It does have some limitations (discussed
@@ -421,13 +367,15 @@ latexindent.pl tabular1.tex
  lookForAlignDelims} \index{delimiters!ampersand \&} \index{delimiters!advanced settings}
  \index{delimiters!lookForAlignDelims}
 
- \cmhlistingsfromfile[style=lookForAlignDelims]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{lookForAlignDelims} (advanced)}{lst:aligndelims:advanced}
+ \cmhlistingsfromfile*{demonstrations/tabular-adv.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{lookForAlignDelims} (advanced)}{lst:aligndelims:advanced}
 
  Note that you can use a mixture of the basic and advanced form: in
- \cref{lst:aligndelims:advanced} \texttt{tabular} and \texttt{tabularx} are advanced and
- \texttt{longtable} is basic. When using the advanced form, each field should receive at
- least 1 sub-field, and \emph{can} (but does not have to) receive any of the following
- fields:
+ \cref{lst:aligndelims:basic} the entries are basic; in \cref{lst:aligndelims:advanced}
+ the entry for \texttt{tabular} is advanced. \announce{NEW}{fineTuning controls defaults
+ for advanced form of lookForAlignDelims} The default values for the advanced form are
+ controlled in \texttt{fineTuning}, see \vref{subsec:finetuning:lookForAlignDelims}. When
+ using the advanced form, each field should receive at least 1 sub-field, and \emph{can}
+ (but does not have to) receive any of the following fields:
  \begin{itemize}
   \item \texttt{delims}: binary switch (0 or 1) equivalent to simply specifying, for
         example, \texttt{tabular: 1} in the basic version shown in \cref{lst:aligndelims:basic}.
@@ -831,6 +779,7 @@ latexindent.pl tabular-DM.tex -l=dontMeasure4.yaml
 
  we receive the output given in \cref{lst:tabular-DM-mod3} \index{regular
  expressions!lowercase alph a-z}
+
  \begin{cmhtcbraster}[raster columns=3,
    raster left skip=-3.5cm,
    raster right skip=-2cm,
@@ -1125,24 +1074,20 @@ latexindent.pl -s tabular5.tex -l alignContentAfterDBS2 -o=+-mod2
   \cmhlistingsfromfile{demonstrations/items1-default.tex}{\texttt{items1.tex} default output}{lst:itemsafter}
  \end{cmhtcbraster}
 
-\yamltitle{itemNames}*{fields}
  If you have your own \texttt{item} commands (perhaps you prefer to use \texttt{myitem},
- for example) then you can put populate them in \texttt{itemNames}. For example, users of
- the \texttt{exam} document class might like to add \texttt{parts} to
- \texttt{indentAfterItems} and \texttt{part} to \texttt{itemNames} to their user settings
- (see \vref{sec:indentconfig} for details of how to configure user settings, and
- \vref{lst:mysettings} \\ in particular \label{page:examsettings}.)
-
- \cmhlistingsfromfile[style=itemNames]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{itemNames}}{lst:itemNames}
+ for example) then you can put adjust \texttt{itemRegEx} in the \texttt{fineTuning}
+ field, discussed in \vref{subsec:finetuning:itemsRegex}.\announce{NEW}{itemsRegex
+ controls item}
 
 \yamltitle{specialBeginEnd}*{fields}\label{yaml:specialBeginEnd}
  The fields specified \index{specialBeginEnd!introduction}
  \announce{2017-08-21}*{specialBeginEnd} in \texttt{specialBeginEnd} are, in their
  default state, focused on math mode begin and end statements, but there is no
  requirement for this to be the case; \cref{lst:specialBeginEnd} shows the default
- settings of \texttt{specialBeginEnd}. \index{specialBeginEnd!default settings}%
+ settings of \texttt{specialBeginEnd}. \index{specialBeginEnd!default settings}
+ \announce{NEW}{specialBeginEnd specified as list}%
 
- \cmhlistingsfromfile[style=specialBeginEnd]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialBeginEnd}}{lst:specialBeginEnd}
+ \cmhlistingsfromfile*[style=specialBeginEnd]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialBeginEnd}}{lst:specialBeginEnd}
 
  The field \texttt{displayMath} represents \lstinline!\[...\]!, \texttt{inlineMath}
  represents \lstinline!$...$! and \texttt{displayMathTex} represents \lstinline!$$...$$!.
@@ -1169,22 +1114,16 @@ latexindent.pl special1.tex -o=+-default
  \texttt{latexindent.pl} will look for this pattern; you can tell \texttt{latexindent.pl}
  not to look for the pattern, by setting \texttt{lookForThis} to \texttt{0}.
 
- There are \announce{2017-08-21}{specialBeforeCommand} examples in which it is
- advantageous to search for \texttt{specialBeginEnd} fields \emph{before} searching for
- commands, and the \texttt{specialBeforeCommand} switch controls this behaviour.
-
  \begin{example}
  For example, consider the file shown in \cref{lst:specialLRbefore}.%
 
  \cmhlistingsfromfile{demonstrations/specialLR.tex}{\texttt{specialLR.tex}}{lst:specialLRbefore}
 
- Now consider the YAML files shown in
- \cref{lst:specialsLeftRight-yaml,lst:specialBeforeCommand-yaml}
+ Now consider the YAML file shown in \cref{lst:specialsLeftRight-yaml}
  \index{specialBeginEnd!searching for special before commands}
 
  \begin{cmhtcbraster}
   \cmhlistingsfromfile[]{demonstrations/specialsLeftRight.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialsLeftRight.yaml}}{lst:specialsLeftRight-yaml}
-  \cmhlistingsfromfile[]{demonstrations/specialBeforeCommand.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialBeforeCommand.yaml}}{lst:specialBeforeCommand-yaml}
  \end{cmhtcbraster}
 
  Upon running the following commands \index{switches!-l demonstration}
@@ -1192,30 +1131,13 @@ latexindent.pl special1.tex -o=+-default
 
   \begin{commandshell}
 latexindent.pl specialLR.tex -l=specialsLeftRight.yaml      
-latexindent.pl specialLR.tex -l=specialsLeftRight.yaml,specialBeforeCommand.yaml      
 \end{commandshell}
 
  \end{widepage}
- we receive the respective outputs in
- \cref{lst:specialLR-comm-first-tex,lst:specialLR-special-first-tex}.
+ we receive the output in \cref{lst:specialLR-comm-first-tex}.
 
- \begin{minipage}{.49\linewidth}
-  \cmhlistingsfromfile{demonstrations/specialLR-comm-first.tex}{\texttt{specialLR.tex} using \cref{lst:specialsLeftRight-yaml}}{lst:specialLR-comm-first-tex}
- \end{minipage}
- \hfill
- \begin{minipage}{.49\linewidth}
-  \cmhlistingsfromfile{demonstrations/specialLR-special-first.tex}{\texttt{specialLR.tex} using \cref{lst:specialsLeftRight-yaml,lst:specialBeforeCommand-yaml}}{lst:specialLR-special-first-tex}
- \end{minipage}
+ \cmhlistingsfromfile{demonstrations/specialLR-comm-first.tex}{\texttt{specialLR.tex} using \cref{lst:specialsLeftRight-yaml}}{lst:specialLR-comm-first-tex}
 
- Notice that in:
- \begin{itemize}
-  \item \cref{lst:specialLR-comm-first-tex} the \lstinline!\left! has been treated as a
-        \emph{command}, with one optional argument;
-  \item \cref{lst:specialLR-special-first-tex} the \texttt{specialBeginEnd} pattern in
-        \cref{lst:specialsLeftRight-yaml}
-        has been obeyed because \cref{lst:specialBeforeCommand-yaml} specifies that the
-        \texttt{specialBeginEnd} should be sought \emph{before} commands.
- \end{itemize}
  \end{example}
 
  You can, optionally, specify \announce{2018-04-27}{update to specialBeginEnd} the
@@ -1239,12 +1161,12 @@ latexindent.pl special2.tex -l=middle1
 
  \begin{cmhtcbraster}
   \cmhlistingsfromfile{demonstrations/special2-mod1.tex}{\texttt{special2.tex} using \cref{lst:middle-yaml}}{lst:special2-mod1}
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/middle.yaml}[yaml-TCB]{\texttt{middle.yaml}}{lst:middle-yaml}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/middle.yaml}[yaml-TCB]{\texttt{middle.yaml}}{lst:middle-yaml}
  \end{cmhtcbraster}
 
  \begin{cmhtcbraster}
   \cmhlistingsfromfile{demonstrations/special2-mod2.tex}{\texttt{special2.tex} using \cref{lst:middle1-yaml}}{lst:special2-mod2}
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/middle1.yaml}[yaml-TCB]{\texttt{middle1.yaml}}{lst:middle1-yaml}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/middle1.yaml}[yaml-TCB]{\texttt{middle1.yaml}}{lst:middle1-yaml}
  \end{cmhtcbraster}
 
  We note that:
@@ -1280,7 +1202,7 @@ latexindent.pl -l=algo.yaml specialAlgo.tex
 
  \begin{cmhtcbraster}
   \cmhlistingsfromfile[basicstyle=\tiny]{demonstrations/specialAlgo-mod1.tex}{\texttt{specialAlgo.tex} using \cref{lst:algo-yaml}}{lst:specialAlgo-mod1}
-  \cmhlistingsfromfile[style=yaml-LST,basicstyle=\tiny,commentstyle=\color{blue}\ttfamily\tiny]{demonstrations/algo.yaml}[yaml-TCB]{\texttt{algo.yaml}}{lst:algo-yaml}
+  \cmhlistingsfromfile*[style=yaml-LST,basicstyle=\tiny,commentstyle=\color{blue}\ttfamily\tiny]{demonstrations/algo.yaml}[yaml-TCB]{\texttt{algo.yaml}}{lst:algo-yaml}
  \end{cmhtcbraster}
  \end{example}
 
@@ -1301,7 +1223,7 @@ latexindent.pl special3.tex -l=special-verb1
 
  \begin{cmhtcbraster}
   \cmhlistingsfromfile{demonstrations/special3-mod1.tex}{\texttt{special3.tex} and output using \cref{lst:special-verb1-yaml}}{lst:special3-mod1}
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/special-verb1.yaml}[yaml-TCB]{\texttt{special-verb1.yaml}}{lst:special-verb1-yaml}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/special-verb1.yaml}[yaml-TCB]{\texttt{special-verb1.yaml}}{lst:special-verb1-yaml}
  \end{cmhtcbraster}
  \end{example}
 
@@ -1329,7 +1251,7 @@ latexindent.pl special-align.tex -l edge-node1.yaml -o=+-mod1
 
  \begin{cmhtcbraster}[ raster left skip=-3.5cm,]
   \cmhlistingsfromfile{demonstrations/special-align-mod1.tex}{\texttt{special-align.tex} using \cref{lst:edge-node1}}{lst:special-align-mod1}
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/edge-node1.yaml}[yaml-TCB]{\texttt{edge-node1.yaml}}{lst:edge-node1}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/edge-node1.yaml}[yaml-TCB]{\texttt{edge-node1.yaml}}{lst:edge-node1}
  \end{cmhtcbraster}
 
  The output in \cref{lst:special-align-mod1} is not quite ideal. We can tweak the
@@ -1348,7 +1270,7 @@ latexindent.pl special-align.tex -l edge-node2.yaml -o=+-mod2
 
  \begin{cmhtcbraster}[ raster left skip=-3.5cm,]
   \cmhlistingsfromfile{demonstrations/special-align-mod2.tex}{\texttt{special-align.tex} using \cref{lst:edge-node2}}{lst:special-align-mod2}
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/edge-node2.yaml}[yaml-TCB]{\texttt{edge-node2.yaml}}{lst:edge-node2}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/edge-node2.yaml}[yaml-TCB]{\texttt{edge-node2.yaml}}{lst:edge-node2}
  \end{cmhtcbraster}
  \end{example}
 
@@ -1372,44 +1294,34 @@ latexindent.pl special-align.tex -l edge-node2.yaml -o=+-mod2
 
  \cmhlistingsfromfile{demonstrations/special-body.tex}{\texttt{special-body.tex}}{lst:special-body}
 
- Using the settings in \cref{lst:special-body1} and running the command
+ Using the settings in \cref{lst:special-nested1} and running the command
 
  \begin{commandshell}
-latexindent.pl special-body.tex -l=special-body1.yaml
+latexindent.pl special-body.tex -l=special-nested1.yaml
 \end{commandshell}
 
  gives the output in \cref{lst:special-body-mod1}.
 
  \begin{cmhtcbraster}[ raster left skip=-3.5cm,]
-  \cmhlistingsfromfile{demonstrations/special-body-mod1.tex}{\texttt{special-body.tex} using \cref{lst:special-body1}}{lst:special-body-mod1}
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/special-body1.yaml}[yaml-TCB]{\texttt{special-body1.yaml}}{lst:special-body1}
+  \cmhlistingsfromfile{demonstrations/special-body-mod1.tex}{\texttt{special-body.tex} using \cref{lst:special-nested1}}{lst:special-body-mod1}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/special-nested1.yaml}[yaml-TCB]{\texttt{special-body1.yaml}}{lst:special-nested1}
  \end{cmhtcbraster}
  We note that the output in \cref{lst:special-body-mod1} is as we would expect, even
  \emph{without} the \texttt{body} field specified.
-
- Another option (purely for reference) that leaves the output in
- \cref{lst:special-body-mod1} unchanged is shown in \cref{lst:special-body2}.
-
- \cmhlistingsfromfile[style=yaml-LST]{demonstrations/special-body2.yaml}[yaml-TCB]{\texttt{special-body2.yaml}}{lst:special-body2}
-
- The \texttt{body} field in \cref{lst:special-body2} means \emph{anything except ( or )}.
  \end{example}
 
 \yamltitle{indentAfterHeadings}*{fields}
  This field enables the user to specify indentation rules that take effect after heading
  commands such as \lstinline!\part!, \lstinline!\chapter!, \lstinline!\section!,
- \lstinline!\subsection*!, or indeed any user-specified command written in this
- field.\footnote{There is a slight difference in interface for this field when comparing
- Version 2.2 to Version 3.0; see \vref{app:differences} for details.}
+ \lstinline!\subsection*!, or indeed any user-specified command written in this field.
 
- \cmhlistingsfromfile[style=indentAfterHeadings]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{indentAfterHeadings}}{lst:indentAfterHeadings}
+ \cmhlistingsfromfile*[style=indentAfterHeadings]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{indentAfterHeadings}}{lst:indentAfterHeadings}
 
  The default settings do \emph{not} place indentation after a heading, but you can easily
- switch them on by changing \texttt{indentAfterThisHeading} from 0 to 1. The
- \texttt{level} field tells \texttt{latexindent.pl} the hierarchy of the heading
- structure in your document. You might, for example, like to have both \texttt{section}
- and \texttt{subsection} set with \texttt{level: 3} because you do not want the
- indentation to go too deep.
+ switch them on by changing \texttt{lookForThis} from 0 to 1. The \texttt{level} field
+ tells \texttt{latexindent.pl} the hierarchy of the heading structure in your document.
+ You might, for example, like to have both \texttt{section} and \texttt{subsection} set
+ with \texttt{level: 3} because you do not want the indentation to go too deep.
 
  You can add any of your own custom heading commands to this field, specifying the
  \texttt{level} as appropriate. You can also specify your own indentation in
@@ -1425,7 +1337,7 @@ latexindent.pl special-body.tex -l=special-body1.yaml
 
  \begin{cmhtcbraster}
   \cmhlistingsfromfile{demonstrations/headings1.tex}{\texttt{headings1.tex}}{lst:headings1}
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/headings1.yaml}[yaml-TCB]{\texttt{headings1.yaml}}{lst:headings1yaml}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/headings1.yaml}[yaml-TCB]{\texttt{headings1.yaml}}{lst:headings1yaml}
  \end{cmhtcbraster}
 
  If you run the command \index{switches!-l demonstration}
@@ -1499,7 +1411,12 @@ latexindent.pl mult-nested.tex -l=max-indentation1
  \texttt{verbatimEnvironments} (see \vref{lst:verbatimEnvironments}) or
  \texttt{noIndentBlock} (see \vref{lst:noIndentBlock}).
 
-\subsection{The code blocks known latexindent.pl}\label{subsubsec:code-blocks}
+\subsection{Arguments and the strings allowed between them}
+ The strings allowed between arguments for \texttt{commands}, \texttt{namedGroupingBracesBrackets},
+ \texttt{keyEqualsValuesBracesBrackets} and \texttt{UnNamedGroupingBracesBrackets}
+ are controlled by \texttt{fineTuning}; specific demonstrations are given in \vref{subsec:finetuning:arguments}.
+
+\subsection{The code blocks known to latexindent.pl}\label{subsubsec:code-blocks}
 
  As of Version 3.0, \texttt{latexindent.pl} processes documents using code blocks; each
  of these are shown in \cref{tab:code-blocks}. \index{regular expressions!uppercase alph
@@ -1548,7 +1465,7 @@ mand arg text
 ...
 \fi
   \end{lstlisting}                                                                                                                                                                                                                                                                      \\\cmidrule{2-3}
-    items                         & User specified, see \vref{lst:indentafteritems,lst:itemNames}                               &
+    items                         & User specified, see \vref{lst:indentafteritems}                                             &
     \begin{lstlisting}[,nolol=true,]
 \begin{enumerate}
   \item ...

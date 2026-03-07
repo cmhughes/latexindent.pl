@@ -1,0 +1,13 @@
+\directlua{
+local function draw_baselines(head)
+    for line in node.traverse_id(node.id("hlist"), head) do
+        local n = node.new("whatsit", "pdf_literal")
+        n.mode = 0
+        n.data = "q 0.5 w 1 0 0.24 RG -10000 0 m 1000 0 l S Q"
+        n.next = line.list
+        line.list = n
+    end
+    return head
+end
+luatexbase.add_to_callback("post_linebreak_filter", draw_baselines, "draw_baselines")
+}

@@ -8,4 +8,4 @@ defaultIndent: "  "
 
 fineTuning:
   namedGroupingBracesBrackets:
-    name: [0-9\.a-zA-Z@\*><=]+?
+    name: [0-9\.a-zA-Z@\*><=]+

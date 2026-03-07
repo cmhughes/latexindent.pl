@@ -70,9 +70,6 @@ sub text_wrap {
             elsif ( $blocksFollowEachPart eq "verbatim" ) {
                 $blocksFollowEachPart = qr/$tokens{verbatim}\d+$tokens{endOfToken}/;
             }
-            elsif ( $blocksFollowEachPart eq "filecontents" ) {
-                $blocksFollowEachPart = qr/$tokens{filecontents}\d+$tokens{endOfToken}/;
-            }
             elsif ( $blocksFollowEachPart eq "headings" ) {
                 $blocksFollowEachPart = q();
 
@@ -131,7 +128,7 @@ sub text_wrap {
         $blocksFollow = ( $blocksFollow eq '' ? q() : qr/(?:$blocksFollow)(?:\h|\R)*/s );
     }
 
-    $logger->trace("textWrap blocks follow regexp:")
+    $logger->trace("Overall textWrap Blocks follow regexp:")
         if ( $is_tt_switch_active and ${$self}{modifyLineBreaksYamlName} ne 'sentence' );
     $logger->trace($blocksFollow) if $is_tt_switch_active;
 
@@ -199,11 +196,6 @@ sub text_wrap {
                     if $is_t_switch_active;
                 $blocksEndBeforeEachPart = qr/$tokens{verbatim}\d/;
             }
-            elsif ( $blocksEndBeforeEachPart eq "filecontents" ) {
-                $logger->trace("textWrap Blocks ENDS with filecontents (see textWrap:blocksEndBefore:filecontents)")
-                    if $is_t_switch_active;
-                $blocksEndBeforeEachPart = qr/$tokens{filecontents}/;
-            }
             $blocksEndBefore .= ( $blocksEndBefore eq "" ? q() : "|" ) . $blocksEndBeforeEachPart;
         }
     }
@@ -223,7 +215,15 @@ sub text_wrap {
 
     # sentences need special treatment
     if ( ${$self}{modifyLineBreaksYamlName} eq 'sentence' ) {
-        @textWrapBlockStorage = ( ${$self}{body} );
+        if ( ${$self}{body} =~ m/$tokens{blanklines}/s ) {
+
+            # sentences with blank lines
+            @textWrapBlockStorage = split( /($tokens{blanklines})/s, ${$self}{body} );
+        }
+        else {
+            # sentences withOUT blank lines
+            @textWrapBlockStorage = ( ${$self}{body} );
+        }
     }
 
     # call the text wrapping routine
@@ -336,6 +336,7 @@ sub text_wrap {
                     }
                     else {
                         my $thingToMeasure = ( split( /\R/, $textWrapBlockStorage[ $textWrapBlockCount - 1 ] ) )[-1];
+                        $thingToMeasure = q() if not defined $thingToMeasure;
                         $thingToMeasure =~ s/$tokens{blanklines}//;
                         $thingToMeasure =~ s/$tokens{verbatim}\d+$tokens{endOfToken}//;
                         $thingToMeasure =~ s/$trailingCommentRegExp//;
@@ -629,6 +630,13 @@ sub text_wrap {
 
             # append blocksEndBefore and the stuff following it
             if ( scalar @textWrapBeforeEndWith > 1 ) {
+
+                # comment line break issues, see
+                # latexindent.pl -s -r -m -l wrap-comments,addruler1 issue-389c -o=+-mod1
+                # latexindent.pl -s -r -m -l wrap-comments2,addruler1 issue-389c -o=+-mod2
+                if ( $textWrapBeforeEndWith[1] =~ m/^\h*\R/s ) {
+                    $textWrapBlockStorageValue =~ s/($trailingComments)\R\Z/$1/s;
+                }
                 $textWrapBlockStorageValue .= $textWrapBeforeEndWith[1] . $textWrapBeforeEndWith[2];
             }
 
@@ -644,6 +652,10 @@ sub text_wrap {
 
             # put verbatim back in
             $textWrapBlockStorageValue =~ s/${$_}{tmpVerbatimID}/${$_}{origVerbatimID}/s foreach (@putVerbatimBackIn);
+        }
+
+        if ( $textWrapBlockStorageValue =~ m/\A\R+/s and ${$self}{body} =~ m/\R\Z/s ) {
+            $textWrapBlockStorageValue =~ s/\A\R//s;
         }
 
         # update the body
@@ -665,6 +677,21 @@ sub text_wrap_comment_blocks {
         ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap} = 0;
         return;
     }
+
+    # pre-work:
+    #
+    # from:
+    #
+    #   % fifth comment% fourth comment% third comment% second comment% first comment
+    #
+    # into:
+    #
+    #   % first comment
+    #   % second comment
+    #   % third comment
+    #   % fourth comment
+    #   % fifth comment
+    ${$self}{body} =~ s&($trailingCommentRegExp)\h*($trailingCommentRegExp)&$1\n$2&mg;
 
     #
     # text wrap comment blocks
@@ -734,67 +761,5 @@ sub text_wrap_comment_blocks {
           $trailingComments;
     &xemg;
 
-    #
-    # text wrap multiple comments on a line
-    #
-    # from:
-    #
-    #   % fifth comment% fourth comment% third comment% second comment% first comment
-    #
-    # into:
-    #
-    #   % first comment second comment
-    #   % third comment fourth comment
-    #   % fifth comment
-    #
-    ${$self}{body} =~ s&((?:$trailingCommentRegExp\h*)+)&
-          my @commentBlocks = $1;
-          my $trailingComments = q();
-
-          # loop through comment blocks
-          foreach my $commentBlock (@commentBlocks){
-
-                  my $leadingHorizontalSpace = ($commentBlock =~ m|^(\h*\t*)|s? $1 : q());
-                  my $numberOfTABS = () = $leadingHorizontalSpace =~ m/\t/g;
-                  $leadingHorizontalSpace =~ s/\t/    /g;
-
-                  my $commentValue = q();
-                  $trailingComments = q();
-
-                  # split the trailing comments, and put the *values* together
-                  foreach (split(/([0-9]+)$tokens{endOfToken}/,$commentBlock)){
-                     next unless $_ =~ m/[0-9]/;
-
-                     $commentValue .= " ".${$trailingComments[$_-1]}{value};
-                  }
-
-                  # very first space
-                  $commentValue =~ s|^\h||s;
-
-                  # leading space
-                  $commentValue =~ s|^(\h*)||s;
-                  my $leadingSpace =  (${${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments}}{inheritLeadingSpace}? $1: ' ' );
-
-                  $commentValue =~ s/\h{2,}/ /sg if ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{multipleSpacesToSingle};
-
-                  # reset columns
-                  $Text::Wrap::columns = $columns - length($leadingHorizontalSpace)-length($leadingSpace);
-                  #                                                                ^^
-                  #                                                                for the space added after comment symbol below
-                  
-                  # tab adjustment
-                  for (my $i=1; $i<=$numberOfTABS;$i++){
-                      $leadingHorizontalSpace =~ s/    /\t/;
-                  }
-
-                  # wrap the comments
-                  $commentValue = wrap( '', '', $commentValue );
-
-                  # put them into storage
-                  $trailingComments .= $leadingHorizontalSpace."%".$self->add_comment_symbol(value=>$leadingSpace.$_)."\n" foreach (split( /\R/, $commentValue ) );
-            
-          }
-          $trailingComments;
-    &xemg;
 }
 1;

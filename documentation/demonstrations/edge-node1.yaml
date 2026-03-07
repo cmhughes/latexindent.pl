@@ -1,10 +1,10 @@
 specialBeginEnd:
-    path:
-        begin: '\\path'
-        end: ';'
-        lookForThis: 1
-    specialBeforeCommand: 1
+  -
+   name: path
+   begin: '\\path'
+   end: ';'
 
 lookForAlignDelims:
    path: 
       delimiterRegEx: '(edge|node)'
+      lookForChildCodeBlocks: 0

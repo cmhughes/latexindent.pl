@@ -1,0 +1,22 @@
+INFO:  YAML settings read: -l switch
+       + found in call for -l switch: will add localSettings.yaml,latexindent.yaml,.localSettings.yaml,.latexindent.yaml
+       New value of -l switch: localSettings.yaml,latexindent.yaml,.localSettings.yaml,.latexindent.yaml,../alignment/multiColumnGrouping.yaml
+       Multiple localSettings found, separated by commas:
+       localSettings.yaml, latexindent.yaml, .localSettings.yaml, .latexindent.yaml, ../alignment/multiColumnGrouping.yaml
+       Adding ./localSettings.yaml to YAML read paths
+       Adding ../alignment/multiColumnGrouping.yaml to YAML read paths
+INFO:  YAML settings, reading from the following files:
+       Reading USER settings from ./localSettings.yaml
+       ---
+       lookForAlignDelims:
+         tabular:
+           alignRowsWithoutMaxDelims: '1'
+           multiColumnGrouping: '0'
+
+       Reading USER settings from ../alignment/multiColumnGrouping.yaml
+       ---
+       lookForAlignDelims:
+         tabular:
+           alignRowsWithoutMaxDelims: '1'
+           multiColumnGrouping: '1'
+

@@ -1,3 +1,7 @@
 fineTuning:
   commands:
       name: '[A-Z@\*0-9_\\]+' 
+
+noAdditionalIndent:
+    always-un-named: 
+        optionalArguments: 1
