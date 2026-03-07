@@ -141,10 +141,9 @@ jobs:
       - name: install Perl
         uses: shogo82148/actions-setup-perl@v1
         with:
-          perl-version: 'latest'
+          perl-version: '5.38'
       - name: install Perl modules using cpan
         run: |
-          wmic os get osarchitecture
           cpanm -f PAR::Packer
           cpanm YAML::Tiny
           cpanm File::HomeDir
