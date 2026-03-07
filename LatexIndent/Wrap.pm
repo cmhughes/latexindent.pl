@@ -677,6 +677,7 @@ sub text_wrap_comment_blocks {
         ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap} = 0;
         return;
     }
+
     # pre-work:
     #
     # from:

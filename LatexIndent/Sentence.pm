@@ -502,13 +502,13 @@ sub one_sentence_per_line_store {
 
     # give unique id
     $latexIndentObject->create_unique_id;
-    
+
     # add trailing text to the id to stop, e.g LATEX-INDENT-ENVIRONMENT1 matching LATEX-INDENT-ENVIRONMENT10
     ${$latexIndentObject}{id} .= $tokens{endOfToken};
-    
+
     # the replacement text can be just the ID, but the ID might have a line break at the end of it
     ${$latexIndentObject}{replacementText} = ${$self}{id};
-    
+
     # tasks particular to each object
     $latexIndentObject->tasks_particular_to_each_object;
 

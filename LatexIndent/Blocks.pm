@@ -1348,11 +1348,11 @@ sub _indent_all_args {
        # put it all together
        $begin.$argBody.$end;|sgex;
 
-
     # m switch conflicting linebreak addition or removal handled by tokens
-    if ($is_m_switch_active){
-       $body =~ s/($tokens{mBeforeBeginLineBreakREMOVE})($argumentsBetween*)\R?/$2$1/sg if ${${$mainSettings{fineTuning}}{arguments}}{between} ne '';
-       $body = _mlb_line_break_token_adjust($body);
+    if ($is_m_switch_active) {
+        $body =~ s/($tokens{mBeforeBeginLineBreakREMOVE})($argumentsBetween*)\R?/$2$1/sg
+            if ${ ${ $mainSettings{fineTuning} }{arguments} }{between} ne '';
+        $body = _mlb_line_break_token_adjust($body);
     }
     return $body;
 }
@@ -1615,11 +1615,11 @@ sub _find_env_items {
          )
         }xs;
 
-    my @envBodySplitByItem = split(/$itemRegExNoSpace/,$body);
-    my $beforeFirstItem = shift(@envBodySplitByItem);
-    my $afterFirstItem = join("",@envBodySplitByItem);
-    $beforeFirstItem = _find_all_code_blocks($beforeFirstItem,$currentIndentation);
-    $body = $beforeFirstItem.$afterFirstItem;
+    my @envBodySplitByItem = split( /$itemRegExNoSpace/, $body );
+    my $beforeFirstItem    = shift(@envBodySplitByItem);
+    my $afterFirstItem     = join( "", @envBodySplitByItem );
+    $beforeFirstItem = _find_all_code_blocks( $beforeFirstItem, $currentIndentation );
+    $body            = $beforeFirstItem . $afterFirstItem;
 
     my $itemRegEx = qr{
          (\s*)

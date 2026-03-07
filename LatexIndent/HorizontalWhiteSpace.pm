@@ -21,7 +21,7 @@ use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Switches        qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile         qw/$logger/;
 use Text::Tabs;
-use Exporter                     qw/import/;
+use Exporter qw/import/;
 use Data::Dumper;
 our @EXPORT_OK = qw/remove_trailing_whitespace remove_leading_space max_indentation_check /;
 

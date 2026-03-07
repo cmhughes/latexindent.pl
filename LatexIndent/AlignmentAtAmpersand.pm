@@ -665,7 +665,7 @@ sub align_at_ampersand {
     if (   !${ ${$self}{linebreaksAtEnd} }{begin}
         and ${ $cellStorage[0][0] }{type} eq "X"
         and ${ $cellStorage[0][0] }{measureThis}
-        and ${ $cellStorage[0][0] }{entry} ne ''  )
+        and ${ $cellStorage[0][0] }{entry} ne '' )
     {
 
         my $lengthOfBegin = ${$self}{begin};

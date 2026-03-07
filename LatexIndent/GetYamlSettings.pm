@@ -1079,24 +1079,55 @@ sub yaml_read_settings {
 
     # configure lookForAlignDelimsDefaults
     @alignAtAmpersandInformation = (
-    { name => "lookForAlignDelims",               yamlname => "delims", default => ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{delims}},
-    { name => "alignDoubleBackSlash",             default  => ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{alignDoubleBackSlash} },
-    { name => "spacesBeforeDoubleBackSlash",      default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{spacesBeforeDoubleBackSlash} },
-    { name => "multiColumnGrouping",              default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{multiColumnGrouping} },
-    { name => "alignRowsWithoutMaxDelims",        default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{alignRowsWithoutMaxDelims} },
-    { name => "spacesBeforeAmpersand",            default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{spacesBeforeAmpersand} },
-    { name => "spacesAfterAmpersand",             default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{spacesAfterAmpersand} },
-    { name => "justification",                    default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{justification} },
-    { name => "alignFinalDoubleBackSlash",        default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{alignFinalDoubleBackSlash} },
-    { name => "dontMeasure",                      default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{dontMeasure} },
-    { name => "delimiterRegEx",                   default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{delimiterRegEx} },
-    { name => "delimiterJustification",           default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{delimiterJustification} },
-    { name => "leadingBlankColumn",               default  =>  -1},
-    { name => "lookForChildCodeBlocks",           default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{lookForChildCodeBlocks} },
-    { name => "alignContentAfterDoubleBackSlash", default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{alignContentAfterDoubleBackSlash} },
-    { name => "spacesAfterDoubleBackSlash",       default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{spacesAfterDoubleBackSlash} },
-    { name => "doubleBackSlash",                  default  =>  ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{doubleBackSlash} },
-);
+        {   name     => "lookForAlignDelims",
+            yamlname => "delims",
+            default  => ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{delims}
+        },
+        {   name    => "alignDoubleBackSlash",
+            default => ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{alignDoubleBackSlash}
+        },
+        {   name    => "spacesBeforeDoubleBackSlash",
+            default => ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{spacesBeforeDoubleBackSlash}
+        },
+        {   name    => "multiColumnGrouping",
+            default => ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{multiColumnGrouping}
+        },
+        {   name    => "alignRowsWithoutMaxDelims",
+            default => ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{alignRowsWithoutMaxDelims}
+        },
+        {   name    => "spacesBeforeAmpersand",
+            default => ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{spacesBeforeAmpersand}
+        },
+        {   name    => "spacesAfterAmpersand",
+            default => ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{spacesAfterAmpersand}
+        },
+        {   name    => "justification",
+            default => ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{justification}
+        },
+        {   name    => "alignFinalDoubleBackSlash",
+            default => ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{alignFinalDoubleBackSlash}
+        },
+        { name => "dontMeasure", default => ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{dontMeasure} },
+        {   name    => "delimiterRegEx",
+            default => ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{delimiterRegEx}
+        },
+        {   name    => "delimiterJustification",
+            default => ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{delimiterJustification}
+        },
+        { name => "leadingBlankColumn", default => -1 },
+        {   name    => "lookForChildCodeBlocks",
+            default => ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{lookForChildCodeBlocks}
+        },
+        {   name    => "alignContentAfterDoubleBackSlash",
+            default => ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{alignContentAfterDoubleBackSlash}
+        },
+        {   name    => "spacesAfterDoubleBackSlash",
+            default => ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{spacesAfterDoubleBackSlash}
+        },
+        {   name    => "doubleBackSlash",
+            default => ${ $mainSettings{fineTuning}{lookForAlignDelimsDefaults} }{doubleBackSlash}
+        },
+    );
 
     $self->yaml_obsolete_checks;
     return;
@@ -1104,83 +1135,82 @@ sub yaml_read_settings {
 
 sub yaml_obsolete_checks {
 
-  return unless (
-    defined $mainSettings{preambleCommandsBeforeEnvironments}
-      or defined $mainSettings{itemNames}
-      or defined ${$mainSettings{noAdditionalIndentGlobal}}{filecontents}
-      or defined ${$mainSettings{indentRulesGlobal}}{filecontents}
-      or defined $mainSettings{commandCodeBlocks}
-      or defined ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksFollow} }{filecontents}
-      or defined ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksEndBefore} }{filecontents}
-      or defined ${ $mainSettings{fineTuning}{items} }{canBeFollowedBy}
-      or defined ${ $mainSettings{fineTuning}{keyEqualsValuesBracesBrackets} }{follow}
-      or defined ${ $mainSettings{fineTuning}{namedGroupingBracesBrackets} }{follow}
-      or defined ${ $mainSettings{fineTuning}{UnNamedGroupingBracesBrackets} }{follow}
-      or defined ${ $mainSettings{fineTuning}{arguments} }{before}
-  );
-      $logger->warn("*Obsolete YAML");
+    return
+        unless ( defined $mainSettings{preambleCommandsBeforeEnvironments}
+        or defined $mainSettings{itemNames}
+        or defined ${ $mainSettings{noAdditionalIndentGlobal} }{filecontents}
+        or defined ${ $mainSettings{indentRulesGlobal} }{filecontents}
+        or defined $mainSettings{commandCodeBlocks}
+        or defined ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksFollow} }{filecontents}
+        or defined ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksEndBefore} }{filecontents}
+        or defined ${ $mainSettings{fineTuning}{items} }{canBeFollowedBy}
+        or defined ${ $mainSettings{fineTuning}{keyEqualsValuesBracesBrackets} }{follow}
+        or defined ${ $mainSettings{fineTuning}{namedGroupingBracesBrackets} }{follow}
+        or defined ${ $mainSettings{fineTuning}{UnNamedGroupingBracesBrackets} }{follow}
+        or defined ${ $mainSettings{fineTuning}{arguments} }{before} );
+    $logger->warn("*Obsolete YAML");
 
-      my $obsoleteString = " obsolete, no need for it from V4.0";
-  if (defined $mainSettings{preambleCommandsBeforeEnvironments}){
-      $logger->warn("preambleCommandsBeforeEnvironments$obsoleteString");
-      delete $mainSettings{preambleCommandsBeforeEnvironments};
-  }
-  if (defined $mainSettings{itemNames}){
-      $logger->warn("itemNames obsolete, use fineTuning: items: itemRegex instead");
-      delete $mainSettings{itemNames};
-  }
+    my $obsoleteString = " obsolete, no need for it from V4.0";
+    if ( defined $mainSettings{preambleCommandsBeforeEnvironments} ) {
+        $logger->warn("preambleCommandsBeforeEnvironments$obsoleteString");
+        delete $mainSettings{preambleCommandsBeforeEnvironments};
+    }
+    if ( defined $mainSettings{itemNames} ) {
+        $logger->warn("itemNames obsolete, use fineTuning: items: itemRegex instead");
+        delete $mainSettings{itemNames};
+    }
 
-  if (defined ${$mainSettings{noAdditionalIndentGlobal}}{filecontents}){
-      $logger->warn("noAdditionalIndentGlobal: filecontents$obsoleteString");
-      delete ${$mainSettings{noAdditionalIndentGlobal}}{filecontents};
-  }
-      
-  if (defined ${$mainSettings{indentRulesGlobal}}{filecontents}){
-      $logger->warn("indentRulesGlobal: filecontents$obsoleteString");
-      delete ${$mainSettings{indentRulesGlobal}}{filecontents};
-  }
-      
-  if (defined $mainSettings{commandCodeBlocks}){
-      $logger->warn("commandCodeBlocks$obsoleteString");
-      delete $mainSettings{commandCodeBlocks};
-  }
-      
-  if (defined ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksFollow} }{filecontents}){
-      $logger->warn("modifyLineBreaks: textWrapOptions: blocksFollow: filecontents$obsoleteString");
-      delete ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksFollow} }{filecontents};
-  }
+    if ( defined ${ $mainSettings{noAdditionalIndentGlobal} }{filecontents} ) {
+        $logger->warn("noAdditionalIndentGlobal: filecontents$obsoleteString");
+        delete ${ $mainSettings{noAdditionalIndentGlobal} }{filecontents};
+    }
 
-  if (defined ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksEndBefore} }{filecontents}){
-      $logger->warn("modifyLineBreaks: textWrapOptions: blocksEndBefore: filecontents$obsoleteString");
-      delete ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksEndBefore} }{filecontents};
-  }
+    if ( defined ${ $mainSettings{indentRulesGlobal} }{filecontents} ) {
+        $logger->warn("indentRulesGlobal: filecontents$obsoleteString");
+        delete ${ $mainSettings{indentRulesGlobal} }{filecontents};
+    }
 
-  if (defined ${ $mainSettings{fineTuning}{items} }{canBeFollowedBy}){
-      $logger->warn("fineTuning: items: canBeFollowedBy$obsoleteString");
-      delete ${ $mainSettings{fineTuning}{items} }{canBeFollowedBy};
-  }
-      
-  if (defined ${ $mainSettings{fineTuning}{keyEqualsValuesBracesBrackets} }{follow}){
-      $logger->warn("fineTuning: keyEqualsValuesBracesBrackets: follow$obsoleteString");
-      delete ${ $mainSettings{fineTuning}{keyEqualsValuesBracesBrackets} }{follow};
-  }
-  
-  if (defined ${ $mainSettings{fineTuning}{namedGroupingBracesBrackets} }{follow}){
-      $logger->warn("fineTuning: namedGroupingBracesBrackets: follow$obsoleteString");
-      delete ${ $mainSettings{fineTuning}{namedGroupingBracesBrackets} }{follow};
-  }
+    if ( defined $mainSettings{commandCodeBlocks} ) {
+        $logger->warn("commandCodeBlocks$obsoleteString");
+        delete $mainSettings{commandCodeBlocks};
+    }
 
-  if (defined ${ $mainSettings{fineTuning}{UnNamedGroupingBracesBrackets} }{follow}){
-      $logger->warn("fineTuning: UnNamedGroupingBracesBrackets: follow$obsoleteString");
-      delete ${ $mainSettings{fineTuning}{UnNamedGroupingBracesBrackets} }{follow};
-  }
-  
-  if (defined ${ $mainSettings{fineTuning}{arguments} }{before}){
-      $logger->warn("fineTuning: arguments: before$obsoleteString");
-      delete ${ $mainSettings{fineTuning}{arguments} }{before};
-  }
-  
-  return;
+    if ( defined ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksFollow} }{filecontents} ) {
+        $logger->warn("modifyLineBreaks: textWrapOptions: blocksFollow: filecontents$obsoleteString");
+        delete ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksFollow} }{filecontents};
+    }
+
+    if ( defined ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksEndBefore} }{filecontents} ) {
+        $logger->warn("modifyLineBreaks: textWrapOptions: blocksEndBefore: filecontents$obsoleteString");
+        delete ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksEndBefore} }{filecontents};
+    }
+
+    if ( defined ${ $mainSettings{fineTuning}{items} }{canBeFollowedBy} ) {
+        $logger->warn("fineTuning: items: canBeFollowedBy$obsoleteString");
+        delete ${ $mainSettings{fineTuning}{items} }{canBeFollowedBy};
+    }
+
+    if ( defined ${ $mainSettings{fineTuning}{keyEqualsValuesBracesBrackets} }{follow} ) {
+        $logger->warn("fineTuning: keyEqualsValuesBracesBrackets: follow$obsoleteString");
+        delete ${ $mainSettings{fineTuning}{keyEqualsValuesBracesBrackets} }{follow};
+    }
+
+    if ( defined ${ $mainSettings{fineTuning}{namedGroupingBracesBrackets} }{follow} ) {
+        $logger->warn("fineTuning: namedGroupingBracesBrackets: follow$obsoleteString");
+        delete ${ $mainSettings{fineTuning}{namedGroupingBracesBrackets} }{follow};
+    }
+
+    if ( defined ${ $mainSettings{fineTuning}{UnNamedGroupingBracesBrackets} }{follow} ) {
+        $logger->warn("fineTuning: UnNamedGroupingBracesBrackets: follow$obsoleteString");
+        delete ${ $mainSettings{fineTuning}{UnNamedGroupingBracesBrackets} }{follow};
+    }
+
+    if ( defined ${ $mainSettings{fineTuning}{arguments} }{before} ) {
+        $logger->warn("fineTuning: arguments: before$obsoleteString");
+        delete ${ $mainSettings{fineTuning}{arguments} }{before};
+    }
+
+    return;
 }
 
 sub yaml_get_indentation_settings_for_this_object {

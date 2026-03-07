@@ -42,17 +42,18 @@ sub construct_headings_levels {
     $logger->trace("*Constructing headings reg exp for example, chapter, section, etc (see indentAfterThisHeading)")
         if $is_t_switch_active;
 
-            my $oldYAMLHeadingSyntax = 0;
+    my $oldYAMLHeadingSyntax = 0;
     while ( my ( $headingName, $headingInfo ) = each %headingsLevels ) {
         if ( defined ${ $headingsLevels{$headingName} }{indentAfterThisHeading} ) {
-            ${ $headingsLevels{$headingName} }{lookForThis}  = ${ $headingsLevels{$headingName} }{indentAfterThisHeading}; 
+            ${ $headingsLevels{$headingName} }{lookForThis}
+                = ${ $headingsLevels{$headingName} }{indentAfterThisHeading};
             delete ${ $headingsLevels{$headingName} }{indentAfterThisHeading};
             $oldYAMLHeadingSyntax = 1;
         }
     }
-            if ($oldYAMLHeadingSyntax){ 
+    if ($oldYAMLHeadingSyntax) {
         $logger->warn("*Obsolete indentAfterHeadings YAML syntax used, changed to the following:");
-            $logger->warn(Dumper( \%headingsLevels ));
+        $logger->warn( Dumper( \%headingsLevels ) );
     }
 
     # delete the values that have lookForThis set to 0
@@ -130,7 +131,7 @@ sub find_heading {
 
     # if there are no headings regexps, there's no point going any further
     my $self = shift;
-    $self->construct_headings_levels; 
+    $self->construct_headings_levels;
     return if !@headingsRegexpArray;
 
     # otherwise loop through the headings regexp
@@ -139,11 +140,11 @@ sub find_heading {
     $logger->trace( Dumper( \%headingLevelLookUp ) ) if $is_t_switch_active;
 
     # preamble has already been indented, so now make it verbatim
-    if ($mainSettings{indentPreamble}){
-       $logger->trace("*protecting preamble which can contain headings commands (indentPreamble: 1)");
-       $mainSettings{indentPreamble} = 0;
-       $self->find_file_contents_environments_and_preamble;
-       ${$self}{preambleIndentationWanted} = 1;
+    if ( $mainSettings{indentPreamble} ) {
+        $logger->trace("*protecting preamble which can contain headings commands (indentPreamble: 1)");
+        $mainSettings{indentPreamble} = 0;
+        $self->find_file_contents_environments_and_preamble;
+        ${$self}{preambleIndentationWanted} = 1;
     }
 
     my @bodyParts = &headings_get_body_parts( ${$self}{body} );
@@ -158,7 +159,7 @@ sub find_heading {
     ${$self}{body} = $newBody;
 
     $logger->trace("*headings indentation complete (see indentAfterHeadings)") if $is_t_switch_active;
-    $self->put_verbatim_back_in( match => "preamble" ) if ${$self}{preambleIndentationWanted};
+    $self->put_verbatim_back_in( match => "preamble" )                         if ${$self}{preambleIndentationWanted};
 }
 
 sub headings_get_body_parts {

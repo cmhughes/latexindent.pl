@@ -612,6 +612,7 @@ sub verbatim_common_tasks {
     # modify line breaks end statements
     $self->_mlb_end_starts_on_own_line
         if ( $is_m_switch_active and defined ${$self}{EndStartsOnOwnLine} and ${$self}{EndStartsOnOwnLine} != 0 );
+
     # VerbatimEndFinishesWithLineBreak
     if (    $is_m_switch_active
         and defined ${$self}{EndFinishesWithLineBreak}

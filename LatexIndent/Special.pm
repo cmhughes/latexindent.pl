@@ -17,5 +17,5 @@ package LatexIndent::Special;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
+our @ISA = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
 1;

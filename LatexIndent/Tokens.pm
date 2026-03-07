@@ -30,7 +30,7 @@ my $ifelsefiSpecial = "!-!";
 our %tokens = (
 
     # user-facing naming convention
-    filecontents                  => $beginningToken . "FILECONTENTS",
+    filecontents => $beginningToken . "FILECONTENTS",
 
     # internal-facing naming convention
     trailingComment => "tc",
