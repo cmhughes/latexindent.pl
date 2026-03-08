@@ -18,7 +18,7 @@ package LatexIndent::ModifyLineBreaks;
 use strict;
 use warnings;
 use Exporter                      qw/import/;
-use LatexIndent::GetYamlSettings  qw/%mainSettings $argumentsBetweenCommands %polySwitchNames/;
+use LatexIndent::GetYamlSettings  qw/%mainSetting $argumentsBetweenCommands %polySwitchNames/;
 use LatexIndent::Tokens           qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches         qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
@@ -91,7 +91,7 @@ sub _mlb_begin_starts_on_own_line {
                 ${$self}{begin} =~ s/^\h*//s;
                 ${$self}{begin}
                     = $tokens{mBeforeBeginLineBreakADD}
-                    . ( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ? $tokens{blanklines} : "\n" ) . "\n"
+                    . ( ${ $mainSetting{modifyLineBreaks} }{preserveBlankLines} ? $tokens{blanklines} : "\n" ) . "\n"
                     . ${$self}{begin};
                 $logger->trace("Adding a linebreak *before* begin statement \t\t ($BeginStringLogFile == 3)")
                     if $is_t_switch_active;
@@ -166,7 +166,7 @@ sub _mlb_body_starts_on_own_line {
                 ${$self}{linebreaksAtEnd}{begin} = 1;
                 ${$self}{body} =~ s/^\h*//;
                 ${$self}{body}
-                    = ( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ? $tokens{blanklines} : "\n" ) . "\n"
+                    = ( ${ $mainSetting{modifyLineBreaks} }{preserveBlankLines} ? $tokens{blanklines} : "\n" ) . "\n"
                     . ${$self}{body};
             }
         }
@@ -224,7 +224,7 @@ sub _mlb_end_starts_on_own_line {
                 $logger->trace("Adding a blank line *before* end statement \t\t ($EndStringLogFile == 3)")
                     if $is_t_switch_active;
                 $trailingCharacterToken
-                    = "\n" . ( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ? $tokens{blanklines} : q() );
+                    = "\n" . ( ${ $mainSetting{modifyLineBreaks} }{preserveBlankLines} ? $tokens{blanklines} : q() );
                 ${$self}{body} =~ s/\h*$//s;
             }
 
@@ -359,12 +359,12 @@ sub _mlb_end_finishes_with_line_break {
                 if ( ${$self}{trailingComment} ) {
                     ${$self}{end} .= ${$self}{horizontalTrailingSpace}
                         . (
-                        ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines}
+                        ${ $mainSetting{modifyLineBreaks} }{preserveBlankLines}
                         ? $tokens{mAfterEndLineBreak} . $tokens{blanklines}
                         : $tokens{mAfterEndLineBreak}
                         )
                         . (
-                        ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines}
+                        ${ $mainSetting{modifyLineBreaks} }{preserveBlankLines}
                         ? $tokens{mAfterEndLineBreak} . $tokens{blanklines}
                         : $tokens{mAfterEndLineBreak}
                         )
@@ -378,12 +378,12 @@ sub _mlb_end_finishes_with_line_break {
                 else {
                     ${$self}{end} .= ${$self}{horizontalTrailingSpace}
                         . (
-                        ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines}
+                        ${ $mainSetting{modifyLineBreaks} }{preserveBlankLines}
                         ? $tokens{mAfterEndLineBreak} . $tokens{blanklines}
                         : $tokens{mAfterEndLineBreak}
                         )
                         . (
-                        ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines}
+                        ${ $mainSetting{modifyLineBreaks} }{preserveBlankLines}
                         ? $tokens{mAfterEndLineBreak} . $tokens{blanklines}
                         : $tokens{mAfterEndLineBreak}
                         ) . $tokens{mAfterEndLineBreak};
@@ -493,7 +493,7 @@ sub _mlb_verbatim {
                 }
                 elsif ( ${$child}{EndFinishesWithLineBreak} == 3 ) {
                     $lineBreakCharacter
-                        .= ( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ? $tokens{blanklines} : "\n" )
+                        .= ( ${ $mainSetting{modifyLineBreaks} }{preserveBlankLines} ? $tokens{blanklines} : "\n" )
                         . "\n";
                 }
 
@@ -620,7 +620,7 @@ sub mlb_PRE_indent_sentence_and_text_wrap {
 
     # one sentence per line: sentences are objects, as of V3.5.1
     $self->one_sentence_per_line
-        if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences} );
+        if ( $is_m_switch_active and ${ $mainSetting{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences} );
 
     # text wrapping
     #
@@ -632,10 +632,10 @@ sub mlb_PRE_indent_sentence_and_text_wrap {
     #            textWrapSentences: 1
     #
     if (    $is_m_switch_active
-        and !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
-        and !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}
-        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} != 0
-        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'before' )
+        and !${ $mainSetting{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
+        and !${ $mainSetting{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}
+        and ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{columns} != 0
+        and ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{when} eq 'before' )
     {
         $self->text_wrap();
 
@@ -646,8 +646,8 @@ sub mlb_PRE_indent_sentence_and_text_wrap {
     # option for comment text wrap
     $self->text_wrap_comment_blocks()
         if ( $is_m_switch_active
-        and ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}
-        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'before' );
+        and ${ ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}
+        and ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{when} eq 'before' );
 
     # logfile information
     $logger->trace( Dumper( \%{$self} ) ) if ($is_tt_switch_active);
@@ -659,10 +659,10 @@ sub mlb_POST_indent_sentence_and_text_wrap {
     my $self = shift;
 
     # option for text wrap
-    if (    !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
-        and !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}
-        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} != 0
-        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' )
+    if (    !${ $mainSetting{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
+        and !${ $mainSetting{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}
+        and ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{columns} != 0
+        and ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' )
     {
         $logger->trace("*textWrap AFTER indentation") if $is_t_switch_active;
         $self->text_wrap();
@@ -670,8 +670,8 @@ sub mlb_POST_indent_sentence_and_text_wrap {
 
     # option for comment text wrap
     $self->text_wrap_comment_blocks()
-        if (${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}
-        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' );
+        if (${ ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}
+        and ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' );
     return;
 }
 

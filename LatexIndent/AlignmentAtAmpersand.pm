@@ -23,10 +23,10 @@ use List::Util qw/max min sum/;
 
 #-----------
 use LatexIndent::Blocks           qw/$mSwitchOnlyTrailing $allCodeBlocks/;
-use LatexIndent::GetYamlSettings  qw/%mainSettings %previouslyFoundSettings/;
+use LatexIndent::GetYamlSettings  qw/%mainSetting %previouslyFoundSetting/;
 use LatexIndent::LogFile          qw/$logger/;
 use LatexIndent::ModifyLineBreaks qw/_mlb_line_break_token_adjust/;
-use LatexIndent::Switches         qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active %switches/;
+use LatexIndent::Switches         qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active %switch/;
 use LatexIndent::Tokens           qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp @trailingComments/;
 use LatexIndent::Verbatim         qw/%verbatimStorage/;
@@ -64,7 +64,7 @@ sub _align_mark_down_block {
     $logger->info("*alignment mark-up routine %*\\begin{<tabular>}...\\end{<tabular>}") if $is_t_switch_active;
     $logger->trace("unpacking mark-up comments for this routine")                       if $is_t_switch_active;
 
-    while ( my ( $alignmentBlock, $yesno ) = each %{ $mainSettings{lookForAlignDelims} } ) {
+    while ( my ( $alignmentBlock, $yesno ) = each %{ $mainSetting{lookForAlignDelims} } ) {
         if ( ref $yesno eq "HASH" ) {
             $yesno = ( defined ${$yesno}{delims} ) ? ${$yesno}{delims} : 1;
         }
@@ -130,7 +130,7 @@ sub _align_mark_down_block {
     }
 
     $logger->trace("*alignment mark-up routine: replacing comments") if $is_t_switch_active;
-    my $notPrecededByRegExp = qr/${${$mainSettings{fineTuning}}{trailingComments}}{notPrecededBy}/;
+    my $notPrecededByRegExp = qr/${${$mainSetting{fineTuning}}{trailingComments}}{notPrecededBy}/;
     foreach (@tcMarkDownToBeReturned) {
         ${$self}{body} =~ s/$notPrecededByRegExp%\Q${$_}{value}\E/%${$_}{id}/s;
     }
@@ -164,13 +164,13 @@ sub align_at_ampersand {
         else {
             my $commandStorageName = ${$self}{name} . ${$self}{modifyLineBreaksYamlName};
             $DBSStartsOnOwnLine = (
-                defined ${ $previouslyFoundSettings{$commandStorageName} }{DBSStartsOnOwnLine}
-                ? ${ $previouslyFoundSettings{$commandStorageName} }{DBSStartsOnOwnLine}
+                defined ${ $previouslyFoundSetting{$commandStorageName} }{DBSStartsOnOwnLine}
+                ? ${ $previouslyFoundSetting{$commandStorageName} }{DBSStartsOnOwnLine}
                 : 0
             );
             $DBSFinishesWithLineBreak = (
-                defined ${ $previouslyFoundSettings{$commandStorageName} }{DBSFinishesWithLineBreak}
-                ? ${ $previouslyFoundSettings{$commandStorageName} }{DBSFinishesWithLineBreak}
+                defined ${ $previouslyFoundSetting{$commandStorageName} }{DBSFinishesWithLineBreak}
+                ? ${ $previouslyFoundSetting{$commandStorageName} }{DBSFinishesWithLineBreak}
                 : 0
             );
         }
@@ -1918,7 +1918,7 @@ sub get_column_width {
 
     # default length measurement
     # credit/reference: https://perldoc.perl.org/perlunicook#%E2%84%9E-33:-String-length-in-graphemes
-    unless ( $switches{GCString} ) {
+    unless ( $switch{GCString} ) {
         my $count = 0;
         while ( $stringToBeMeasured =~ /\X/g ) { $count++ }
         return $count;

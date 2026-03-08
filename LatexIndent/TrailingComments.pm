@@ -19,7 +19,7 @@ use strict;
 use warnings;
 use LatexIndent::Tokens          qw/%tokens/;
 use LatexIndent::Switches        qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
-use LatexIndent::GetYamlSettings qw/%mainSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSetting/;
 use LatexIndent::LogFile         qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
@@ -32,8 +32,8 @@ our $trailingCommentRegExp;
 our $alignMarkUpBlockPresent = 0;
 
 sub construct_trailing_comment_regexp {
-    $notPrecededByRegExp = qr/${${$mainSettings{fineTuning}}{trailingComments}}{notPrecededBy}/;
-    my $notPreceededBy = ${ ${ mainSettings {fineTuning} }{trailingComments} }{notPreceededBy};
+    $notPrecededByRegExp = qr/${${$mainSetting{fineTuning}}{trailingComments}}{notPrecededBy}/;
+    my $notPreceededBy = ${ ${ mainSetting {fineTuning} }{trailingComments} }{notPreceededBy};
 
     if ($notPreceededBy) {
         $logger->warn(
@@ -76,7 +76,7 @@ sub remove_trailing_comments {
 
     $logger->trace("*Storing trailing comments") if $is_t_switch_active;
 
-    my $afterComment = qr/${${$mainSettings{fineTuning}}{trailingComments}}{afterComment}/;
+    my $afterComment = qr/${${$mainSetting{fineTuning}}{trailingComments}}{afterComment}/;
 
     # perform the substitution
     ${$self}{body} =~ s/
@@ -89,7 +89,7 @@ sub remove_trailing_comments {
                         /   
                             my $commentValue = $1;
 
-                            my $alignMarkUpBlock = ($commentValue =~m @^\*\h*\\(?:begin|end)\{([^}]+)\}*@ and ${ $mainSettings{lookForAlignDelims} }{$1} ? 1 : 0);
+                            my $alignMarkUpBlock = ($commentValue =~m @^\*\h*\\(?:begin|end)\{([^}]+)\}*@ and ${ $mainSetting{lookForAlignDelims} }{$1} ? 1 : 0);
 
                             $alignMarkUpBlockPresent = $alignMarkUpBlock unless $alignMarkUpBlockPresent;
 
@@ -140,7 +140,7 @@ sub put_trailing_comments_back_in {
         # the -m switch can modify max characters per line, and trailing comment IDs can
         # be split across lines
         if (    $is_m_switch_active
-            and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{huge} ne "overflow"
+            and ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{huge} ne "overflow"
             and ${$self}{body} !~ m/%$trailingcommentID/m )
         {
             $logger->trace(
@@ -149,9 +149,9 @@ sub put_trailing_comments_back_in {
             my $trailingcommentIDwithLineBreaks;
 
             # construct a reg exp that contains possible line breaks in between each character
-            if ( ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{separator} ne '' ) {
+            if ( ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{separator} ne '' ) {
                 $trailingcommentIDwithLineBreaks = join(
-                    "\\" . ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{separator} . "?",
+                    "\\" . ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{separator} . "?",
                     split( //, $trailingcommentID )
                 );
             }

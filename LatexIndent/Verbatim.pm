@@ -20,7 +20,7 @@ use warnings;
 use Data::Dumper;
 use Exporter                     qw/import/;
 use LatexIndent::Tokens          qw/%tokens/;
-use LatexIndent::GetYamlSettings qw/%mainSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSetting/;
 use LatexIndent::Switches        qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use LatexIndent::LogFile         qw/$logger/;
 our @EXPORT_OK
@@ -34,8 +34,8 @@ sub find_noindent_block {
 
     # noindent block
     $logger->trace('*Searching for NOINDENTBLOCK (see noIndentBlock)') if $is_t_switch_active;
-    $logger->trace( Dumper( \%{ $mainSettings{noIndentBlock} } ) )     if ($is_tt_switch_active);
-    while ( my ( $noIndentBlock, $yesno ) = each %{ $mainSettings{noIndentBlock} } ) {
+    $logger->trace( Dumper( \%{ $mainSetting{noIndentBlock} } ) )      if ($is_tt_switch_active);
+    while ( my ( $noIndentBlock, $yesno ) = each %{ $mainSetting{noIndentBlock} } ) {
 
         # integrity check on the field for noIndentBlock
         if ( ref($yesno) eq "HASH" ) {
@@ -170,8 +170,8 @@ sub find_noindent_block {
             $logger->trace("replaced with ID: ${$noIndentBlockObj}{id}") if $is_t_switch_active;
 
             # possible decoration in log file
-            $logger->trace( ${ $mainSettings{logFilePreferences} }{showDecorationFinishCodeBlockTrace} )
-                if ${ $mainSettings{logFilePreferences} }{showDecorationFinishCodeBlockTrace};
+            $logger->trace( ${ $mainSetting{logFilePreferences} }{showDecorationFinishCodeBlockTrace} )
+                if ${ $mainSetting{logFilePreferences} }{showDecorationFinishCodeBlockTrace};
         }
     }
     return;
@@ -182,8 +182,8 @@ sub find_verbatim_environments {
 
     # verbatim environments
     $logger->trace('*Searching for VERBATIM environments (see verbatimEnvironments)') if $is_t_switch_active;
-    $logger->trace( Dumper( \%{ $mainSettings{verbatimEnvironments} } ) )             if ($is_tt_switch_active);
-    while ( my ( $verbEnv, $yesno ) = each %{ $mainSettings{verbatimEnvironments} } ) {
+    $logger->trace( Dumper( \%{ $mainSetting{verbatimEnvironments} } ) )              if ($is_tt_switch_active);
+    while ( my ( $verbEnv, $yesno ) = each %{ $mainSetting{verbatimEnvironments} } ) {
         my $verbEnvSpec;
 
         # integrity check on the field for noIndentBlock
@@ -265,8 +265,8 @@ sub find_verbatim_environments {
             $logger->trace("replaced with ID: ${$verbatimBlock}{id}") if $is_t_switch_active;
 
             # possible decoration in log file
-            $logger->trace( ${ $mainSettings{logFilePreferences} }{showDecorationFinishCodeBlockTrace} )
-                if ${ $mainSettings{logFilePreferences} }{showDecorationFinishCodeBlockTrace};
+            $logger->trace( ${ $mainSetting{logFilePreferences} }{showDecorationFinishCodeBlockTrace} )
+                if ${ $mainSetting{logFilePreferences} }{showDecorationFinishCodeBlockTrace};
         }
     }
     return;
@@ -281,8 +281,8 @@ sub find_verbatim_commands {
     # verbatim commands need to be put back in *after* trailing comments have been put
     # back in
     $logger->trace('*Searching for VERBATIM commands (see verbatimCommands)') if $is_t_switch_active;
-    $logger->trace( Dumper( \%{ $mainSettings{verbatimCommands} } ) )         if ($is_tt_switch_active);
-    while ( my ( $verbCommand, $yesno ) = each %{ $mainSettings{verbatimCommands} } ) {
+    $logger->trace( Dumper( \%{ $mainSetting{verbatimCommands} } ) )          if ($is_tt_switch_active);
+    while ( my ( $verbCommand, $yesno ) = each %{ $mainSetting{verbatimCommands} } ) {
         my $verbCommandSpec;
 
         # integrity check on the field for noIndentBlock
@@ -399,7 +399,7 @@ sub find_verbatim_special {
     my $self = shift;
 
     # loop through specialBeginEnd
-    foreach ( @{ $mainSettings{specialBeginEnd} } ) {
+    foreach ( @{ $mainSetting{specialBeginEnd} } ) {
 
         my $specialName = ${$_}{name};
 
@@ -458,8 +458,8 @@ sub find_verbatim_special {
                 $logger->trace("replaced with ID: ${$verbatimBlock}{id}") if $is_t_switch_active;
 
                 # possible decoration in log file
-                $logger->trace( ${ $mainSettings{logFilePreferences} }{showDecorationFinishCodeBlockTrace} )
-                    if ${ $mainSettings{logFilePreferences} }{showDecorationFinishCodeBlockTrace};
+                $logger->trace( ${ $mainSetting{logFilePreferences} }{showDecorationFinishCodeBlockTrace} )
+                    if ${ $mainSetting{logFilePreferences} }{showDecorationFinishCodeBlockTrace};
             }
             ${$_}{lookForThis} = 0;
         }
@@ -467,11 +467,11 @@ sub find_verbatim_special {
 
     # remove verbatim elements from specialBeginEnd
     my @specialBeginEndTrimmed;
-    foreach ( @{ $mainSettings{specialBeginEnd} } ) {
+    foreach ( @{ $mainSetting{specialBeginEnd} } ) {
         push( @specialBeginEndTrimmed, $_ ) unless ( ${$_}{lookForThis} == 0 );
     }
     $logger->trace("*specialBeginEnd removing any elements with lookForThis: 0") if $is_t_switch_active;
-    @{ $mainSettings{specialBeginEnd} } = @specialBeginEndTrimmed;
+    @{ $mainSetting{specialBeginEnd} } = @specialBeginEndTrimmed;
 
     $logger->trace("*Verbatim storage:")          if $is_tt_switch_active;
     $logger->trace( Dumper( \%verbatimStorage ) ) if $is_tt_switch_active;
@@ -553,8 +553,8 @@ sub put_verbatim_back_in {
                     $verbatimFound++;
                 }
                 elsif ( $is_m_switch_active
-                    and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} > 1
-                    and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{huge} ne "overflow"
+                    and ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{columns} > 1
+                    and ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{huge} ne "overflow"
                     and ${$self}{body} !~ m/${$child}{id}/ )
                 {
                     $logger->trace(
@@ -660,7 +660,7 @@ sub create_unique_id {
 sub yaml_get_textwrap_removeparagraphline_breaks {
     my $self = shift;
     $logger->trace("No text wrap or remove paragraph line breaks for verbatim code blocks, ${$self}{name}")
-        if ${ $mainSettings{logFilePreferences} }{showDecorationFinishCodeBlockTrace};
+        if ${ $mainSetting{logFilePreferences} }{showDecorationFinishCodeBlockTrace};
 }
 
 1;

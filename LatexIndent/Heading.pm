@@ -21,7 +21,7 @@ use Data::Dumper;
 use LatexIndent::Tokens           qw/%tokens/;
 use LatexIndent::Switches         qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::GetYamlSettings  qw/%mainSettings %previouslyFoundSettings/;
+use LatexIndent::GetYamlSettings  qw/%mainSetting %previouslyFoundSetting/;
 use LatexIndent::LogFile          qw/$logger/;
 use Exporter                      qw/import/;
 our @ISA = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
@@ -36,7 +36,7 @@ sub construct_headings_levels {
     my $self = shift;
 
     # grab the heading levels
-    my %headingsLevels = %{ $mainSettings{indentAfterHeadings} };
+    my %headingsLevels = %{ $mainSetting{indentAfterHeadings} };
 
     # output to log file
     $logger->trace("*Constructing headings reg exp for example, chapter, section, etc (see indentAfterThisHeading)")
@@ -140,9 +140,9 @@ sub find_heading {
     $logger->trace( Dumper( \%headingLevelLookUp ) ) if $is_t_switch_active;
 
     # preamble has already been indented, so now make it verbatim
-    if ( $mainSettings{indentPreamble} ) {
+    if ( $mainSetting{indentPreamble} ) {
         $logger->trace("*protecting preamble which can contain headings commands (indentPreamble: 1)");
-        $mainSettings{indentPreamble} = 0;
+        $mainSetting{indentPreamble} = 0;
         $self->find_file_contents_environments_and_preamble;
         ${$self}{preambleIndentationWanted} = 1;
     }
@@ -281,7 +281,7 @@ sub after_heading_indentation {
         # heading body indentation
         my $codeBlockObj;
         my $modifyLineBreaksName = "afterHeading";
-        if ( !$previouslyFoundSettings{ $name . $modifyLineBreaksName } ) {
+        if ( !$previouslyFoundSetting{ $name . $modifyLineBreaksName } ) {
 
             $codeBlockObj = LatexIndent::Blocks->new(
                 name                       => $name,
@@ -289,21 +289,21 @@ sub after_heading_indentation {
                 modifyLineBreaksYamlName   => $modifyLineBreaksName,
                 type                       => "heading",
             );
-            if ( defined ${ ${ $mainSettings{indentAfterHeadings} }{$name} }{blocksEndBefore} ) {
+            if ( defined ${ ${ $mainSetting{indentAfterHeadings} }{$name} }{blocksEndBefore} ) {
                 ${$codeBlockObj}{blocksEndBefore}
-                    = ${ ${ $mainSettings{indentAfterHeadings} }{$name} }{blocksEndBefore};
+                    = ${ ${ $mainSetting{indentAfterHeadings} }{$name} }{blocksEndBefore};
             }
             $codeBlockObj->yaml_get_indentation_settings_for_this_object;
         }
 
-        if ( ${ $previouslyFoundSettings{ $name . $modifyLineBreaksName } }{indentation} ne '' ) {
-            my $addedIndentation = ${ $previouslyFoundSettings{ $name . $modifyLineBreaksName } }{indentation};
+        if ( ${ $previouslyFoundSetting{ $name . $modifyLineBreaksName } }{indentation} ne '' ) {
+            my $addedIndentation = ${ $previouslyFoundSetting{ $name . $modifyLineBreaksName } }{indentation};
 
             # some heading blocks end before something specific (see headings-single-line-mod1.tex)
             my @afterBlocksEndBefore = ( q(), q(), q() );
-            if ( defined ${ $previouslyFoundSettings{ $name . $modifyLineBreaksName } }{blocksEndBefore} ) {
+            if ( defined ${ $previouslyFoundSetting{ $name . $modifyLineBreaksName } }{blocksEndBefore} ) {
                 @afterBlocksEndBefore
-                    = split( qr/(${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{blocksEndBefore})/, $_ );
+                    = split( qr/(${$previouslyFoundSetting{$name.$modifyLineBreaksName}}{blocksEndBefore})/, $_ );
                 $_ = $afterBlocksEndBefore[0];
             }
 

@@ -25,14 +25,14 @@ use Encode qw/decode/;
 
 # gain access to subroutines in the following modules
 use LatexIndent::Switches
-    qw/store_switches %switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_r_switch_active $is_rr_switch_active $is_rv_switch_active $is_check_switch_active/;
+    qw/store_switches %switch $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_r_switch_active $is_rr_switch_active $is_rv_switch_active $is_check_switch_active/;
 use LatexIndent::LogFile     qw/process_switches $logger/;
 use LatexIndent::Logger      qw/@logFileLines/;
 use LatexIndent::Check       qw/simple_diff/;
 use LatexIndent::Lines       qw/lines_body_selected_lines lines_verbatim_create_line_block/;
 use LatexIndent::Replacement qw/make_replacements/;
 use LatexIndent::GetYamlSettings
-    qw/yaml_obsolete_checks yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings %mainSettings yaml_get_alignment_at_ampersand_from_parent/;
+    qw/yaml_obsolete_checks yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings %mainSetting yaml_get_alignment_at_ampersand_from_parent/;
 use LatexIndent::FileExtension       qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file check_if_different/;
 use LatexIndent::BlankLines          qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
@@ -78,8 +78,8 @@ sub new {
     my $invocant = shift;
     my $class    = ref($invocant) || $invocant;
     my $self     = {@_};
-    $logger->trace( ${ $mainSettings{logFilePreferences} }{showDecorationStartCodeBlockTrace} )
-        if ${ $mainSettings{logFilePreferences} }{showDecorationStartCodeBlockTrace};
+    $logger->trace( ${ $mainSetting{logFilePreferences} }{showDecorationStartCodeBlockTrace} )
+        if ${ $mainSetting{logFilePreferences} }{showDecorationStartCodeBlockTrace};
     bless( $self, $class );
     return $self;
 }
@@ -109,7 +109,7 @@ sub latexindent {
             $logger->info( "*Filename: $_ (" . $fileCount . " of " . ( scalar(@fileNames) ) . ")" );
         }
         ${$self}{fileName}       = $_;
-        ${$self}{cruftDirectory} = $switches{cruftDirectory} || ( dirname ${$self}{fileName} );
+        ${$self}{cruftDirectory} = $switch{cruftDirectory} || ( dirname ${$self}{fileName} );
 
         # file existence/extension checks
         my $file_existence = $self->file_extension_check;
@@ -119,8 +119,8 @@ sub latexindent {
         }
 
         # overwrite and overwriteIfDifferent switches, per file
-        ${$self}{overwrite}            = $switches{overwrite};
-        ${$self}{overwriteIfDifferent} = $switches{overwriteIfDifferent};
+        ${$self}{overwrite}            = $switch{overwrite};
+        ${$self}{overwriteIfDifferent} = $switch{overwriteIfDifferent};
 
         # the main operations
         $self->operate_on_file;
@@ -162,7 +162,7 @@ sub operate_on_file {
     my $self = shift;
 
     $self->create_back_up_file;
-    $self->token_check unless ( $switches{lines} );
+    $self->token_check unless ( $switch{lines} );
     $self->make_replacements( when => "before" )                if ( $is_r_switch_active and !$is_rv_switch_active );
     $self->_mlb_file_starts_with_line_break( when => "before" ) if $is_m_switch_active;
     unless ($is_rr_switch_active) {
@@ -193,7 +193,7 @@ sub operate_on_file {
 
         # ---------- main code blocks  -------------------
         ${$self}{body} = _find_all_code_blocks( ${$self}{body}, "" );
-        ${$self}{body} =~ s/\r\n/\n/sg             if $mainSettings{dos2unixlinebreaks};
+        ${$self}{body} =~ s/\r\n/\n/sg             if $mainSetting{dos2unixlinebreaks};
         $self->mlb_one_sentence_per_line_indent    if $is_m_switch_active;
         $self->_mlb_after_indentation_token_adjust if $is_m_switch_active;
 
@@ -201,13 +201,13 @@ sub operate_on_file {
         $self->find_heading;
 
         $self->condense_blank_lines
-            if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks} }{condenseMultipleBlankLinesInto} );
+            if ( $is_m_switch_active and ${ $mainSetting{modifyLineBreaks} }{condenseMultipleBlankLinesInto} );
 
         # ---------- one sentence per line, text wrap (AFTER) -------------------
         $self->mlb_POST_indent_sentence_and_text_wrap if $is_m_switch_active;
 
         $self->unprotect_blank_lines
-            if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} );
+            if ( $is_m_switch_active and ${ $mainSetting{modifyLineBreaks} }{preserveBlankLines} );
         $self->un_dodge_double_backslash;
         $self->max_indentation_check;
 
@@ -218,7 +218,7 @@ sub operate_on_file {
         $self->put_verbatim_back_in( match => "just-commands" );
         $self->_mlb_file_starts_with_line_break( when => "after" ) if $is_m_switch_active;
         $self->make_replacements( when => "after" )                if ( $is_r_switch_active and !$is_rv_switch_active );
-        ${$self}{body} =~ s/\r\n/\n/sg                             if $mainSettings{dos2unixlinebreaks};
+        ${$self}{body} =~ s/\r\n/\n/sg                             if $mainSetting{dos2unixlinebreaks};
         $self->check_if_different                                  if ${$self}{overwriteIfDifferent};
     }
     $self->output_indented_text;
@@ -243,7 +243,7 @@ sub output_indented_text {
         print $OUTPUTFILE ${$self}{body};
         close($OUTPUTFILE);
     }
-    elsif ( $switches{outputToFile} ) {
+    elsif ( $switch{outputToFile} ) {
         $logger->info("Outputting to file ${$self}{outputToFile}");
         my $OUTPUTFILE = open_with_encode( '>:encoding(UTF-8)', ${$self}{outputToFile} );
         print $OUTPUTFILE ${$self}{body};
@@ -254,7 +254,7 @@ sub output_indented_text {
     }
 
     # output to screen, unless silent mode
-    print ${$self}{body} unless $switches{silentMode};
+    print ${$self}{body} unless $switch{silentMode};
 
     return;
 }
@@ -264,19 +264,19 @@ sub output_logfile {
     my $self = shift;
     #
     # put the final line in the logfile
-    $logger->info("${$mainSettings{logFilePreferences}}{endLogFileWith}")
-        if ${ $mainSettings{logFilePreferences} }{endLogFileWith};
+    $logger->info("${$mainSetting{logFilePreferences}}{endLogFileWith}")
+        if ${ $mainSetting{logFilePreferences} }{endLogFileWith};
 
     # github info line
     $logger->info("*Please direct all communication/issues to:")
-        if ${ $mainSettings{logFilePreferences} }{showGitHubInfoFooter};
+        if ${ $mainSetting{logFilePreferences} }{showGitHubInfoFooter};
     $logger->info("https://github.com/cmhughes/latexindent.pl")
-        if ${ $mainSettings{logFilePreferences} }{showGitHubInfoFooter};
+        if ${ $mainSetting{logFilePreferences} }{showGitHubInfoFooter};
     $logger->info("documentation: https://latexindentpl.readthedocs.io/en/latest/")
-        if ${ $mainSettings{logFilePreferences} }{showGitHubInfoFooter};
+        if ${ $mainSetting{logFilePreferences} }{showGitHubInfoFooter};
 
     # open log file
-    my $logfileName = $switches{logFileName} || "indent.log";
+    my $logfileName = $switch{logFileName} || "indent.log";
 
     my $logfilePath;
     $logfilePath = "${$self}{cruftDirectory}/$logfileName";
@@ -297,7 +297,7 @@ sub output_logfile {
         close($logfile);
     }
     else {
-        if ( $switches{screenlog} ) {
+        if ( $switch{screenlog} ) {
             print "WARN:  Could not open the logfile $logfilePath \n";
             print "       No logfile will be produced.\n";
         }

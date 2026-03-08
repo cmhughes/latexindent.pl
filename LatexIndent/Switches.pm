@@ -19,8 +19,8 @@ use strict;
 use warnings;
 use Exporter qw/import/;
 our @EXPORT_OK
-    = qw/%switches store_switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_r_switch_active $is_rr_switch_active $is_rv_switch_active $is_check_switch_active $is_check_verbose_switch_active/;
-our %switches;
+    = qw/%switch store_switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_r_switch_active $is_rr_switch_active $is_rv_switch_active $is_check_switch_active $is_check_verbose_switch_active/;
+our %switch;
 our $is_m_switch_active;
 our $is_t_switch_active;
 our $is_tt_switch_active;
@@ -34,21 +34,21 @@ sub store_switches {
     my $self = shift;
 
     # copy document switches into hash local to this module
-    %switches            = %{ ${$self}{switches} };
-    $switches{version}   = defined $switches{vversion}         ? 1                           : $switches{version};
-    $is_m_switch_active  = defined $switches{modifyLineBreaks} ? $switches{modifyLineBreaks} : 0;
-    $is_t_switch_active  = defined $switches{trace}            ? $switches{trace}            : 0;
-    $is_tt_switch_active = defined $switches{ttrace}           ? $switches{ttrace}           : 0;
-    $is_t_switch_active  = $is_tt_switch_active                ? $is_tt_switch_active        : $is_t_switch_active;
-    $is_r_switch_active  = defined $switches{replacement}      ? $switches{replacement}      : 0;
-    $is_rr_switch_active = defined $switches{onlyreplacement}  ? $switches{onlyreplacement}  : 0;
-    $is_rv_switch_active = defined $switches{replacementRespectVerb} ? $switches{replacementRespectVerb} : 0;
+    %switch              = %{ ${$self}{switches} };
+    $switch{version}     = defined $switch{vversion}               ? 1                         : $switch{version};
+    $is_m_switch_active  = defined $switch{modifyLineBreaks}       ? $switch{modifyLineBreaks} : 0;
+    $is_t_switch_active  = defined $switch{trace}                  ? $switch{trace}            : 0;
+    $is_tt_switch_active = defined $switch{ttrace}                 ? $switch{ttrace}           : 0;
+    $is_t_switch_active  = $is_tt_switch_active                    ? $is_tt_switch_active      : $is_t_switch_active;
+    $is_r_switch_active  = defined $switch{replacement}            ? $switch{replacement}      : 0;
+    $is_rr_switch_active = defined $switch{onlyreplacement}        ? $switch{onlyreplacement}  : 0;
+    $is_rv_switch_active = defined $switch{replacementRespectVerb} ? $switch{replacementRespectVerb} : 0;
     $is_r_switch_active
         = ( $is_rr_switch_active | $is_rv_switch_active )
         ? ( $is_rr_switch_active | $is_rv_switch_active )
         : $is_r_switch_active;
-    $is_check_switch_active         = defined $switches{check}        ? $switches{check}        : 0;
-    $is_check_verbose_switch_active = defined $switches{checkverbose} ? $switches{checkverbose} : 0;
+    $is_check_switch_active         = defined $switch{check}        ? $switch{check}        : 0;
+    $is_check_verbose_switch_active = defined $switch{checkverbose} ? $switch{checkverbose} : 0;
     $is_check_switch_active
         = $is_check_verbose_switch_active ? $is_check_verbose_switch_active : $is_check_switch_active;
     delete ${$self}{switches};

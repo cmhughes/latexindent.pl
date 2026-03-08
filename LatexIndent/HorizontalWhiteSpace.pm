@@ -17,7 +17,7 @@ package LatexIndent::HorizontalWhiteSpace;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use LatexIndent::GetYamlSettings qw/%mainSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSetting/;
 use LatexIndent::Switches        qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile         qw/$logger/;
 use Text::Tabs;
@@ -31,19 +31,19 @@ sub remove_trailing_whitespace {
 
     # removeTrailingWhitespace can be either a hash or a scalar, but if
     # it's a scalar, we need to fix it
-    if ( ref( $mainSettings{removeTrailingWhitespace} ) ne 'HASH' ) {
+    if ( ref( $mainSetting{removeTrailingWhitespace} ) ne 'HASH' ) {
         $logger->trace("removeTrailingWhitespace specified as scalar, will update it to be a hash")
             if $is_t_switch_active;
 
         # grab the value
-        my $removeTWS = $mainSettings{removeTrailingWhitespace};
+        my $removeTWS = $mainSetting{removeTrailingWhitespace};
 
         # delete the scalar
-        delete $mainSettings{removeTrailingWhitespace};
+        delete $mainSetting{removeTrailingWhitespace};
 
         # redefine it as a hash
-        ${ $mainSettings{removeTrailingWhitespace} }{beforeProcessing} = $removeTWS;
-        ${ $mainSettings{removeTrailingWhitespace} }{afterProcessing}  = $removeTWS;
+        ${ $mainSetting{removeTrailingWhitespace} }{beforeProcessing} = $removeTWS;
+        ${ $mainSetting{removeTrailingWhitespace} }{afterProcessing}  = $removeTWS;
 
         $logger->trace("*removeTrailingWhitespace setting defaults routine")           if $is_t_switch_active;
         $logger->trace("removeTrailingWhitespace: beforeProcessing is now $removeTWS") if $is_t_switch_active;
@@ -52,18 +52,18 @@ sub remove_trailing_whitespace {
 
     # this method can be called before the indentation, and after, depending upon the input
     if ( $input{when} eq "before" ) {
-        return unless ( ${ $mainSettings{removeTrailingWhitespace} }{beforeProcessing} );
+        return unless ( ${ $mainSetting{removeTrailingWhitespace} }{beforeProcessing} );
         $logger->trace(
             "*Removing trailing white space *before* the document is processed (removeTrailingWhitespace: beforeProcessing == 1)"
         ) if $is_t_switch_active;
     }
     elsif ( $input{when} eq "after" ) {
-        return unless ( ${ $mainSettings{removeTrailingWhitespace} }{afterProcessing} );
+        return unless ( ${ $mainSetting{removeTrailingWhitespace} }{afterProcessing} );
         if ($is_t_switch_active) {
             $logger->trace(
                 "*Removing trailing white space *after* the document is processed (removeTrailingWhitespace: afterProcessing == 1)"
             );
-            $logger->trace( Dumper( \%{ $mainSettings{removeTrailingWhitespace} } ) );
+            $logger->trace( Dumper( \%{ $mainSetting{removeTrailingWhitespace} } ) );
         }
     }
     else {
@@ -125,7 +125,7 @@ sub max_indentation_check {
                         $indentation;
                        /xsmeg;
 
-    return unless ( $mainSettings{maximumIndentation} =~ m/^\h+$/ );
+    return unless ( $mainSetting{maximumIndentation} =~ m/^\h+$/ );
 
     # maximum indentation check
     $logger->trace("*Maximum indentation check") if ($is_t_switch_active);
@@ -135,7 +135,7 @@ sub max_indentation_check {
     ${$self}{body} = join( "", @expanded_lines );
 
     # grab the maximum indentation
-    my $maximumIndentation       = $mainSettings{maximumIndentation};
+    my $maximumIndentation       = $mainSetting{maximumIndentation};
     my $maximumIndentationLength = length($maximumIndentation) + 1;
 
     # replace any leading space that is greater than the

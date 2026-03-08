@@ -21,7 +21,7 @@ use Text::Wrap;
 use LatexIndent::Tokens               qw/%tokens/;
 use LatexIndent::AlignmentAtAmpersand qw/get_column_width/;
 use LatexIndent::TrailingComments     qw/$trailingCommentRegExp @trailingComments/;
-use LatexIndent::GetYamlSettings      qw/%mainSettings %previouslyFoundSettings/;
+use LatexIndent::GetYamlSettings      qw/%mainSetting %previouslyFoundSetting/;
 use LatexIndent::Switches             qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use LatexIndent::LogFile              qw/$logger/;
 use LatexIndent::Verbatim             qw/%verbatimStorage/;
@@ -39,7 +39,7 @@ sub text_wrap {
     # textWrap Blocks FOLLOW
     #
     my $blocksFollow     = q();
-    my $blocksFollowHash = \%{ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksFollow} };
+    my $blocksFollowHash = \%{ ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{blocksFollow} };
 
     my $headingsRegEx = q();
 
@@ -73,7 +73,7 @@ sub text_wrap {
             elsif ( $blocksFollowEachPart eq "headings" ) {
                 $blocksFollowEachPart = q();
 
-                my %headingsLevels = %{ $mainSettings{indentAfterHeadings} };
+                my %headingsLevels = %{ $mainSetting{indentAfterHeadings} };
                 while ( my ( $headingName, $headingInfo ) = each %headingsLevels ) {
 
                     # check for a * in the name
@@ -112,7 +112,7 @@ sub text_wrap {
     # if blankLine is not active from blocksFollow then we need to set up the
     # beginning of the string, but make sure that it is *not* followed by a
     # blank line token, or a blank line
-    if ( !${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksFollow} }{blankLine} ) {
+    if ( !${ ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{blocksFollow} }{blankLine} ) {
         $blocksFollow .= ( $blocksFollow eq '' ? q() : "|" ) . qr/
                                         \G
                                         (?!$tokens{blanklines})
@@ -120,7 +120,7 @@ sub text_wrap {
     }
 
     # followed by 0 or more h-space and line breaks
-    if ( ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksFollow} }{commentOnPreviousLine} ) {
+    if ( ${ ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{blocksFollow} }{commentOnPreviousLine} ) {
         $blocksFollow
             = ( $blocksFollow eq '' ? q() : qr/(?:$blocksFollow)(?:\h|\R)*(?:$trailingCommentRegExp\R\h*)?/s );
     }
@@ -136,7 +136,7 @@ sub text_wrap {
     # textWrap Blocks BEGIN with
     #
     my $blocksBeginWith     = q();
-    my $blocksBeginWithHash = \%{ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksBeginWith} };
+    my $blocksBeginWithHash = \%{ ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{blocksBeginWith} };
 
     foreach my $blocksBeginWithEachPart ( sort keys %{$blocksBeginWithHash} ) {
         last if ${$self}{modifyLineBreaksYamlName} eq 'sentence';
@@ -173,7 +173,7 @@ sub text_wrap {
     # textWrap Blocks END with
     #
     my $blocksEndBefore     = q();
-    my $blocksEndBeforeHash = \%{ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksEndBefore} };
+    my $blocksEndBeforeHash = \%{ ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{blocksEndBefore} };
 
     foreach my $blocksEndBeforeEachPart ( sort keys %{$blocksEndBeforeHash} ) {
         last if ${$self}{modifyLineBreaksYamlName} eq 'sentence';
@@ -211,7 +211,7 @@ sub text_wrap {
     # store the text wrap blocks
     my @textWrapBlockStorage = split( /($blocksFollow)/, ${$self}{body} );
     @textWrapBlockStorage = split( /(\s*$blocksFollow+)/, ${$self}{body} )
-        if ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after';
+        if ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{when} eq 'after';
 
     # sentences need special treatment
     if ( ${$self}{modifyLineBreaksYamlName} eq 'sentence' ) {
@@ -227,22 +227,22 @@ sub text_wrap {
     }
 
     # call the text wrapping routine
-    my $columns = ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns};
+    my $columns = ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{columns};
 
     # vital Text::Wrap options
     $Text::Wrap::columns  = $columns;
-    $Text::Wrap::huge     = ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{huge};
+    $Text::Wrap::huge     = ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{huge};
     $Text::Wrap::unexpand = 0;
 
     # all other Text::Wrap options not usually needed/helpful, but available
-    $Text::Wrap::separator = ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{separator}
-        if ( ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{separator} ne '' );
-    $Text::Wrap::break = ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{break}
-        if ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{break};
-    $Text::Wrap::unexpand = ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{unexpand}
-        if ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{unexpand};
-    $Text::Wrap::tabstop = ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{tabstop}
-        if ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{tabstop};
+    $Text::Wrap::separator = ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{separator}
+        if ( ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{separator} ne '' );
+    $Text::Wrap::break = ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{break}
+        if ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{break};
+    $Text::Wrap::unexpand = ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{unexpand}
+        if ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{unexpand};
+    $Text::Wrap::tabstop = ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{tabstop}
+        if ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{tabstop};
 
     # only needed if when:after
     my $subsequentSpace = q();
@@ -285,7 +285,7 @@ sub text_wrap {
 # see also: test-cases/text-wrap/issue-359*.tex
 #
             my $firstLineColumns = 0;
-            if ( ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' ) {
+            if ( ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' ) {
 
                 # reset columns
                 $Text::Wrap::columns = $columns;
@@ -376,9 +376,9 @@ sub text_wrap {
                         # check that $name is within indentRules
                         if (    $textWrapBlockCount > 0
                             and $name !~ m/^\h*$/
-                            and defined $previouslyFoundSettings{textWrapAfter}
-                            and defined ${ $previouslyFoundSettings{textWrapAfter} }{$name}
-                            and ${ $previouslyFoundSettings{textWrapAfter} }{$name} =~ m/^\h*$/ )
+                            and defined $previouslyFoundSetting{textWrapAfter}
+                            and defined ${ $previouslyFoundSetting{textWrapAfter} }{$name}
+                            and ${ $previouslyFoundSetting{textWrapAfter} }{$name} =~ m/^\h*$/ )
                         {
 
                             $firstLineColumns = $columns - length($subsequentSpace);
@@ -387,7 +387,7 @@ sub text_wrap {
                             for ( my $i = 0; $i < &get_column_width($thingToMeasure); $i++ ) {
                                 $subsequentSpace =~ s/ //;
                             }
-                            $subsequentSpace .= ${ $previouslyFoundSettings{textWrapAfter} }{$name};
+                            $subsequentSpace .= ${ $previouslyFoundSetting{textWrapAfter} }{$name};
                         }
 
                     }
@@ -404,7 +404,7 @@ sub text_wrap {
             # LIMIT is one greater than the maximum number of times EXPR may be split
             my @textWrapBeforeEndWith = split( /($blocksEndBefore)/, $textWrapBlockStorageValue, 2 );
             @textWrapBeforeEndWith = split( /(\s*$blocksEndBefore)/, $textWrapBlockStorageValue, 2 )
-                if ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after';
+                if ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{when} eq 'after';
 
             # sentences need special treatment
             if ( ${$self}{modifyLineBreaksYamlName} eq 'sentence' ) {
@@ -449,15 +449,15 @@ sub text_wrap {
             }
 
             $trailingComments =~ s/\h{2,}/ /sg
-                if ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{multipleSpacesToSingle};
+                if ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{multipleSpacesToSingle};
 
             # determine if text wrapping will remove paragraph line breaks
-            my $removeBlockLineBreaks = ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{removeBlockLineBreaks};
+            my $removeBlockLineBreaks = ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{removeBlockLineBreaks};
 
             # sentence remove line breaks is determined by removeSentenceLineBreaks
             if ( ${$self}{modifyLineBreaksYamlName} eq 'sentence' ) {
                 $removeBlockLineBreaks
-                    = ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{removeSentenceLineBreaks};
+                    = ${ $mainSetting{modifyLineBreaks}{oneSentencePerLine} }{removeSentenceLineBreaks};
             }
 
             # remove internal line breaks
@@ -465,7 +465,7 @@ sub text_wrap {
 
             # convert multiple spaces into single
             $textWrapBlockStorageValue =~ s/\h{2,}/ /sg
-                if ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{multipleSpacesToSingle};
+                if ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{multipleSpacesToSingle};
 
             # goal: get an accurate measurement of verbatim objects;
             #
@@ -490,7 +490,7 @@ sub text_wrap {
 
             # check body for verbatim and get measurements
             if ( $textWrapBlockStorageValue =~ m/$tokens{verbatim}/s
-                and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{huge} eq "overflow" )
+                and ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{huge} eq "overflow" )
             {
 
 # reference: https://stackoverflow.com/questions/10336660/in-perl-how-can-i-generate-random-strings-consisting-of-eight-hex-digits
@@ -553,7 +553,7 @@ sub text_wrap {
             }
             else {
                 $textWrapBlockStorageValue = wrap( '', '', $textWrapBlockStorageValue )
-                    if ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} > 0;
+                    if ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{columns} > 0;
             }
 
             # if text wrap has happened *AFTER* indentation,
@@ -575,7 +575,7 @@ sub text_wrap {
             #      is is line width is not respected because of the indentation.
             #  ^^^^
             #  \end{abstract}
-            if ( ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' ) {
+            if ( ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' ) {
 
                 # add leading indentation back in to the text-wrapped block
                 $textWrapBlockStorageValue =~ s/^/$subsequentSpace/mg;
@@ -587,7 +587,7 @@ sub text_wrap {
             #
             # optionally wrap comments
             #
-            if ( ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}
+            if ( ${ ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}
                 and $trailingComments ne '' )
             {
 
@@ -669,12 +669,12 @@ sub text_wrap_comment_blocks {
     my $self = shift;
 
     # call the text wrapping routine
-    my $columns = ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns};
+    my $columns = ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{columns};
 
     # fail gracefully if columns == 0
     if ( $columns == 0 ) {
         $logger->warn("* textWrapOptions: columns is set to 0, can't text wrap with this");
-        ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap} = 0;
+        ${ ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap} = 0;
         return;
     }
 
@@ -737,9 +737,9 @@ sub text_wrap_comment_blocks {
 
                   # leading space
                   $commentValue =~ s|^(\h*)||s;
-                  my $leadingSpace =  (${${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments}}{inheritLeadingSpace}? $1: ' ' );
+                  my $leadingSpace =  (${${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{comments}}{inheritLeadingSpace}? $1: ' ' );
 
-                  $commentValue =~ s/\h{2,}/ /sg if ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{multipleSpacesToSingle};
+                  $commentValue =~ s/\h{2,}/ /sg if ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{multipleSpacesToSingle};
 
                   # reset columns
                   $Text::Wrap::columns = $columns - length($leadingHorizontalSpace)-length($leadingSpace);

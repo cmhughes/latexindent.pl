@@ -18,7 +18,7 @@ package LatexIndent::BlankLines;
 use strict;
 use warnings;
 use LatexIndent::Tokens          qw/%tokens/;
-use LatexIndent::GetYamlSettings qw/%mainSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSetting/;
 use LatexIndent::Switches        qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile         qw/$logger/;
 use Exporter                     qw/import/;
@@ -27,7 +27,7 @@ our @EXPORT_OK = qw/protect_blank_lines unprotect_blank_lines condense_blank_lin
 sub protect_blank_lines {
     my $self = shift;
 
-    unless ( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ) {
+    unless ( ${ $mainSetting{modifyLineBreaks} }{preserveBlankLines} ) {
         $logger->trace("*Blank lines will not be protected (preserveBlankLines=0)") if $is_t_switch_active;
         return;
     }
@@ -45,10 +45,10 @@ sub condense_blank_lines {
 
     # if preserveBlankLines is set to 0, then the blank-line-token will not be present
     # in the document -- we change that here
-    if ( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} == 0 ) {
+    if ( ${ $mainSetting{modifyLineBreaks} }{preserveBlankLines} == 0 ) {
 
         # turn the switch on
-        ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} = 1;
+        ${ $mainSetting{modifyLineBreaks} }{preserveBlankLines} = 1;
 
         # log file information
         $logger->trace("Updating body to include blank line token, this requires preserveBlankLines = 1")
@@ -62,7 +62,7 @@ sub condense_blank_lines {
     }
 
     # grab the value from the settings
-    my $condenseMultipleBlankLinesInto = ${ $mainSettings{modifyLineBreaks} }{condenseMultipleBlankLinesInto};
+    my $condenseMultipleBlankLinesInto = ${ $mainSetting{modifyLineBreaks} }{condenseMultipleBlankLinesInto};
 
     # grab the blank-line-token
     my $blankLineToken = $tokens{blanklines};
@@ -92,7 +92,7 @@ sub unprotect_blank_lines {
     $logger->trace("Unprotecting blank lines (see preserveBlankLines)") if $is_t_switch_active;
     my $blankLineToken = $tokens{blanklines};
 
-    if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{huge} ne "overflow" ) {
+    if ( $is_m_switch_active and ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{huge} ne "overflow" ) {
         $blankLineToken = join( "(?:\\h|\\R)*", split( //, $tokens{blanklines} ) );
     }
 

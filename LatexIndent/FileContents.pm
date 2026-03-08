@@ -18,7 +18,7 @@ package LatexIndent::FileContents;
 use strict;
 use warnings;
 use LatexIndent::Tokens          qw/%tokens/;
-use LatexIndent::GetYamlSettings qw/%mainSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSetting/;
 use LatexIndent::Switches        qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use LatexIndent::LogFile         qw/$logger/;
 use LatexIndent::Verbatim        qw/%verbatimStorage/;
@@ -31,7 +31,7 @@ our $fileContentsCounter;
 sub find_file_contents_environments_and_preamble {
     my $self = shift;
 
-    return if $mainSettings{indentPreamble};
+    return if $mainSetting{indentPreamble};
 
     # store the file contents blocks in an array which, depending on the value
     # of indentPreamble, will be put into the verbatim hash, or otherwise
@@ -40,8 +40,8 @@ sub find_file_contents_environments_and_preamble {
 
     # fileContents environments
     $logger->trace('*Searching for FILE CONTENTS environments (see fileContentsEnvironments)') if $is_t_switch_active;
-    $logger->trace( Dumper( \%{ $mainSettings{fileContentsEnvironments} } ) ) if ($is_tt_switch_active);
-    while ( my ( $fileContentsEnv, $yesno ) = each %{ $mainSettings{fileContentsEnvironments} } ) {
+    $logger->trace( Dumper( \%{ $mainSetting{fileContentsEnvironments} } ) ) if ($is_tt_switch_active);
+    while ( my ( $fileContentsEnv, $yesno ) = each %{ $mainSetting{fileContentsEnvironments} } ) {
 
         if ( !$yesno ) {
             $logger->trace(" *not* looking for $fileContentsEnv as $fileContentsEnv:$yesno");
@@ -94,7 +94,7 @@ sub find_file_contents_environments_and_preamble {
             # text wrapping can make the ID split across lines
             ${$fileContentsBlock}{idRegExp} = ${$fileContentsBlock}{id};
 
-            if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{huge} ne "overflow" ) {
+            if ( $is_m_switch_active and ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{huge} ne "overflow" ) {
                 my $IDwithLineBreaks = join( "\\R?\\h*", split( //, ${$fileContentsBlock}{id} ) );
                 ${$fileContentsBlock}{idRegExp} = qr/$IDwithLineBreaks/s;
             }
@@ -133,10 +133,10 @@ sub find_file_contents_environments_and_preamble {
     my $needToStorePreamble = 0;
 
     # try and find the preamble
-    my $lookForPreamble = ${ $mainSettings{lookForPreamble} }{ ${$self}{fileExtension} };
-    $lookForPreamble = 1 if ( ${$self}{fileName} eq "-" and ${ $mainSettings{lookForPreamble} }{STDIN} );
+    my $lookForPreamble = ${ $mainSetting{lookForPreamble} }{ ${$self}{fileExtension} };
+    $lookForPreamble = 1 if ( ${$self}{fileName} eq "-" and ${ $mainSetting{lookForPreamble} }{STDIN} );
 
-    if ( ${$self}{body} =~ m/$preambleRegExp/sx and $lookForPreamble and !$mainSettings{indentPreamble} ) {
+    if ( ${$self}{body} =~ m/$preambleRegExp/sx and $lookForPreamble and !$mainSetting{indentPreamble} ) {
 
         $logger->trace(
             "\\begin{document} found in body (after searching for filecontents)-- assuming that a preamble exists")
@@ -163,7 +163,7 @@ sub find_file_contents_environments_and_preamble {
         $logger->trace("*found: preamble, storing as verbatim (indentPreamble: 0)") if $is_t_switch_active;
 
         $verbatimBlock->unprotect_blank_lines
-            if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} );
+            if ( $is_m_switch_active and ${ $mainSetting{modifyLineBreaks} }{preserveBlankLines} );
 
         # there are common tasks for each of the verbatim objects
         $verbatimBlock->verbatim_common_tasks;

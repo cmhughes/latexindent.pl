@@ -23,8 +23,8 @@ use PerlIO::encoding;
 use File::Basename;    # to get the filename and directory path
 use Exporter                     qw/import/;
 use Encode                       qw/decode/;
-use LatexIndent::GetYamlSettings qw/%mainSettings/;
-use LatexIndent::Switches        qw/%switches $is_check_switch_active/;
+use LatexIndent::GetYamlSettings qw/%mainSetting/;
+use LatexIndent::Switches        qw/%switch $is_check_switch_active/;
 use LatexIndent::LogFile         qw/$logger/;
 our @EXPORT_OK = qw/file_extension_check/;
 
@@ -42,7 +42,7 @@ sub file_extension_check {
     my ( $name, $dir, $ext ) = fileparse( $fileName, qr/\..[^.]*$/ );
 
     # grab the file extension preferences
-    my %fileExtensionPreference = %{ $mainSettings{fileExtensionPreference} };
+    my %fileExtensionPreference = %{ $mainSetting{fileExtensionPreference} };
 
     # sort the file extensions by preference
     my @fileExtensions
@@ -116,7 +116,7 @@ sub file_extension_check {
     ${$self}{fileExtension} = $ext;
 
     # check to see if -o switch is active
-    if ( $switches{outputToFile} ) {
+    if ( $switch{outputToFile} ) {
 
         $logger->info("*-o switch active: output file check");
 
@@ -125,15 +125,15 @@ sub file_extension_check {
         # note, related:
         #
         #   git config --add core.quotePath false
-        ${$self}{outputToFile} = $switches{outputToFile};
+        ${$self}{outputToFile} = $switch{outputToFile};
 
-        if ( $fileName eq "-" and $switches{outputToFile} =~ m/^\+/ ) {
+        if ( $fileName eq "-" and $switch{outputToFile} =~ m/^\+/ ) {
             $logger->info("STDIN input mode active, -o switch is removing all + symbols");
             ${$self}{outputToFile} =~ s/\+//g;
         }
 
         # the -o file name might begin with a + symbol
-        if ( $switches{outputToFile} =~ m/^\+(.*)/ and $1 ne "+" ) {
+        if ( $switch{outputToFile} =~ m/^\+(.*)/ and $1 ne "+" ) {
             $logger->info("-o switch called with + symbol at the beginning: ${$self}{outputToFile}");
             ${$self}{outputToFile} = ${$self}{baseName} . $1;
             $logger->info("output file is now: ${$self}{outputToFile}");
@@ -148,7 +148,7 @@ sub file_extension_check {
 
         # if there is no extension, then add the extension from the file to be operated upon
         if ( !$ext ) {
-            $logger->info( "-o switch called with file name without extension: " . $switches{outputToFile} );
+            $logger->info( "-o switch called with file name without extension: " . $switch{outputToFile} );
             ${$self}{outputToFile} = $name . ( $name =~ m/\.\z/ ? q() : "." ) . $strippedFileExtension;
 
             $logger->info(
@@ -201,7 +201,7 @@ sub file_extension_check {
     }
 
     # -n, --lines mode active
-    if ( $switches{lines} ) {
+    if ( $switch{lines} ) {
         $self->lines_body_selected_lines( \@lines );
     }
     else {
@@ -215,9 +215,9 @@ sub file_extension_check {
     #
     # or
     #
-    #   $switches{overwriteIfDifferent}
+    #   $switch{overwriteIfDifferent}
     #
-    if ( $is_check_switch_active or $switches{overwriteIfDifferent} ) {
+    if ( $is_check_switch_active or $switch{overwriteIfDifferent} ) {
         ${$self}{originalBody} = ${$self}{body};
     }
 

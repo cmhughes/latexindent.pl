@@ -77,7 +77,7 @@ if ( $FindBin::Script eq 'latexindent.exe' ) {
     $consoleoutcp = Win32::GetConsoleOutputCP();
     Win32::SetConsoleOutputCP(65001);
 
-    $logger->info("*ANSI Code Page: $encoding_sys");
+    $logger->trace("*ANSI Code Page: $encoding_sys");
     if ( $switches{screenlog} ) {
         print "INFO:  ANSI Code Page:  $encoding_sys\n"
           ;    #The values of ACP in the registry
