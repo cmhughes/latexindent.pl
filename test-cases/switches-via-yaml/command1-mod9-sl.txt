@@ -1,0 +1,20 @@
+INFO:  File extension work:
+       latexindent called to act upon command1 without a file extension;
+       searching for files in the following order (see fileExtensionPreference):
+       	command1.tex
+       	command1.sty
+       	command1.cls
+       	command1.bib
+       command1.tex found!
+       Updated fileName to command1.tex
+INFO:  -o switch active: output file check
+       -o switch called with + symbol at the beginning: +-mod9
+       output file is now: command1-mod9
+       -o switch called with file name without extension: +-mod9
+       Updated to command1-mod9.tex as the file extension of the input file is tex
+INFO:  Output routine:
+       Outputting to file command1-mod9.tex
+       --------------
+INFO:  Please direct all communication/issues to:
+       https://github.com/cmhughes/latexindent.pl
+       documentation: https://latexindentpl.readthedocs.io/en/latest/

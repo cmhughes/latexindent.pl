@@ -18,7 +18,8 @@ package LatexIndent::GetYamlSettings;
 use strict;
 use warnings;
 use Data::Dumper;
-use LatexIndent::Switches qw/%switch $is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::Switches
+    qw/%switch $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_check_switch_active $is_check_verbose_switch_active $is_r_switch_active $is_rr_switch_active $is_rv_switch_active /;
 use YAML::Tiny;        # interpret defaultSettings.yaml and other potential settings files
 use File::Basename;    # to get the filename and directory path
 use File::HomeDir;
@@ -1127,6 +1128,55 @@ sub yaml_read_settings {
             default => ${ $mainSetting{fineTuning}{lookForAlignDelimsDefaults} }{doubleBackSlash}
         },
     );
+
+    # switches via YAML, alphabetically
+    foreach my $switch ( sort keys %{ $mainSetting{switchesViaYaml} } ) {
+        next unless ${ $mainSetting{switchesViaYaml} }{$switch};
+        if ( $switch eq 'kSwitch' and !$is_check_switch_active ) {
+            $logger->info("*Switch activated via YAML: check mode (-k)");
+            $is_check_switch_active = 1;
+        }
+        if ( $switch eq 'kvSwitch' and !$is_check_switch_active ) {
+            $logger->info("*Switch activated via YAML: verbose check mode (-kv)");
+            $is_check_switch_active         = 1;
+            $is_check_verbose_switch_active = 1;
+        }
+        if ( $switch eq 'mSwitch' and !$is_m_switch_active ) {
+            $logger->info("*Switch activated via YAML: modifyLineBreaks (-m)");
+            $is_m_switch_active = 1;
+        }
+        if ( $switch eq 'rSwitch' and !$is_r_switch_active ) {
+            $logger->info("*Switch activated via YAML: replacement mode (-r)");
+            $is_r_switch_active = 1;
+        }
+        if ( $switch eq 'rrSwitch' and !$is_rr_switch_active ) {
+            $logger->info("*Switch activated via YAML: replacement ONLY mode (-rr)");
+            $is_r_switch_active  = 1;
+            $is_rr_switch_active = 1;
+        }
+        if ( $switch eq 'rvSwitch' and !$is_rv_switch_active ) {
+            $logger->info("*Switch activated via YAML: replacement respect verbatim mode (-rv)");
+            $is_r_switch_active  = 1;
+            $is_rv_switch_active = 1;
+        }
+        if ( $switch eq 'sSwitch' and !$switch{silentMode} ) {
+            $logger->info("*Switch activated via YAML: silent mode (-s)");
+            $switch{silentMode} = 1;
+        }
+        if ( $switch eq 'slSwitch' and !$switch{screenlog} ) {
+            $logger->info("*Switch activated via YAML: screen log (-sl)");
+            $switch{screenlog} = 1;
+        }
+        if ( $switch eq 'tSwitch' and !$is_t_switch_active ) {
+            $logger->info("*Switch activated via YAML: trace mode (-t)");
+            $is_t_switch_active = 1;
+        }
+        if ( $switch eq 'ttSwitch' and !$is_tt_switch_active ) {
+            $logger->info("*Switch activated via YAML: ttrace mode (-tt)");
+            $is_t_switch_active  = 1;
+            $is_tt_switch_active = 1;
+        }
+    }
 
     $self->yaml_obsolete_checks;
     return;

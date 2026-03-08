@@ -568,6 +568,16 @@ latexindent.pl --GCString myfile.tex
  may find it easier to use from \texttt{arara}; you can find the arara rule for
  \texttt{latexindent.pl} and its associated documentation at \cite{paulo}.
 
+\subsection{switches via yaml}
+
+ \announce{NEW}{switchesViaYAML details}For some of the switches, you can specify them by
+ the YAML interface; the defaults are shown in \cref{lst:switchesViaYaml}.
+
+ Note: switches can only be turned \emph{on} using this field, they will not be turned
+ \emph{off}.
+
+ \cmhlistingsfromfile*[style=switchesViaYaml]{../defaultSettings.yaml}[width=.95\linewidth,before=\centering,yaml-TCB]{\texttt{switchesViaYaml}}{lst:switchesViaYaml}
+
 \subsection{Summary of exit codes}
  \index{exit code!summary}
  Assuming that you call \texttt{latexindent.pl} on \texttt{myfile.tex}

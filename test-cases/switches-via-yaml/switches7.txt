@@ -1,0 +1,4 @@
+INFO:  Switch activated via YAML: modifyLineBreaks (-m)
+INFO:  Switch activated via YAML: replacement ONLY mode (-rr)
+INFO:  Switch activated via YAML: silent mode (-s)
+INFO:  Replacement mode, -rr switch is active

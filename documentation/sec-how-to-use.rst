@@ -537,6 +537,21 @@ From arara
 
 Using ``latexindent.pl`` from the command line is fine for some folks, but others may find it easier to use from ``arara``; you can find the arara rule for ``latexindent.pl`` and its associated documentation at (Cereda 2013).
 
+switches via yaml
+-----------------
+
+For some of the switches, you can specify them by the YAML interface; the defaults are shown in :numref:`lst:switchesViaYaml`.
+
+Note: switches can only be turned *on* using this field, they will not be turned *off*.
+
+.. literalinclude:: ../defaultSettings.yaml
+	:class: .baseyaml
+	:caption: ``switchesViaYaml`` 
+	:name: lst:switchesViaYaml
+	:lines: 527-537
+	:linenos:
+	:lineno-start: 527
+
 Summary of exit codes
 ---------------------
 

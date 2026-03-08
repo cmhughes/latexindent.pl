@@ -347,7 +347,7 @@ Users of ``docker`` should see the details given in :numref:`sec:app:docker`.
 About this documentation
 ------------------------
 
-As you read through this documentation, you will see many listings; in this version of the documentation, there are a total of 592. This may seem a lot, but I deem it necessary in presenting the various different options of ``latexindent.pl`` and the associated output that they are capable of producing.
+As you read through this documentation, you will see many listings; in this version of the documentation, there are a total of 593. This may seem a lot, but I deem it necessary in presenting the various different options of ``latexindent.pl`` and the associated output that they are capable of producing.
 
 The different listings are presented using different styles:
 

@@ -1606,10 +1606,10 @@ In general, it is usually *not* necessary to specify the ``body`` field, but let
 	
 	.. literalinclude:: demonstrations/special-nested1.yaml
 		:class: .baseyaml
-		:caption: ``special-body1.yaml`` 
+		:caption: ``special-nested1.yaml`` 
 		:name: lst:special-nested1
 	
-	We note that the output in :numref:`lst:special-body-mod1` is as we would expect, even *without* the ``body`` field specified.
+	We note that the output in :numref:`lst:special-body-mod1` is as we would expect, as the ``nested`` field has been specified in :numref:`lst:special-nested1`.
 
 
 .. describe:: indentAfterHeadings:fields

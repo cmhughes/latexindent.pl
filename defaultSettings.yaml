@@ -520,3 +520,18 @@ fineTuning:
           \)\.                            # ).
         )                                 #
       )                                   #
+      
+# specify switches/flags via yaml;
+# note these ONLY turn switches on
+# they do NOT turn switches off
+switchesViaYaml:
+  kSwitch:  0 # check mode
+  kvSwitch: 0 # verbose check mode
+  mSwitch:  0 # modify line breaks
+  rSwitch:  0 # replacement
+  rrSwitch: 0 # only replacements
+  rvSwitch: 0 # replacement respect verbatim
+  sSwitch:  0 # silent mode
+  slSwitch: 0 # screen log
+  tSwitch:  0 # trace mode
+  ttSwitch: 0 # ttrace mode

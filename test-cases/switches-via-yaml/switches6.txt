@@ -1,0 +1,5 @@
+INFO:  Switch activated via YAML: modifyLineBreaks (-m)
+INFO:  Switch activated via YAML: replacement mode (-r)
+INFO:  Switch activated via YAML: silent mode (-s)
+INFO:  Replacement mode *before* indentation: -r
+INFO:  Replacement mode *after* indentation: -r

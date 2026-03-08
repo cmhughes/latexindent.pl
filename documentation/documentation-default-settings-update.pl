@@ -39,6 +39,7 @@ my @namesAndOffsets = (
                         {name=>"sentencesDoNOTcontain",numberOfLines=>1},
                         {name=>"modifylinebreaksEnv",numberOfLines=>9,special=>"environments",within=>"modifyLineBreaks"},
                         {name=>"fineTuning",numberOfLines=>75},
+                        {name=>"switchesViaYaml",numberOfLines=>10},
                         {name=>"replacements",numberOfLines=>5},
                       );
 

@@ -1304,10 +1304,11 @@ latexindent.pl special-body.tex -l=special-nested1.yaml
 
  \begin{cmhtcbraster}[ raster left skip=-3.5cm,]
   \cmhlistingsfromfile{demonstrations/special-body-mod1.tex}{\texttt{special-body.tex} using \cref{lst:special-nested1}}{lst:special-body-mod1}
-  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/special-nested1.yaml}[yaml-TCB]{\texttt{special-body1.yaml}}{lst:special-nested1}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/special-nested1.yaml}[yaml-TCB]{\texttt{special-nested1.yaml}}{lst:special-nested1}
  \end{cmhtcbraster}
- We note that the output in \cref{lst:special-body-mod1} is as we would expect, even
- \emph{without} the \texttt{body} field specified.
+ We note that the output in \cref{lst:special-body-mod1} is as we would expect, as the
+ \texttt{nested} field has been specified in \cref{lst:special-nested1}.
+ \announce{NEW}{specialBeginEnd nested demonstration}
  \end{example}
 
 \yamltitle{indentAfterHeadings}*{fields}

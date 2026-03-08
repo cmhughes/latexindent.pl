@@ -11,6 +11,7 @@ enhancements:
 * all users should notice better performance, more natural interaction of poly-switches, and less scaffolding needed
 * fineTuning specifies defaults for `lookForAlignDelims`, see [issue-583](https://github.com/cmhughes/latexindent.pl/issues/583)
 * double back slash regex allows `.` between `[...]`, see [issue-564](https://github.com/cmhughes/latexindent.pl/issues/564)
+* switchesViaYaml, see [issue-574](https://github.com/cmhughes/latexindent.pl/issues/574)
 
 bug fixes 
 * [issue-599](https://github.com/cmhughes/latexindent.pl/issues/599)

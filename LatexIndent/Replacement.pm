@@ -29,11 +29,11 @@ our @EXPORT_OK = qw/make_replacements/;
 sub make_replacements {
     my $self  = shift;
     my %input = @_;
-    if ( $is_t_switch_active and !$is_rr_switch_active ) {
-        $logger->trace("*Replacement mode *$input{when}* indentation: -r");
+    if ( !$is_rr_switch_active ) {
+        $logger->info("*Replacement mode *$input{when}* indentation: -r");
     }
-    elsif ( $is_t_switch_active and $is_rr_switch_active ) {
-        $logger->trace("*Replacement mode, -rr switch is active") if $is_t_switch_active;
+    elsif ($is_rr_switch_active) {
+        $logger->info("*Replacement mode, -rr switch is active");
     }
 
     my @replacements = @{ $mainSetting{replacements} };

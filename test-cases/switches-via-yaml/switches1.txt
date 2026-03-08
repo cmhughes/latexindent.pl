@@ -1,0 +1,3 @@
+INFO:  Switch activated via YAML: check mode (-k)
+INFO:  Switch activated via YAML: silent mode (-s)
+INFO:  simple diff: (check switch active)

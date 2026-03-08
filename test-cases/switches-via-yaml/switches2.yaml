@@ -1,0 +1,3 @@
+switchesViaYaml:
+  kSwitch: 0  # check mode
+  sSwitch: 1  # silent mode
