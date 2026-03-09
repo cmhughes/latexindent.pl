@@ -1,8 +1,7 @@
 specialBeginEnd:
-  -
-   name: leftRightSquare
-   begin: \\left\[
-   end: \\right\]
+  - name: leftRightSquare
+    begin: \\left\[
+    end: \\right\]
 
 fineTuning:
   commands:

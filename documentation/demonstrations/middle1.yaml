@@ -1,6 +1,5 @@
 specialBeginEnd:
-  -
-    name: If
+  - name: If
     begin: '\\If'
     middle: 
       - '\\ElsIf'

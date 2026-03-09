@@ -1,5 +1,5 @@
 specialBeginEnd:
-    displayMath:
-        begin: '\\\['
-        end: '\\\]'
-        lookForThis: 0
+  - name: displayMath
+    begin: '\\\['
+    end: '\\\]'
+    lookForThis: 0

@@ -9,8 +9,7 @@ fineTuning:
        [+a-zA-Z@*0-9_:]+
 
 specialBeginEnd:
- -
-  name: customHeading
-  begin: \\(?:chapter|section)
-  end: \%\h+end
-  nested: 1
+ - name: customHeading
+   begin: \\(?:chapter|section)
+   end: \%\h+end
+   nested: 1

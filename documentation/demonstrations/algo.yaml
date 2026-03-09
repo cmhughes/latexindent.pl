@@ -1,59 +1,47 @@
 specialBeginEnd:
-  -
-    name: ForStatement
+  - name: ForStatement
     begin: \\For\{[^}]+?\}
     end: \\EndFor
-  -
-    name: FORStatement
+  - name: FORStatement
     begin: \\FOR\{[^}]+?\}
     end: \\ENDFOR
     nested: 1
-  -
-    name: WhileStatement
+  - name: WhileStatement
     begin: \\While\{[^}]+?\}
     end: \\EndWhile
     nested: 1
-  -
-    name: WHILEStatement
+  - name: WHILEStatement
     begin: \\WHILE\{[^}]+?\}
     end: \\ENDWHILE
-  -
-    name: ForAllStatement
+  - name: ForAllStatement
     begin: \\ForAll\{[^}]+?\}
     end: \\EndFor
     nested: 1
-  -
-    name: LoopStatement
+  - name: LoopStatement
     begin: \\Loop
     end: \\EndLoop
-  -
-    name: RepeatStatement
+  - name: RepeatStatement
     begin: \\Repeat
     end: \\Until\{[^}]+?\}
-  -
-    name: ProcedureStatement
+  - name: ProcedureStatement
     begin: \\Procedure\{[^}]+?\}\{[^}]+?\}
     end: \\EndProcedure
-  -
-    name: FunctionStatement
+  - name: FunctionStatement
     begin: \\Function\{[^}]+?\}\{[^}]+?\}
     end: \\EndFunction
-  -
-    name: IfStatement
+  - name: IfStatement
     begin: \\If\{[^}]+?\}
     middle:
       - \\Else
       - \\ElsIf\{[^}]+?\}
     end: \\EndIf
-  -
-    name: IFStatement
+  - name: IFStatement
     begin: \\IF\{[^}]+?\}
     middle:
       - \\ELSE
       - \\ELSIF\{[^}]+?\}
     end: \\ENDIF
-  -
-    name: inlineMath
+  - name: inlineMath
     lookForThis: 0
 
 fineTuning:
