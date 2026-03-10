@@ -93,17 +93,17 @@ A field that contains a list of environments that you would like left completely
 	:class: .baseyaml
 	:caption: ``verbatimEnvironments`` 
 	:name: lst:verbatimEnvironments
-	:lines: 85-88
+	:lines: 68-71
 	:linenos:
-	:lineno-start: 85
+	:lineno-start: 68
 
 .. literalinclude:: ../defaultSettings.yaml
 	:class: .baseyaml
 	:caption: ``verbatimCommands`` 
 	:name: lst:verbatimCommands
-	:lines: 91-93
+	:lines: 74-76
 	:linenos:
-	:lineno-start: 91
+	:lineno-start: 74
 
 Note that if you put an environment in ``verbatimEnvironments`` and in other fields such as ``lookForAlignDelims`` or ``noAdditionalIndent`` then ``latexindent.pl`` will *always* prioritize ``verbatimEnvironments``.
 
@@ -177,9 +177,9 @@ it is *not* a verbatim-like environment) then you can wrap it in an environment 
 	:class: .baseyaml
 	:caption: ``noIndentBlock`` 
 	:name: lst:noIndentBlock
-	:lines: 98-100
+	:lines: 81-83
 	:linenos:
-	:lineno-start: 98
+	:lineno-start: 81
 
 Of course, you don’t want to have to specify these as null environments in your code, so you use them with a comment symbol, ``%``, followed by as many spaces (possibly none) as you like; see :numref:`lst:noIndentBlockdemo` for example.
 
@@ -298,9 +298,9 @@ Before ``latexindent.pl`` determines the difference between preamble (if any) an
 	:class: .baseyaml
 	:caption: ``fileContentsEnvironments`` 
 	:name: lst:fileContentsEnvironments
-	:lines: 104-106
+	:lines: 87-89
 	:linenos:
-	:lineno-start: 104
+	:lineno-start: 87
 
 .. describe:: indentPreamble:0|1
 
@@ -314,9 +314,9 @@ Not all files contain preamble; for example, ``sty``, ``cls`` and ``bib`` files 
 	:class: .baseyaml
 	:caption: lookForPreamble 
 	:name: lst:lookForPreamble
-	:lines: 112-117
+	:lines: 95-100
 	:linenos:
-	:lineno-start: 112
+	:lineno-start: 95
 
 .. index:: indentation;defaultIndent description
 
@@ -345,9 +345,9 @@ Trailing white space can be removed both *before* and *after* processing the doc
 	:class: .baseyaml
 	:caption: removeTrailingWhitespace 
 	:name: lst:removeTrailingWhitespace
-	:lines: 123-125
+	:lines: 106-108
 	:linenos:
-	:lineno-start: 123
+	:lineno-start: 106
 
 .. literalinclude:: demonstrations/remove-tws-alt.yaml
 	:class: .baseyaml
@@ -373,9 +373,9 @@ This contains a list of code blocks that are operated upon in a special way by `
 	:class: .baseyaml
 	:caption: ``lookForAlignDelims`` (basic) 
 	:name: lst:aligndelims:basic
-	:lines: 128-131
+	:lines: 111-114
 	:linenos:
-	:lineno-start: 128
+	:lineno-start: 111
 
 Specifying code blocks in this field instructs ``latexindent.pl`` to try and align each column by its alignment delimiters. It does have some limitations (discussed further in :numref:`sec:knownlimitations`), but in many cases it will produce results such as those in :numref:`lst:tabularbefore:basic` and :numref:`lst:tabularafter:basic`; running the command
 
@@ -1269,9 +1269,9 @@ The environment names specified in ``indentAfterItems`` tell ``latexindent.pl`` 
 	:class: .baseyaml
 	:caption: ``indentAfterItems`` 
 	:name: lst:indentafteritems
-	:lines: 196-203
+	:lines: 179-186
 	:linenos:
-	:lineno-start: 196
+	:lineno-start: 179
 
 .. literalinclude:: demonstrations/items1.tex
 	:class: .tex
@@ -1301,9 +1301,9 @@ in ``specialBeginEnd`` are, in their default state, focused on math mode begin a
 	:class: .baseyaml
 	:caption: ``specialBeginEnd`` 
 	:name: lst:specialBeginEnd
-	:lines: 206-218
+	:lines: 189-201
 	:linenos:
-	:lineno-start: 206
+	:lineno-start: 189
 
 The field ``displayMath`` represents ``\[...\]``, ``inlineMath`` represents ``$...$`` and ``displayMathTex`` represents ``$$...$$``. You can, of course, rename these in your own YAML files (see :numref:`sec:localsettings`); indeed, you might like to set up your own special begin and end statements.
 
@@ -1620,9 +1620,9 @@ This field enables the user to specify indentation rules that take effect after 
 	:class: .baseyaml
 	:caption: ``indentAfterHeadings`` 
 	:name: lst:indentAfterHeadings
-	:lines: 228-237
+	:lines: 211-220
 	:linenos:
-	:lineno-start: 228
+	:lineno-start: 211
 
 The default settings do *not* place indentation after a heading, but you can easily switch them on by changing ``lookForThis`` from 0 to 1. The ``level`` field tells ``latexindent.pl`` the hierarchy of the heading structure in your document. You might, for example, like to have both ``section`` and ``subsection`` set with ``level: 3`` because you do not want the indentation to go too deep.
 
@@ -2054,9 +2054,9 @@ Assuming that your environment name is not found within neither ``noAdditionalIn
 	:class: .baseyaml
 	:caption: ``noAdditionalIndentGlobal`` 
 	:name: lst:noAdditionalIndentGlobal:environments
-	:lines: 277-278
+	:lines: 260-261
 	:linenos:
-	:lineno-start: 277
+	:lineno-start: 260
 
 .. proof:example::	
 	
@@ -2131,9 +2131,9 @@ The final check that ``latexindent.pl`` will make is to look for ``indentRulesGl
 	:class: .baseyaml
 	:caption: ``indentRulesGlobal`` 
 	:name: lst:indentRulesGlobal:environments
-	:lines: 292-293
+	:lines: 275-276
 	:linenos:
-	:lineno-start: 292
+	:lineno-start: 275
 
 .. proof:example::	
 	
@@ -3050,17 +3050,17 @@ Having considered all of the different types of code blocks, the functions of th
 	:class: .baseyaml
 	:caption: ``noAdditionalIndentGlobal`` 
 	:name: lst:noAdditionalIndentGlobal
-	:lines: 277-289
+	:lines: 260-272
 	:linenos:
-	:lineno-start: 277
+	:lineno-start: 260
 
 .. literalinclude:: ../defaultSettings.yaml
 	:class: .baseyaml
 	:caption: ``indentRulesGlobal`` 
 	:name: lst:indentRulesGlobal
-	:lines: 292-304
+	:lines: 275-287
 	:linenos:
-	:lineno-start: 292
+	:lineno-start: 275
 
 .. container:: references hanging-indent
    :name: refs

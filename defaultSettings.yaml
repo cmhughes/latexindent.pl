@@ -64,23 +64,6 @@ maxNumberOfBackUps: 0
 # the back up will be written to myfile.bak4
 cycleThroughBackUps: 0
 
-# preferences for information displayed in the log file
-logFilePreferences:
-  showEveryYamlRead: 1
-  showAmalgamatedSettings: 0
-  showDecorationStartCodeBlockTrace: 0
-  showDecorationFinishCodeBlockTrace: 0
-  endLogFileWith: '--------------'
-  showGitHubInfoFooter: 1
-  Dumper:
-    Terse: 1
-    Indent: 1
-    Useqq: 1
-    Deparse: 1
-    Quotekeys: 0
-    Sortkeys: 1
-    Pair: " => "
-
 # verbatim environments 
 verbatimEnvironments:
   verbatim: 1
@@ -525,13 +508,28 @@ fineTuning:
 # note these ONLY turn switches on
 # they do NOT turn switches off
 switchesViaYaml:
-  kSwitch:  0 # check mode
-  kvSwitch: 0 # verbose check mode
-  mSwitch:  0 # modify line breaks
-  rSwitch:  0 # replacement
-  rrSwitch: 0 # only replacements
-  rvSwitch: 0 # replacement respect verbatim
-  sSwitch:  0 # silent mode
-  slSwitch: 0 # screen log
-  tSwitch:  0 # trace mode
-  ttSwitch: 0 # ttrace mode
+  kSwitch:  0 # -k,  check mode
+  kvSwitch: 0 # -kv, verbose check mode
+  mSwitch:  0 # -m,  modify line breaks
+  rSwitch:  0 # -r,  replacement
+  rrSwitch: 0 # -rr, only replacements
+  rvSwitch: 0 # -rv, replacement respect verbatim
+  sSwitch:  0 # -s,  silent mode
+  slSwitch: 0 # -sl, screen log
+  tSwitch:  0 # -t,  trace mode
+  ttSwitch: 0 # -tt, ttrace mode
+
+# preferences for information displayed in the log file
+logFilePreferences:
+  showEveryYamlRead: 1
+  showAmalgamatedSettings: 0
+  endLogFileWith: '--------------'
+  showGitHubInfoFooter: 1
+  Dumper:
+    Terse: 1
+    Indent: 1
+    Useqq: 1
+    Deparse: 1
+    Quotekeys: 0
+    Sortkeys: 1
+    Pair: " => "

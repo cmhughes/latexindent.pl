@@ -347,7 +347,7 @@ Users of ``docker`` should see the details given in :numref:`sec:app:docker`.
 About this documentation
 ------------------------
 
-As you read through this documentation, you will see many listings; in this version of the documentation, there are a total of 593. This may seem a lot, but I deem it necessary in presenting the various different options of ``latexindent.pl`` and the associated output that they are capable of producing.
+As you read through this documentation, you will see many listings; in this version of the documentation, there are a total of 599. This may seem a lot, but I deem it necessary in presenting the various different options of ``latexindent.pl`` and the associated output that they are capable of producing.
 
 The different listings are presented using different styles:
 
@@ -372,9 +372,9 @@ This type of listing is a ``.yaml`` file; when you see line numbers given (as he
 	:class: .mlbyaml
 	:caption: ``modifyLineBreaks`` 
 	:name: lst:modifylinebreaks-demo
-	:lines: 309-311
+	:lines: 292-294
 	:linenos:
-	:lineno-start: 309
+	:lineno-start: 292
 
 This type of listing is a ``.yaml`` file, but it will only be relevant when the ``-m`` switch is active; see :numref:`sec:modifylinebreaks` for more details.
 
@@ -382,9 +382,9 @@ This type of listing is a ``.yaml`` file, but it will only be relevant when the 
 	:class: .replaceyaml
 	:caption: ``replacements`` 
 	:name: lst:replacements-demo
-	:lines: 439-444
+	:lines: 422-427
 	:linenos:
-	:lineno-start: 439
+	:lineno-start: 422
 
 This type of listing is a ``.yaml`` file, but it will only be relevant when the ``-r`` switch is active; see :numref:`sec:replacements` for more details.
 

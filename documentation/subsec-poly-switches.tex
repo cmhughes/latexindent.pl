@@ -1,4 +1,5 @@
 % arara: pdflatex: { files: [latexindent]}
+
 \subsection{Poly-switches}\label{sec:poly-switches}
  Every other field in the \texttt{modifyLineBreaks} field uses poly-switches, and can take
  one of the following%
@@ -858,6 +859,103 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
   You can customise the pattern for the double backslash by exploring the \emph{fine
   tuning} field detailed in \vref{lst:fineTuning}.
 
+\subsubsection{Poly-switches for commas}\label{subsec:poly-switch-commas}
+ With reference to \cref{tab:poly-switch-mapping} you can specify poly-switches to
+ dictate the line-break behaviour of commas in arguments for code blocks that have
+ arguments: \texttt{commands}, \texttt{namedGroupingBracesBrackets},
+ \texttt{keyEqualsValuesBracesBrackets} and \texttt{UnNamedGroupingBracesBrackets}.
+
+ Consider the code given in \cref{lst:comma1-demo}.
+ \begin{cmhlistings}[style=tcblatex,escapeinside={(*@}{@*)}]{\texttt{comma1.tex}}{lst:comma1-demo}
+\mycommand{1(*@$\ElseStartsOnOwnLine$@*),(*@$\ElseFinishesWithLineBreak$@*)2(*@$\ElseStartsOnOwnLine$@*),(*@$\ElseFinishesWithLineBreak$@*)3}[4(*@$\ElseStartsOnOwnLine$@*),(*@$\ElseFinishesWithLineBreak$@*)5(*@$\ElseStartsOnOwnLine$@*),(*@$\ElseFinishesWithLineBreak$@*)6]
+\end{cmhlistings}
+ Referencing \cref{lst:comma1-demo}:
+ \begin{itemize}
+  \item line breaks ahead of the comma are annotated by $\ElseStartsOnOwnLine$, and are
+        controlled by \texttt{CommaStartsOnOwnLine};
+  \item line breaks after the comma are annotated by $\ElseFinishesWithLineBreak$, and
+        are controlled by \texttt{CommaFinishesWithLineBreak}.
+ \end{itemize}
+
+ Let's explore each of these in turn.
+
+ \paragraph{Comma starts on own line}
+  \begin{example}
+  We explore \texttt{CommaStartsOnOwnLine} ($\ElseStartsOnOwnLine$ in
+  \cref{lst:comma1-demo}); starting with the code in \cref{lst:comma1-demo}, together
+  with the YAML files given in \cref{lst:comma1} and \cref{lst:comma2} and running the
+  following commands \index{switches!-l demonstration} \index{switches!-m demonstration}
+
+  \begin{commandshell}
+latexindent.pl comma1.tex -l comma1.yaml
+latexindent.pl comma1.tex -l comma2.yaml
+\end{commandshell}
+
+  then we receive the respective output given in \cref{lst:comma1-mod1} and
+  \cref{lst:comma1-mod2}.
+
+  \begin{cmhtcbraster}
+   \cmhlistingsfromfile*{demonstrations/comma1-mod1.tex}{\texttt{comma1-mod1.tex}}{lst:comma1-mod1}
+   \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/comma1.yaml}[MLB-TCB]{\texttt{comma1.yaml}}{lst:comma1}
+  \end{cmhtcbraster}
+
+  \begin{cmhtcbraster}
+   \cmhlistingsfromfile*{demonstrations/comma1-mod2.tex}{\texttt{comma1-mod2.tex}}{lst:comma1-mod2}
+   \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/comma2.yaml}[MLB-TCB]{\texttt{comma2.yaml}}{lst:comma2}
+  \end{cmhtcbraster}
+
+  We note that
+  \begin{itemize}
+   \item \cref{lst:comma1} specifies \texttt{CommaStartsOnOwnLine} for
+         \emph{every} mandatory and optional argument;
+         the commas \cref{lst:comma1-demo} have been moved to their own line in
+         \cref{lst:comma1-mod1};
+   \item \cref{lst:comma2} specifies \texttt{CommaStartsOnOwnLine} on a
+         \emph{per-name} basis for \texttt{mycommand};
+         the commas from \cref{lst:comma1-demo} have been moved to their own line in
+         \cref{lst:comma1-mod2}, having added comment symbols before moving them.
+  \end{itemize}
+  \end{example}
+
+ \paragraph{Comma finishes with line break}
+  \begin{example}
+  Let's now explore \texttt{CommaFinishesWithLineBreak} ($\ElseFinishesWithLineBreak$ in
+  \cref{lst:comma1-demo}); starting with the code in \cref{lst:comma1-demo}, together
+  with the YAML files given in \cref{lst:comma3} and \cref{lst:comma4} and running the
+  following commands \index{poly-switches!for double backslash (delimiters)}
+  \index{switches!-l demonstration} \index{switches!-m demonstration}
+
+  \begin{commandshell}
+latexindent.pl comma1.tex -l comma3.yaml
+latexindent.pl comma1.tex -l comma4.yaml
+\end{commandshell}
+
+  then we receive the respective output given in \cref{lst:comma1-mod3} and
+  \cref{lst:comma1-mod4}.
+
+  \begin{cmhtcbraster}
+   \cmhlistingsfromfile*{demonstrations/comma1-mod3.tex}{\texttt{comma1-mod3.tex}}{lst:comma1-mod3}
+   \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/comma3.yaml}[MLB-TCB]{\texttt{comma3.yaml}}{lst:comma3}
+  \end{cmhtcbraster}
+
+  \begin{cmhtcbraster}
+   \cmhlistingsfromfile*{demonstrations/comma1-mod4.tex}{\texttt{comma1-mod4.tex}}{lst:comma1-mod4}
+   \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/comma4.yaml}[MLB-TCB]{\texttt{comma4.yaml}}{lst:comma4}
+  \end{cmhtcbraster}
+
+  We note that
+  \begin{itemize}
+   \item \cref{lst:comma3} specifies \texttt{CommaFinishesWithLineBreak} for
+         \emph{every} mandatory and optional argument;
+         the code following the commas from \cref{lst:comma1-demo} has been moved to
+         their own line in \cref{lst:comma1-mod3};
+   \item \cref{lst:comma4} specifies \texttt{CommaFinishesWithLineBreak} on a
+         \emph{per-name} basis for \texttt{mycommand};
+         the code following the commas has been moved to
+         their own line in \cref{lst:comma1-mod4}, having added comment symbols before moving
+         them.
+  \end{itemize}
+  \end{example}
 \subsubsection{Poly-switches for other code blocks}
  Rather than repeat the examples shown for the environment code blocks (in
  \vref{sec:modifylinebreaks-environments}), we choose to detail the poly-switches for all

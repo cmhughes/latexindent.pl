@@ -1,5 +1,5 @@
 + latexindent.pl -s -m commands-simple-big.tex -o=+-out1 -l arg-minimal-between '-y=defaultIndent: '\''  '\'''
 
-real	0m3.313s
-user	0m3.291s
-sys	0m0.022s
+real	0m3.308s
+user	0m3.279s
+sys	0m0.028s

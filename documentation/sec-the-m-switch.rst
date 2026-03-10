@@ -15,9 +15,9 @@ As of Version 3.0, ``latexindent.pl`` has the ``-m`` switch, which permits ``lat
 	:class: .mlbyaml
 	:caption: ``modifyLineBreaks`` 
 	:name: lst:modifylinebreaks
-	:lines: 309-311
+	:lines: 292-294
 	:linenos:
-	:lineno-start: 309
+	:lineno-start: 292
 
 Having read the previous paragraph, it should sound reasonable that, if you call ``latexindent.pl`` using the ``-m`` switch, then you give it permission to modify line breaks in your file, but let’s be clear:
 
@@ -76,9 +76,9 @@ The complete settings for this feature are given in :numref:`lst:textWrapOptions
 	:class: .mlbyaml
 	:caption: ``textWrapOptions`` 
 	:name: lst:textWrapOptionsAll
-	:lines: 345-370
+	:lines: 328-353
 	:linenos:
-	:lineno-start: 345
+	:lineno-start: 328
 
 Text wrap: overview
 ~~~~~~~~~~~~~~~~~~~
@@ -1028,9 +1028,9 @@ You can instruct ``latexindent.pl`` to format your file so that it puts one sent
 	:class: .mlbyaml
 	:caption: ``oneSentencePerLine`` 
 	:name: lst:oneSentencePerLine
-	:lines: 315-341
+	:lines: 298-324
 	:linenos:
-	:lineno-start: 315
+	:lineno-start: 298
 
 oneSentencePerLine: overview
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1147,25 +1147,25 @@ In each case, you can specify the ``other`` field to include any pattern that yo
 	:class: .mlbyaml
 	:caption: ``sentencesFollow`` 
 	:name: lst:sentencesFollow
-	:lines: 321-329
+	:lines: 304-312
 	:linenos:
-	:lineno-start: 321
+	:lineno-start: 304
 
 .. literalinclude:: ../defaultSettings.yaml
 	:class: .mlbyaml
 	:caption: ``sentencesBeginWith`` 
 	:name: lst:sentencesBeginWith
-	:lines: 330-333
+	:lines: 313-316
 	:linenos:
-	:lineno-start: 330
+	:lineno-start: 313
 
 .. literalinclude:: ../defaultSettings.yaml
 	:class: .mlbyaml
 	:caption: ``sentencesEndWith`` 
 	:name: lst:sentencesEndWith
-	:lines: 334-339
+	:lines: 317-322
 	:linenos:
-	:lineno-start: 334
+	:lineno-start: 317
 
 oneSentencePerLine: sentencesFollow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1420,9 +1420,9 @@ You can specify patterns that sentences do *not* contain using the field in :num
 	:class: .mlbyaml
 	:caption: ``sentencesDoNOTcontain`` 
 	:name: lst:sentencesDoNOTcontain
-	:lines: 340-341
+	:lines: 323-324
 	:linenos:
-	:lineno-start: 340
+	:lineno-start: 323
 
 If sentences run across environments then, by default, they will *not* be considered a sentence by ``latexindent.pl``.
 
@@ -1862,9 +1862,9 @@ We start by viewing a snippet of ``defaultSettings.yaml`` in :numref:`lst:enviro
 	:class: .mlbyaml
 	:caption: ``environments`` 
 	:name: lst:environments-mlb
-	:lines: 380-389
+	:lines: 363-372
 	:linenos:
-	:lineno-start: 380
+	:lineno-start: 363
 
 Let’s begin with the simple example given in :numref:`lst:env-mlb1-tex`; note that we have annotated key parts of the file using ♠, ♥, ◆ and ♣, these will be related to fields specified in :numref:`lst:environments-mlb`.
 
@@ -2853,6 +2853,127 @@ The pattern matching for the double backslash will also, optionally, allow trail
 
 
 You can customise the pattern for the double backslash by exploring the *fine tuning* field detailed in :numref:`lst:fineTuning`.
+
+.. label follows
+
+.. _subsec:poly-switch-commas:
+
+Poly-switches for commas
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+With reference to :numref:`tab:poly-switch-mapping` you can specify poly-switches to dictate the line-break behaviour of commas in arguments for code blocks that have arguments: ``commands``, ``namedGroupingBracesBrackets``, ``keyEqualsValuesBracesBrackets`` and ``UnNamedGroupingBracesBrackets``.
+
+Consider the code given in :numref:`lst:comma1-demo`.
+
+.. code-block:: latex
+   :caption: ``comma1.tex`` 
+   :name: lst:comma1-demo
+
+   \mycommand{1★,□2★,□3}[4★,□5★,□6]
+
+Referencing :numref:`lst:comma1-demo`:
+
+-  line breaks ahead of the comma are annotated by ★, and are controlled by ``CommaStartsOnOwnLine``;
+
+-  line breaks after the comma are annotated by □, and are controlled by ``CommaFinishesWithLineBreak``.
+
+Let’s explore each of these in turn.
+
+Comma starts on own line
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. proof:example::	
+	
+	We explore ``CommaStartsOnOwnLine`` (★ in :numref:`lst:comma1-demo`); starting with the code in :numref:`lst:comma1-demo`, together with the YAML files given in :numref:`lst:comma1` and :numref:`lst:comma2` and running the following commands
+	
+	.. index:: switches;-l demonstration
+	
+	.. index:: switches;-m demonstration
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl comma1.tex -l comma1.yaml
+	   latexindent.pl comma1.tex -l comma2.yaml
+	
+	then we receive the respective output given in :numref:`lst:comma1-mod1` and :numref:`lst:comma1-mod2`.
+	
+	.. literalinclude:: demonstrations/comma1-mod1.tex
+		:class: .tex
+		:caption: ``comma1-mod1.tex`` 
+		:name: lst:comma1-mod1
+	
+	.. literalinclude:: demonstrations/comma1.yaml
+		:class: .mlbyaml
+		:caption: ``comma1.yaml`` 
+		:name: lst:comma1
+	
+	.. literalinclude:: demonstrations/comma1-mod2.tex
+		:class: .tex
+		:caption: ``comma1-mod2.tex`` 
+		:name: lst:comma1-mod2
+	
+	.. literalinclude:: demonstrations/comma2.yaml
+		:class: .mlbyaml
+		:caption: ``comma2.yaml`` 
+		:name: lst:comma2
+	
+	We note that
+	
+	-  :numref:`lst:comma1` specifies ``CommaStartsOnOwnLine`` for *every* mandatory and optional argument; the commas :numref:`lst:comma1-demo` have been moved to their own line in :numref:`lst:comma1-mod1`;
+	
+	-  :numref:`lst:comma2` specifies ``CommaStartsOnOwnLine`` on a *per-name* basis for ``mycommand``; the commas from :numref:`lst:comma1-demo` have been moved to their own line in :numref:`lst:comma1-mod2`, having added comment symbols before moving them.
+	
+
+
+Comma finishes with line break
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. proof:example::	
+	
+	Let’s now explore ``CommaFinishesWithLineBreak`` (□ in :numref:`lst:comma1-demo`); starting with the code in :numref:`lst:comma1-demo`, together with the YAML files given in :numref:`lst:comma3` and :numref:`lst:comma4` and running the following commands
+	
+	.. index:: poly-switches;for double backslash (delimiters)
+	
+	.. index:: switches;-l demonstration
+	
+	.. index:: switches;-m demonstration
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl comma1.tex -l comma3.yaml
+	   latexindent.pl comma1.tex -l comma4.yaml
+	
+	then we receive the respective output given in :numref:`lst:comma1-mod3` and :numref:`lst:comma1-mod4`.
+	
+	.. literalinclude:: demonstrations/comma1-mod3.tex
+		:class: .tex
+		:caption: ``comma1-mod3.tex`` 
+		:name: lst:comma1-mod3
+	
+	.. literalinclude:: demonstrations/comma3.yaml
+		:class: .mlbyaml
+		:caption: ``comma3.yaml`` 
+		:name: lst:comma3
+	
+	.. literalinclude:: demonstrations/comma1-mod4.tex
+		:class: .tex
+		:caption: ``comma1-mod4.tex`` 
+		:name: lst:comma1-mod4
+	
+	.. literalinclude:: demonstrations/comma4.yaml
+		:class: .mlbyaml
+		:caption: ``comma4.yaml`` 
+		:name: lst:comma4
+	
+	We note that
+	
+	-  :numref:`lst:comma3` specifies ``CommaFinishesWithLineBreak`` for *every* mandatory and optional argument; the code following the commas from :numref:`lst:comma1-demo` has been moved to their own line in :numref:`lst:comma1-mod3`;
+	
+	-  :numref:`lst:comma4` specifies ``CommaFinishesWithLineBreak`` on a *per-name* basis for ``mycommand``; the code following the commas has been moved to their own line in :numref:`lst:comma1-mod4`, having added comment symbols before moving them.
+	
+
 
 Poly-switches for other code blocks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

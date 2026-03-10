@@ -1266,11 +1266,9 @@ logFilePreferences
 	:class: .baseyaml
 	:caption: ``logFilePreferences`` 
 	:name: lst:logFilePreferences
-	:lines: 68-82
+	:lines: 523-535
 	:linenos:
-	:lineno-start: 68
-
-When either of the ``trace`` modes (see :ref:`page page:traceswitch <page:traceswitch>`) are active, you will receive detailed information in ``indent.log``. You can specify character strings to appear before and after the notification of a found code block using, respectively, ``showDecorationStartCodeBlockTrace`` and ``showDecorationFinishCodeBlockTrace``. A demonstration is given in :numref:`app:logfile-demo`.
+	:lineno-start: 523
 
 The log file will end with the characters given in ``endLogFileWith``, and will report the ``GitHub`` address of ``latexindent.pl`` to the log file if ``showGitHubInfoFooter`` is set to ``1``.
 
@@ -1279,51 +1277,6 @@ Note: ``latexindent.pl`` no longer uses the ``log4perl`` module to handle the cr
 Some of the options for Perl’s ``Dumper`` module can be specified in :numref:`lst:logFilePreferences`; see (“Data::Dumper Module” n.d.) and (“Data Dumper Demonstration” n.d.) for more information. These options will mostly be helpful for those calling ``latexindent.pl`` with the ``-tt`` option described in :numref:`sec:commandline`.
 
 :numref:`lst:logFilePreferences` describes the options for customising the information given to the log file, and we provide a few demonstrations here.
-
-.. proof:example::	
-	
-	Let’s say that we start with the code given in :numref:`lst:simple`, and the settings specified in :numref:`lst:logfile-prefs1-yaml`.
-	
-	.. literalinclude:: demonstrations/simple.tex
-		:class: .tex
-		:caption: ``simple.tex`` 
-		:name: lst:simple
-	
-	.. literalinclude:: demonstrations/logfile-prefs1.yaml
-		:class: .baseyaml
-		:caption: ``logfile-prefs1.yaml`` 
-		:name: lst:logfile-prefs1-yaml
-	
-	If we run the following command (noting that ``-t`` is active)
-	
-	.. code-block:: latex
-	   :class: .commandshell
-	
-	   latexindent.pl -t -l=logfile-prefs1.yaml simple.tex
-	
-	then on inspection of ``indent.log`` we will find the snippet given in :numref:`lst:indentlog`.
-	
-	.. code-block:: latex
-	   :caption: ``indent.log`` 
-	   :name: lst:indentlog
-	
-	          +++++
-	   TRACE: environment found: myenv
-	          No ancestors found for myenv
-	          Storing settings for myenvenvironments
-	          indentRulesGlobal specified (0) for environments, ...
-	          Using defaultIndent for myenv
-	          Putting linebreak after replacementText for myenv
-	          looking for COMMANDS and key = {value}
-	   TRACE: Searching for commands with optional and/or mandatory arguments AND key = {value}
-	          looking for SPECIAL begin/end
-	   TRACE: Searching myenv for special begin/end (see specialBeginEnd)
-	   TRACE: Searching myenv for optional and mandatory arguments
-	          ... no arguments found
-	          -----
-	
-	Notice that the information given about ``myenv`` is ‘framed’ using ``+++++`` and ``-----`` respectively.
-
 
 .. label follows
 

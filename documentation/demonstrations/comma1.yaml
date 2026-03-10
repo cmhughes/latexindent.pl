@@ -1,0 +1,7 @@
+switchesViaYaml:
+  mSwitch: 1
+modifyLineBreaks:
+  optionalArguments:
+    CommaStartsOnOwnLine: 1
+  mandatoryArguments:
+    CommaStartsOnOwnLine: 1

@@ -461,6 +461,12 @@ latexindent.pl -s tabular5 -l alignContentAfterDBS2 -o=+-mod2
 latexindent.pl -s -m -l alignContentAfterDBS1.yaml,DBS1.yaml tabular6 -o=+-mod1
 latexindent.pl -s -m -l alignContentAfterDBS2.yaml,DBS1.yaml tabular6 -o=+-mod2
 
+# CommaStartsOnOwnLine
+latexindent.pl -s -l comma1.yaml comma1 -o=+-mod1
+latexindent.pl -s -l comma2.yaml comma1 -o=+-mod2
+latexindent.pl -s -l comma3.yaml comma1 -o=+-mod3
+latexindent.pl -s -l comma4.yaml comma1 -o=+-mod4
+
 # noindent block
 latexindent.pl -s noindentblock1 -l noindent1.yaml -o=+-mod1
 latexindent.pl -s noindentblock1 -l noindent2.yaml -o=+-mod2

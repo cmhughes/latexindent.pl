@@ -1093,14 +1093,6 @@ latexindent.pl -l=path3.yaml paths-demo.tex
 
   \cmhlistingsfromfile[style=logFilePreferences,]{../defaultSettings.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{logFilePreferences}}{lst:logFilePreferences}
 
-  When \announce{2018-01-13}{showDecorationStartCodeBlockTrace feature for log file}
-  either of the \texttt{trace} modes (see \cpageref{page:traceswitch}) are active, you
-  will receive detailed information in \texttt{indent.log}. You can specify character
-  strings to appear before and after the notification of a found code block using,
-  respectively, \texttt{showDecorationStartCodeBlockTrace} and
-  \texttt{showDecorationFinishCodeBlockTrace}. A demonstration is given in
-  \vref{app:logfile-demo}.%
-
   The log file will end with the characters given in \texttt{endLogFileWith}, and will
   report the \texttt{GitHub} address of \texttt{latexindent.pl} to the log file if
   \texttt{showGitHubInfoFooter} is set to \texttt{1}.
@@ -1117,46 +1109,6 @@ latexindent.pl -l=path3.yaml paths-demo.tex
 
   \Cref{lst:logFilePreferences} describes the options for customising the information given
   to the log file, and we provide a few demonstrations here.
-
-  \begin{example}
-  Let's say that we start with the code given in \cref{lst:simple}, and the settings
-  specified in \cref{lst:logfile-prefs1-yaml}.
-
-  \begin{minipage}{.35\linewidth}
-   \cmhlistingsfromfile{demonstrations/simple.tex}{\texttt{simple.tex}}{lst:simple}
-  \end{minipage}
-  \hfill
-  \begin{minipage}{.6\linewidth}
-   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/logfile-prefs1.yaml}[yaml-TCB]{\texttt{logfile-prefs1.yaml}}{lst:logfile-prefs1-yaml}
-  \end{minipage}
-
-  If we run the following command (noting that \texttt{-t} is active)
-
-  \begin{commandshell}
-latexindent.pl -t -l=logfile-prefs1.yaml simple.tex
-\end{commandshell}
-
-  then on inspection of \texttt{indent.log} we will find the snippet given in
-  \cref{lst:indentlog}.
-  \begin{cmhlistings}[style=tcblatex,morekeywords={TRACE}]{\texttt{indent.log}}{lst:indentlog}
-       +++++
-TRACE: environment found: myenv
-       No ancestors found for myenv
-       Storing settings for myenvenvironments
-       indentRulesGlobal specified (0) for environments, ...
-       Using defaultIndent for myenv
-       Putting linebreak after replacementText for myenv
-       looking for COMMANDS and key = {value}
-TRACE: Searching for commands with optional and/or mandatory arguments AND key = {value}
-       looking for SPECIAL begin/end
-TRACE: Searching myenv for special begin/end (see specialBeginEnd)
-TRACE: Searching myenv for optional and mandatory arguments
-       ... no arguments found
-       -----
-     \end{cmhlistings}
-  Notice that the information given about \texttt{myenv} is `framed' using \texttt{+++++}
-  and \lstinline!-----! respectively.
-  \end{example}
 
  \section{Encoding}\label{app:encoding}
 
