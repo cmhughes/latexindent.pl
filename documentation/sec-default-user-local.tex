@@ -336,7 +336,7 @@ latexindent.pl -l noindent3.yaml noindent1
  \cref{lst:aligndelims:advanced}; we will discuss each in turn.
  \index{delimiters!advanced settings of lookForAlignDelims}
 
- \cmhlistingsfromfile*[style=lookForAlignDelims]{../defaultSettings.yaml}[width=.1\linewidth,before=\centering,yaml-TCB]{\texttt{lookForAlignDelims} (basic)}{lst:aligndelims:basic}
+ \cmhlistingsfromfile*[style=lookForAlignDelims]{../defaultSettings.yaml}[before=\centering,yaml-TCB]{\texttt{lookForAlignDelims} (basic)}{lst:aligndelims:basic}
 
  Specifying code blocks in this field instructs \texttt{latexindent.pl} to try and align
  each column by its alignment delimiters. It does have some limitations (discussed
@@ -634,83 +634,6 @@ latexindent.pl aligned1.tex -l sba6.yaml
   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/sba7.yaml}[yaml-TCB]{\texttt{sba7.yaml}}{lst:sba7}
  \end{cmhtcbraster}
  \end{example}
-
-\subsubsection{lookForAlignDelims: alignFinalDoubleBackSlash}
- There may be times when a line of a code block contains more than \lstinline!\\!, and in
- which case, you may want the \emph{final} double backslash to be aligned.
-
- \begin{example}
- We explore the \texttt{alignFinalDoubleBackSlash} feature by using the file in
- \cref{lst:tabular4}. Upon running the following commands \index{delimiters!double
- backslash demonstration} \index{switches!-y demonstration} \index{switches!-o
- demonstration}\announce{2020-03-21}{alignFinalDoubleBackSlash demonstration}%
-
- \begin{commandshell}
-latexindent.pl tabular4.tex -o=+-default
-latexindent.pl tabular4.tex -o=+-FDBS -y="lookForAlignDelims:tabular:alignFinalDoubleBackSlash:1"
-\end{commandshell}
-
- then we receive the respective outputs given in \cref{lst:tabular4-default} and
- \cref{lst:tabular4-FDBS}.
-
- \begin{cmhtcbraster}[raster columns=3,
-   raster left skip=-3.75cm,
-   raster right skip=-2cm,]
-  \cmhlistingsfromfile{demonstrations/tabular4.tex}{\texttt{tabular4.tex}}{lst:tabular4}
-  \cmhlistingsfromfile{demonstrations/tabular4-default.tex}{\texttt{tabular4-default.tex}}{lst:tabular4-default}
-  \cmhlistingsfromfile{demonstrations/tabular4-FDBS.tex}{\texttt{tabular4-FDBS.tex}}{lst:tabular4-FDBS}
- \end{cmhtcbraster}
-
- We note that in:
- \begin{itemize}
-  \item \cref{lst:tabular4-default}, by default, the \emph{first} set of double back
-        slashes in the first row of the \texttt{tabular} environment have been used for
-        alignment;
-  \item \cref{lst:tabular4-FDBS}, the \emph{final} set of double backslashes in the
-        first row have been used, because we specified \texttt{alignFinalDoubleBackSlash} as 1.
- \end{itemize}
- \end{example}
-
- As of Version 3.0, the alignment routine works on mandatory and optional arguments
- within commands, and also within `special' code blocks (see \texttt{specialBeginEnd} on
- \cpageref{yaml:specialBeginEnd}).
-
- \begin{example}
- Assuming that you have a command called \lstinline!\matrix! and that it is populated
- within \texttt{lookForAlignDelims} (which it is, by default), and that you run the
- command
-
- \begin{commandshell}
-latexindent.pl matrix1.tex 
-\end{commandshell}
-
- then the before-and-after results shown in \cref{lst:matrixbefore,lst:matrixafter} are
- achievable by default.
-
- \begin{cmhtcbraster}
-  \cmhlistingsfromfile{demonstrations/matrix1.tex}{\texttt{matrix1.tex}}{lst:matrixbefore}
-  \cmhlistingsfromfile{demonstrations/matrix1-default.tex}{\texttt{matrix1.tex} default output}{lst:matrixafter}
- \end{cmhtcbraster}
- \end{example}
-
- If you have blocks of code that you wish to align at the \& character that are
- \emph{not} wrapped in, for example, \lstinline!\begin{tabular}! \ldots
- \lstinline!\end{tabular}!, then you can use the mark up illustrated in
- \cref{lst:alignmentmarkup}; the default output is shown in
- \cref{lst:alignmentmarkup-default}. Note that the \lstinline!%*! must be next to each
- other, but that there can be any number of spaces (possibly none) between the
- \lstinline!*! and \lstinline!\begin{tabular}!; note also that you may use any
- environment name that you have specified in \texttt{lookForAlignDelims}.
-
- \begin{cmhtcbraster}[raster left skip=-1.5cm,]
-  \cmhlistingsfromfile{demonstrations/align-block.tex}{\texttt{align-block.tex}}{lst:alignmentmarkup}
-  \cmhlistingsfromfile{demonstrations/align-block-default.tex}{\texttt{align-block.tex} default output}{lst:alignmentmarkup-default}
- \end{cmhtcbraster}
-
- With reference to \vref{tab:code-blocks} and the, yet undiscussed, fields of
- \texttt{noAdditionalIndent} and \texttt{indentRules} (see
- \vref{sec:noadd-indent-rules}), these comment-marked blocks are considered
- \texttt{environments}.
 
 \subsubsection{lookForAlignDelims: the dontMeasure feature}\label{sec:dontMeasure}
  The \announce{2020-03-21}{don't measure feature} \texttt{lookForAlignDelims} field can,
@@ -1058,6 +981,48 @@ latexindent.pl -s tabular5.tex -l alignContentAfterDBS2 -o=+-mod2
  \end{cmhtcbraster}
  \end{example}
 
+\subsubsection{lookForAlignDelims: other}
+ As of Version 3.0, the alignment routine works on mandatory and optional arguments
+ within commands, and also within `special' code blocks (see \texttt{specialBeginEnd} on
+ \cpageref{yaml:specialBeginEnd}).
+
+ \begin{example}
+ Assuming that you have a command called \lstinline!\matrix! and that it is populated
+ within \texttt{lookForAlignDelims} (which it is, by default), and that you run the
+ command
+
+ \begin{commandshell}
+latexindent.pl matrix1.tex 
+\end{commandshell}
+
+ then the before-and-after results shown in \cref{lst:matrixbefore,lst:matrixafter} are
+ achievable by default.
+
+ \begin{cmhtcbraster}
+  \cmhlistingsfromfile{demonstrations/matrix1.tex}{\texttt{matrix1.tex}}{lst:matrixbefore}
+  \cmhlistingsfromfile{demonstrations/matrix1-default.tex}{\texttt{matrix1.tex} default output}{lst:matrixafter}
+ \end{cmhtcbraster}
+ \end{example}
+
+ If you have blocks of code that you wish to align at the \& character that are
+ \emph{not} wrapped in, for example, \lstinline!\begin{tabular}! \ldots
+ \lstinline!\end{tabular}!, then you can use the mark up illustrated in
+ \cref{lst:alignmentmarkup}; the default output is shown in
+ \cref{lst:alignmentmarkup-default}. Note that the \lstinline!%*! must be next to each
+ other, but that there can be any number of spaces (possibly none) between the
+ \lstinline!*! and \lstinline!\begin{tabular}!; note also that you may use any
+ environment name that you have specified in \texttt{lookForAlignDelims}.
+
+ \begin{cmhtcbraster}[raster left skip=-1.5cm,]
+  \cmhlistingsfromfile{demonstrations/align-block.tex}{\texttt{align-block.tex}}{lst:alignmentmarkup}
+  \cmhlistingsfromfile{demonstrations/align-block-default.tex}{\texttt{align-block.tex} default output}{lst:alignmentmarkup-default}
+ \end{cmhtcbraster}
+
+ With reference to \vref{tab:code-blocks} and the, yet undiscussed, fields of
+ \texttt{noAdditionalIndent} and \texttt{indentRules} (see
+ \vref{sec:noadd-indent-rules}), these comment-marked blocks are considered
+ \texttt{environments}.
+
 \subsection{Indent after items, specials and headings}
 \yamltitle{indentAfterItems}*{fields}
  The environment names specified in \texttt{indentAfterItems} tell
@@ -1123,7 +1088,7 @@ latexindent.pl special1.tex -o=+-default
  \index{specialBeginEnd!searching for special before commands}
 
  \begin{cmhtcbraster}
-  \cmhlistingsfromfile[]{demonstrations/specialsLeftRight.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialsLeftRight.yaml}}{lst:specialsLeftRight-yaml}
+  \cmhlistingsfromfile*{demonstrations/specialsLeftRight.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialsLeftRight.yaml}}{lst:specialsLeftRight-yaml}
  \end{cmhtcbraster}
 
  Upon running the following commands \index{switches!-l demonstration}
