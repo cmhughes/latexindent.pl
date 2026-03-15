@@ -1,0 +1,35 @@
+name: pdflatex document
+# PURPOSE:
+#
+#  1. pdflatex latexindent.pdf 
+#
+# Note: this action only runs on push on develop
+#
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  #-------------------------------------------------------------------------
+  #
+  # 1. latexindent.pdf
+  #
+  build-latexindent-doc-pdf:
+    name: 'documentation latexindent.pdf creation'
+    runs-on: ubuntu-latest
+    steps:
+      - name: load the "base actions/checkout" so as to access latexindent.pl
+        uses: actions/checkout@v6
+      - name: installing texlive full
+        uses: xu-cheng/texlive-action@v3
+        with:
+          scheme: full
+          run: |
+            sed -i.bak s/\\\\gitAbbrevHash/cmh/ documentation/latexindent.tex
+            sed -i.bak s/\\\\gitBranch/main/ documentation/latexindent.tex
+            sed -i.bak s/\\\\gitRel/cmh/ documentation/*.tex
+            sed -i.bak "s|\\\\gitAuthorDate|$(date +'%Y-%m-%d')|g" documentation/latexindent.tex
+            cd documentation
+            pdflatex latexindent
