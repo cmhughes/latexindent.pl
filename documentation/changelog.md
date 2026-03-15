@@ -45,7 +45,8 @@ fineTuning:
 <tr>
   <td>
   <pre>
-inlineMath:
+specialBeginEnd:
+ inlineMath:
     begin: (?<!\$)(?<!\\)\$(?!\$) 
     body: [^$]*?                 
     end: (?<!\\)\$(?!\$)        

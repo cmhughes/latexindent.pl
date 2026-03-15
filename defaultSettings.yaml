@@ -285,9 +285,6 @@ indentRulesGlobal:
   specialBeginEnd: 0                # 0/h-space
   afterHeading: 0                   # 0/h-space
 
-# change dos line breaks into unix
-dos2unixlinebreaks: 0
-
 # modifyLineBreaks will only be searched if the -m switch is active
 modifyLineBreaks:
   preserveBlankLines: 1                 # 0/1
@@ -533,3 +530,6 @@ logFilePreferences:
     Quotekeys: 0
     Sortkeys: 1
     Pair: " => "
+
+# change dos line breaks into unix
+dos2unixlinebreaks: 0

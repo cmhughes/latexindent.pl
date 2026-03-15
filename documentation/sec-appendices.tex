@@ -67,8 +67,8 @@ perl latexindent-module-installer.pl
    \begin{commandshell}
 sudo apt-get install perlbrew
 perlbrew init
-perlbrew install perl-5.40.0
-perlbrew switch perl-5.40.0
+perlbrew install perl-5.42.0
+perlbrew switch perl-5.42.0
 sudo apt-get install curl
 curl -L http://cpanmin.us | perl - App::cpanminus
 cpanm YAML::Tiny
@@ -697,7 +697,7 @@ latexindent.pl -l -m -s -w myfile.tex
   tell it to load your own settings files.
 
   We focus our discussion on \texttt{indentconfig.yaml}, but there are other options
-  which are detailed in \cref{app:indentconfig:options}.
+  which we also detail here.
   \announce{2023-01-01}{indentconfig location options}
 
  \subsection{indentconfig.yaml and .indentconfig.yaml}\label{sec:indentconfig}
