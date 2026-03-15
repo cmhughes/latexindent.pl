@@ -90,8 +90,8 @@ Linux users may be interested in exploring Perlbrew (“Perlbrew” n.d.); an ex
 
    sudo apt-get install perlbrew
    perlbrew init
-   perlbrew install perl-5.40.0
-   perlbrew switch perl-5.40.0
+   perlbrew install perl-5.42.0
+   perlbrew switch perl-5.42.0
    sudo apt-get install curl
    curl -L http://cpanmin.us | perl - App::cpanminus
    cpanm YAML::Tiny
@@ -842,7 +842,7 @@ indentconfig options
 
 The behaviour of ``latexindent.pl`` is controlled from the settings specified in any of the YAML files that you tell it to load. By default, ``latexindent.pl`` will only load ``defaultSettings.yaml``, but there are a few ways that you can tell it to load your own settings files.
 
-We focus our discussion on ``indentconfig.yaml``, but there are other options which are detailed in :numref:`app:indentconfig:options`.
+We focus our discussion on ``indentconfig.yaml``, but there are other options which we also detail here.
 
 .. label follows
 
@@ -1266,9 +1266,9 @@ logFilePreferences
 	:class: .baseyaml
 	:caption: ``logFilePreferences`` 
 	:name: lst:logFilePreferences
-	:lines: 523-535
+	:lines: 520-532
 	:linenos:
-	:lineno-start: 523
+	:lineno-start: 520
 
 The log file will end with the characters given in ``endLogFileWith``, and will report the ``GitHub`` address of ``latexindent.pl`` to the log file if ``showGitHubInfoFooter`` is set to ``1``.
 

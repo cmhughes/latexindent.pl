@@ -548,9 +548,9 @@ Note: switches can only be turned *on* using this field, they will not be turned
 	:class: .baseyaml
 	:caption: ``switchesViaYaml`` 
 	:name: lst:switchesViaYaml
-	:lines: 510-520
+	:lines: 507-517
 	:linenos:
-	:lineno-start: 510
+	:lineno-start: 507
 
 Summary of exit codes
 ---------------------

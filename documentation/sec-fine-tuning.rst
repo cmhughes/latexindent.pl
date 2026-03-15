@@ -46,9 +46,9 @@ This field is for those that would like to peek under the bonnet/hood and make s
 	:class: .baseyaml
 	:caption: ``fineTuning`` 
 	:name: lst:fineTuning
-	:lines: 430-505
+	:lines: 427-502
 	:linenos:
-	:lineno-start: 430
+	:lineno-start: 427
 
 The fields given in :numref:`lst:fineTuning` are all *regular expressions*. This manual is not intended to be a tutorial on regular expressions; you might like to read, for example, (Friedl, n.d.) for a detailed covering of the topic.
 
@@ -87,8 +87,6 @@ We make the following comments with reference to :numref:`lst:fineTuning`:
 #. the ``modifyLineBreaks`` field refers to fine tuning settings detailed in :numref:`sec:modifylinebreaks`. In particular:
 
    #. ``betterFullStop`` is in relation to the one sentence per line routine, detailed in :numref:`sec:onesentenceperline`
-
-   #. ``doubleBackSlash`` is in relation to the ``DBSStartsOnOwnLine`` and ``DBSFinishesWithLineBreak`` polyswitches surrounding double backslashes, see :numref:`subsec:dbs`
 
    #. ``comma`` is in relation to the ``CommaStartsOnOwnLine`` and ``CommaFinishesWithLineBreak`` polyswitches surrounding commas in optional and mandatory arguments; see :numref:`tab:poly-switch-mapping`
 

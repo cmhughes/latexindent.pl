@@ -371,11 +371,12 @@ latexindent.pl tabular1.tex
 
  Note that you can use a mixture of the basic and advanced form: in
  \cref{lst:aligndelims:basic} the entries are basic; in \cref{lst:aligndelims:advanced}
- the entry for \texttt{tabular} is advanced. \announce{NEW}{fineTuning controls defaults
- for advanced form of lookForAlignDelims} The default values for the advanced form are
- controlled in \texttt{fineTuning}, see \vref{subsec:finetuning:lookForAlignDelims}. When
- using the advanced form, each field should receive at least 1 sub-field, and \emph{can}
- (but does not have to) receive any of the following fields:
+ the entry for \texttt{tabular} is advanced. \announce*{2026-03-15}{fineTuning controls
+ defaults for advanced form of lookForAlignDelims} The default values for the advanced
+ form are controlled in \texttt{fineTuning}, see
+ \vref{subsec:finetuning:lookForAlignDelims}. When using the advanced form, each field
+ should receive at least 1 sub-field, and \emph{can} (but does not have to) receive any
+ of the following fields:
  \begin{itemize}
   \item \texttt{delims}: binary switch (0 or 1) equivalent to simply specifying, for
         example, \texttt{tabular: 1} in the basic version shown in \cref{lst:aligndelims:basic}.
@@ -1040,8 +1041,8 @@ latexindent.pl matrix1.tex
 
  If you have your own \texttt{item} commands (perhaps you prefer to use \texttt{myitem},
  for example) then you can put adjust \texttt{itemRegEx} in the \texttt{fineTuning}
- field, discussed in \vref{subsec:finetuning:itemsRegex}.\announce{NEW}{itemsRegex
- controls item}
+ field, discussed in
+ \vref{subsec:finetuning:itemsRegex}.\announce*{2026-03-15}{itemsRegex controls item}
 
 \yamltitle{specialBeginEnd}*{fields}\label{yaml:specialBeginEnd}
  The fields specified \index{specialBeginEnd!introduction}
@@ -1049,7 +1050,7 @@ latexindent.pl matrix1.tex
  default state, focused on math mode begin and end statements, but there is no
  requirement for this to be the case; \cref{lst:specialBeginEnd} shows the default
  settings of \texttt{specialBeginEnd}. \index{specialBeginEnd!default settings}
- \announce{NEW}{specialBeginEnd specified as list}%
+ \announce*{2026-03-15}{specialBeginEnd specified as list}%
 
  \cmhlistingsfromfile*[style=specialBeginEnd]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialBeginEnd}}{lst:specialBeginEnd}
 
@@ -1272,7 +1273,7 @@ latexindent.pl special-body.tex -l=special-nested1.yaml
  \end{cmhtcbraster}
  We note that the output in \cref{lst:special-body-mod1} is as we would expect, as the
  \texttt{nested} field has been specified in \cref{lst:special-nested1}.
- \announce{NEW}{specialBeginEnd nested demonstration}
+ \announce*{2026-03-15}{specialBeginEnd nested demonstration}
  \end{example}
 
 \yamltitle{indentAfterHeadings}*{fields}

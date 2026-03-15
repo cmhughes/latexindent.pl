@@ -505,7 +505,7 @@ sub _mlb_verbatim {
         }
     }
 
-    # m-switch linebreaks/comments tokens need accomodating here
+    # m-switch linebreaks/comments tokens need accommodating here
     ${$self}{body} =~ s/($tokens{mAfterEndRemove})\h+/$1 /sg;
     ${$self}{body} = &_mlb_line_break_token_adjust( ${$self}{body} );
 }

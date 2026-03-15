@@ -822,7 +822,7 @@ sub yaml_read_settings {
             &yaml_update_dumper_settings();
         }
     }
-    
+
     # switches via YAML, alphabetically
     foreach my $switch ( sort keys %{ $mainSetting{switchesViaYaml} } ) {
         next unless ${ $mainSetting{switchesViaYaml} }{$switch};
@@ -1176,7 +1176,6 @@ sub yaml_read_settings {
             default => ${ $mainSetting{fineTuning}{lookForAlignDelimsDefaults} }{doubleBackSlash}
         },
     );
-
 
     $self->yaml_obsolete_checks;
     return;

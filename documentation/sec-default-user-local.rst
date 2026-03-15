@@ -7,7 +7,7 @@ Config
 
 ``latexindent.pl`` loads its default settings from ``defaultSettings.yaml``. The idea is to separate the behaviour of the script from the internal working – this is very similar to the way that we separate content from form when writing our documents in LaTeX. *All of these settings can be changed by you, the user; demonstrations are given throughout this documentation using the -l switch*.
 
-If you look in ``defaultSettings.yaml`` you’ll find the switches that govern the behaviour of ``latexindent.pl``. If you’re not sure where ``defaultSettings.yaml`` resides on your computer, don’t worry as ``indent.log`` will tell you where to find it. ``defaultSettings.yaml`` is commented, but here is a description of what each switch is designed to do. The default value is given in each case; whenever you see *integer* in *this* section, assume that it must be greater than or equal to ``0``
+If you look in ``defaultSettings.yaml`` you’ll find the settings that govern the behaviour of ``latexindent.pl``. If you’re not sure where ``defaultSettings.yaml`` resides on your computer, don’t worry as ``indent.log`` will tell you where to find it. ``defaultSettings.yaml`` is commented, but here is a description of what each switch is designed to do. The default value is given in each case; whenever you see *integer* in *this* section, assume that it must be greater than or equal to ``0``
 unless otherwise stated.
 
 For most of the settings in ``defaultSettings.yaml`` that are specified as integers, then we understand ``0`` to represent ‘off’ and ``1`` to represent ‘on’. For fields that allow values other than ``0`` or ``1``, it is hoped that the specific context and associated commentary should make it clear which values are allowed.
@@ -451,7 +451,7 @@ Note that you can use a mixture of the basic and advanced form: in :numref:`lst:
 
 .. proof:example::	
 	
-	We will explore most of these features using the file ``tabular2.tex`` in :numref:`lst:tabular2` (which contains a ``\multicolumn`` command), and the YAML files in :numref:`lst:tabular2YAML` – :numref:`lst:tabular8YAML`; we will explore ``alignFinalDoubleBackSlash`` in :numref:`lst:tabular4`; the ``dontMeasure`` feature will be described in :numref:`sec:dontMeasure`, and ``delimiterRegEx`` in :numref:`sec:delimiter-reg-ex`.
+	We will explore most of these features using the file ``tabular2.tex`` in :numref:`lst:tabular2` (which contains a ``\multicolumn`` command), and the YAML files in :numref:`lst:tabular2YAML` – :numref:`lst:tabular8YAML`; the ``dontMeasure`` feature will be described in :numref:`sec:dontMeasure`, and ``delimiterRegEx`` in :numref:`sec:delimiter-reg-ex`.
 	
 	.. literalinclude:: demonstrations/tabular2.tex
 		:class: .tex
@@ -696,92 +696,6 @@ The ``spacesBeforeAmpersand`` can be specified in a few different ways. The *bas
 		:name: lst:sba7
 	
 
-
-lookForAlignDelims: alignFinalDoubleBackSlash
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-There may be times when a line of a code block contains more than ``\\``, and in which case, you may want the *final* double backslash to be aligned.
-
-.. proof:example::	
-	
-	We explore the ``alignFinalDoubleBackSlash`` feature by using the file in :numref:`lst:tabular4`. Upon running the following commands
-	
-	.. index:: delimiters;double backslash demonstration
-	
-	.. index:: switches;-y demonstration
-	
-	.. index:: switches;-o demonstration
-	
-	.. code-block:: latex
-	   :class: .commandshell
-	
-	   latexindent.pl tabular4.tex -o=+-default
-	   latexindent.pl tabular4.tex -o=+-FDBS -y="lookForAlignDelims:tabular:alignFinalDoubleBackSlash:1"
-	
-	then we receive the respective outputs given in :numref:`lst:tabular4-default` and :numref:`lst:tabular4-FDBS`.
-	
-	.. literalinclude:: demonstrations/tabular4.tex
-		:class: .tex
-		:caption: ``tabular4.tex`` 
-		:name: lst:tabular4
-	
-	.. literalinclude:: demonstrations/tabular4-default.tex
-		:class: .tex
-		:caption: ``tabular4-default.tex`` 
-		:name: lst:tabular4-default
-	
-	.. literalinclude:: demonstrations/tabular4-FDBS.tex
-		:class: .tex
-		:caption: ``tabular4-FDBS.tex`` 
-		:name: lst:tabular4-FDBS
-	
-	We note that in:
-	
-	-  :numref:`lst:tabular4-default`, by default, the *first* set of double back slashes in the first row of the ``tabular`` environment have been used for alignment;
-	
-	-  :numref:`lst:tabular4-FDBS`, the *final* set of double backslashes in the first row have been used, because we specified ``alignFinalDoubleBackSlash`` as 1.
-	
-
-
-As of Version 3.0, the alignment routine works on mandatory and optional arguments within commands, and also within ‘special’ code blocks (see ``specialBeginEnd`` on :ref:`page yaml:specialBeginEnd <yaml:specialBeginEnd>`).
-
-.. proof:example::	
-	
-	Assuming that you have a command called ``\matrix`` and that it is populated within ``lookForAlignDelims`` (which it is, by default), and that you run the command
-	
-	.. code-block:: latex
-	   :class: .commandshell
-	
-	   latexindent.pl matrix1.tex 
-	
-	then the before-and-after results shown in :numref:`lst:matrixbefore` and :numref:`lst:matrixafter` are achievable by default.
-	
-	.. literalinclude:: demonstrations/matrix1.tex
-		:class: .tex
-		:caption: ``matrix1.tex`` 
-		:name: lst:matrixbefore
-	
-	.. literalinclude:: demonstrations/matrix1-default.tex
-		:class: .tex
-		:caption: ``matrix1.tex`` default output 
-		:name: lst:matrixafter
-	
-
-
-If you have blocks of code that you wish to align at the & character that are *not* wrapped in, for example, ``\begin{tabular}`` … ``\end{tabular}``, then you can use the mark up illustrated in :numref:`lst:alignmentmarkup`; the default output is shown in :numref:`lst:alignmentmarkup-default`. Note that the ``%*`` must be next to each other, but that there can be any number of spaces (possibly none) between the ``*`` and ``\begin{tabular}``; note also that you may use any environment name
-that you have specified in ``lookForAlignDelims``.
-
-.. literalinclude:: demonstrations/align-block.tex
-	:class: .tex
-	:caption: ``align-block.tex`` 
-	:name: lst:alignmentmarkup
-
-.. literalinclude:: demonstrations/align-block-default.tex
-	:class: .tex
-	:caption: ``align-block.tex`` default output 
-	:name: lst:alignmentmarkup-default
-
-With reference to :numref:`tab:code-blocks` and the, yet undiscussed, fields of ``noAdditionalIndent`` and ``indentRules`` (see :numref:`sec:noadd-indent-rules`), these comment-marked blocks are considered ``environments``.
 
 .. label follows
 
@@ -1257,6 +1171,49 @@ You can instruct ``latexindent`` to align content after the double back slash. S
 		:name: lst:alignContentAfterDBS2
 	
 
+
+lookForAlignDelims: other
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As of Version 3.0, the alignment routine works on mandatory and optional arguments within commands, and also within ‘special’ code blocks (see ``specialBeginEnd`` on :ref:`page yaml:specialBeginEnd <yaml:specialBeginEnd>`).
+
+.. proof:example::	
+	
+	Assuming that you have a command called ``\matrix`` and that it is populated within ``lookForAlignDelims`` (which it is, by default), and that you run the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl matrix1.tex 
+	
+	then the before-and-after results shown in :numref:`lst:matrixbefore` and :numref:`lst:matrixafter` are achievable by default.
+	
+	.. literalinclude:: demonstrations/matrix1.tex
+		:class: .tex
+		:caption: ``matrix1.tex`` 
+		:name: lst:matrixbefore
+	
+	.. literalinclude:: demonstrations/matrix1-default.tex
+		:class: .tex
+		:caption: ``matrix1.tex`` default output 
+		:name: lst:matrixafter
+	
+
+
+If you have blocks of code that you wish to align at the & character that are *not* wrapped in, for example, ``\begin{tabular}`` … ``\end{tabular}``, then you can use the mark up illustrated in :numref:`lst:alignmentmarkup`; the default output is shown in :numref:`lst:alignmentmarkup-default`. Note that the ``%*`` must be next to each other, but that there can be any number of spaces (possibly none) between the ``*`` and ``\begin{tabular}``; note also that you may use any environment name
+that you have specified in ``lookForAlignDelims``.
+
+.. literalinclude:: demonstrations/align-block.tex
+	:class: .tex
+	:caption: ``align-block.tex`` 
+	:name: lst:alignmentmarkup
+
+.. literalinclude:: demonstrations/align-block-default.tex
+	:class: .tex
+	:caption: ``align-block.tex`` default output 
+	:name: lst:alignmentmarkup-default
+
+With reference to :numref:`tab:code-blocks` and the, yet undiscussed, fields of ``noAdditionalIndent`` and ``indentRules`` (see :numref:`sec:noadd-indent-rules`), these comment-marked blocks are considered ``environments``.
 
 Indent after items, specials and headings
 -----------------------------------------
