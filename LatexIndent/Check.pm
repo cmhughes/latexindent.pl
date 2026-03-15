@@ -100,8 +100,11 @@ sub simple_diff {
 
             if ( $i == $#diff ) {
                 $lastLine = $currentLineNumber;
-                $tmpOldBody .= ( $tmpOldBody eq '-' ? q() : "\n-" ) . ${ $diff[$i] }{old};
-                $tmpNewBody .= ( $tmpNewBody eq '+' ? q() : "\n+" ) . ${ $diff[$i] }{new};
+                $tmpOldBody .= ( $tmpOldBody eq '-' ? q() : "\n-" );
+                $tmpOldBody .= ${ $diff[$i] }{old} if defined ${ $diff[$i] }{old};
+
+                $tmpNewBody .= ( $tmpNewBody eq '+' ? q() : "\n+" );
+                $tmpNewBody .= ${ $diff[$i] }{new} if defined ${ $diff[$i] }{new};
             }
 
             push(

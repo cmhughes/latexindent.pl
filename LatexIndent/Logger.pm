@@ -19,7 +19,7 @@ package LatexIndent::Logger;
 use strict;
 use warnings;
 use Exporter              qw/import/;
-use LatexIndent::Switches qw/%switches/;
+use LatexIndent::Switches qw/%switch/;
 our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/@logFileLines/;
 our @logFileLines;
@@ -37,7 +37,7 @@ sub info {
         $logfileline =~ s/^/       /mg;
     }
     push( @logFileLines, $logfileline );
-    print $logfileline, "\n" if $switches{screenlog};
+    print $logfileline, "\n" if $switch{screenlog};
 }
 
 sub warn {
@@ -50,7 +50,7 @@ sub warn {
         $logfileline =~ s/^/       /mg;
     }
     push( @logFileLines, $logfileline );
-    print $logfileline, "\n" if $switches{screenlog};
+    print $logfileline, "\n" if $switch{screenlog};
 }
 
 sub fatal {
@@ -59,7 +59,7 @@ sub fatal {
     if ( $logfileline =~ m/^\*/s ) {
         $logfileline =~ s/^\*/FATAL /s;
         $logfileline =~ s/^/       /mg;
-        $logfileline =~ s/^\h+FATAL/FATAL/s;
+        $logfileline =~ s/^\h+FATAL/FATAL:/s;
     }
     else {
         $logfileline =~ s/^/      /mg;
@@ -78,7 +78,7 @@ sub trace {
         $logfileline =~ s/^/       /mg;
     }
     push( @logFileLines, $logfileline );
-    print $logfileline, "\n" if $switches{screenlog};
+    print $logfileline, "\n" if $switch{screenlog};
 }
 
 1;

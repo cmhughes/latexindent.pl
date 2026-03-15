@@ -1,0 +1,1 @@
+INFO:  Switch activated via YAML: silent mode (-s)

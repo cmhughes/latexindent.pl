@@ -17,8 +17,8 @@ package LatexIndent::BackUpFileProcedure;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use LatexIndent::GetYamlSettings qw/%mainSettings/;
-use LatexIndent::Switches        qw/%switches/;
+use LatexIndent::GetYamlSettings qw/%mainSetting/;
+use LatexIndent::Switches        qw/%switch/;
 use LatexIndent::LogFile         qw/$logger/;
 use File::Basename;    # to get the filename and directory path
 use File::Copy;        # to copy the original file to backup (if overwrite option set)
@@ -43,7 +43,7 @@ sub create_back_up_file {
     my $fileName = ${$self}{fileName};
 
     # grab the file extension preferences
-    my %fileExtensionPreference = %{ $mainSettings{fileExtensionPreference} };
+    my %fileExtensionPreference = %{ $mainSetting{fileExtensionPreference} };
 
     # sort the file extensions by preference
     my @fileExtensions
@@ -61,10 +61,10 @@ sub create_back_up_file {
     }
 
     # local variables, determined from the YAML settings
-    my $onlyOneBackUp       = $mainSettings{onlyOneBackUp};
-    my $maxNumberOfBackUps  = $mainSettings{maxNumberOfBackUps};
-    my $cycleThroughBackUps = $mainSettings{cycleThroughBackUps};
-    my $backupExtension     = $mainSettings{backupExtension};
+    my $onlyOneBackUp       = $mainSetting{onlyOneBackUp};
+    my $maxNumberOfBackUps  = $mainSetting{maxNumberOfBackUps};
+    my $cycleThroughBackUps = $mainSetting{cycleThroughBackUps};
+    my $backupExtension     = $mainSetting{backupExtension};
 
     # if both onlyOneBackUp and maxNumberOfBackUps are set, then we have a conflict
     # err on the side of caution and turn off onlyOneBackUp

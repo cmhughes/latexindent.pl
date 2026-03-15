@@ -1,0 +1,13 @@
+specialBeginEnd:
+    inlineMathLatex:
+        begin: '\\\('
+        end: '\\\)'
+        nested: 1
+    funkyLeftRight:
+        begin: '\\left\\\{'
+        end: '\\right\.'
+        nested: 1
+    em:
+        begin: '\{\\em'
+        end: '\}'
+        lookForThis: verbatim

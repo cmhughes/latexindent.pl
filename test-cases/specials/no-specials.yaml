@@ -1,0 +1,7 @@
+specialBeginEnd:
+  - name: displayMath                                      
+    lookForThis: 0
+  - name: inlineMath                                       
+    lookForThis: 0
+  - name: displayMathTeX                                  
+    lookForThis: 0

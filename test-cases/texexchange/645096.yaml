@@ -1,6 +1,3 @@
 defaultIndent: ' '
-fineTuning:
-    UnNamedGroupingBracesBrackets:
-      follow: '\{|\[|,|&|\)|\(|\$|--'
 noAdditionalIndentGlobal:
     UnNamedGroupingBracesBrackets: 1

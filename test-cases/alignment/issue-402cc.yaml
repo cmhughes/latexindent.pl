@@ -1,0 +1,18 @@
+defaultIndent: '    '
+
+modifyLineBreaks:
+  oneSentencePerLine:
+    manipulateSentences: 1
+    textWrapSentences: 1
+  specialBeginEnd:
+    SpecialMiddleFinishesWithLineBreak: 2
+    SpecialBeginStartsOnOwnLine: 1
+    SpecialBodyStartsOnOwnLine: 1
+    SpecialEndStartsOnOwnLine: 1
+    SpecialEndFinishesWithLineBreak: 1
+
+specialBeginEnd:
+  - name: displayMath                                      # NEW specified as ORDERED array
+    begin: (?<!\\)\\\[            # \[ but *not* \\[       # NEW specified as ORDERED array
+    end: \\\]                     # \]                     # NEW specified as ORDERED array
+    middle: \\\\

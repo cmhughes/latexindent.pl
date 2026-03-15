@@ -1,7 +1,7 @@
 modifyLineBreaks:
     environments:
-        EndFinishesWithLineBreak: 4
         BeginStartsOnOwnLine: 4
+        EndFinishesWithLineBreak: 4
 replacements:
   -
     substitution: |- 

@@ -5,7 +5,9 @@ lookForAlignDelims:
 indentRules:
   xeCJKsetup:
     body: '  '
-  mxendarticle: '                          '
+
+noAdditionalIndent:
+  mxendarticle: 1
 
 specialBeginEnd:
     mxendarticle:

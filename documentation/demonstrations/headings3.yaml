@@ -1,4 +1,4 @@
 indentAfterHeadings:
     paragraph:
-       indentAfterThisHeading: 1
+       lookForThis: 1
        level: 1

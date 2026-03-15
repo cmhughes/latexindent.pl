@@ -1,0 +1,6 @@
+noAdditionalIndentGlobal:
+  mandatoryArguments: 1
+  namedGroupingBracesBrackets: 1
+
+indentRules:
+  section: ''

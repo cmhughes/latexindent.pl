@@ -17,36 +17,55 @@ package LatexIndent::Heading;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
+use Data::Dumper;
 use LatexIndent::Tokens           qw/%tokens/;
 use LatexIndent::Switches         qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::GetYamlSettings  qw/%mainSettings/;
+use LatexIndent::GetYamlSettings  qw/%mainSetting %previouslyFoundSetting/;
 use LatexIndent::LogFile          qw/$logger/;
-use LatexIndent::Special          qw/$specialBeginBasicRegExp/;
 use Exporter                      qw/import/;
-our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/find_heading construct_headings_levels $allHeadingsRegexp/;
+our @ISA = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
+our @EXPORT_OK
+    = qw/find_heading construct_headings_levels $allHeadingsRegexp @headingsRegexpArray after_heading_indentation/;
 our $headingCounter;
 our @headingsRegexpArray;
 our $allHeadingsRegexp = q();
+our %headingLevelLookUp;
 
 sub construct_headings_levels {
     my $self = shift;
 
     # grab the heading levels
-    my %headingsLevels = %{ $mainSettings{indentAfterHeadings} };
+    my %headingsLevels = %{ $mainSetting{indentAfterHeadings} };
 
     # output to log file
     $logger->trace("*Constructing headings reg exp for example, chapter, section, etc (see indentAfterThisHeading)")
         if $is_t_switch_active;
 
-    # delete the values that have indentAfterThisHeading set to 0
+    my $oldYAMLHeadingSyntax = 0;
     while ( my ( $headingName, $headingInfo ) = each %headingsLevels ) {
-        if ( !${ $headingsLevels{$headingName} }{indentAfterThisHeading} ) {
-            $logger->trace("Not indenting after $headingName (see indentAfterThisHeading)") if $is_t_switch_active;
+        if ( defined ${ $headingsLevels{$headingName} }{indentAfterThisHeading} ) {
+            ${ $headingsLevels{$headingName} }{lookForThis}
+                = ${ $headingsLevels{$headingName} }{indentAfterThisHeading};
+            delete ${ $headingsLevels{$headingName} }{indentAfterThisHeading};
+            $oldYAMLHeadingSyntax = 1;
+        }
+    }
+    if ($oldYAMLHeadingSyntax) {
+        $logger->warn("*Obsolete indentAfterHeadings YAML syntax used, changed to the following:");
+        $logger->warn( Dumper( \%headingsLevels ) );
+    }
+
+    # delete the values that have lookForThis set to 0
+    while ( my ( $headingName, $headingInfo ) = each %headingsLevels ) {
+        if ( !${ $headingsLevels{$headingName} }{lookForThis} ) {
+            $logger->trace("Not indenting after $headingName (see lookForThis)") if $is_t_switch_active;
             delete $headingsLevels{$headingName};
         }
         else {
+            # log the heading and level
+            $headingLevelLookUp{$headingName} = ${ $headingsLevels{$headingName} }{level};
+
             # *all heading* regexp, remembering to put starred headings at the front of the regexp
             if ( $headingName =~ m/\*/ ) {
                 $logger->trace("Putting $headingName at the beginning of the allHeadings regexp, as it contains a *")
@@ -69,7 +88,7 @@ sub construct_headings_levels {
     # it could be that @sortedByLevels is empty;
     return if !@sortedByLevels;
 
-    $logger->trace("*All headings regexp: $allHeadingsRegexp")          if $is_tt_switch_active;
+    $logger->trace("All headings regexp: $allHeadingsRegexp")           if $is_t_switch_active;
     $logger->trace("*Now to construct headings regexp for each level:") if $is_t_switch_active;
 
 # loop through the levels, and create a regexp for each (min and max values are the first and last values respectively from sortedByLevels)
@@ -93,14 +112,16 @@ sub construct_headings_levels {
                 }
                 else {
                     $logger->trace("Putting $_ at the END of this regexp (level $i)") if $is_t_switch_active;
-                    $headingsAtThisLevel .= ( $headingsAtThisLevel eq '' ? q() : "|" ) . $_;
+
+                    # note: NOT followed by a * (gets escaped next)
+                    $headingsAtThisLevel .= ( $headingsAtThisLevel eq '' ? q() : "|" ) . $_ . "(?!*)";
                 }
             }
 
             # make the stars escaped correctly
             $headingsAtThisLevel =~ s/\*/\\\*/g;
             push( @headingsRegexpArray, $headingsAtThisLevel );
-            $logger->trace("Heading level regexp for level $i will contain: $headingsAtThisLevel")
+            $logger->trace("Heading level regexp for level $i is: $headingsAtThisLevel")
                 if $is_t_switch_active;
         }
     }
@@ -109,159 +130,194 @@ sub construct_headings_levels {
 sub find_heading {
 
     # if there are no headings regexps, there's no point going any further
+    my $self = shift;
+    $self->construct_headings_levels;
     return if !@headingsRegexpArray;
 
-    my $self = shift;
-
     # otherwise loop through the headings regexp
-    $logger->trace("*Searching ${$self}{name} for headings ") if $is_t_switch_active;
+    $logger->trace("*Searching ${$self}{name} for headings with following levels (see indentAfterHeadings)")
+        if $is_t_switch_active;
+    $logger->trace( Dumper( \%headingLevelLookUp ) ) if $is_t_switch_active;
 
-    # loop through each headings match; note that we need to
-    # do it in *reverse* so as to ensure that the lower level headings get matched first of all
-    foreach ( reverse(@headingsRegexpArray) ) {
+    # preamble has already been indented, so now make it verbatim
+    if ( $mainSetting{indentPreamble} ) {
+        $logger->trace("*protecting preamble which can contain headings commands (indentPreamble: 1)");
+        $mainSetting{indentPreamble} = 0;
+        $self->find_file_contents_environments_and_preamble;
+        ${$self}{preambleIndentationWanted} = 1;
+    }
 
-        # the regexp
-        my $headingRegExp = qr/
-                              (
-                                  \\($_)        # name stored into $2
-                              )                 # beginning bit into $1
-                              (
-                                  .*?                 
-                              )                 # body into $3      
-                              (\R*)?            # linebreaks at end of body into $4
-                              ((?:\\(?:$allHeadingsRegexp))|$)  # up to another heading, or else the end of the file
-                           /sx;
+    my @bodyParts = &headings_get_body_parts( ${$self}{body} );
 
-        while ( ${$self}{body} =~ m/$headingRegExp/ ) {
+    my $newBody = q();
+    foreach (@bodyParts) {
+        ${$_}{body} = &after_heading_indentation( ${$_}{body}, 0 );
+        $newBody .= ${$_}{body};
+    }
 
-            # log file output
-            $logger->trace("heading found: $2") if $is_t_switch_active;
+    # loop through each level of headings, starting at level 0
+    ${$self}{body} = $newBody;
 
-            ${$self}{body} =~ s/
-                                $headingRegExp
-                               /
-                                # create a new heading object
-                                my $headingObject = LatexIndent::Heading->new(begin=>q(),
-                                                                        body=>$1.$3,
-                                                                        end=>q(),
-                                                                        afterbit=>($4?$4:q()).($5?$5:q()),
-                                                                        name=>$2.":heading",
-                                                                        parent=>$2,
-                                                                        nameForIndentationSettings=>$2,
-                                                                        linebreaksAtEnd=>{
-                                                                          begin=>0,
-                                                                          body=>0,
-                                                                          end=>0,
-                                                                        },
-                                                                        modifyLineBreaksYamlName=>"afterHeading",
-                                                                        endImmediatelyFollowedByComment=>0,
-                                                                      );
+    $logger->trace("*headings indentation complete (see indentAfterHeadings)") if $is_t_switch_active;
+    $self->put_verbatim_back_in( match => "preamble" )                         if ${$self}{preambleIndentationWanted};
+}
 
-                                # the settings and storage of most objects has a lot in common
-                                $self->get_settings_and_store_new_object($headingObject);
-                                ${@{${$self}{children}}[-1]}{replacementText};
-                              /xse;
+sub headings_get_body_parts {
+    my $body = $_[0];
+
+    # create appropriately headed body parts
+    my $index = -1;
+    my @bodyParts;
+    my $currentHeadingLevel = 0;
+    my $headingValue;
+    foreach ( split( qr/(\\($allHeadingsRegexp))/, $body ) ) {
+        $index++;
+
+        # first entry is *before* heading, so nothing to do
+        if ( $index == 0 ) {
+            push( @bodyParts, { body => $_ } );
+            next;
+        }
+
+        # very first match gets appended to first "body part"
+        if ( $index == 1 or $index == 3 ) {
+            ${ $bodyParts[0] }{body} .= $_;
+            next;
+        }
+
+        # very first previous heading
+        if ( $index == 2 ) {
+            ${ $bodyParts[0] }{level} = $headingLevelLookUp{$_};
+            next;
+        }
+
+        #-------------------
+        # heading value
+        if ( $index % 3 == 1 ) {
+            $headingValue = $_;
+            next;
+        }
+
+        # heading level
+        if ( $index % 3 == 2 ) {
+            $currentHeadingLevel = $headingLevelLookUp{$_};
+            next;
+        }
+
+        if ( $currentHeadingLevel >= ${ $bodyParts[-1] }{level} ) {
+            ${ $bodyParts[-1] }{body} .= $headingValue . $_;
+        }
+        else {
+            push( @bodyParts, { body => $headingValue . $_, level => $currentHeadingLevel } );
         }
     }
+
+    return @bodyParts;
 }
 
-sub get_replacement_text {
-    my $self = shift;
+sub after_heading_indentation {
+    my $body         = $_[0];
+    my $currentLevel = $_[1];
 
-    # the replacement text for a heading (chapter, section, etc) needs to put the trailing part back in
-    $logger->trace("Custom replacement text routine for ${$self}{name}") if $is_t_switch_active;
-    ${$self}{replacementText} = ${$self}{id} . ${$self}{afterbit};
-    delete ${$self}{afterbit};
-}
+    return $body unless defined $headingsRegexpArray[$currentLevel];
 
-sub create_unique_id {
-    my $self = shift;
+    my $headingRegExp = qr/(\\($headingsRegexpArray[$currentLevel]))/;
 
-    $headingCounter++;
+    # skip to the next level if there's no headings at this level
+    if ( $body !~ m/$headingRegExp/s ) {
+        $currentLevel++;
+        $body = &after_heading_indentation( $body, $currentLevel );
+        return $body;
+    }
 
-    ${$self}{id} = "$tokens{afterHeading}$headingCounter";
-    return;
-}
+    # split body by heading regex
+    my @newBody = split( $headingRegExp, $body );
 
-sub adjust_replacement_text_line_breaks_at_end {
-    return;
-}
+    my $headingValue;
+    my $name;
+    my $index = -1;
+    foreach (@newBody) {
+        $index++;
 
-sub yaml_get_object_attribute_for_indentation_settings {
+        # first entry is *before* heading, so nothing to do
+        next if $index == 0;
 
-    # when looking for noAdditionalIndent or indentRules, we may need to determine
-    # which thing we're looking for, e.g
-    #
-    #   chapter:
-    #       body: 0
-    #       optionalArguments: 1
-    #       mandatoryArguments: 1
-    #       afterHeading: 0
-    #
-    # this method returns 'body' by default, but the other objects (optionalArgument, mandatoryArgument, afterHeading)
-    # return their appropriate identifier.
-    my $self = shift;
+        # heading value
+        if ( $index % 3 == 1 ) {
+            $headingValue = $_;
+            next;
+        }
 
-    return ${$self}{modifyLineBreaksYamlName};
-}
+        # heading name
+        if ( $index % 3 == 2 ) {
+            $name = $_;
+            $_    = "";
+            $logger->trace("*found: $name heading") if $is_t_switch_active;
+            next;
+        }
 
-sub tasks_particular_to_each_object {
-    my $self = shift;
+        # get (sub) body parts
+        my $newBodyPart = $_;
 
-    # search for commands, keys, named grouping braces
-    $self->find_commands_or_key_equals_values_braces;
-
-    # we need to transfer the details from the modifyLineBreaks of the command
-    # child object to the heading object.
-    #
-    # for example, if we have
-    #
-    #   \chapter{some heading here}
-    #
-    # and we want to modify the linebreak before the \chapter command using, for example,
-    #
-    # commands:
-    #     CommandStartsOnOwnLine: 1
-    #
-    # then we need to transfer this information to the heading object
-    if ($is_m_switch_active) {
-        $logger->trace("Searching for linebreak preferences immediately infront of ${$self}{parent}")
-            if $is_t_switch_active;
-        foreach ( @{ ${$self}{children} } ) {
-            if ( ${$_}{name} eq ${$self}{parent} ) {
-                $logger->trace("Named child found: ${$_}{name}") if $is_t_switch_active;
-                if ( defined ${$_}{BeginStartsOnOwnLine} ) {
-                    $logger->trace(
-                        "Transferring information from ${$_}{id} (${$_}{name}) to ${$self}{id} (${$self}{name}) for BeginStartsOnOwnLine"
-                    ) if $is_t_switch_active;
-                    ${$self}{BeginStartsOnOwnLine} = ${$_}{BeginStartsOnOwnLine};
-                }
-                else {
-                    $logger->trace("No information found in ${$_}{name} for BeginStartsOnOwnLine")
-                        if $is_t_switch_active;
-                }
-                last;
+        my @bodyParts = &headings_get_body_parts($_);
+        if ( scalar(@bodyParts) > 1 ) {
+            $newBodyPart = q();
+            my $bodyPartCount = -1;
+            foreach my $bodyPart (@bodyParts) {
+                $bodyPartCount++;
+                $bodyPart = ${$bodyPart}{body};
+                $bodyPart = &after_heading_indentation( $bodyPart, 0 ) unless $bodyPartCount == $#bodyParts;
+                $newBodyPart .= $bodyPart;
             }
         }
+
+        $_ = $newBodyPart;
+
+        # look for next level heading
+        $currentLevel++;
+        $_ = &after_heading_indentation( $_, $currentLevel );
+        $currentLevel--;
+
+        # heading body indentation
+        my $codeBlockObj;
+        my $modifyLineBreaksName = "afterHeading";
+        if ( !$previouslyFoundSetting{ $name . $modifyLineBreaksName } ) {
+
+            $codeBlockObj = LatexIndent::Blocks->new(
+                name                       => $name,
+                nameForIndentationSettings => $name,
+                modifyLineBreaksYamlName   => $modifyLineBreaksName,
+                type                       => "heading",
+            );
+            if ( defined ${ ${ $mainSetting{indentAfterHeadings} }{$name} }{blocksEndBefore} ) {
+                ${$codeBlockObj}{blocksEndBefore}
+                    = ${ ${ $mainSetting{indentAfterHeadings} }{$name} }{blocksEndBefore};
+            }
+            $codeBlockObj->yaml_get_indentation_settings_for_this_object;
+        }
+
+        if ( ${ $previouslyFoundSetting{ $name . $modifyLineBreaksName } }{indentation} ne '' ) {
+            my $addedIndentation = ${ $previouslyFoundSetting{ $name . $modifyLineBreaksName } }{indentation};
+
+            # some heading blocks end before something specific (see headings-single-line-mod1.tex)
+            my @afterBlocksEndBefore = ( q(), q(), q() );
+            if ( defined ${ $previouslyFoundSetting{ $name . $modifyLineBreaksName } }{blocksEndBefore} ) {
+                @afterBlocksEndBefore
+                    = split( qr/(${$previouslyFoundSetting{$name.$modifyLineBreaksName}}{blocksEndBefore})/, $_ );
+                $_ = $afterBlocksEndBefore[0];
+            }
+
+            # add indentation
+            $_ =~ s"^"$addedIndentation"mg;
+            $_ =~ s"^$addedIndentation""s;
+            $_ =~ s"\R$addedIndentation(\h*)$"\n$1"s;
+            $_ .= ( defined $afterBlocksEndBefore[1] ? $afterBlocksEndBefore[1] : q() )
+                . ( defined $afterBlocksEndBefore[2] ? $afterBlocksEndBefore[2] : q() );
+        }
     }
 
-    # search for special begin/end
-    $self->find_special if ${$self}{body} =~ m/$specialBeginBasicRegExp/s;
-
-    return;
-}
-
-sub add_surrounding_indentation_to_begin_statement {
-
-    # almost all of the objects add surrounding indentation to the 'begin' statements,
-    # but some (e.g HEADING) have their own method
-    my $self = shift;
-
-    $logger->trace(
-        "Adding surrounding indentation after (empty, by design!) begin statement of ${$self}{name} (${$self}{id})")
-        if $is_t_switch_active;
-    ${$self}{begin} .= ${$self}{surroundingIndentation};    # add indentation
-
+    $body = join( "", @newBody );
+    return $body;
 }
 
 1;

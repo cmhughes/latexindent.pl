@@ -1,0 +1,5 @@
+specialBeginEnd:
+  - name: directlua
+    begin: \\directlua\{
+    end: \}
+    lookForThis: verbatim

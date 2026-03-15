@@ -1,0 +1,2 @@
+INFO:  Switch activated via YAML: modifyLineBreaks (-m)
+INFO:  Switch activated via YAML: silent mode (-s)

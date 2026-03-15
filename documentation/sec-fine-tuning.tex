@@ -24,7 +24,7 @@
  \end{warning}
 
  \begin{widepage}
-  \cmhlistingsfromfile[style=fineTuning]{../defaultSettings.yaml}[width=.95\linewidth,before=\centering,enhanced jigsaw,breakable,yaml-TCB]{\texttt{fineTuning}}{lst:fineTuning}
+  \cmhlistingsfromfile*[style=fineTuning]{../defaultSettings.yaml}[width=.95\linewidth,before=\centering,enhanced jigsaw,breakable,yaml-TCB]{\texttt{fineTuning}}{lst:fineTuning}
  \end{widepage}
 
  The fields given in \cref{lst:fineTuning} are all \emph{regular expressions}. This
@@ -56,135 +56,25 @@
          \item the \texttt{?} the end means \emph{non-greedy}, which means `stop the
                match as soon as possible'
         \end{enumerate}
-  \item the \texttt{keyEqualsValuesBracesBrackets} contains some interesting syntax:
-        \begin{enumerate}
-         \item \lstinline!|! means `or'
-         \item \lstinline^(?:(?<!\\)\{)^ the \lstinline^(?:...)^ uses a \emph{non-capturing} group -- you don't necessarily need to worry about what this
-               means, but just know that for the \texttt{fineTuning} feature you should only ever use
-               \emph{non}-capturing groups, and \emph{not} capturing groups, which are simply
-               \lstinline!(...)!
-         \item \lstinline^(?<!\\)\{)^ means a \lstinline^{^ but it can \emph{not} be immediately preceded by a \lstinline!\!
-        \end{enumerate}
-  \item in the \texttt{arguments:before} field
-        \begin{enumerate}
-         \item \lstinline^\d\h*^ means a digit (i.e. a number), followed by 0 or more horizontal spaces
-         \item \lstinline^;?,?^ means \emph{possibly} a semi-colon, and possibly a comma
-         \item \lstinline^\<.*?\>^ is designed for 'beamer'-type commands; the
-               \lstinline^.*?^ means anything in between \lstinline^<...>^
-        \end{enumerate}
   \item the \texttt{modifyLineBreaks} field refers to fine tuning settings detailed in
         \vref{sec:modifylinebreaks}. In particular:
         \begin{enumerate}
          \item \texttt{betterFullStop} is in relation to the one sentence per line routine, detailed in
                \vref{sec:onesentenceperline}
-         \item \texttt{doubleBackSlash} is in relation to the \texttt{DBSStartsOnOwnLine} and
-               \texttt{DBSFinishesWithLineBreak} polyswitches surrounding double backslashes, see
-               \vref{subsec:dbs}
          \item \texttt{comma} is in relation to the \texttt{CommaStartsOnOwnLine} and
                \texttt{CommaFinishesWithLineBreak} polyswitches surrounding commas in optional and
                mandatory arguments; see \vref{tab:poly-switch-mapping}
         \end{enumerate}
  \end{enumerate}
 
- It is not obvious from \cref{lst:fineTuning}, but each of the \texttt{follow},
- \texttt{before} and \texttt{between} fields allow trailing comments, line breaks, and
- horizontal spaces between each character.
-
  \index{warning!capture groups}
  \begin{warning}
-  For the \texttt{fineTuning} feature you should only ever use \emph{non}-capturing
-  groups, such as \lstinline!(?:...)! and \emph{not} capturing groups, which are
+  For the \texttt{fineTuning} feature you should usually use \emph{non}-capturing groups,
+  such as \lstinline!(?:...)! and \emph{not} capturing groups, which are
   \lstinline!(...)!
  \end{warning}
 
- \begin{example}
- As a demonstration, consider the file given in \cref{lst:finetuning1}, together with its
- default output using the command
-
- \begin{commandshell}
-latexindent.pl finetuning1.tex 
-\end{commandshell}
-
- is given in \cref{lst:finetuning1-default}.
-
- \begin{cmhtcbraster}[raster column skip=.01\linewidth]
-  \cmhlistingsfromfile{demonstrations/finetuning1.tex}{\texttt{finetuning1.tex}}{lst:finetuning1}
-  \cmhlistingsfromfile{demonstrations/finetuning1-default.tex}{\texttt{finetuning1.tex} default}{lst:finetuning1-default}
- \end{cmhtcbraster}
-
- It's clear from \cref{lst:finetuning1-default} that the indentation scheme has not
- worked as expected. We can \emph{fine tune} the indentation scheme by employing the
- settings given in \cref{lst:fine-tuning1} and running the command \index{switches!-l
- demonstration}
-
- \begin{commandshell}
-latexindent.pl finetuning1.tex -l=fine-tuning1.yaml
-\end{commandshell}
-
- and the associated (desired) output is given in \cref{lst:finetuning1-mod1}.
- \index{regular expressions!at least one +}
-
- \begin{cmhtcbraster}[raster column skip=.01\linewidth]
-  \cmhlistingsfromfile{demonstrations/finetuning1-mod1.tex}{\texttt{finetuning1.tex} using \cref{lst:fine-tuning1}}{lst:finetuning1-mod1}
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/fine-tuning1.yaml}[yaml-TCB]{\texttt{finetuning1.yaml}}{lst:fine-tuning1}
- \end{cmhtcbraster}
- \end{example}
-
- \begin{example}
- Let's have another demonstration; consider the file given in \cref{lst:finetuning2},
- together with its default output using the command
-
- \begin{commandshell}
-latexindent.pl finetuning2.tex 
-\end{commandshell}
-
- is given in \cref{lst:finetuning2-default}.
-
- \begin{cmhtcbraster}[raster column skip=.01\linewidth,
-   raster left skip=-3.75cm,
-   raster right skip=0cm,]
-  \cmhlistingsfromfile{demonstrations/finetuning2.tex}{\texttt{finetuning2.tex}}{lst:finetuning2}
-  \cmhlistingsfromfile{demonstrations/finetuning2-default.tex}{\texttt{finetuning2.tex} default}{lst:finetuning2-default}
- \end{cmhtcbraster}
-
- It's clear from \cref{lst:finetuning2-default} that the indentation scheme has not
- worked as expected. We can \emph{fine tune} the indentation scheme by employing the
- settings given in \cref{lst:fine-tuning2} and running the command \index{switches!-l
- demonstration}
-
- \begin{commandshell}
-latexindent.pl finetuning2.tex -l=fine-tuning2.yaml
-\end{commandshell}
-
- and the associated (desired) output is given in \cref{lst:finetuning2-mod1}.
-
- \begin{cmhtcbraster}[raster column skip=.01\linewidth,
-   raster left skip=-3.75cm,
-   raster right skip=0cm,]
-  \cmhlistingsfromfile{demonstrations/finetuning2-mod1.tex}{\texttt{finetuning2.tex} using \cref{lst:fine-tuning2}}{lst:finetuning2-mod1}
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/fine-tuning2.yaml}[yaml-TCB]{\texttt{finetuning2.yaml}}{lst:fine-tuning2}
- \end{cmhtcbraster}
-
- In particular, note that the settings in \cref{lst:fine-tuning2} specify that
- \texttt{NamedGroupingBracesBrackets} and \texttt{UnNamedGroupingBracesBrackets} can
- follow \texttt{"} and that we allow \lstinline!---! between arguments.
- \end{example}
-
- \begin{example}
- You can tweak the \texttt{fineTuning} using the \texttt{-y} switch, but to be sure to
- use quotes appropriately. For example, starting with the code in \cref{lst:finetuning3}
- and running the following command
-
- \begin{commandshell}
-latexindent.pl -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1, modifyLineBreaks:oneSentencePerLine:sentencesBeginWith:a-z: 1, fineTuning:modifyLineBreaks:betterFullStop: "(?:\.|;|:(?![a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))"' issue-243.tex -o=+-mod1
-\end{commandshell}
-
- gives the output shown in \cref{lst:finetuning3-mod1}.
-
- \cmhlistingsfromfile{demonstrations/finetuning3.tex}{\texttt{finetuning3.tex}}{lst:finetuning3}
- \cmhlistingsfromfile{demonstrations/finetuning3-mod1.tex}{\texttt{finetuning3.tex} using -y switch}{lst:finetuning3-mod1}
- \end{example}
-
+\subsection{fineTuning trailing comments}
  \begin{example}
  We can tweak the \texttt{fineTuning} for how trailing comments are classified. For
  motivation, let's consider the code given in \cref{lst:finetuning4}
@@ -193,11 +83,12 @@ latexindent.pl -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1
 
  We will compare the settings given in \cref{lst:href1,lst:href2}.
 
- \begin{cmhtcbraster}[raster column skip=.01\linewidth,
-   raster left skip=0cm,
-   raster right skip=-0.5cm,]
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/href1.yaml}[MLB-TCB]{\texttt{href1.yaml}}{lst:href1}
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/href2.yaml}[MLB-TCB]{\texttt{href2.yaml}}{lst:href2}
+ \begin{cmhtcbraster}[raster columns=2,
+   raster left skip=-3.5cm,
+   raster right skip=-2cm,
+   raster column skip=.03\linewidth]
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/href1.yaml}[width=.1\textwidth,MLB-TCB]{\texttt{href1.yaml}}{lst:href1}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/href2.yaml}[width=.1\textwidth,MLB-TCB]{\texttt{href2.yaml}}{lst:href2}
  \end{cmhtcbraster}
 
  Upon running the following commands
@@ -248,97 +139,6 @@ latexindent.pl -m finetuning4.tex -o=+-mod3 -l=href3
  \end{example}
 
  \begin{example}
- We can use the \texttt{fineTuning} field to assist in the formatting of bibliography
- files. \index{bibliography files} \index{regular expressions!delimiterRegEx}
- \index{regular expressions!capturing parenthesis} \index{regular expressions!ampersand
- alignment} \index{delimiters!delimiterRegEx}
-
- Starting with the file in \cref{lst:bib1} and running the command
-
- \begin{commandshell}
-latexindent.pl bib1.tex -o=+-mod1 
-   \end{commandshell}
-
- gives the output in \cref{lst:bib1-mod1}.
-
- \begin{widepage}
-  \begin{cmhtcbraster}[raster column skip=.01\linewidth]
-   \cmhlistingsfromfile{demonstrations/bib1.bib}{\texttt{bib1.bib}}{lst:bib1}
-   \cmhlistingsfromfile{demonstrations/bib1-mod1.bib}{\texttt{bib1-mod1.bib}}{lst:bib1-mod1}
-  \end{cmhtcbraster}
- \end{widepage}
-
- Let's assume that we would like to format the output so as to align the \texttt{=}
- symbols. Using the settings in \cref{lst:bibsettings1} and running the command
-
- \begin{commandshell}
-latexindent.pl bib1.bib -l bibsettings1.yaml -o=+-mod2 
-     \end{commandshell}
-
- gives the output in \cref{lst:bib1-mod2}.
-
- \begin{widepage}
-  \begin{cmhtcbraster}[raster column skip=.1\linewidth]
-   \cmhlistingsfromfile{demonstrations/bib1-mod2.bib}{\texttt{bib1.bib} using \cref{lst:bibsettings1}}{lst:bib1-mod2}
-   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/bibsettings1.yaml}[yaml-TCB]{\texttt{bibsettings1.yaml}}{lst:bibsettings1}
-  \end{cmhtcbraster}
- \end{widepage}
- Some notes about \cref{lst:bibsettings1}:
- \begin{itemize}
-  \item we have populated the \texttt{lookForAlignDelims} field with the \texttt{online}
-        command, and have used the \texttt{delimiterRegEx}, discussed in
-        \vref{sec:delimiter-reg-ex};
-  \item we have tweaked the \texttt{keyEqualsValuesBracesBrackets} code block so that it
-        will \emph{not} be found following a comma; this means that, in contrast to the
-        default behaviour, the lines such as \lstinline!date={2013-05-23},! will
-        \emph{not} be treated as key-equals-value braces;
-  \item the adjustment to \texttt{keyEqualsValuesBracesBrackets} necessitates the
-        associated change to the \texttt{UnNamedGroupingBracesBrackets} field so that
-        they will be searched for following \texttt{=} symbols.
- \end{itemize}
- \end{example}
-
- \begin{example}
- We can build upon \cref{lst:bibsettings1} for slightly more complicated bibliography
- files.
-
- Starting with the file in \cref{lst:bib2} and running the command
-
- \begin{commandshell}
-latexindent.pl bib2.bib -l bibsettings1.yaml -o=+-mod1 
-   \end{commandshell}
-
- gives the output in \cref{lst:bib2-mod1}.
-
- \begin{widepage}
-  \cmhlistingsfromfile{demonstrations/bib2.bib}{\texttt{bib2.bib}}{lst:bib2}
-  \cmhlistingsfromfile{demonstrations/bib2-mod1.bib}{\texttt{bib2-mod1.bib}}{lst:bib2-mod1}
- \end{widepage}
-
- The output in \cref{lst:bib2-mod1} is not ideal, as the \texttt{=} symbol within the url
- field has been incorrectly used as an alignment delimiter.
-
- We address this by tweaking the \texttt{delimiterRegEx} field in
- \cref{lst:bibsettings2}.
-
- \cmhlistingsfromfile[style=yaml-LST]{demonstrations/bibsettings2.yaml}[yaml-TCB]{\texttt{bibsettings2.yaml}}{lst:bibsettings2}
-
- Upon running the command
-
- \begin{commandshell}
-latexindent.pl bib2.bib -l bibsettings1.yaml,bibsettings2.yaml -o=+-mod2 
-         \end{commandshell}
-
- we receive the \emph{desired} output in \cref{lst:bib2-mod2}.
-
- \cmhlistingsfromfile{demonstrations/bib2-mod2.bib}{\texttt{bib2-mod2.bib}}{lst:bib2-mod2}
-
- With reference to \cref{lst:bibsettings2} we note that the \texttt{delimiterRegEx} has
- been adjusted so that \texttt{=} symbols are used as the delimiter, but only when they
- are \emph{not preceded} by either \texttt{v} or \texttt{spfreload}.
- \end{example}
-
- \begin{example}
  We can use the \texttt{fineTuning} settings to tweak how \texttt{latexindent.pl} finds
  trailing comments. \announce{2023-06-01}{fine tuning trailing comments demonstration}
 
@@ -354,9 +154,14 @@ latexindent.pl finetuning5.tex -l=fine-tuning3.yaml
 
  gives the output in \cref{lst:finetuning5-mod1}.
 
- \begin{cmhtcbraster}[raster column skip=.01\linewidth]
+ \begin{cmhtcbraster}[raster column skip=.01\linewidth,
+   raster left skip=-3.5cm,
+   raster force size=false,
+   raster column 1/.style={add to width=-.1\textwidth},
+   raster column 2/.style={add to width=-.3\textwidth},
+  ]
   \cmhlistingsfromfile{demonstrations/finetuning5-mod1.tex}{\texttt{finetuning5-mod1.tex}}{lst:finetuning5-mod1}
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/fine-tuning3.yaml}[yaml-TCB]{\texttt{finetuning3.yaml}}{lst:fine-tuning3}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/fine-tuning3.yaml}[yaml-TCB,width=0.7\textwidth]{\texttt{fine-tuning3.yaml}}{lst:fine-tuning3}
  \end{cmhtcbraster}
 
  The settings in \cref{lst:fine-tuning3} detail that trailing comments can \emph{not} be
@@ -366,6 +171,7 @@ latexindent.pl finetuning5.tex -l=fine-tuning3.yaml
  treated as trailing comments.
  \end{example}
 
+\subsection{fineTuning environments}
  \begin{example}
  We can use the \texttt{fineTuning} settings to tweak how \texttt{latexindent.pl} finds
  environments.
@@ -390,7 +196,7 @@ latexindent.pl finetuning6.tex -m -l=fine-tuning4.yaml
    raster column 2/.style={add to width=-.3\textwidth},
   ]
   \cmhlistingsfromfile{demonstrations/finetuning6-mod1.tex}{\texttt{finetuning6-mod1.tex}}{lst:finetuning6-mod1}
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/fine-tuning4.yaml}[MLB-TCB]{\texttt{fine-tuning4.yaml}}{lst:fine-tuning4}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/fine-tuning4.yaml}[MLB-TCB]{\texttt{fine-tuning4.yaml}}{lst:fine-tuning4}
  \end{cmhtcbraster}
 
  By using the settings in \cref{lst:fine-tuning4} it means that the default poly-switch
@@ -400,4 +206,111 @@ latexindent.pl finetuning6.tex -m -l=fine-tuning4.yaml
 
  Referencing \cref{lst:fine-tuning4}, unless both \texttt{begin} and \texttt{end} are
  specified, then the default value of \texttt{name} will be used.
+ \end{example}
+
+\subsection{fineTuning itemsRegex}\label{subsec:finetuning:itemsRegex}
+ In \vref{lst:itemsafter} we demonstrated the default indentation
+ after items. You can customise the \texttt{itemsRegex} in the
+ \texttt{fineTuning}, which we demonstrate next.
+
+ \begin{example}
+ We begin with the code in \cref{lst:items2} and use the settings in
+ \cref{lst:ft-itemsRegex}. Upon running
+
+ \begin{commandshell}
+latexindent.pl -l ft-itemsRegex items2-o=+-mod1
+\end{commandshell}
+
+ we receive the output in \cref{lst:items2-mod1}.
+
+ \begin{cmhtcbraster}[raster columns=3,
+   raster left skip=-3.5cm,
+   raster right skip=-2cm,
+   raster column skip=.03\linewidth]
+  \cmhlistingsfromfile*{demonstrations/items2.tex}{\texttt{items2.tex}}{lst:items2}
+  \cmhlistingsfromfile*{demonstrations/ft-itemsRegex.yaml}[yaml-TCB]{\texttt{ft-itemsRegex.yaml}}{lst:ft-itemsRegex}
+  \cmhlistingsfromfile*{demonstrations/items2-mod1.tex}{\texttt{items2-mod1.tex}}{lst:items2-mod1}
+ \end{cmhtcbraster}
+ \end{example}
+
+\subsection{fineTuning arguments}\label{subsec:finetuning:arguments}
+ The strings allowed between arguments for \texttt{commands}, \texttt{namedGroupingBracesBrackets},
+ \texttt{keyEqualsValuesBracesBrackets} and \texttt{UnNamedGroupingBracesBrackets}
+ are controlled by \texttt{fineTuning}. We demonstrate with an example next.
+ \announce*{2026-03-15}{fineTuning controls strings allowed between arguments }
+
+ \begin{example}
+ We begin with the code in \cref{lst:beamer1} and use the settings in \cref{lst:ft-args}.
+ Upon running
+
+ \begin{commandshell}
+latexindent.pl -l ft-args beamer1-o=+-mod1
+\end{commandshell}
+
+ we receive the output in \cref{lst:beamer1-mod1}.
+
+ \begin{cmhtcbraster}[raster columns=3,
+   raster left skip=-3.5cm,
+   raster right skip=-2cm,
+   raster column skip=.03\linewidth]
+  \cmhlistingsfromfile*{demonstrations/beamer1.tex}{\texttt{beamer1.tex}}{lst:beamer1}
+  \cmhlistingsfromfile*{demonstrations/ft-args.yaml}[yaml-TCB]{\texttt{ft-args.yaml}}{lst:ft-args}
+  \cmhlistingsfromfile*{demonstrations/beamer1-mod1.tex}{\texttt{beamer1-mod1.tex}}{lst:beamer1-mod1}
+ \end{cmhtcbraster}
+ \end{example}
+
+\subsection{fineTuning ifElseFi}\label{subsec:finetuning:ifElseFi}
+ We can fine tune the \texttt{elseOrRegEx} for \texttt{ifElseFi} blocks as we demonstrate next.
+
+ \begin{example}
+ We begin with the code in \cref{lst:ft-ifelsefi} and use the settings in
+ \cref{lst:ft-ifelsefi-yaml}. Upon running
+
+ \begin{commandshell}
+latexindent.pl -l ft-ifelsefi ft-ifelsefi-o=+-mod1
+\end{commandshell}
+
+ we receive the output in \cref{lst:ft-ifelsefi-mod1}.
+
+ \begin{cmhtcbraster}[raster columns=3,
+   raster left skip=-3.5cm,
+   raster right skip=-2cm,
+   raster column skip=.03\linewidth]
+  \cmhlistingsfromfile*{demonstrations/ft-ifelsefi.tex}{\texttt{ft-ifelsefi.tex}}{lst:ft-ifelsefi}
+  \cmhlistingsfromfile*{demonstrations/ft-ifelsefi.yaml}[yaml-TCB]{\texttt{ft-ifelsefi.yaml}}{lst:ft-ifelsefi-yaml}
+  \cmhlistingsfromfile*{demonstrations/ft-ifelsefi-mod1.tex}{\texttt{ft-ifelsefi-mod1.tex}}{lst:ft-ifelsefi-mod1}
+ \end{cmhtcbraster}
+ \end{example}
+
+\subsection{fineTuning lookForAlignDelims}\label{subsec:finetuning:lookForAlignDelims}
+ As detailed in \vref{subsec:align-at-delimiters} there is a basic and an advanced way to specify the entries
+ in \texttt{lookForAlignDelims}; any entries not specified explicitly, will be read
+ from the default values specified in \texttt{fineTuning}.
+
+ As an example, the settings in \cref{lst:ft-align1,lst:ft-align2,lst:ft-align3} are
+ equivalent.
+
+ \begin{cmhtcbraster}[raster columns=3,
+   raster left skip=-3.5cm,
+   raster right skip=-2cm,
+   raster column skip=.03\linewidth]
+  \cmhlistingsfromfile*{demonstrations/align1.yaml}[yaml-TCB]{\texttt{align1.yaml}}{lst:ft-align1}
+  \cmhlistingsfromfile*{demonstrations/align2.yaml}[yaml-TCB]{\texttt{align2.yaml}}{lst:ft-align2}
+  \cmhlistingsfromfile*{demonstrations/align3.yaml}[yaml-TCB]{\texttt{align3.yaml}}{lst:ft-align3}
+ \end{cmhtcbraster}
+
+\subsection{fineTuning using -y switch}
+ \begin{example}
+ You can tweak the \texttt{fineTuning} using the \texttt{-y} switch, but to be sure to
+ use quotes appropriately. For example, starting with the code in \cref{lst:finetuning3}
+ and running the following command
+
+ \begin{commandshell}
+latexindent.pl -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1, modifyLineBreaks:oneSentencePerLine:sentencesBeginWith:a-z: 1, fineTuning:modifyLineBreaks:betterFullStop: "(?:\.|;|:(?![a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))"' issue-243.tex -o=+-mod1
+\end{commandshell}
+
+ gives the output shown in \cref{lst:finetuning3-mod1}.
+
+ \cmhlistingsfromfile{demonstrations/finetuning3.tex}{\texttt{finetuning3.tex}}{lst:finetuning3}
+ \cmhlistingsfromfile{demonstrations/finetuning3-mod1.tex}{\texttt{finetuning3.tex} using -y switch}{lst:finetuning3-mod1}
  \end{example}

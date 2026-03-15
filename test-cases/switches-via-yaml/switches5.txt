@@ -1,0 +1,3 @@
+INFO:  Switch activated via YAML: verbose check mode (-kv)
+INFO:  Switch activated via YAML: modifyLineBreaks (-m)
+INFO:  Switch activated via YAML: silent mode (-s)

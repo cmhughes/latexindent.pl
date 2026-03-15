@@ -1,0 +1,5 @@
+TRACE: found: theorem 	 type: environments
+TRACE: found: tikzcd 	 type: environments
+TRACE: found: theorem 	 type: environments
+TRACE: found: theorem 	 type: environments
+TRACE: found: displayMath 	 type: specialBeginEnd

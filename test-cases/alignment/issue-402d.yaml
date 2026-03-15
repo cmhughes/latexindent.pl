@@ -9,3 +9,7 @@ modifyLineBreaks:
       RCuBStartsOnOwnLine: 1
       RCuBFinishesWithLineBreak: 1
       DBSFinishesWithLineBreak: 2
+
+lookForAlignDelims:
+  cmh:
+    alignDoubleBackSlash: 0

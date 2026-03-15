@@ -1,0 +1,4 @@
+lookForAlignDelims:
+  tblr:
+    alignFinalDoubleBackSlash: 1
+    lookForChildCodeBlocks: 0

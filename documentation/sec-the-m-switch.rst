@@ -15,9 +15,9 @@ As of Version 3.0, ``latexindent.pl`` has the ``-m`` switch, which permits ``lat
 	:class: .mlbyaml
 	:caption: ``modifyLineBreaks`` 
 	:name: lst:modifylinebreaks
-	:lines: 502-504
+	:lines: 289-291
 	:linenos:
-	:lineno-start: 502
+	:lineno-start: 289
 
 Having read the previous paragraph, it should sound reasonable that, if you call ``latexindent.pl`` using the ``-m`` switch, then you give it permission to modify line breaks in your file, but let’s be clear:
 
@@ -76,9 +76,9 @@ The complete settings for this feature are given in :numref:`lst:textWrapOptions
 	:class: .mlbyaml
 	:caption: ``textWrapOptions`` 
 	:name: lst:textWrapOptionsAll
-	:lines: 532-559
+	:lines: 325-350
 	:linenos:
-	:lineno-start: 532
+	:lineno-start: 325
 
 Text wrap: overview
 ~~~~~~~~~~~~~~~~~~~
@@ -247,7 +247,7 @@ We examine the ``blocksFollow`` field of :numref:`lst:textWrapOptionsAll`.
 	
 	We reference :numref:`lst:textWrapOptionsAll` and also :numref:`lst:indentAfterHeadings`:
 	
-	-  in :numref:`lst:textWrapOptionsAll` the ``headings`` field is set to ``1``, which instructs ``latexindent.pl`` to read the fields from :numref:`lst:indentAfterHeadings`, *regardless of the value of indentAfterThisHeading or level*;
+	-  in :numref:`lst:textWrapOptionsAll` the ``headings`` field is set to ``1``, which instructs ``latexindent.pl`` to read the fields from :numref:`lst:indentAfterHeadings`, *regardless of the value of lookForThis or level*;
 	
 	-  the default is to assume that the heading command can, optionally, be followed by a ``label`` command.
 	
@@ -1028,9 +1028,9 @@ You can instruct ``latexindent.pl`` to format your file so that it puts one sent
 	:class: .mlbyaml
 	:caption: ``oneSentencePerLine`` 
 	:name: lst:oneSentencePerLine
-	:lines: 505-531
+	:lines: 295-321
 	:linenos:
-	:lineno-start: 505
+	:lineno-start: 295
 
 oneSentencePerLine: overview
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1147,25 +1147,25 @@ In each case, you can specify the ``other`` field to include any pattern that yo
 	:class: .mlbyaml
 	:caption: ``sentencesFollow`` 
 	:name: lst:sentencesFollow
-	:lines: 511-519
+	:lines: 301-309
 	:linenos:
-	:lineno-start: 511
+	:lineno-start: 301
 
 .. literalinclude:: ../defaultSettings.yaml
 	:class: .mlbyaml
 	:caption: ``sentencesBeginWith`` 
 	:name: lst:sentencesBeginWith
-	:lines: 520-523
+	:lines: 310-313
 	:linenos:
-	:lineno-start: 520
+	:lineno-start: 310
 
 .. literalinclude:: ../defaultSettings.yaml
 	:class: .mlbyaml
 	:caption: ``sentencesEndWith`` 
 	:name: lst:sentencesEndWith
-	:lines: 524-529
+	:lines: 314-319
 	:linenos:
-	:lineno-start: 524
+	:lineno-start: 314
 
 oneSentencePerLine: sentencesFollow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1420,9 +1420,9 @@ You can specify patterns that sentences do *not* contain using the field in :num
 	:class: .mlbyaml
 	:caption: ``sentencesDoNOTcontain`` 
 	:name: lst:sentencesDoNOTcontain
-	:lines: 530-531
+	:lines: 320-321
 	:linenos:
-	:lineno-start: 530
+	:lineno-start: 320
 
 If sentences run across environments then, by default, they will *not* be considered a sentence by ``latexindent.pl``.
 
@@ -1862,9 +1862,9 @@ We start by viewing a snippet of ``defaultSettings.yaml`` in :numref:`lst:enviro
 	:class: .mlbyaml
 	:caption: ``environments`` 
 	:name: lst:environments-mlb
-	:lines: 561-570
+	:lines: 360-369
 	:linenos:
-	:lineno-start: 561
+	:lineno-start: 360
 
 Let’s begin with the simple example given in :numref:`lst:env-mlb1-tex`; note that we have annotated key parts of the file using ♠, ♥, ◆ and ♣, these will be related to fields specified in :numref:`lst:environments-mlb`.
 
@@ -2854,6 +2854,127 @@ The pattern matching for the double backslash will also, optionally, allow trail
 
 You can customise the pattern for the double backslash by exploring the *fine tuning* field detailed in :numref:`lst:fineTuning`.
 
+.. label follows
+
+.. _subsec:poly-switch-commas:
+
+Poly-switches for commas
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+With reference to :numref:`tab:poly-switch-mapping` you can specify poly-switches to dictate the line-break behaviour of commas in arguments for code blocks that have arguments: ``commands``, ``namedGroupingBracesBrackets``, ``keyEqualsValuesBracesBrackets`` and ``UnNamedGroupingBracesBrackets``.
+
+Consider the code given in :numref:`lst:comma1-demo`.
+
+.. code-block:: latex
+   :caption: ``comma1.tex`` 
+   :name: lst:comma1-demo
+
+   \mycommand{1★,□2★,□3}[4★,□5★,□6]
+
+Referencing :numref:`lst:comma1-demo`:
+
+-  line breaks ahead of the comma are annotated by ★, and are controlled by ``CommaStartsOnOwnLine``;
+
+-  line breaks after the comma are annotated by □, and are controlled by ``CommaFinishesWithLineBreak``.
+
+Let’s explore each of these in turn.
+
+Comma starts on own line
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. proof:example::	
+	
+	We explore ``CommaStartsOnOwnLine`` (★ in :numref:`lst:comma1-demo`); starting with the code in :numref:`lst:comma1-demo`, together with the YAML files given in :numref:`lst:comma1` and :numref:`lst:comma2` and running the following commands
+	
+	.. index:: switches;-l demonstration
+	
+	.. index:: switches;-m demonstration
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl comma1.tex -l comma1.yaml
+	   latexindent.pl comma1.tex -l comma2.yaml
+	
+	then we receive the respective output given in :numref:`lst:comma1-mod1` and :numref:`lst:comma1-mod2`.
+	
+	.. literalinclude:: demonstrations/comma1-mod1.tex
+		:class: .tex
+		:caption: ``comma1-mod1.tex`` 
+		:name: lst:comma1-mod1
+	
+	.. literalinclude:: demonstrations/comma1.yaml
+		:class: .mlbyaml
+		:caption: ``comma1.yaml`` 
+		:name: lst:comma1
+	
+	.. literalinclude:: demonstrations/comma1-mod2.tex
+		:class: .tex
+		:caption: ``comma1-mod2.tex`` 
+		:name: lst:comma1-mod2
+	
+	.. literalinclude:: demonstrations/comma2.yaml
+		:class: .mlbyaml
+		:caption: ``comma2.yaml`` 
+		:name: lst:comma2
+	
+	We note that
+	
+	-  :numref:`lst:comma1` specifies ``CommaStartsOnOwnLine`` for *every* mandatory and optional argument; the commas :numref:`lst:comma1-demo` have been moved to their own line in :numref:`lst:comma1-mod1`;
+	
+	-  :numref:`lst:comma2` specifies ``CommaStartsOnOwnLine`` on a *per-name* basis for ``mycommand``; the commas from :numref:`lst:comma1-demo` have been moved to their own line in :numref:`lst:comma1-mod2`, having added comment symbols before moving them.
+	
+
+
+Comma finishes with line break
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. proof:example::	
+	
+	Let’s now explore ``CommaFinishesWithLineBreak`` (□ in :numref:`lst:comma1-demo`); starting with the code in :numref:`lst:comma1-demo`, together with the YAML files given in :numref:`lst:comma3` and :numref:`lst:comma4` and running the following commands
+	
+	.. index:: poly-switches;for double backslash (delimiters)
+	
+	.. index:: switches;-l demonstration
+	
+	.. index:: switches;-m demonstration
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl comma1.tex -l comma3.yaml
+	   latexindent.pl comma1.tex -l comma4.yaml
+	
+	then we receive the respective output given in :numref:`lst:comma1-mod3` and :numref:`lst:comma1-mod4`.
+	
+	.. literalinclude:: demonstrations/comma1-mod3.tex
+		:class: .tex
+		:caption: ``comma1-mod3.tex`` 
+		:name: lst:comma1-mod3
+	
+	.. literalinclude:: demonstrations/comma3.yaml
+		:class: .mlbyaml
+		:caption: ``comma3.yaml`` 
+		:name: lst:comma3
+	
+	.. literalinclude:: demonstrations/comma1-mod4.tex
+		:class: .tex
+		:caption: ``comma1-mod4.tex`` 
+		:name: lst:comma1-mod4
+	
+	.. literalinclude:: demonstrations/comma4.yaml
+		:class: .mlbyaml
+		:caption: ``comma4.yaml`` 
+		:name: lst:comma4
+	
+	We note that
+	
+	-  :numref:`lst:comma3` specifies ``CommaFinishesWithLineBreak`` for *every* mandatory and optional argument; the code following the commas from :numref:`lst:comma1-demo` has been moved to their own line in :numref:`lst:comma1-mod3`;
+	
+	-  :numref:`lst:comma4` specifies ``CommaFinishesWithLineBreak`` on a *per-name* basis for ``mycommand``; the code following the commas has been moved to their own line in :numref:`lst:comma1-mod4`, having added comment symbols before moving them.
+	
+
+
 Poly-switches for other code blocks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -2907,10 +3028,10 @@ Note also that, by design, line breaks involving, ``filecontents`` and ‘commen
    \                             ``}``\ ♣                               ♣ RCuBFinishesWithLineBreak
    \                             ``...``                                  
    commands                      ``before words``\ ♠                    ♠ CommandStartsOnOwnLine
-   \                             ``\mycommand``\ ♥                      ♥ CommandNameFinishesWithLineBreak
+   \                             ``\mycommand``                           
    \                             <arguments>                              
    namedGroupingBracesBrackets   before words♠                          ♠ NameStartsOnOwnLine
-   \                             myname♥                                ♥ NameFinishesWithLineBreak
+   \                             myname                                   
    \                             <braces/brackets>                        
    keyEqualsValuesBracesBrackets before words♠                          ♠ KeyStartsOnOwnLine
    \                             key●=♥                                 ● EqualsStartsOnOwnLine
@@ -2930,101 +3051,21 @@ Note also that, by design, line breaks involving, ``filecontents`` and ‘commen
    \                             after words                              
    ============================= ====================================== = ==================================
 
-Partnering BodyStartsOnOwnLine with argument-based poly-switches
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Conflicting poly-switches: sequential code blocks
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Some poly-switches need to be partnered together; in particular, when line breaks involving the *first* argument of a code block need to be accounted for using both ``BodyStartsOnOwnLine`` (or its equivalent, see :numref:`tab:poly-switch-mapping`) and ``LCuBStartsOnOwnLine`` for mandatory arguments, and ``LSqBStartsOnOwnLine`` for optional arguments.
-
-.. index:: poly-switches;conflicting partnering
+It is very easy to have conflicting poly-switches. The most poly-switch corresponding to the most-recently-found code block will be respected.
 
 .. proof:example::	
 	
-	Let’s begin with the code in :numref:`lst:mycommand1` and the YAML settings in :numref:`lst:mycom-mlb1`; with reference to :numref:`tab:poly-switch-mapping`, the key ``CommandNameFinishesWithLineBreak`` is an alias for ``BodyStartsOnOwnLine``.
+	We use the :numref:`lst:mycommand1`
 	
 	.. literalinclude:: demonstrations/mycommand1.tex
 		:class: .tex
 		:caption: ``mycommand1.tex`` 
 		:name: lst:mycommand1
 	
-	Upon running the command
-	
-	.. index:: switches;-l demonstration
-	
-	.. index:: switches;-m demonstration
-	
-	.. code-block:: latex
-	   :class: .commandshell
-	
-	   latexindent.pl -m -l=mycom-mlb1.yaml mycommand1.tex
-	
-	we obtain :numref:`lst:mycommand1-mlb1`; note that the *second* mandatory argument beginning brace ``\{`` has had its leading line break removed, but that the *first* brace has not.
-	
-	.. literalinclude:: demonstrations/mycommand1-mlb1.tex
-		:class: .tex
-		:caption: ``mycommand1.tex`` using :numref:`lst:mycom-mlb1` 
-		:name: lst:mycommand1-mlb1
-	
-	.. literalinclude:: demonstrations/mycom-mlb1.yaml
-		:class: .mlbyaml
-		:caption: ``mycom-mlb1.yaml`` 
-		:name: lst:mycom-mlb1
-	
-
-
-.. proof:example::	
-	
-	Now let’s change the YAML file so that it is as in :numref:`lst:mycom-mlb2`; upon running the command
-	
-	.. code-block:: latex
-	   :class: .commandshell
-	
-	   latexindent.pl -m -l=mycom-mlb2.yaml mycommand1.tex
-	
-	we obtain :numref:`lst:mycommand1-mlb2`; both beginning braces ``\{`` have had their leading line breaks removed.
-	
-	.. literalinclude:: demonstrations/mycommand1-mlb2.tex
-		:class: .tex
-		:caption: ``mycommand1.tex`` using :numref:`lst:mycom-mlb2` 
-		:name: lst:mycommand1-mlb2
-	
-	.. literalinclude:: demonstrations/mycom-mlb2.yaml
-		:class: .mlbyaml
-		:caption: ``mycom-mlb2.yaml`` 
-		:name: lst:mycom-mlb2
-	
-
-
-.. proof:example::	
-	
-	Now let’s change the YAML file so that it is as in :numref:`lst:mycom-mlb3`; upon running the command
-	
-	.. code-block:: latex
-	   :class: .commandshell
-	
-	   latexindent.pl -m -l=mycom-mlb3.yaml mycommand1.tex
-	
-	we obtain :numref:`lst:mycommand1-mlb3`.
-	
-	.. literalinclude:: demonstrations/mycommand1-mlb3.tex
-		:class: .tex
-		:caption: ``mycommand1.tex`` using :numref:`lst:mycom-mlb3` 
-		:name: lst:mycommand1-mlb3
-	
-	.. literalinclude:: demonstrations/mycom-mlb3.yaml
-		:class: .mlbyaml
-		:caption: ``mycom-mlb3.yaml`` 
-		:name: lst:mycom-mlb3
-	
-
-
-Conflicting poly-switches: sequential code blocks
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-It is very easy to have conflicting poly-switches.
-
-.. proof:example::	
-	
-	We use the example from :numref:`lst:mycommand1`, and consider the YAML settings given in :numref:`lst:mycom-mlb4`. The output from running
+	and consider the YAML settings given in :numref:`lst:mycom-mlb4`. The output from running
 	
 	.. index:: poly-switches;conflicting switches
 	
@@ -3152,37 +3193,19 @@ Conflicting poly-switches: nested code blocks
 	In :numref:`lst:nested-env-mlb1`, let’s first of all note that both environments have received the appropriate (default) indentation; secondly, note that the poly-switch ``EndStartsOnOwnLine`` appears to have won the conflict, as ``\end{one}`` has had its leading line break removed.
 
 
-To understand it, let’s talk about the three basic phases
+To understand it, let’s talk about how ``latexindent.pl`` has processed :numref:`lst:nested-env`; specifically ``latexindent.pl``:
 
-.. label follows
+#. finds the ``environment`` named ``one``
 
-.. _page:phases:
+#. searches ``one`` for code blocks
 
-of ``latexindent.pl``:
+   #. finds the ``environment`` named ``two``
 
-#. Phase 1: packing, in which code blocks are replaced with unique ids, working from *the inside to the outside*, and then sequentially – for example, in :numref:`lst:nested-env`, the ``two`` environment is found *before* the ``one`` environment; if the -m switch is active, then during this phase:
+   #. searches ``two`` for code blocks, finds none
 
-   -  line breaks at the beginning of the ``body`` can be added (if ``BodyStartsOnOwnLine`` is :math:`1` or :math:`2`) or removed (if ``BodyStartsOnOwnLine`` is :math:`-1`);
+   #. does the poly-switch work for ``two`` instructed by :numref:`lst:nested-env-mlb1-yaml`: remove the line break before the end statement, and adds a line break *after* the end statement.
 
-   -  line breaks at the end of the body can be added (if ``EndStartsOnOwnLine`` is :math:`1` or :math:`2`) or removed (if ``EndStartsOnOwnLine`` is :math:`-1`);
-
-   -  line breaks after the end statement can be added (if ``EndFinishesWithLineBreak`` is :math:`1` or :math:`2`).
-
-#. Phase 2: indentation, in which white space is added to the begin, body, and end statements;
-
-#. Phase 3: unpacking, in which unique ids are replaced by their *indented* code blocks; if the -m switch is active, then during this phase,
-
-   -  line breaks before ``begin`` statements can be added or removed (depending upon ``BeginStartsOnOwnLine``);
-
-   -  line breaks after *end* statements can be removed but *NOT* added (see ``EndFinishesWithLineBreak``).
-
-With reference to :numref:`lst:nested-env-mlb1`, this means that during Phase 1:
-
--  the ``two`` environment is found first, and the line break ahead of the ``\end{two}`` statement is removed because ``EndStartsOnOwnLine`` is set to :math:`-1`. Importantly, because, *at this stage*, ``\end{two}`` *does* finish with a line break, ``EndFinishesWithLineBreak`` causes no action.
-
--  next, the ``one`` environment is found; the line break ahead of ``\end{one}`` is removed because ``EndStartsOnOwnLine`` is set to :math:`-1`.
-
-The indentation is done in Phase 2; in Phase 3 *there is no option to add a line break after the ``end`` statements*. We can justify this by remembering that during Phase 3, the ``one`` environment will be found and processed first, followed by the ``two`` environment. If the ``two`` environment were to add a line break after the ``\end{two}`` statement, then ``latexindent.pl`` would have no way of knowing how much indentation to add to the subsequent text (in this case, ``\end{one}``).
+#. does the poly-switch work for ``one`` instructed by :numref:`lst:nested-env-mlb1` which is: remove line breaks before the end statement, and add a line break *after* the end statement;
 
 .. proof:example::	
 	
@@ -3209,13 +3232,20 @@ The indentation is done in Phase 2; in Phase 3 *there is no option to add a line
 		:caption: ``nested-env-mlb2.yaml`` 
 		:name: lst:nested-env-mlb2
 	
-	During Phase 1:
+	To understand it, let’s talk about how ``latexindent.pl`` has processed :numref:`lst:nested-env-mlb2-output`; specifically ``latexindent.pl``:
 	
-	-  the ``two`` environment is found first, and the line break ahead of the ``\end{two}`` statement is not changed because ``EndStartsOnOwnLine`` is set to :math:`1`. Importantly, because, *at this stage*, ``\end{two}`` *does* finish with a line break, ``EndFinishesWithLineBreak`` causes no action.
+	#. finds the ``environment`` named ``one``
 	
-	-  next, the ``one`` environment is found; the line break ahead of ``\end{one}`` is already present, and no action is needed.
+	#. searches ``one`` for code blocks
 	
-	The indentation is done in Phase 2, and then in Phase 3, the ``one`` environment is found and processed first, followed by the ``two`` environment. *At this stage*, the ``two`` environment finds ``EndFinishesWithLineBreak`` is :math:`-1`, so it removes the trailing line break; remember, at this point, ``latexindent.pl`` has completely finished with the ``one`` environment.
+	   #. finds the ``environment`` named ``two``
+	
+	   #. searches ``two`` for code blocks, finds none
+	
+	   #. does the poly-switch work for ``two`` instructed by :numref:`lst:nested-env-mlb1-yaml`: add a line break before the end statement, and remove line breaks *after* the end statement.
+	
+	#. does the poly-switch work for ``one`` instructed by :numref:`lst:nested-env-mlb2` which is: add a line break before the end statement, and remove line breaks *after* the end statement.
+	
 
 
 .. container:: references hanging-indent

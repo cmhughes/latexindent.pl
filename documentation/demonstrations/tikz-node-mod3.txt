@@ -1,0 +1,3 @@
+TRACE: found: draw 	 type: commands
+TRACE: found: to 	 type: namedGroupingBracesBrackets
+TRACE: found: node 	 type: namedGroupingBracesBrackets

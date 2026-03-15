@@ -1,0 +1,7 @@
+indentAfterItems:
+  myenv: 1
+fineTuning:
+  items:
+    itemRegEx: \\(?:item|cmh)
+indentRules:
+  cmh: "     "

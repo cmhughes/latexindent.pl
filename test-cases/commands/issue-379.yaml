@@ -1,7 +1,16 @@
-commandCodeBlocks:
-    stringsAllowedBetweenArguments:
-      - 'in'
-      - '\\[a-z]\/\\[a-z]'
+fineTuning:
+  arguments:
+    between: |-          
+      (?x)               
+      (?:                
+        \\[a-z]\/\\[a-z]
+        |                
+        (?:in|at)           
+        |
+        \([^)]*?\)
+        |
+        [_^*#0-9(),+-]
+      )                  
 noAdditionalIndent:
     foreach: 
         body: 1

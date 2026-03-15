@@ -21,7 +21,7 @@ use FindBin;
 use File::Basename;    # to get the filename and directory path
 use File::Path            qw(make_path);
 use Exporter              qw/import/;
-use LatexIndent::Switches qw/%switches/;
+use LatexIndent::Switches qw/%switch/;
 use LatexIndent::Version  qw/$versionNumber $versionDate/;
 use Encode                qw/decode/;
 our @EXPORT_OK = qw/process_switches $logger/;
@@ -36,9 +36,9 @@ use LatexIndent::UTF8CmdLineArgsFileOperation
 sub process_switches {
 
     # -v switch is just to show the version number
-    if ( $switches{version} ) {
+    if ( $switch{version} ) {
         print $versionNumber, ", ", $versionDate, "\n";
-        if ( $switches{vversion} ) {
+        if ( $switch{vversion} ) {
             print "$FindBin::Script lives here: $FindBin::RealBin/$FindBin::Script\n";
             if ( -e "$FindBin::RealBin/defaultSettings.yaml" ) {
                 print "defaultSettings.yaml lives here $FindBin::RealBin/defaultSettings.yaml\n";
@@ -55,7 +55,7 @@ sub process_switches {
         exit(0);
     }
 
-    if ( scalar(@ARGV) < 1 or $switches{showhelp} ) {
+    if ( scalar(@ARGV) < 1 or $switch{showhelp} ) {
         print <<ENDQUOTE
 latexindent.pl version $versionNumber, $versionDate
 usage: latexindent.pl [options] [file]
@@ -134,7 +134,7 @@ ENDQUOTE
     $logger = LatexIndent::Logger->new();
 
     # cruft directory
-    ${$self}{cruftDirectory} = $switches{cruftDirectory} || ( dirname ${$self}{fileName} );
+    ${$self}{cruftDirectory} = $switch{cruftDirectory} || ( dirname ${$self}{fileName} );
     ${$self}{cruftDirectory} =~ s/\\/\//g;
     ${$self}{cruftDirectory} =~ s/\/{2,}/\//g;
     if ( $^O eq 'MSWin32' ) {
@@ -154,8 +154,8 @@ ENDQUOTE
         }
         $cruftDirectoryCreation = 1;
     }
-    my $logfileName = ( $switches{cruftDirectory} ? ${$self}{cruftDirectory} . "/" : '' )
-        . ( $switches{logFileName} || "indent.log" );
+    my $logfileName
+        = ( $switch{cruftDirectory} ? ${$self}{cruftDirectory} . "/" : '' ) . ( $switch{logFileName} || "indent.log" );
     $logfileName =~ s/\\/\//g;
     $logfileName =~ s/\/{2,}/\//g;
     if ( $^O eq 'MSWin32' ) {
@@ -195,58 +195,58 @@ ENDQUOTE
     $logger->info("*Processing switches:");
 
     # check on the trace mode switch (should be turned on if ttrace mode active)
-    $switches{trace} = $switches{ttrace} ? 1 : $switches{trace};
+    $switch{trace} = $switch{ttrace} ? 1 : $switch{trace};
 
     # output details of switches
-    $logger->info("-sl|--screenlog: log file will also be output to the screen") if ( $switches{screenlog} );
+    $logger->info("-sl|--screenlog: log file will also be output to the screen") if ( $switch{screenlog} );
     $logger->info("-t|--trace: Trace mode active (you have used either -t or --trace)")
-        if ( $switches{trace} and !$switches{ttrace} );
-    $logger->info("-tt|--ttrace: TTrace mode active (you have used either -tt or --ttrace)") if ( $switches{ttrace} );
-    $logger->info("-s|--silent: Silent mode active (you have used either -s or --silent)") if ( $switches{silentMode} );
+        if ( $switch{trace} and !$switch{ttrace} );
+    $logger->info("-tt|--ttrace: TTrace mode active (you have used either -tt or --ttrace)") if ( $switch{ttrace} );
+    $logger->info("-s|--silent: Silent mode active (you have used either -s or --silent)")   if ( $switch{silentMode} );
     $logger->info("-d|--onlydefault: Only defaultSettings.yaml will be used (you have used either -d or --onlydefault)")
-        if ( $switches{onlyDefault} );
+        if ( $switch{onlyDefault} );
     $logger->info("-w|--overwrite: Overwrite mode active, will make a back up before overwriting")
-        if ( $switches{overwrite} );
+        if ( $switch{overwrite} );
     $logger->info("-wd|--overwriteIfDifferent: will overwrite ONLY if indented text is different")
-        if ( $switches{overwriteIfDifferent} );
-    $logger->info("-l|--localSettings: Read localSettings YAML file")               if ( $switches{readLocalSettings} );
-    $logger->info("-y|--yaml: YAML settings specified via command line")            if ( $switches{yaml} );
-    $logger->info("-o|--outputfile: output to file")                                if ( $switches{outputToFile} );
-    $logger->info("-m|--modifylinebreaks: modify line breaks")                      if ( $switches{modifyLineBreaks} );
-    $logger->info("-g|--logfile: logfile name")                                     if ( $switches{logFileName} );
-    $logger->info("-c|--cruft: cruft directory")                                    if ( $switches{cruftDirectory} );
-    $logger->info("-r|--replacement: replacement mode")                             if ( $switches{replacement} );
-    $logger->info("-rr|--onlyreplacement: *only* replacement mode, no indentation") if ( $switches{onlyreplacement} );
+        if ( $switch{overwriteIfDifferent} );
+    $logger->info("-l|--localSettings: Read localSettings YAML file")               if ( $switch{readLocalSettings} );
+    $logger->info("-y|--yaml: YAML settings specified via command line")            if ( $switch{yaml} );
+    $logger->info("-o|--outputfile: output to file")                                if ( $switch{outputToFile} );
+    $logger->info("-m|--modifylinebreaks: modify line breaks")                      if ( $switch{modifyLineBreaks} );
+    $logger->info("-g|--logfile: logfile name")                                     if ( $switch{logFileName} );
+    $logger->info("-c|--cruft: cruft directory")                                    if ( $switch{cruftDirectory} );
+    $logger->info("-r|--replacement: replacement mode")                             if ( $switch{replacement} );
+    $logger->info("-rr|--onlyreplacement: *only* replacement mode, no indentation") if ( $switch{onlyreplacement} );
     $logger->info("-rv|--replacementrespectverb replacement mode, respecting verbatim")
-        if ( $switches{replacementRespectVerb} );
-    $logger->info("-k|--check mode: will exit with 0 if document body unchanged, 1 if changed") if ( $switches{check} );
+        if ( $switch{replacementRespectVerb} );
+    $logger->info("-k|--check mode: will exit with 0 if document body unchanged, 1 if changed") if ( $switch{check} );
     $logger->info("-kv|--check mode verbose: as in check mode, but outputs diff to screen")
-        if ( $switches{checkverbose} );
-    $logger->info("-n|--lines mode: will only operate on specific lines $switches{lines}") if ( $switches{lines} );
-    $logger->info("--GCString switch active, loading Unicode::GCString module")            if ( $switches{GCString} );
+        if ( $switch{checkverbose} );
+    $logger->info("-n|--lines mode: will only operate on specific lines $switch{lines}") if ( $switch{lines} );
+    $logger->info("--GCString switch active, loading Unicode::GCString module")          if ( $switch{GCString} );
 
     # check if overwrite and outputfile are active similtaneously
-    if ( $switches{overwrite} and $switches{outputToFile} ) {
+    if ( $switch{overwrite} and $switch{outputToFile} ) {
         $logger->info("*Options check: -w and -o specified");
         $logger->info("You have called latexindent.pl with both -o and -w");
         $logger->info("The -o switch will take priority, and -w (overwrite) will be ignored");
-        $switches{overwrite} = 0;
+        $switch{overwrite} = 0;
     }
 
     # check if overwrite and outputfile are active similtaneously
-    if ( $switches{overwrite} and $switches{overwriteIfDifferent} ) {
+    if ( $switch{overwrite} and $switch{overwriteIfDifferent} ) {
         $logger->info("*Options check: -w and -wd specified");
         $logger->info("You have called latexindent.pl with both -w and -wd.");
         $logger->info("The -wd switch will take priority, and -w (overwrite) will be ignored");
-        $switches{overwrite} = 0;
+        $switch{overwrite} = 0;
     }
 
     # check if overwriteIfDifferent and outputfile are active similtaneously
-    if ( $switches{overwriteIfDifferent} and $switches{outputToFile} ) {
+    if ( $switch{overwriteIfDifferent} and $switch{outputToFile} ) {
         $logger->info("*Options check: -wd and -o specified");
         $logger->info("You have called latexindent.pl with both -o and -wd");
         $logger->info("The -o switch will take priority, and -wd (overwriteIfDifferent) will be ignored");
-        $switches{overwriteIfDifferent} = 0;
+        $switch{overwriteIfDifferent} = 0;
     }
 
     # multiple files with the -o switch needs care
@@ -260,22 +260,22 @@ ENDQUOTE
     # So, if -o switch does *not* match having a + symbol at the beginning, then
     # we ignore it, and turn it off
     #
-    if ( ( scalar @fileNames > 1 ) and $switches{outputToFile} and ( $switches{outputToFile} !~ m/^h*\+/ ) ) {
+    if ( ( scalar @fileNames > 1 ) and $switch{outputToFile} and ( $switch{outputToFile} !~ m/^h*\+/ ) ) {
         $logger->warn("*-o switch specified as single file, but multiple files given as input");
-        $logger->warn("ignoring your specification -o $switches{outputToFile}");
+        $logger->warn("ignoring your specification -o $switch{outputToFile}");
         $logger->warn("perhaps you might specify it using, for example, -o=++ or -o=+myoutput");
-        $switches{outputToFile} = 0;
+        $switch{outputToFile} = 0;
     }
 
     $logger->info("*Directory for backup files and log file $logfileName:");
-    $logger->info( $switches{cruftDirectory} ? ${$self}{cruftDirectory} : ${$self}{cruftDirectory} );
+    $logger->info( $switch{cruftDirectory} ? ${$self}{cruftDirectory} : ${$self}{cruftDirectory} );
     $logger->info("cruft directory creation: ${$self}{cruftDirectory}") if $cruftDirectoryCreation;
 
     # output location of modules
-    if ( $FindBin::Script eq 'latexindent.pl' or ( $FindBin::Script eq 'latexindent.exe' and $switches{trace} ) ) {
+    if ( $FindBin::Script eq 'latexindent.pl' or ( $FindBin::Script eq 'latexindent.exe' and $switch{trace} ) ) {
         my @listOfModules
             = ( 'FindBin', 'YAML::Tiny', 'File::Copy', 'File::Basename', 'Getopt::Long', 'File::HomeDir' );
-        push( @listOfModules, 'Unicode::GCString' ) if $switches{GCString};
+        push( @listOfModules, 'Unicode::GCString' ) if $switch{GCString};
 
         $logger->info("*Perl modules are being loaded from the following directories:");
         foreach my $moduleName (@listOfModules) {

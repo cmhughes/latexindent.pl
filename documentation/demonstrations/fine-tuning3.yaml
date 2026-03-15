@@ -1,10 +1,15 @@
 fineTuning:
-    trailingComments:
-      notPrecededBy: (?<!\\)
-      afterComment: (?!(?:\hend)).*?
+  trailingComments:
+    notPrecededBy: (?<!\\)
+    afterComment: (?!(?:\hend)).*?
+  commands:
+    name: |-
+      (?x)
+       (?!(?:begin|end|chapter|section))
+       [+a-zA-Z@*0-9_:]+
 
 specialBeginEnd:
-  customSection:
-    begin: \\(?:section|chapter)
-    end: \%\h+end
-  specialBeforeCommand: 1
+ - name: customHeading
+   begin: \\(?:chapter|section)
+   end: \%\h+end
+   nested: 1

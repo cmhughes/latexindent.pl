@@ -1,5 +1,8 @@
 indentAfterItems:
     tikzpicture: 1
 
-itemNames:
-    pause: 1
+fineTuning:
+  commands:
+    name: (?!(?:begin|end|pause))[+a-zA-Z@\*0-9_\:]+
+  items:
+    itemRegEx: \\(?:item|myitem|pause)             #<!---------- NEW

@@ -10,7 +10,3 @@ specialBeginEnd:
 noAdditionalIndentGlobal:
     namedGroupingBracesBrackets: 1
     UnNamedGroupingBracesBrackets: 1
-
-fineTuning:
-    UnNamedGroupingBracesBrackets: 
-      follow: '\{|\[|,|&|\)|\(|\$|\R|\h'

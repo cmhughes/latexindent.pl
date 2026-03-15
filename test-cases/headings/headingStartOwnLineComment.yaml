@@ -9,3 +9,13 @@ modifyLineBreaks:
         RCuBFinishesWithLineBreak: 1
         emph:
             RCuBFinishesWithLineBreak: 0
+
+indentAfterHeadings:
+  chapter:
+    blocksEndBefore: |-
+      (?x)
+        \\end\{myenv\}
+  section:
+    blocksEndBefore: |-
+      (?x)
+        \\end\{myenv\}

@@ -1,9 +1,6 @@
 #!/bin/bash
-loopmax=3
-verbatimTest=1
 . ../common.sh
-
-[[ $silentMode == 0 ]] && set -x 
+openingtasks
 
 latexindent.pl -s -l nested-paths1.yaml mwe.tex 
 cp indent.log path-test1.txt
@@ -40,6 +37,5 @@ cp indent.log path-test7.txt
 perl -p0i -e 's/.*?(YAML\ssettings, reading)/$1/s' path-test7.txt
 perl -p0i -e 's/INFO:.*//s' path-test7.txt
 
-set +x
-[[ $gitStatus == 1 ]] && git status
-[[ $noisyMode == 1 ]] && makenoise
+set +x 
+wrapuptasks

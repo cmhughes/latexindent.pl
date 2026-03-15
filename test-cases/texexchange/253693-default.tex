@@ -3,7 +3,7 @@
 \cs_new:Nn \svend_gcd:nn
 {
 	\int_compare:nNnTF {#2} = { 0 } {#1}
-		{ \svend_gcd:ff {#2} { \int_mod:nn {#1} {#2} } }
+	{ \svend_gcd:ff {#2} { \int_mod:nn {#1} {#2} } }
 }
 \cs_generate_variant:Nn \svend_gcd:nn { ff }
 

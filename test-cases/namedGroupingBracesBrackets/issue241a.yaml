@@ -1,0 +1,21 @@
+defaultIndent: ' '
+indentRules:
+  /OutputIntents: 
+    body: '' 	  
+    optionalArguments: ' '
+
+specialBeginEnd:
+  -
+   name: cmh
+   begin: /[CK]
+   end: \[
+   lookForThis: verbatim
+  -
+   name: angledBrackets
+   begin: \<\<
+   end: \>\>
+   lookForThis: 1
+
+fineTuning:
+  namedGroupingBracesBrackets:
+    name: [0-9\.a-zA-Z@\*></]+

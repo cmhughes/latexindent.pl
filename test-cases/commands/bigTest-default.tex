@@ -260,11 +260,11 @@
 % on every one, which fixes vertical alignment of tikzpicture
 % with the solution label: http://tex.stackexchange.com/questions/30367/aligning-enumerate-labels-to-top-of-image
 \BeforeBeginEnvironment{tikzpicture}{\begin{adjustbox}{valign=t}}
-		\AfterEndEnvironment{tikzpicture}{\end{adjustbox}}
+\AfterEndEnvironment{tikzpicture}{\end{adjustbox}}
 
 % do the same for the tabular environment
 \BeforeBeginEnvironment{tabular}{\begin{adjustbox}{valign=t}}
-		\AfterEndEnvironment{tabular}{\end{adjustbox}}
+\AfterEndEnvironment{tabular}{\end{adjustbox}}
 
 % set every picture in the solutions to have \solutionfigurewidth
 \pgfplotsset{

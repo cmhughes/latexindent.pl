@@ -14,33 +14,32 @@ GetOptions (
 # store the names of each field
 my @namesAndOffsets = (
                         {name=>"fileExtensionPreference",numberOfLines=>4},
-                        {name=>"logFilePreferences",numberOfLines=>14},
+                        {name=>"logFilePreferences",numberOfLines=>12},
                         {name=>"verbatimEnvironments",numberOfLines=>3},
                         {name=>"verbatimCommands",numberOfLines=>2},
                         {name=>"noIndentBlock",numberOfLines=>2},
                         {name=>"removeTrailingWhitespace",numberOfLines=>2},
                         {name=>"fileContentsEnvironments",numberOfLines=>2},
                         {name=>"lookForPreamble",numberOfLines=>5},
-                        {name=>"lookForAlignDelims",numberOfLines=>19},
+                        {name=>"lookForAlignDelims",numberOfLines=>3},
                         {name=>"indentAfterItems",numberOfLines=>7},
-                        {name=>"itemNames",numberOfLines=>2},
-                        {name=>"specialBeginEnd",numberOfLines=>14,mustBeAtBeginning=>1},
+                        {name=>"specialBeginEnd",numberOfLines=>12,mustBeAtBeginning=>1},
                         {name=>"indentAfterHeadings",numberOfLines=>9},
                         {name=>"noAdditionalIndentGlobalEnv",numberOfLines=>1,special=>"noAdditionalIndentGlobal"},
                         {name=>"noAdditionalIndentGlobal",numberOfLines=>12},
                         {name=>"indentRulesGlobalEnv",numberOfLines=>1,special=>"indentRulesGlobal"},
                         {name=>"indentRulesGlobal",numberOfLines=>12},
-                        {name=>"commandCodeBlocks",numberOfLines=>15},
                         {name=>"modifylinebreaks",numberOfLines=>2,special=>"modifyLineBreaks",mustBeAtBeginning=>1},
                         {name=>"textWrapOptions",numberOfLines=>1},
-                        {name=>"textWrapOptionsAll",numberOfLines=>27,special=>"textWrapOptions"},
+                        {name=>"textWrapOptionsAll",numberOfLines=>25,special=>"textWrapOptions"},
                         {name=>"oneSentencePerLine",numberOfLines=>26},
                         {name=>"sentencesFollow",numberOfLines=>8},
                         {name=>"sentencesBeginWith",numberOfLines=>3},
                         {name=>"sentencesEndWith",numberOfLines=>5},
                         {name=>"sentencesDoNOTcontain",numberOfLines=>1},
                         {name=>"modifylinebreaksEnv",numberOfLines=>9,special=>"environments",within=>"modifyLineBreaks"},
-                        {name=>"fineTuning",numberOfLines=>55},
+                        {name=>"fineTuning",numberOfLines=>75},
+                        {name=>"switchesViaYaml",numberOfLines=>10},
                         {name=>"replacements",numberOfLines=>5},
                       );
 
@@ -137,7 +136,6 @@ if(!$readTheDocsMode){
             "subsubsec-special.tex",
             "subsubsec-headings.tex",
             "subsubsec-no-add-remaining-code-blocks.tex",
-            "subsec-commands-and-their-options.tex",
           ){
        system("cat $_ >> sec-default-user-local.tex");
     }
@@ -156,9 +154,7 @@ if(!$readTheDocsMode){
 
     # loop through the .tex files
     foreach my $fileName ("sec-introduction.tex",
-                          "sec-demonstration.tex",
                           "sec-how-to-use.tex",
-                          "sec-indent-config-and-settings.tex",
                           "sec-default-user-local.tex",
                           "sec-the-m-switch.tex",
                           "sec-replacements.tex",

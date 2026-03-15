@@ -1,6 +1,297 @@
-<!-- announcement: bug fix for named braces -->
+<!-- announcement: Major release -->
 
 # changelog.md
+
+## V4.0, MAJOR release
+A major release that overhauls the way `latexindent.pl` finds code blocks. 
+
+Some user settings have changed or are now obsolete; full details below.
+
+enhancements:
+* all users should notice better performance, more natural interaction of poly-switches, and less scaffolding needed
+* fineTuning specifies defaults for `lookForAlignDelims`, see [issue-583](https://github.com/cmhughes/latexindent.pl/issues/583)
+* double back slash regex allows `.` between `[...]`, see [issue-564](https://github.com/cmhughes/latexindent.pl/issues/564)
+* switchesViaYaml, see [issue-574](https://github.com/cmhughes/latexindent.pl/issues/574)
+
+bug fixes 
+* [issue-599](https://github.com/cmhughes/latexindent.pl/issues/599)
+* [issue-602](https://github.com/cmhughes/latexindent.pl/issues/602)
+* [issue-620](https://github.com/cmhughes/latexindent.pl/issues/620)
+* [issue-621](https://github.com/cmhughes/latexindent.pl/issues/621)
+
+<details>
+<summary>V4.0 verbose details</summary>
+<table>
+<!-- ---------------- table row ---------------- -->
+<tr>
+  <td>
+<pre>
+itemNames: 
+  item: 1  
+  myitem: 1
+</pre>
+  </td>
+  <td>
+<pre>
+fineTuning:
+  items:
+    itemRegEx: \\(?:item|myitem)
+</pre>
+  </td>
+  <td>
+  </td>
+</tr>
+<!-- ---------------- table row ---------------- -->
+<tr>
+  <td>
+  <pre>
+specialBeginEnd:
+ inlineMath:
+    begin: (?<!\$)(?<!\\)\$(?!\$) 
+    body: [^$]*?                 
+    end: (?<!\\)\$(?!\$)        
+    lookForThis: 1
+  </pre>
+  </td>
+  <td>
+<pre>
+specialBeginEnd:
+  - name: inlineMath                                     
+    begin: (?<!\$)(?<!\\)\$(?!\$) # $ but *not* \$ or $$ 
+    end: (?<!\\)\$(?!\$)          # $ but *not* \$ or $$ 
+  </pre>
+  </td>
+  <td>
+  old formatting (unordered) will be read, but recommend moving to new format (ordered);
+  `body` no longer does anything
+  </td>
+</tr>
+<!-- ---------------- table row ---------------- -->
+<tr>
+  <td>
+  <pre>
+specialBeginEnd:
+  specialBeforeCommand: 0
+  </pre>
+  </td>
+  <td>
+none
+  </td>
+  <td>
+obsolete
+  </td>
+</tr>
+<!-- ---------------- table row ---------------- -->
+<tr>
+<td>
+<pre>
+commandCodeBlocks:              
+  roundParenthesesAllowed: 1   
+</pre>
+</td>
+<td>
+<pre>
+fineTuning:
+  arguments:
+    between: |-                               
+      (?x)                                    
+      (?:                                     
+        [_^*#0-9(),+-]                        
+        |                                     
+        (?:node|at|to|decoration)             
+        |                                     
+        (?:\([^)]*\))                         
+      )                                       
+</pre>
+</td>
+<td>
+behaviour should be unchanged, controlled by fineTuning
+</td>
+</tr>
+<!-- ---------------- table row ---------------- -->
+<tr>
+  <td>
+<pre>
+commandCodeBlocks:   
+  commandNameSpecial:
+    - amalgamate: 1  
+    - '@ifnextchar\['
+</pre>
+  </td>
+  <td>
+<pre>
+specialBeginEnd:
+  - name: ifnextchar
+    begin: \@ifnextchar
+    end: \[
+    lookForThis: verbatim
+</pre>
+  </td>
+  <td>
+add this to your YAML when appropriate
+  </td>
+</tr>
+<!-- ---------------- table row ---------------- -->
+<tr>
+<td>
+<pre>
+noAdditionalIndent:
+  document: 1
+  myexample: 1     #  removed
+  mydefinition:1   #  removed
+  problem: 1       #  removed
+  exercises: 1     #  removed
+  mysolution: 1    #  removed
+  foreach: 0       #  removed
+  widepage: 1      #  removed
+  comment: 1       #  removed
+  frame: 0         #  removed
+</pre>
+</td>
+<td>
+<pre>
+noAdditionalIndent:
+  document: 1
+</pre>
+</td>
+<td>feel free to add these back in to your own settings</td>
+</tr>
+<!-- ---------------- table row ---------------- -->
+<tr>
+<td>
+<pre>
+preambleCommandsBeforeEnvironments: 0
+</pre>
+</td>
+<td>
+none
+</td>
+<td>obsolete</td>
+</tr>
+<!-- ---------------- table row ---------------- -->
+<tr>
+<td>
+<pre>
+indentAfterHeadings:
+  part:
+    indentAfterThisHeading: 0
+</pre>
+</td>
+<td>
+<pre>
+indentAfterHeadings:
+  part:
+    lookForThis: 0
+</pre>
+</td>
+<td>old syntax still supported, with warning</td>
+</tr>
+<!-- ---------------- table row ---------------- -->
+<tr>
+<td>
+<pre>
+noAdditionalIndentGlobal:
+  filecontents: 0
+</pre>
+</td>
+<td>
+none
+</td>
+<td>obsolete</td>
+</tr>
+<!-- ---------------- table row ---------------- -->
+<tr>
+<td>
+<pre>
+indentRulesGlobal:
+  filecontents: 0
+</pre>
+</td>
+<td>
+none
+</td>
+<td>obsolete</td>
+</tr>
+<!-- ---------------- table row ---------------- -->
+<tr>
+<td>
+<pre>
+modifyLineBreaks:
+  textWrapOptions:
+    blocksFollow:
+      filecontents: 1
+    blocksEndBefore:
+      filecontents: 1
+</pre>
+</td>
+<td>
+none
+</td>
+<td>obsolete</td>
+</tr>
+<!-- ---------------- table row ---------------- -->
+<tr>
+<td>
+<pre>
+modifyLineBreaks:
+  commands:
+    CommandNameFinishesWithLineBreak: 0
+</pre>
+</td>
+<td><i>none</i></td>
+<td>this poly-switch NO LONGER DOES ANYTHING, control goes to argument poly-switch instead</td>
+</tr>
+<!-- ---------------- table row ---------------- -->
+<tr>
+  <td>
+<pre>
+modifyLineBreaks:
+  namedGroupingBracesBrackets:
+    NameFinishesWithLineBreak: 0
+</pre>
+  </td>
+<td><i>none</i></td>
+<td>this poly-switch NO LONGER DOES ANYTHING, control goes to argument poly-switch instead</td>
+</tr>
+<!-- ---------------- table row ---------------- -->
+<tr>
+<td>
+<pre>
+fineTuning:
+  items:
+    canBeFollowedBy: 
+  keyEqualsValuesBracesBrackets:
+    follow: 
+  namedGroupingBracesBrackets:
+    follow: 
+  UnNamedGroupingBracesBrackets:
+    follow: 
+  arguments:
+    before: 
+</pre>
+</td>
+<td>
+none
+</td>
+<td>obsolete</td>
+</tr>
+<!-- ---------------- table row ---------------- -->
+<tr>
+  <td>
+  partnering poly-switch behaviour
+  </td>
+  <td>
+  sequential in order of appearance
+  </td>
+  <td>
+  natural behaviour: poly-switches are 
+  obeyed in the natural order in which 
+  the code block is encountered
+  </td>
+</tr>
+</table>
+</details>
+
 
 ## V3.24.7, August 15, 2025
 * bug fix for named braces, see [issue 563](https://github.com/cmhughes/latexindent.pl/issues/563), thanks to @torik42

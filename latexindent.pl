@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 #
-#   latexindent.pl, version 3.24.7, 2025-08-15
+#   latexindent.pl, version 4.0, 2026-03-15
 #
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -77,7 +77,7 @@ if ( $FindBin::Script eq 'latexindent.exe' ) {
     $consoleoutcp = Win32::GetConsoleOutputCP();
     Win32::SetConsoleOutputCP(65001);
 
-    $logger->info("*ANSI Code Page: $encoding_sys");
+    $logger->trace("*ANSI Code Page: $encoding_sys") if $switches{trace};
     if ( $switches{screenlog} ) {
         print "INFO:  ANSI Code Page:  $encoding_sys\n"
           ;    #The values of ACP in the registry

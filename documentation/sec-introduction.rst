@@ -1,15 +1,6 @@
 Introduction
 ============
 
-Thanks
-------
-
-I first created ``latexindent.pl`` to help me format chapter files in a big project. After I blogged about it on the TeX stack exchange (“A Perl Script for Indenting Tex Files” n.d.) I received some positive feedback and follow-up feature requests. A big thank you to Harish Kumar (Kumar 2013) who helped to develop and test the initial versions of the script.
-
-The ``YAML``-based interface of ``latexindent.pl`` was inspired by the wonderful ``arara`` tool; any similarities are deliberate, and I hope that it is perceived as the compliment that it is. Thank you to Paulo Cereda and the team for releasing this awesome tool; I initially worried that I was going to have to make a GUI for ``latexindent.pl``, but the release of ``arara`` has meant there is no need.
-
-There have been several contributors to the project so far (and hopefully more in the future!); thank you very much to the people detailed in :numref:`sec:contributors` for their valued contributions, and thank you to those who report bugs and request features at (“Home of Latexindent.pl” n.d.).
-
 License
 -------
 
@@ -29,8 +20,6 @@ There is certainly no malicious intent in releasing this script, and I do hope t
 	.. index:: warning;be sure to test before use
 	
 
-
-*If you have used any version 2.\* of ``latexindent.pl``, there are a few changes to the interface; see :numref:`app:differences` and the comments throughout this document for details*.
 
 .. label follows
 
@@ -288,31 +277,77 @@ gives :numref:`lst:quick-start-default`.
 	See :numref:`sec:noadd-indent-rules`.
 
 
-Required perl modules
----------------------
+Requirements
+------------
 
-If you receive an error message such as that given in :numref:`lst:poss-errors`, then you need to install the missing perl modules.
+Perl users
+~~~~~~~~~~
 
-.. code-block:: latex
-   :caption: Possible error messages 
-   :name: lst:poss-errors
+Perl users will need a few standard Perl modules – see :numref:`sec:requiredmodules` for details; in particular, note that a module installer helper script is shipped with ``latexindent.pl``. You might also like to see https://stackoverflow.com/questions/19590042/error-cant-locate-file-homedir-pm-in-inc.
 
-   Can't locate File/HomeDir.pm in @INC (@INC contains: /Library/Perl/5.12/darwin-thread-multi-2level /Library/Perl/5.12 /Network/Library/Perl/5.12/darwin-thread-multi-2level /Network/Library/Perl/5.12 /Library/Perl/Updates/5.12.4/darwin-thread-multi-2level /Library/Perl/Updates/5.12.4 /System/Library/Perl/5.12/darwin-thread-multi-2level /System/Library/Perl/5.12 /System/Library/Perl/Extras/5.12/darwin-thread-multi-2level /System/Library/Perl/Extras/5.12 .) at helloworld.pl line 10.
-   BEGIN failed--compilation aborted at helloworld.pl line 10.
+.. label follows
 
-``latexindent.pl`` ships with a script to help with this process; if you run the following script, you should be prompted to install the appropriate modules.
+.. _subsubsec:latexindent:exe:
 
-.. code-block:: latex
-   :class: .commandshell
+Windows users without perl
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-   perl latexindent-module-installer.pl
+``latexindent.pl`` ships with ``latexindent.exe`` for Windows users, so that you can use the script with or without a Perl distribution.
 
-You might also like to see https://stackoverflow.com/questions/19590042/error-cant-locate-file-homedir-pm-in-inc, for example, as well as :numref:`sec:requiredmodules`.
+``latexindent.exe`` is available from (“Home of Latexindent.pl” n.d.).
+
+MiKTeX users on Windows may like to see (“How to Use Latexindent on Windows?” n.d.) for details of how to use ``latexindent.exe`` without a Perl installation.
+
+.. index:: MiKTeX
+
+.. index:: latexindent.exe
+
+.. index:: Windows
+
+Ubuntu Linux users without perl
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``latexindent.pl`` ships with ``latexindent-linux`` for Ubuntu Linux users, so that you can use the script with or without a Perl distribution.
+
+.. index:: latexindent-linux
+
+.. index:: linux
+
+.. index:: TeXLive
+
+``latexindent-linux`` is available from (“Home of Latexindent.pl” n.d.).
+
+macOS users without perl
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+``latexindent.pl`` ships with ``latexindent-macos`` for macOS users, so that you can use the script with or without a Perl distribution.
+
+.. index:: latexindent-macos
+
+.. index:: macOS
+
+.. index:: TeXLive
+
+``latexindent-macOS`` is available from (“Home of Latexindent.pl” n.d.).
+
+conda users
+~~~~~~~~~~~
+
+Users of ``conda`` should see the details given in :numref:`sec:app:conda`.
+
+.. index:: conda
+
+docker users
+~~~~~~~~~~~~
+
+Users of ``docker`` should see the details given in :numref:`sec:app:docker`.
+
+.. index:: docker
 
 About this documentation
 ------------------------
 
-As you read through this documentation, you will see many listings; in this version of the documentation, there are a total of 629. This may seem a lot, but I deem it necessary in presenting the various different options of ``latexindent.pl`` and the associated output that they are capable of producing.
+As you read through this documentation, you will see many listings; in this version of the documentation, there are a total of 596. This may seem a lot, but I deem it necessary in presenting the various different options of ``latexindent.pl`` and the associated output that they are capable of producing.
 
 The different listings are presented using different styles:
 
@@ -327,9 +362,9 @@ This type of listing is a ``.tex`` file.
 	:class: .baseyaml
 	:caption: ``fileExtensionPreference`` 
 	:name: lst:fileExtensionPreference-demo
-	:lines: 47-51
+	:lines: 31-35
 	:linenos:
-	:lineno-start: 47
+	:lineno-start: 31
 
 This type of listing is a ``.yaml`` file; when you see line numbers given (as here) it means that the snippet is taken directly from ``defaultSettings.yaml``, discussed in detail in :numref:`sec:defuseloc`.
 
@@ -337,9 +372,9 @@ This type of listing is a ``.yaml`` file; when you see line numbers given (as he
 	:class: .mlbyaml
 	:caption: ``modifyLineBreaks`` 
 	:name: lst:modifylinebreaks-demo
-	:lines: 502-504
+	:lines: 289-291
 	:linenos:
-	:lineno-start: 502
+	:lineno-start: 289
 
 This type of listing is a ``.yaml`` file, but it will only be relevant when the ``-m`` switch is active; see :numref:`sec:modifylinebreaks` for more details.
 
@@ -347,9 +382,9 @@ This type of listing is a ``.yaml`` file, but it will only be relevant when the 
 	:class: .replaceyaml
 	:caption: ``replacements`` 
 	:name: lst:replacements-demo
-	:lines: 622-627
+	:lines: 419-424
 	:linenos:
-	:lineno-start: 622
+	:lineno-start: 419
 
 This type of listing is a ``.yaml`` file, but it will only be relevant when the ``-r`` switch is active; see :numref:`sec:replacements` for more details.
 
@@ -364,11 +399,6 @@ As you read this documentation, you may encounter the term *regular expressions*
    :name: refs
 
    .. container::
-      :name: ref-cmhblog
-
-      “A Perl Script for Indenting Tex Files.” n.d. Accessed January 23, 2017. http://tex.blogoverflow.com/2012/08/a-perl-script-for-indenting-tex-files/.
-
-   .. container::
       :name: ref-masteringregexp
 
       Friedl, Jeffrey E. F. n.d. *Mastering Regular Expressions*.
@@ -379,6 +409,6 @@ As you read this documentation, you may encounter the term *regular expressions*
       “Home of Latexindent.pl.” n.d. Accessed January 23, 2017. https://github.com/cmhughes/latexindent.pl.
 
    .. container::
-      :name: ref-harish
+      :name: ref-miktex-guide
 
-      Kumar, Harish. 2013. “Early Version Testing.” November 10, 2013. https://github.com/harishkumarholla.
+      “How to Use Latexindent on Windows?” n.d. Accessed January 8, 2022. https://tex.stackexchange.com/questions/577250/how-to-use-latexindent-on-windows.

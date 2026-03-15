@@ -1,0 +1,16 @@
+modifyLineBreaks:
+   environments:
+       BeginStartsOnOwnLine: 1
+       BodyStartsOnOwnLine: 1
+       EndStartsOnOwnLine: 1
+       EndFinishesWithLineBreak: 1
+
+fineTuning:
+  environments:
+    begin: |-
+      (?x)                      # environment 
+        \\begin\{               # regex
+          (?<ENVNAME>           # NON default
+           [a-zA-Z@\*0-9_\\]+   #
+          )                     #
+        \}\s*\\label\{[^}]+?\}  #

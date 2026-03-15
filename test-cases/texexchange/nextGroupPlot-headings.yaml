@@ -3,3 +3,6 @@ indentAfterHeadings:
     nextgroupplot:
        indentAfterThisHeading: 1
        level: 1
+       blocksEndBefore: |-
+         (?x)
+           \\end\{groupplot\}

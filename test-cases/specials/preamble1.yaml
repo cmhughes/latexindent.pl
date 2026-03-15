@@ -1,0 +1,5 @@
+specialBeginEnd:
+  - name: tcbraster                                      # NEW specified as ORDERED array
+    begin: \\begin\{tcbraster
+    end: \}
+    lookForThis: verbatim

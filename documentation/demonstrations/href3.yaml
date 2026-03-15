@@ -5,9 +5,8 @@ modifyLineBreaks:
            verbatim: 0
         blocksFollow:
            verbatim: 0
-
 noIndentBlock:
     href:
-        begin: '\\href\{[^}]*?\}\{'
-        body: '[^}]*?'
-        end: '\}'
+        begin: \\href\{[^}]*?\}\{
+        body: [^}]*?
+        end: \}

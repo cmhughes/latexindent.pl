@@ -1,11 +1,7 @@
 #!/bin/bash
-loopmax=0
 . ../common.sh
+openingtasks
 
-[[ $silentMode == 0 ]] && set -x 
-
-# string test cases
-# string test cases
 # string test cases
 latexindent.pl -s -r test1.tex -l=replace1.yaml -o=+-mod1
 latexindent.pl -s -r test1.tex -l=replace2.yaml -o=+-mod2
@@ -19,8 +15,6 @@ latexindent.pl -s -r -m test2.tex -l=replace5.yaml -o=+-mod5
 # referencee: https://stackoverflow.com/questions/3790454/in-yaml-how-do-i-break-a-string-over-multiple-lines
 latexindent.pl -s -r test3.tex -l=replace6.yaml -o=+-mod6
 
-# regex substitution test cases
-# regex substitution test cases
 # regex substitution test cases
 latexindent.pl -s -r test4.tex -l=replace7.yaml -o=+-mod7
 
@@ -93,5 +87,5 @@ latexindent.pl -s -l issue-523.yaml -r issue-523.tex -o=+-mod1
 latexindent.pl -s -l issue-523a.yaml -m issue-523.tex -o=+-mod2
 
 latexindent.pl -s -l issue-524.yaml -r issue-524.tex -o=+-mod1
-[[ $gitStatus == 1 ]] && git status
-[[ $noisyMode == 1 ]] && makenoise
+set +x 
+wrapuptasks

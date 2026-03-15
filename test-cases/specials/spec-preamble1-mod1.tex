@@ -1,0 +1,7 @@
+\DeclareDocumentEnvironment{cmhtcbraster}{O{}}{\begin{tcbraster}[
+			new-to-this-version/.style={
+					enhanced,
+					overlay app={\node[anchor=south east] at ([yshift=-3mm,xshift=3mm]frame.north east) {\stardemo[scale=1.2]}; },
+					addtololstar,
+				},
+			raster valign=top,raster columns=2,#1]}{\end{tcbraster}}

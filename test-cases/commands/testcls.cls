@@ -219,12 +219,12 @@
 %   see idea at  http://tex.stackexchange.com/questions/71123/remove-section-number-toc-entries-with-tocloft
 \if@isu@tocnumbersections@\else
 	\renewcommand{\cftsecpresnum}{\begin{lrbox}{\@tempboxa}}
-			\renewcommand{\cftsecaftersnum}{\end{lrbox}}
+	\renewcommand{\cftsecaftersnum}{\end{lrbox}}
 \fi
 
 \if@isu@tocnumbersubsections@\else
 	\renewcommand{\cftsubsecpresnum}{\begin{lrbox}{\@tempboxa}}
-			\renewcommand{\cftsubsecaftersnum}{\end{lrbox}}
+	\renewcommand{\cftsubsecaftersnum}{\end{lrbox}}
 \fi
 
 %%%

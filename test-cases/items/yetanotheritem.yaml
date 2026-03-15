@@ -1,4 +1,6 @@
-itemNames:
-    yetanotheritem: 1
 indentRules:
     yetanotheritem: "                "
+
+fineTuning:
+  items:
+    itemRegEx: \\(?:item|myitem|yetanotheritem)

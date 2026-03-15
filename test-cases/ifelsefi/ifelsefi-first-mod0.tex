@@ -1,0 +1,6 @@
+here is some text
+\ifodd\value{totalchapters}=#1
+	\typeout{Total Chapters match auxilary file (#1)}
+\else
+	\typeout{Warning: total Chapter count updated from \the\value{totalchapters} to #1-- recompile to fix}
+\fi

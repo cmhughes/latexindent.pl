@@ -19,7 +19,7 @@ use strict;
 use warnings;
 use Exporter              qw/import/;
 use LatexIndent::LogFile  qw/$logger/;
-use LatexIndent::Switches qw/%switches/;
+use LatexIndent::Switches qw/%switch/;
 use LatexIndent::Verbatim qw/%verbatimStorage/;
 our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/lines_body_selected_lines lines_verbatim_create_line_block/;
@@ -29,16 +29,16 @@ sub lines_body_selected_lines {
     my @lines = @{ $_[0] };
 
     # strip all space from lines switch
-    $switches{lines} =~ s/\h//sg;
+    $switch{lines} =~ s/\h//sg;
 
     # convert multiple - into single
-    $switches{lines} =~ s/-+/-/sg;
+    $switch{lines} =~ s/-+/-/sg;
 
-    $logger->info("*-n,--lines switch is active, operating on lines $switches{lines}");
+    $logger->info("*-n,--lines switch is active, operating on lines $switch{lines}");
     $logger->info( "number of lines in file: " . ( $#lines + 1 ) );
-    $logger->info("*interpreting $switches{lines}");
+    $logger->info("*interpreting $switch{lines}");
 
-    my @lineRanges = split( /,/, $switches{lines} );
+    my @lineRanges = split( /,/, $switch{lines} );
     my @indentLineRange;
     my @NOTindentLineRange;
 
@@ -113,9 +113,9 @@ sub lines_body_selected_lines {
 
     # only proceed if we have a valid line range
     if ( ( keys %minMaxStorage ) < 1 and ( keys %negationMinMaxStorage ) < 1 ) {
-        $logger->warn("*--lines not specified with valid range: $switches{lines}");
-        $logger->warn("entire body will be indented, and ignoring $switches{lines}");
-        $switches{lines} = 0;
+        $logger->warn("*--lines not specified with valid range: $switch{lines}");
+        $logger->warn("entire body will be indented, and ignoring $switch{lines}");
+        $switch{lines} = 0;
         ${$self}{body} = join( "", @lines );
         return;
     }

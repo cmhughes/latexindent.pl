@@ -1,41 +1,85 @@
 specialBeginEnd:
-  ForStatement:
+  - name: ForStatement
     begin: \\For\{[^}]+?\}
     end: \\EndFor
-  FORStatement:
+  - name: FORStatement
     begin: \\FOR\{[^}]+?\}
     end: \\ENDFOR
-  WhileStatement:
+    nested: 1
+  - name: WhileStatement
     begin: \\While\{[^}]+?\}
     end: \\EndWhile
-  WHILEStatement:
+    nested: 1
+  - name: WHILEStatement
     begin: \\WHILE\{[^}]+?\}
     end: \\ENDWHILE
-  ForAllStatement:
+  - name: ForAllStatement
     begin: \\ForAll\{[^}]+?\}
     end: \\EndFor
-  LoopStatement:
+    nested: 1
+  - name: LoopStatement
     begin: \\Loop
     end: \\EndLoop
-  RepeatStatement:
+  - name: RepeatStatement
     begin: \\Repeat
     end: \\Until\{[^}]+?\}
-  ProcedureStatement:
+  - name: ProcedureStatement
     begin: \\Procedure\{[^}]+?\}\{[^}]+?\}
     end: \\EndProcedure
-  FunctionStatement:
+  - name: FunctionStatement
     begin: \\Function\{[^}]+?\}\{[^}]+?\}
     end: \\EndFunction
-  IfStatement:
+  - name: IfStatement
     begin: \\If\{[^}]+?\}
     middle:
       - \\Else
       - \\ElsIf\{[^}]+?\}
     end: \\EndIf
-  IFStatement:
+  - name: IFStatement
     begin: \\IF\{[^}]+?\}
     middle:
       - \\ELSE
       - \\ELSIF\{[^}]+?\}
     end: \\ENDIF
-  specialBeforeCommand: 1
+  - name: inlineMath
+    lookForThis: 0
+
+fineTuning:
+  commands:
+    name: |-
+      (?x)
+      (?!
+        (?:
+          begin
+          |
+          end
+          |
+          ElsIf
+          |
+          EndFor
+          |
+          ENDFOR
+          |
+          EndWhile
+          |
+          ENDWHILE
+          |
+          Function
+          |
+          For
+          |
+          FOR
+          |
+          If
+          |
+          IF
+          |
+          Loop
+          |
+          Procedure
+          |
+          Repeat
+          |
+          While
+        )
+      )[+a-zA-Z@*0-9_:]+

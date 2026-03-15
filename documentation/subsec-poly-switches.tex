@@ -1,4 +1,5 @@
 % arara: pdflatex: { files: [latexindent]}
+
 \subsection{Poly-switches}\label{sec:poly-switches}
  Every other field in the \texttt{modifyLineBreaks} field uses poly-switches, and can take
  one of the following%
@@ -858,6 +859,103 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
   You can customise the pattern for the double backslash by exploring the \emph{fine
   tuning} field detailed in \vref{lst:fineTuning}.
 
+\subsubsection{Poly-switches for commas}\label{subsec:poly-switch-commas}
+ With reference to \cref{tab:poly-switch-mapping} you can specify poly-switches to
+ dictate the line-break behaviour of commas in arguments for code blocks that have
+ arguments: \texttt{commands}, \texttt{namedGroupingBracesBrackets},
+ \texttt{keyEqualsValuesBracesBrackets} and \texttt{UnNamedGroupingBracesBrackets}.
+
+ Consider the code given in \cref{lst:comma1-demo}.
+ \begin{cmhlistings}[style=tcblatex,escapeinside={(*@}{@*)}]{\texttt{comma1.tex}}{lst:comma1-demo}
+\mycommand{1(*@$\ElseStartsOnOwnLine$@*),(*@$\ElseFinishesWithLineBreak$@*)2(*@$\ElseStartsOnOwnLine$@*),(*@$\ElseFinishesWithLineBreak$@*)3}[4(*@$\ElseStartsOnOwnLine$@*),(*@$\ElseFinishesWithLineBreak$@*)5(*@$\ElseStartsOnOwnLine$@*),(*@$\ElseFinishesWithLineBreak$@*)6]
+\end{cmhlistings}
+ Referencing \cref{lst:comma1-demo}:
+ \begin{itemize}
+  \item line breaks ahead of the comma are annotated by $\ElseStartsOnOwnLine$, and are
+        controlled by \texttt{CommaStartsOnOwnLine};
+  \item line breaks after the comma are annotated by $\ElseFinishesWithLineBreak$, and
+        are controlled by \texttt{CommaFinishesWithLineBreak}.
+ \end{itemize}
+
+ Let's explore each of these in turn.
+
+ \paragraph{Comma starts on own line}
+  \begin{example}
+  We explore \texttt{CommaStartsOnOwnLine} ($\ElseStartsOnOwnLine$ in
+  \cref{lst:comma1-demo}); starting with the code in \cref{lst:comma1-demo}, together
+  with the YAML files given in \cref{lst:comma1} and \cref{lst:comma2} and running the
+  following commands \index{switches!-l demonstration} \index{switches!-m demonstration}
+
+  \begin{commandshell}
+latexindent.pl comma1.tex -l comma1.yaml
+latexindent.pl comma1.tex -l comma2.yaml
+\end{commandshell}
+
+  then we receive the respective output given in \cref{lst:comma1-mod1} and
+  \cref{lst:comma1-mod2}.
+
+  \begin{cmhtcbraster}
+   \cmhlistingsfromfile*{demonstrations/comma1-mod1.tex}{\texttt{comma1-mod1.tex}}{lst:comma1-mod1}
+   \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/comma1.yaml}[MLB-TCB]{\texttt{comma1.yaml}}{lst:comma1}
+  \end{cmhtcbraster}
+
+  \begin{cmhtcbraster}
+   \cmhlistingsfromfile*{demonstrations/comma1-mod2.tex}{\texttt{comma1-mod2.tex}}{lst:comma1-mod2}
+   \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/comma2.yaml}[MLB-TCB]{\texttt{comma2.yaml}}{lst:comma2}
+  \end{cmhtcbraster}
+
+  We note that
+  \begin{itemize}
+   \item \cref{lst:comma1} specifies \texttt{CommaStartsOnOwnLine} for
+         \emph{every} mandatory and optional argument;
+         the commas \cref{lst:comma1-demo} have been moved to their own line in
+         \cref{lst:comma1-mod1};
+   \item \cref{lst:comma2} specifies \texttt{CommaStartsOnOwnLine} on a
+         \emph{per-name} basis for \texttt{mycommand};
+         the commas from \cref{lst:comma1-demo} have been moved to their own line in
+         \cref{lst:comma1-mod2}, having added comment symbols before moving them.
+  \end{itemize}
+  \end{example}
+
+ \paragraph{Comma finishes with line break}
+  \begin{example}
+  Let's now explore \texttt{CommaFinishesWithLineBreak} ($\ElseFinishesWithLineBreak$ in
+  \cref{lst:comma1-demo}); starting with the code in \cref{lst:comma1-demo}, together
+  with the YAML files given in \cref{lst:comma3} and \cref{lst:comma4} and running the
+  following commands \index{poly-switches!for double backslash (delimiters)}
+  \index{switches!-l demonstration} \index{switches!-m demonstration}
+
+  \begin{commandshell}
+latexindent.pl comma1.tex -l comma3.yaml
+latexindent.pl comma1.tex -l comma4.yaml
+\end{commandshell}
+
+  then we receive the respective output given in \cref{lst:comma1-mod3} and
+  \cref{lst:comma1-mod4}.
+
+  \begin{cmhtcbraster}
+   \cmhlistingsfromfile*{demonstrations/comma1-mod3.tex}{\texttt{comma1-mod3.tex}}{lst:comma1-mod3}
+   \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/comma3.yaml}[MLB-TCB]{\texttt{comma3.yaml}}{lst:comma3}
+  \end{cmhtcbraster}
+
+  \begin{cmhtcbraster}
+   \cmhlistingsfromfile*{demonstrations/comma1-mod4.tex}{\texttt{comma1-mod4.tex}}{lst:comma1-mod4}
+   \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/comma4.yaml}[MLB-TCB]{\texttt{comma4.yaml}}{lst:comma4}
+  \end{cmhtcbraster}
+
+  We note that
+  \begin{itemize}
+   \item \cref{lst:comma3} specifies \texttt{CommaFinishesWithLineBreak} for
+         \emph{every} mandatory and optional argument;
+         the code following the commas from \cref{lst:comma1-demo} has been moved to
+         their own line in \cref{lst:comma1-mod3};
+   \item \cref{lst:comma4} specifies \texttt{CommaFinishesWithLineBreak} on a
+         \emph{per-name} basis for \texttt{mycommand};
+         the code following the commas has been moved to
+         their own line in \cref{lst:comma1-mod4}, having added comment symbols before moving
+         them.
+  \end{itemize}
+  \end{example}
 \subsubsection{Poly-switches for other code blocks}
  Rather than repeat the examples shown for the environment code blocks (in
  \vref{sec:modifylinebreaks-environments}), we choose to detail the poly-switches for all
@@ -913,11 +1011,11 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
                                                          & \verb!...!                                                        &                                         &                                                                   \\
   \cmidrule{2-4}
   commands                                               & \verb!before words!$\BeginStartsOnOwnLine$                        & $\BeginStartsOnOwnLine$                 & CommandStartsOnOwnLine                                            \\
-                                                         & \verb!\mycommand!$\BodyStartsOnOwnLine$                           & $\BodyStartsOnOwnLine$                  & CommandNameFinishesWithLineBreak                                  \\
+                                                         & \verb!\mycommand!                                                 &                                         &                                                                   \\
                                                          & $\langle$\itshape{arguments}$\rangle$                             &                                         &                                                                   \\
   \cmidrule{2-4}
   namedGroupingBracesBrackets                            & before words$\BeginStartsOnOwnLine$                               & $\BeginStartsOnOwnLine$                 & NameStartsOnOwnLine                                               \\
-                                                         & myname$\BodyStartsOnOwnLine$                                      & $\BodyStartsOnOwnLine$                  & NameFinishesWithLineBreak                                         \\
+                                                         & myname                                                            &                                         &                                                                   \\
                                                          & $\langle$\itshape{braces/brackets}$\rangle$                       &                                         &                                                                   \\
   \cmidrule{2-4}
   keyEqualsValuesBraces\newline Brackets                 & before words$\BeginStartsOnOwnLine$                               & $\BeginStartsOnOwnLine$                 & KeyStartsOnOwnLine                                                \\
@@ -942,86 +1040,19 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
                                                          & after words                                                       &                                         &                                                                   \\
   \bottomrule
  \end{longtable}
-\subsubsection{Partnering BodyStartsOnOwnLine with argument-based poly-switches}
- Some poly-switches need to be partnered together; in particular, when line breaks
- involving the \emph{first} argument of a code block need to be accounted for using both
- \texttt{BodyStartsOnOwnLine} (or its equivalent, see \vref{tab:poly-switch-mapping}) and
- \texttt{LCuBStartsOnOwnLine} for mandatory arguments, and \texttt{LSqBStartsOnOwnLine}
- for optional arguments. \index{poly-switches!conflicting partnering}
+
+\subsubsection{Conflicting poly-switches: sequential code blocks}
+ It is very easy to have conflicting poly-switches. The most poly-switch corresponding to
+ the most-recently-found code block will be respected.
 
  \begin{example}
- Let's begin with the code in \cref{lst:mycommand1} and the YAML settings in
- \cref{lst:mycom-mlb1}; with reference to \vref{tab:poly-switch-mapping}, the key
- \texttt{CommandNameFinishesWithLineBreak} is an alias for \texttt{BodyStartsOnOwnLine}.
+ We use the \cref{lst:mycommand1}
 
  \cmhlistingsfromfile{demonstrations/mycommand1.tex}{\texttt{mycommand1.tex}}{lst:mycommand1}
 
- Upon running the command \index{switches!-l demonstration} \index{switches!-m
- demonstration}
-
- \begin{commandshell}
-latexindent.pl -m -l=mycom-mlb1.yaml mycommand1.tex
-\end{commandshell}
-
- we obtain \cref{lst:mycommand1-mlb1}; note that the \emph{second} mandatory argument
- beginning brace \lstinline!{! has had its leading line break removed, but that the
- \emph{first} brace has not.
-
- \begin{cmhtcbraster}[
-   raster force size=false,
-   raster column 1/.style={add to width=-1cm},
-  ]
-  \cmhlistingsfromfile{demonstrations/mycommand1-mlb1.tex}{\texttt{mycommand1.tex} using \cref{lst:mycom-mlb1}}{lst:mycommand1-mlb1}
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycom-mlb1.yaml}[MLB-TCB,width=.6\textwidth]{\texttt{mycom-mlb1.yaml}}{lst:mycom-mlb1}
- \end{cmhtcbraster}
- \end{example}
-
- \begin{example}
- Now let's change the YAML file so that it is as in \cref{lst:mycom-mlb2}; upon running
- the command
-
- \begin{commandshell}
-latexindent.pl -m -l=mycom-mlb2.yaml mycommand1.tex
-\end{commandshell}
-
- we obtain \cref{lst:mycommand1-mlb2}; both beginning braces \lstinline!{! have had their
- leading line breaks removed.
-
- \begin{cmhtcbraster}[
-   raster force size=false,
-   raster column 1/.style={add to width=-1cm},
-  ]
-  \cmhlistingsfromfile{demonstrations/mycommand1-mlb2.tex}{\texttt{mycommand1.tex} using \cref{lst:mycom-mlb2}}{lst:mycommand1-mlb2}
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycom-mlb2.yaml}[MLB-TCB,width=.6\textwidth]{\texttt{mycom-mlb2.yaml}}{lst:mycom-mlb2}
- \end{cmhtcbraster}
- \end{example}
-
- \begin{example}
- Now let's change the YAML file so that it is as in \cref{lst:mycom-mlb3}; upon running
- the command
-
- \begin{commandshell}
-latexindent.pl -m -l=mycom-mlb3.yaml mycommand1.tex
-\end{commandshell}
-
- we obtain \cref{lst:mycommand1-mlb3}.
-
- \begin{cmhtcbraster}[
-   raster force size=false,
-   raster column 1/.style={add to width=-1cm},
-  ]
-  \cmhlistingsfromfile{demonstrations/mycommand1-mlb3.tex}{\texttt{mycommand1.tex} using \cref{lst:mycom-mlb3}}{lst:mycommand1-mlb3}
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycom-mlb3.yaml}[MLB-TCB,width=.6\textwidth]{\texttt{mycom-mlb3.yaml}}{lst:mycom-mlb3}
- \end{cmhtcbraster}
- \end{example}
-
-\subsubsection{Conflicting poly-switches: sequential code blocks}
- It is very easy to have conflicting poly-switches.
-
- \begin{example}
- We use the example from \vref{lst:mycommand1}, and consider the YAML settings given in
- \cref{lst:mycom-mlb4}. The output from running \index{poly-switches!conflicting
- switches} \index{switches!-l demonstration} \index{switches!-m demonstration}
+ and consider the YAML settings given in \cref{lst:mycom-mlb4}. The output from running
+ \index{poly-switches!conflicting switches} \index{switches!-l demonstration}
+ \index{switches!-m demonstration}
 
  \begin{commandshell}
 latexindent.pl -m -l=mycom-mlb4.yaml mycommand1.tex
@@ -1111,7 +1142,7 @@ latexindent.pl -m -l=nested-env-mlb1.yaml nested-env.tex
  gives the output in \cref{lst:nested-env-mlb1}.
 
  \begin{cmhtcbraster}[raster column skip=.05\linewidth]
-  \cmhlistingsfromfile{demonstrations/nested-env-mlb1.tex}{\texttt{nested-env.tex} using \cref{lst:nested-env-mlb1-yaml}}{lst:nested-env-mlb1}
+  \cmhlistingsfromfile*{demonstrations/nested-env-mlb1.tex}{\texttt{nested-env.tex} using \cref{lst:nested-env-mlb1-yaml}}{lst:nested-env-mlb1}
   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/nested-env-mlb1.yaml}[MLB-TCB,width=\linewidth]{\texttt{nested-env-mlb1.yaml}}{lst:nested-env-mlb1-yaml}
  \end{cmhtcbraster}
 
@@ -1121,53 +1152,22 @@ latexindent.pl -m -l=nested-env-mlb1.yaml nested-env.tex
  has had its leading line break removed.
  \end{example}
 
- To understand it, let's talk about the three basic phases \label{page:phases}of
- \texttt{latexindent.pl}:
+ To understand it, let's talk about how \texttt{latexindent.pl} has processed
+ \cref{lst:nested-env}; specifically \texttt{latexindent.pl}:
  \begin{enumerate}
-  \item Phase 1: packing, in which code blocks are replaced with unique ids, working from
-        \emph{the inside to the outside}, and then sequentially -- for example, in
-        \cref{lst:nested-env}, the \texttt{two} environment is found \emph{before} the
-        \texttt{one} environment; if the -m switch is active, then during this phase:
-        \begin{itemize}
-         \item line breaks at the beginning of the \texttt{body} can be added (if
-               \texttt{BodyStartsOnOwnLine} is $1$ or $2$) or removed (if
-               \texttt{BodyStartsOnOwnLine} is $-1$);
-         \item line breaks at the end of the body can be added (if
-               \texttt{EndStartsOnOwnLine} is $1$ or $2$) or removed (if
-               \texttt{EndStartsOnOwnLine} is $-1$);
-         \item line breaks after the end statement can be added (if
-               \texttt{EndFinishesWithLineBreak} is $1$ or $2$).
-        \end{itemize}
-  \item Phase 2: indentation, in which white space is added to the begin, body, and end
-        statements;
-  \item Phase 3: unpacking, in which unique ids are replaced by their \emph{indented}
-        code blocks; if the -m switch is active, then during this phase,
-        \begin{itemize}
-         \item line breaks before \texttt{begin} statements can be added or removed
-               (depending upon \texttt{BeginStartsOnOwnLine});
-         \item line breaks after \emph{end} statements can be removed but \emph{NOT}
-               added (see \texttt{EndFinishesWithLineBreak}).
-        \end{itemize}
+  \item finds the \texttt{environment} named \texttt{one}
+  \item   searches \texttt{one} for code blocks
+        \begin{enumerate}
+         \item finds the \texttt{environment} named \texttt{two}
+         \item searches \texttt{two} for code blocks, finds none
+         \item does the poly-switch work for \texttt{two} instructed by
+               \cref{lst:nested-env-mlb1-yaml}: remove the line break before the end
+               statement, and adds a line break \emph{after} the end statement.
+        \end{enumerate}
+  \item does the poly-switch work for \texttt{one} instructed by
+        \cref{lst:nested-env-mlb1} which is: remove line breaks before the end statement,
+        and add a line break \emph{after} the end statement;
  \end{enumerate}
-
- With reference to \cref{lst:nested-env-mlb1}, this means that during Phase 1:
- \begin{itemize}
-  \item the \texttt{two} environment is found first, and the line break ahead of the
-        \lstinline!\end{two}! statement is removed because \texttt{EndStartsOnOwnLine} is
-        set to $-1$. Importantly, because, \emph{at this stage}, \lstinline!\end{two}!
-        \emph{does} finish with a line break, \texttt{EndFinishesWithLineBreak} causes no
-        action.
-  \item next, the \texttt{one} environment is found; the line break ahead of
-        \lstinline!\end{one}! is removed because \texttt{EndStartsOnOwnLine} is set to
-        $-1$.
- \end{itemize}
- The indentation is done in Phase 2; in Phase 3 \emph{there is no option to add a line
- break after the \lstinline!end! statements}. We can justify this by remembering that
- during Phase 3, the \texttt{one} environment will be found and processed first, followed
- by the \texttt{two} environment. If the \texttt{two} environment were to add a line
- break after the \lstinline!\end{two}! statement, then \texttt{latexindent.pl} would have
- no way of knowing how much indentation to add to the subsequent text (in this case,
- \lstinline!\end{one}!).
 
  \begin{example}
  We can explore this further using the poly-switches in \cref{lst:nested-env-mlb2}; upon
@@ -1180,23 +1180,25 @@ latexindent.pl -m -l=nested-env-mlb2.yaml nested-env.tex
  we obtain the output given in \cref{lst:nested-env-mlb2-output}.
 
  \begin{cmhtcbraster}
-  \cmhlistingsfromfile{demonstrations/nested-env-mlb2.tex}{\texttt{nested-env.tex} using \cref{lst:nested-env-mlb2}}{lst:nested-env-mlb2-output}
+  \cmhlistingsfromfile*{demonstrations/nested-env-mlb2.tex}{\texttt{nested-env.tex} using \cref{lst:nested-env-mlb2}}{lst:nested-env-mlb2-output}
   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/nested-env-mlb2.yaml}[MLB-TCB,width=\linewidth]{\texttt{nested-env-mlb2.yaml}}{lst:nested-env-mlb2}
  \end{cmhtcbraster}
 
- During Phase 1:
- \begin{itemize}
-  \item the \texttt{two} environment is found first, and the line break ahead of the
-        \lstinline!\end{two}! statement is not changed because
-        \texttt{EndStartsOnOwnLine} is set to $1$. Importantly, because, \emph{at this
-        stage}, \lstinline!\end{two}! \emph{does} finish with a line break,
-        \texttt{EndFinishesWithLineBreak} causes no action.
-  \item next, the \texttt{one} environment is found; the line break ahead of
-        \lstinline!\end{one}! is already present, and no action is needed.
- \end{itemize}
- The indentation is done in Phase 2, and then in Phase 3, the \texttt{one} environment is
- found and processed first, followed by the \texttt{two} environment. \emph{At this
- stage}, the \texttt{two} environment finds \texttt{EndFinishesWithLineBreak} is $-1$, so
- it removes the trailing line break; remember, at this point, \texttt{latexindent.pl} has
- completely finished with the \texttt{one} environment.
+ To understand it, let's talk about how \texttt{latexindent.pl} has processed
+ \cref{lst:nested-env-mlb2-output}; specifically \texttt{latexindent.pl}:
+ \begin{enumerate}
+  \item finds the \texttt{environment} named \texttt{one}
+  \item   searches \texttt{one} for code blocks
+        \begin{enumerate}
+         \item finds the \texttt{environment} named \texttt{two}
+         \item searches \texttt{two} for code blocks, finds none
+         \item does the poly-switch work for \texttt{two} instructed by
+               \cref{lst:nested-env-mlb1-yaml}: add a line break before the end
+               statement, and remove line breaks \emph{after} the end statement.
+        \end{enumerate}
+  \item does the poly-switch work for \texttt{one} instructed by
+        \cref{lst:nested-env-mlb2} which is: add a line break before the end statement,
+        and remove line breaks \emph{after} the end statement.
+ \end{enumerate}
+
  \end{example}

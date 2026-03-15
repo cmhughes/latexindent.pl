@@ -46,9 +46,9 @@ This field is for those that would like to peek under the bonnet/hood and make s
 	:class: .baseyaml
 	:caption: ``fineTuning`` 
 	:name: lst:fineTuning
-	:lines: 631-686
+	:lines: 427-502
 	:linenos:
-	:lineno-start: 631
+	:lineno-start: 427
 
 The fields given in :numref:`lst:fineTuning` are all *regular expressions*. This manual is not intended to be a tutorial on regular expressions; you might like to read, for example, (Friedl, n.d.) for a detailed covering of the topic.
 
@@ -84,152 +84,21 @@ We make the following comments with reference to :numref:`lst:fineTuning`:
 
    #. the ``?`` the end means *non-greedy*, which means ‘stop the match as soon as possible’
 
-#. the ``keyEqualsValuesBracesBrackets`` contains some interesting syntax:
-
-   #. ``|`` means ‘or’
-
-   #. ``(?:(?<!\\)\{)`` the ``(?:...)`` uses a *non-capturing* group – you don’t necessarily need to worry about what this means, but just know that for the ``fineTuning`` feature you should only ever use *non*-capturing groups, and *not* capturing groups, which are simply ``(...)``
-
-   #. ``(?<!\\)\{)`` means a ``{`` but it can *not* be immediately preceded by a ``\``
-
-#. in the ``arguments:before`` field
-
-   #. ``\d\h*`` means a digit (i.e. a number), followed by 0 or more horizontal spaces
-
-   #. ``;?,?`` means *possibly* a semi-colon, and possibly a comma
-
-   #. ``\<.*?\>`` is designed for ’beamer’-type commands; the ``.*?`` means anything in between ``<...>``
-
 #. the ``modifyLineBreaks`` field refers to fine tuning settings detailed in :numref:`sec:modifylinebreaks`. In particular:
 
    #. ``betterFullStop`` is in relation to the one sentence per line routine, detailed in :numref:`sec:onesentenceperline`
 
-   #. ``doubleBackSlash`` is in relation to the ``DBSStartsOnOwnLine`` and ``DBSFinishesWithLineBreak`` polyswitches surrounding double backslashes, see :numref:`subsec:dbs`
-
    #. ``comma`` is in relation to the ``CommaStartsOnOwnLine`` and ``CommaFinishesWithLineBreak`` polyswitches surrounding commas in optional and mandatory arguments; see :numref:`tab:poly-switch-mapping`
-
-It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``before`` and ``between`` fields allow trailing comments, line breaks, and horizontal spaces between each character.
 
 .. index:: warning;capture groups
 
 .. warning::	
 	
-	For the ``fineTuning`` feature you should only ever use *non*-capturing groups, such as ``(?:...)`` and *not* capturing groups, which are ``(...)``
+	For the ``fineTuning`` feature you should usually use *non*-capturing groups, such as ``(?:...)`` and *not* capturing groups, which are ``(...)``
 
 
-.. proof:example::	
-	
-	As a demonstration, consider the file given in :numref:`lst:finetuning1`, together with its default output using the command
-	
-	.. code-block:: latex
-	   :class: .commandshell
-	
-	   latexindent.pl finetuning1.tex 
-	
-	is given in :numref:`lst:finetuning1-default`.
-	
-	.. literalinclude:: demonstrations/finetuning1.tex
-		:class: .tex
-		:caption: ``finetuning1.tex`` 
-		:name: lst:finetuning1
-	
-	.. literalinclude:: demonstrations/finetuning1-default.tex
-		:class: .tex
-		:caption: ``finetuning1.tex`` default 
-		:name: lst:finetuning1-default
-	
-	It’s clear from :numref:`lst:finetuning1-default` that the indentation scheme has not worked as expected. We can *fine tune* the indentation scheme by employing the settings given in :numref:`lst:fine-tuning1` and running the command
-	
-	.. index:: switches;-l demonstration
-	
-	.. code-block:: latex
-	   :class: .commandshell
-	
-	   latexindent.pl finetuning1.tex -l=fine-tuning1.yaml
-	
-	and the associated (desired) output is given in :numref:`lst:finetuning1-mod1`.
-	
-	.. index:: regular expressions;at least one +
-	
-	.. literalinclude:: demonstrations/finetuning1-mod1.tex
-		:class: .tex
-		:caption: ``finetuning1.tex`` using :numref:`lst:fine-tuning1` 
-		:name: lst:finetuning1-mod1
-	
-	.. literalinclude:: demonstrations/fine-tuning1.yaml
-		:class: .baseyaml
-		:caption: ``finetuning1.yaml`` 
-		:name: lst:fine-tuning1
-	
-
-
-.. proof:example::	
-	
-	Let’s have another demonstration; consider the file given in :numref:`lst:finetuning2`, together with its default output using the command
-	
-	.. code-block:: latex
-	   :class: .commandshell
-	
-	   latexindent.pl finetuning2.tex 
-	
-	is given in :numref:`lst:finetuning2-default`.
-	
-	.. literalinclude:: demonstrations/finetuning2.tex
-		:class: .tex
-		:caption: ``finetuning2.tex`` 
-		:name: lst:finetuning2
-	
-	.. literalinclude:: demonstrations/finetuning2-default.tex
-		:class: .tex
-		:caption: ``finetuning2.tex`` default 
-		:name: lst:finetuning2-default
-	
-	It’s clear from :numref:`lst:finetuning2-default` that the indentation scheme has not worked as expected. We can *fine tune* the indentation scheme by employing the settings given in :numref:`lst:fine-tuning2` and running the command
-	
-	.. index:: switches;-l demonstration
-	
-	.. code-block:: latex
-	   :class: .commandshell
-	
-	   latexindent.pl finetuning2.tex -l=fine-tuning2.yaml
-	
-	and the associated (desired) output is given in :numref:`lst:finetuning2-mod1`.
-	
-	.. literalinclude:: demonstrations/finetuning2-mod1.tex
-		:class: .tex
-		:caption: ``finetuning2.tex`` using :numref:`lst:fine-tuning2` 
-		:name: lst:finetuning2-mod1
-	
-	.. literalinclude:: demonstrations/fine-tuning2.yaml
-		:class: .baseyaml
-		:caption: ``finetuning2.yaml`` 
-		:name: lst:fine-tuning2
-	
-	In particular, note that the settings in :numref:`lst:fine-tuning2` specify that ``NamedGroupingBracesBrackets`` and ``UnNamedGroupingBracesBrackets`` can follow ``"`` and that we allow ``---`` between arguments.
-
-
-.. proof:example::	
-	
-	You can tweak the ``fineTuning`` using the ``-y`` switch, but to be sure to use quotes appropriately. For example, starting with the code in :numref:`lst:finetuning3` and running the following command
-	
-	.. code-block:: latex
-	   :class: .commandshell
-	
-	   latexindent.pl -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1, modifyLineBreaks:oneSentencePerLine:sentencesBeginWith:a-z: 1, fineTuning:modifyLineBreaks:betterFullStop: "(?:\.|;|:(?![a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))"' issue-243.tex -o=+-mod1
-	
-	gives the output shown in :numref:`lst:finetuning3-mod1`.
-	
-	.. literalinclude:: demonstrations/finetuning3.tex
-		:class: .tex
-		:caption: ``finetuning3.tex`` 
-		:name: lst:finetuning3
-	
-	.. literalinclude:: demonstrations/finetuning3-mod1.tex
-		:class: .tex
-		:caption: ``finetuning3.tex`` using -y switch 
-		:name: lst:finetuning3-mod1
-	
-
+fineTuning trailing comments
+----------------------------
 
 .. proof:example::	
 	
@@ -304,117 +173,6 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 
 .. proof:example::	
 	
-	We can use the ``fineTuning`` field to assist in the formatting of bibliography files.
-	
-	.. index:: bibliography files
-	
-	.. index:: regular expressions;delimiterRegEx
-	
-	.. index:: regular expressions;capturing parenthesis
-	
-	.. index:: regular expressions;ampersand alignment
-	
-	.. index:: delimiters;delimiterRegEx
-	
-	Starting with the file in :numref:`lst:bib1` and running the command
-	
-	.. code-block:: latex
-	   :class: .commandshell
-	
-	   latexindent.pl bib1.tex -o=+-mod1 
-	
-	gives the output in :numref:`lst:bib1-mod1`.
-	
-	.. literalinclude:: demonstrations/bib1.bib
-		:class: .tex
-		:caption: ``bib1.bib`` 
-		:name: lst:bib1
-	
-	.. literalinclude:: demonstrations/bib1-mod1.bib
-		:class: .tex
-		:caption: ``bib1-mod1.bib`` 
-		:name: lst:bib1-mod1
-	
-	Let’s assume that we would like to format the output so as to align the ``=`` symbols. Using the settings in :numref:`lst:bibsettings1` and running the command
-	
-	.. code-block:: latex
-	   :class: .commandshell
-	
-	   latexindent.pl bib1.bib -l bibsettings1.yaml -o=+-mod2 
-	
-	gives the output in :numref:`lst:bib1-mod2`.
-	
-	.. literalinclude:: demonstrations/bib1-mod2.bib
-		:class: .tex
-		:caption: ``bib1.bib`` using :numref:`lst:bibsettings1` 
-		:name: lst:bib1-mod2
-	
-	.. literalinclude:: demonstrations/bibsettings1.yaml
-		:class: .baseyaml
-		:caption: ``bibsettings1.yaml`` 
-		:name: lst:bibsettings1
-	
-	Some notes about :numref:`lst:bibsettings1`:
-	
-	-  we have populated the ``lookForAlignDelims`` field with the ``online`` command, and have used the ``delimiterRegEx``, discussed in :numref:`sec:delimiter-reg-ex`;
-	
-	-  we have tweaked the ``keyEqualsValuesBracesBrackets`` code block so that it will *not* be found following a comma; this means that, in contrast to the default behaviour, the lines such as ``date={2013-05-23},`` will *not* be treated as key-equals-value braces;
-	
-	-  the adjustment to ``keyEqualsValuesBracesBrackets`` necessitates the associated change to the ``UnNamedGroupingBracesBrackets`` field so that they will be searched for following ``=`` symbols.
-	
-
-
-.. proof:example::	
-	
-	We can build upon :numref:`lst:bibsettings1` for slightly more complicated bibliography files.
-	
-	Starting with the file in :numref:`lst:bib2` and running the command
-	
-	.. code-block:: latex
-	   :class: .commandshell
-	
-	   latexindent.pl bib2.bib -l bibsettings1.yaml -o=+-mod1 
-	
-	gives the output in :numref:`lst:bib2-mod1`.
-	
-	.. literalinclude:: demonstrations/bib2.bib
-		:class: .tex
-		:caption: ``bib2.bib`` 
-		:name: lst:bib2
-	
-	.. literalinclude:: demonstrations/bib2-mod1.bib
-		:class: .tex
-		:caption: ``bib2-mod1.bib`` 
-		:name: lst:bib2-mod1
-	
-	The output in :numref:`lst:bib2-mod1` is not ideal, as the ``=`` symbol within the url field has been incorrectly used as an alignment delimiter.
-	
-	We address this by tweaking the ``delimiterRegEx`` field in :numref:`lst:bibsettings2`.
-	
-	.. literalinclude:: demonstrations/bibsettings2.yaml
-		:class: .baseyaml
-		:caption: ``bibsettings2.yaml`` 
-		:name: lst:bibsettings2
-	
-	Upon running the command
-	
-	.. code-block:: latex
-	   :class: .commandshell
-	
-	   latexindent.pl bib2.bib -l bibsettings1.yaml,bibsettings2.yaml -o=+-mod2 
-	
-	we receive the *desired* output in :numref:`lst:bib2-mod2`.
-	
-	.. literalinclude:: demonstrations/bib2-mod2.bib
-		:class: .tex
-		:caption: ``bib2-mod2.bib`` 
-		:name: lst:bib2-mod2
-	
-	With reference to :numref:`lst:bibsettings2` we note that the ``delimiterRegEx`` has been adjusted so that ``=`` symbols are used as the delimiter, but only when they are *not preceded* by either ``v`` or ``spfreload``.
-
-
-.. proof:example::	
-	
 	We can use the ``fineTuning`` settings to tweak how ``latexindent.pl`` finds trailing comments. We begin with the file in :numref:`lst:finetuning5`
 	
 	.. literalinclude:: demonstrations/finetuning5.tex
@@ -438,11 +196,14 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	
 	.. literalinclude:: demonstrations/fine-tuning3.yaml
 		:class: .baseyaml
-		:caption: ``finetuning3.yaml`` 
+		:caption: ``fine-tuning3.yaml`` 
 		:name: lst:fine-tuning3
 	
 	The settings in :numref:`lst:fine-tuning3` detail that trailing comments can *not* be followed by a single space, and then the text ‘end’. This means that the ``specialBeginEnd`` routine will be able to find the pattern ``% end`` as the ``end`` part. The trailing comments ``123`` and ``456`` are still treated as trailing comments.
 
+
+fineTuning environments
+-----------------------
 
 .. proof:example::	
 	
@@ -477,6 +238,169 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	By using the settings in :numref:`lst:fine-tuning4` it means that the default poly-switch location of ``BodyStartsOnOwnLine`` for environments (denoted ♥ in :numref:`tab:poly-switch-mapping`) has been overwritten so that it is *after* the ``label`` command.
 	
 	Referencing :numref:`lst:fine-tuning4`, unless both ``begin`` and ``end`` are specified, then the default value of ``name`` will be used.
+
+
+.. label follows
+
+.. _subsec:finetuning:itemsRegex:
+
+fineTuning itemsRegex
+---------------------
+
+In :numref:`lst:itemsafter` we demonstrated the default indentation after items. You can customise the ``itemsRegex`` in the ``fineTuning``, which we demonstrate next.
+
+.. proof:example::	
+	
+	We begin with the code in :numref:`lst:items2` and use the settings in :numref:`lst:ft-itemsRegex`. Upon running
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -l ft-itemsRegex items2-o=+-mod1
+	
+	we receive the output in :numref:`lst:items2-mod1`.
+	
+	.. literalinclude:: demonstrations/items2.tex
+		:class: .tex
+		:caption: ``items2.tex`` 
+		:name: lst:items2
+	
+	.. literalinclude:: demonstrations/ft-itemsRegex.yaml
+		:class: .baseyaml
+		:caption: ``ft-itemsRegex.yaml`` 
+		:name: lst:ft-itemsRegex
+	
+	.. literalinclude:: demonstrations/items2-mod1.tex
+		:class: .tex
+		:caption: ``items2-mod1.tex`` 
+		:name: lst:items2-mod1
+	
+
+
+.. label follows
+
+.. _subsec:finetuning:arguments:
+
+fineTuning arguments
+--------------------
+
+The strings allowed between arguments for ``commands``, ``namedGroupingBracesBrackets``, ``keyEqualsValuesBracesBrackets`` and ``UnNamedGroupingBracesBrackets`` are controlled by ``fineTuning``. We demonstrate with an example next.
+
+.. proof:example::	
+	
+	We begin with the code in :numref:`lst:beamer1` and use the settings in :numref:`lst:ft-args`. Upon running
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -l ft-args beamer1-o=+-mod1
+	
+	we receive the output in :numref:`lst:beamer1-mod1`.
+	
+	.. literalinclude:: demonstrations/beamer1.tex
+		:class: .tex
+		:caption: ``beamer1.tex`` 
+		:name: lst:beamer1
+	
+	.. literalinclude:: demonstrations/ft-args.yaml
+		:class: .baseyaml
+		:caption: ``ft-args.yaml`` 
+		:name: lst:ft-args
+	
+	.. literalinclude:: demonstrations/beamer1-mod1.tex
+		:class: .tex
+		:caption: ``beamer1-mod1.tex`` 
+		:name: lst:beamer1-mod1
+	
+
+
+.. label follows
+
+.. _subsec:finetuning:ifElseFi:
+
+fineTuning ifElseFi
+-------------------
+
+We can fine tune the ``elseOrRegEx`` for ``ifElseFi`` blocks as we demonstrate next.
+
+.. proof:example::	
+	
+	We begin with the code in :numref:`lst:ft-ifelsefi` and use the settings in :numref:`lst:ft-ifelsefi-yaml`. Upon running
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -l ft-ifelsefi ft-ifelsefi-o=+-mod1
+	
+	we receive the output in :numref:`lst:ft-ifelsefi-mod1`.
+	
+	.. literalinclude:: demonstrations/ft-ifelsefi.tex
+		:class: .tex
+		:caption: ``ft-ifelsefi.tex`` 
+		:name: lst:ft-ifelsefi
+	
+	.. literalinclude:: demonstrations/ft-ifelsefi.yaml
+		:class: .baseyaml
+		:caption: ``ft-ifelsefi.yaml`` 
+		:name: lst:ft-ifelsefi-yaml
+	
+	.. literalinclude:: demonstrations/ft-ifelsefi-mod1.tex
+		:class: .tex
+		:caption: ``ft-ifelsefi-mod1.tex`` 
+		:name: lst:ft-ifelsefi-mod1
+	
+
+
+.. label follows
+
+.. _subsec:finetuning:lookForAlignDelims:
+
+fineTuning lookForAlignDelims
+-----------------------------
+
+As detailed in :numref:`subsec:align-at-delimiters` there is a basic and an advanced way to specify the entries in ``lookForAlignDelims``; any entries not specified explicitly, will be read from the default values specified in ``fineTuning``.
+
+As an example, the settings in :numref:`lst:ft-align1` and :numref:`lst:ft-align2` and :numref:`lst:ft-align3` are equivalent.
+
+.. literalinclude:: demonstrations/align1.yaml
+	:class: .baseyaml
+	:caption: ``align1.yaml`` 
+	:name: lst:ft-align1
+
+.. literalinclude:: demonstrations/align2.yaml
+	:class: .baseyaml
+	:caption: ``align2.yaml`` 
+	:name: lst:ft-align2
+
+.. literalinclude:: demonstrations/align3.yaml
+	:class: .baseyaml
+	:caption: ``align3.yaml`` 
+	:name: lst:ft-align3
+
+fineTuning using -y switch
+--------------------------
+
+.. proof:example::	
+	
+	You can tweak the ``fineTuning`` using the ``-y`` switch, but to be sure to use quotes appropriately. For example, starting with the code in :numref:`lst:finetuning3` and running the following command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1, modifyLineBreaks:oneSentencePerLine:sentencesBeginWith:a-z: 1, fineTuning:modifyLineBreaks:betterFullStop: "(?:\.|;|:(?![a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))"' issue-243.tex -o=+-mod1
+	
+	gives the output shown in :numref:`lst:finetuning3-mod1`.
+	
+	.. literalinclude:: demonstrations/finetuning3.tex
+		:class: .tex
+		:caption: ``finetuning3.tex`` 
+		:name: lst:finetuning3
+	
+	.. literalinclude:: demonstrations/finetuning3-mod1.tex
+		:class: .tex
+		:caption: ``finetuning3.tex`` using -y switch 
+		:name: lst:finetuning3-mod1
+	
 
 
 .. container:: references hanging-indent

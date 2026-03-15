@@ -90,8 +90,8 @@ Linux users may be interested in exploring Perlbrew (“Perlbrew” n.d.); an ex
 
    sudo apt-get install perlbrew
    perlbrew init
-   perlbrew install perl-5.40.0
-   perlbrew switch perl-5.40.0
+   perlbrew install perl-5.42.0
+   perlbrew switch perl-5.42.0
    sudo apt-get install curl
    curl -L http://cpanmin.us | perl - App::cpanminus
    cpanm YAML::Tiny
@@ -840,6 +840,195 @@ Let’s consider a small example, with local ``latexindent.pl`` settings in ``.l
 indentconfig options
 --------------------
 
+The behaviour of ``latexindent.pl`` is controlled from the settings specified in any of the YAML files that you tell it to load. By default, ``latexindent.pl`` will only load ``defaultSettings.yaml``, but there are a few ways that you can tell it to load your own settings files.
+
+We focus our discussion on ``indentconfig.yaml``, but there are other options which we also detail here.
+
+.. label follows
+
+.. _sec:indentconfig:
+
+indentconfig.yaml and .indentconfig.yaml
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``latexindent.pl`` will always check your home directory for ``indentconfig.yaml`` and ``.indentconfig.yaml`` (unless it is called with the ``-d`` switch), which is a plain text file you can create that contains the *absolute* paths for any settings files that you wish ``latexindent.pl`` to load. There is no difference between ``indentconfig.yaml`` and ``.indentconfig.yaml``, other than the fact that ``.indentconfig.yaml`` is a ‘hidden’ file; thank you to (Diaz 2014) for providing this feature.
+In what follows, we will use ``indentconfig.yaml``, but it is understood that this could equally represent ``.indentconfig.yaml``. If you have both files in existence then ``indentconfig.yaml`` takes priority.
+
+For Mac and Linux users, their home directory is `` /username`` while Windows (Vista onwards) is ``C:\Users\username``\  [1]_ :numref:`lst:indentconfig` shows a sample ``indentconfig.yaml`` file.
+
+.. literalinclude:: demonstrations/indent-config.yaml
+	:class: .baseyaml
+	:caption: ``indentconfig.yaml`` (sample) 
+	:name: lst:indentconfig
+
+Note that the ``.yaml`` files you specify in ``indentconfig.yaml`` will be loaded in the order in which you write them. Each file doesn’t have to have every switch from ``defaultSettings.yaml``; in fact, I recommend that you only keep the switches that you want to *change* in these settings files.
+
+To get started with your own settings file, you might like to save a copy of ``defaultSettings.yaml`` in another directory and call it, for example, ``mysettings.yaml``. Once you have added the path to ``indentconfig.yaml`` you can change the switches and add more code-block names to it as you see fit – have a look at :numref:`lst:mysettings` for an example that uses four tabs for the default indent, adds the ``tabbing`` environment/command to the list of environments that contains alignment
+delimiters; you might also like to refer to the many YAML files detailed throughout the rest of this documentation.
+
+.. index:: indentation;defaultIndent using YAML file
+
+.. literalinclude:: demonstrations/tabbing.yaml
+	:class: .baseyaml
+	:caption: ``mysettings.yaml`` (example) 
+	:name: lst:mysettings
+
+You can make sure that your settings are loaded by checking ``indent.log`` for details – if you have specified a path that ``latexindent.pl`` doesn’t recognise then you’ll get a warning, otherwise you’ll get confirmation that ``latexindent.pl`` has read your settings file. [2]_
+
+.. index:: warning;editing YAML files
+
+.. warning::	
+	
+	When editing ``.yaml`` files it is *extremely* important to remember how sensitive they are to spaces. I highly recommend copying and pasting from ``defaultSettings.yaml`` when you create your first ``whatevernameyoulike.yaml`` file.
+	
+	If ``latexindent.pl`` can not read your ``.yaml`` file it will tell you so in ``indent.log``.
+
+
+As of you can specify the ``paths`` field from :numref:`lst:indentconfig` within any of your ``latexindent.yaml`` and friends settings files. This can lead to creative nesting of configuration files; a demonstration is given in :numref:`sec:appendix:paths`.
+
+.. label follows
+
+.. _sec:localsettings:
+
+localSettings.yaml and friends
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``-l`` switch tells ``latexindent.pl`` to look for ``localSettings.yaml`` and/or friends in the *same directory* as ``myfile.tex``. For example, if you use the following command
+
+.. index:: switches;-l demonstration
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl -l myfile.tex
+
+then ``latexindent.pl`` will search for and then, assuming they exist, load each of the following files in the following order:
+
+#. localSettings.yaml
+
+#. latexindent.yaml
+
+#. .localSettings.yaml
+
+#. .latexindent.yaml
+
+These files will be assumed to be in the same directory as ``myfile.tex``, or otherwise in the current working directory. You do not need to have all of the above files, usually just one will be sufficient. In what follows, whenever we refer to ``localSettings.yaml`` it is assumed that it can mean any of the four named options listed above.
+
+If you’d prefer to name your ``localSettings.yaml`` file something different, (say, ``mysettings.yaml`` as in :numref:`lst:mysettings`) then you can call ``latexindent.pl`` using, for example,
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl -l=mysettings.yaml myfile.tex
+
+Any settings file(s) specified using the ``-l`` switch will be read *after* ``defaultSettings.yaml`` and, assuming they exist, any user setting files specified in ``indentconfig.yaml``.
+
+Your settings file can contain any switches that you’d like to change; a sample is shown in :numref:`lst:localSettings`, and you’ll find plenty of further examples throughout this manual.
+
+.. index:: verbatim;verbatimEnvironments demonstration (-l switch)
+
+.. code-block:: latex
+   :caption: ``localSettings.yaml`` (example) 
+   :name: lst:localSettings
+
+   #  verbatim environments - environments specified
+   #  here will not be changed at all!
+   verbatimEnvironments:
+       cmhenvironment: 0
+       myenv: 1
+
+You can make sure that your settings file has been loaded by checking ``indent.log`` for details; if it can not be read then you receive a warning, otherwise you’ll get confirmation that ``latexindent.pl`` has read your settings file.
+
+.. label follows
+
+.. _sec:yamlswitch:
+
+The -y|yaml switch
+~~~~~~~~~~~~~~~~~~
+
+You may use the ``-y`` switch to load your settings; for example, if you wished to specify the settings from :numref:`lst:localSettings` using the ``-y`` switch, then you could use the following command:
+
+.. index:: verbatim;verbatimEnvironments demonstration (-y switch)
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl -y="verbatimEnvironments:cmhenvironment:0;myenv:1" myfile.tex
+
+Note the use of ``;`` to specify another field within ``verbatimEnvironments``. This is shorthand, and equivalent, to using the following command:
+
+.. index:: switches;-y demonstration
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl -y="verbatimEnvironments:cmhenvironment:0,verbatimEnvironments:myenv:1" myfile.tex
+
+You may, of course, specify settings using the ``-y`` switch as well as, for example, settings loaded using the ``-l`` switch; for example,
+
+.. index:: switches;-l demonstration
+
+.. index:: switches;-y demonstration
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl -l=mysettings.yaml -y="verbatimEnvironments:cmhenvironment:0;myenv:1" myfile.tex
+
+Any settings specified using the ``-y`` switch will be loaded *after* any specified using ``indentconfig.yaml`` and the ``-l`` switch.
+
+If you wish to specify any regex-based settings using the ``-y`` switch,
+
+.. index:: regular expressions;using -y switch
+
+it is important not to use quotes surrounding the regex; for example, with reference to the ‘one sentence per line’ feature (:numref:`sec:onesentenceperline`) and the listings within :numref:`lst:sentencesEndWith`, the following settings give the option to have sentences end with a semicolon
+
+.. index:: switches;-y demonstration
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl -m --yaml='modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\;'
+
+Note that the ``paths`` settings (see :numref:`sec:appendix:paths`) can *not* be specified using the ``-y`` switch.
+
+.. label follows
+
+.. _sec:loadorder:
+
+Settings load order
+~~~~~~~~~~~~~~~~~~~
+
+``latexindent.pl`` loads the settings files in the following order:
+
+.. index:: switches;-l in relation to other settings
+
+#. ``defaultSettings.yaml`` is always loaded, and can not be renamed;
+
+#. ``anyUserSettings.yaml`` and any other arbitrarily-named files specified in ``indentconfig.yaml``;
+
+#. ``localSettings.yaml`` but only if found in the same directory as ``myfile.tex`` and called with ``-l`` switch; this file can be renamed, provided that the call to ``latexindent.pl`` is adjusted accordingly (see :numref:`sec:localsettings`). You may specify both relative and absolute paths to other YAML files using the ``-l`` switch, separating multiple files using commas;
+
+#. any settings specified in the ``-y`` switch.
+
+A visual representation of this is given in :numref:`fig:loadorder`.
+
+.. label follows
+
+.. _fig:loadorder:
+
+.. figure:: figure-schematic.png
+   
+
+   Schematic of the load order described in :numref:`sec:loadorder`; solid lines represent mandatory files, dotted lines represent optional files. ``indentconfig.yaml`` can contain as many files as you like. The files will be loaded in order; if you specify settings for the same field in more than one file, the most recent takes priority.
+
+.. label follows
+
+.. _indentconfig-options-1:
+
+indentconfig options
+~~~~~~~~~~~~~~~~~~~~
+
 This section describes the possible locations for the main configuration file, discussed in :numref:`sec:indentconfig`. Thank you to (Nehctargl 2022) for this contribution. The possible locations of ``indentconfig.yaml`` are read one after the other, and reading stops when a valid file is found in one of the paths.
 
 Before stating the list, we give summarise in :numref:`tab:environment:summary`.
@@ -971,7 +1160,7 @@ Context: This command adds the line to your ``.profile`` file (which is commonly
 paths demonstration
 -------------------
 
-As detailed in :numref:`subsec:indentconfig` , the ``paths`` field can be specified in any of your ``YAML`` files.
+As detailed in :numref:`app:indentconfig:options` , the ``paths`` field can be specified in any of your ``YAML`` files.
 
 We will use the file in :numref:`lst:paths-demo` for demonstration in what follows.
 
@@ -1070,52 +1259,24 @@ We will use the file in :numref:`lst:paths-demo` for demonstration in what follo
 logFilePreferences
 ------------------
 
+``latexindent.pl`` writes information to ``indent.log``, some of which can be customized by changing ``logFilePreferences``; see :numref:`lst:logFilePreferences`. If you load your own user settings (see :numref:`sec:indentconfig`) then ``latexindent.pl`` will detail them in ``indent.log``; you can choose not to have the details logged by switching ``showEveryYamlRead`` to ``0``. Once all of your settings have been loaded, you can see the amalgamated settings in the log file by switching
+``showAmalgamatedSettings`` to ``1``, if you wish.
+
+.. literalinclude:: ../defaultSettings.yaml
+	:class: .baseyaml
+	:caption: ``logFilePreferences`` 
+	:name: lst:logFilePreferences
+	:lines: 520-532
+	:linenos:
+	:lineno-start: 520
+
+The log file will end with the characters given in ``endLogFileWith``, and will report the ``GitHub`` address of ``latexindent.pl`` to the log file if ``showGitHubInfoFooter`` is set to ``1``.
+
+Note: ``latexindent.pl`` no longer uses the ``log4perl`` module to handle the creation of the logfile.
+
+Some of the options for Perl’s ``Dumper`` module can be specified in :numref:`lst:logFilePreferences`; see (“Data::Dumper Module” n.d.) and (“Data Dumper Demonstration” n.d.) for more information. These options will mostly be helpful for those calling ``latexindent.pl`` with the ``-tt`` option described in :numref:`sec:commandline`.
+
 :numref:`lst:logFilePreferences` describes the options for customising the information given to the log file, and we provide a few demonstrations here.
-
-.. proof:example::	
-	
-	Let’s say that we start with the code given in :numref:`lst:simple`, and the settings specified in :numref:`lst:logfile-prefs1-yaml`.
-	
-	.. literalinclude:: demonstrations/simple.tex
-		:class: .tex
-		:caption: ``simple.tex`` 
-		:name: lst:simple
-	
-	.. literalinclude:: demonstrations/logfile-prefs1.yaml
-		:class: .baseyaml
-		:caption: ``logfile-prefs1.yaml`` 
-		:name: lst:logfile-prefs1-yaml
-	
-	If we run the following command (noting that ``-t`` is active)
-	
-	.. code-block:: latex
-	   :class: .commandshell
-	
-	   latexindent.pl -t -l=logfile-prefs1.yaml simple.tex
-	
-	then on inspection of ``indent.log`` we will find the snippet given in :numref:`lst:indentlog`.
-	
-	.. code-block:: latex
-	   :caption: ``indent.log`` 
-	   :name: lst:indentlog
-	
-	          +++++
-	   TRACE: environment found: myenv
-	          No ancestors found for myenv
-	          Storing settings for myenvenvironments
-	          indentRulesGlobal specified (0) for environments, ...
-	          Using defaultIndent for myenv
-	          Putting linebreak after replacementText for myenv
-	          looking for COMMANDS and key = {value}
-	   TRACE: Searching for commands with optional and/or mandatory arguments AND key = {value}
-	          looking for SPECIAL begin/end
-	   TRACE: Searching myenv for special begin/end (see specialBeginEnd)
-	   TRACE: Searching myenv for optional and mandatory arguments
-	          ... no arguments found
-	          -----
-	
-	Notice that the information given about ``myenv`` is ‘framed’ using ``+++++`` and ``-----`` respectively.
-
 
 .. label follows
 
@@ -1164,75 +1325,14 @@ In such a case, you may wish to try setting ``dos2unixlinebreaks`` to 1 and empl
 
 See (“Windows Line Breaks on Linux Prevent Removal of White Space from End of Line” n.d.) for further dertails.
 
-.. label follows
+Thanks
+------
 
-.. _app:differences:
+I first created ``latexindent.pl`` to help me format chapter files in a big project. After I blogged about it on the TeX stack exchange (“A Perl Script for Indenting Tex Files” n.d.) I received some positive feedback and follow-up feature requests. A big thank you to Harish Kumar (Kumar 2013) who helped to develop and test the initial versions of the script.
 
-Differences from Version 2.2 to 3.0
------------------------------------
+The ``YAML``-based interface of ``latexindent.pl`` was inspired by the wonderful ``arara`` tool; any similarities are deliberate, and I hope that it is perceived as the compliment that it is. Thank you to Paulo Cereda and the team for releasing this awesome tool; I initially worried that I was going to have to make a GUI for ``latexindent.pl``, but the release of ``arara`` has meant there is no need.
 
-There are a few (small) changes to the interface when comparing Version 2.2 to Version 3.0. Explicitly, in previous versions you might have run, for example,
-
-.. index:: switches;-o demonstration
-
-.. code-block:: latex
-   :class: .commandshell
-
-   latexindent.pl -o myfile.tex outputfile.tex
-
-whereas in Version 3.0 you would run any of the following, for example,
-
-.. index:: switches;-o demonstration
-
-.. code-block:: latex
-   :class: .commandshell
-
-   latexindent.pl -o=outputfile.tex myfile.tex
-   latexindent.pl -o outputfile.tex myfile.tex
-   latexindent.pl myfile.tex -o outputfile.tex
-   latexindent.pl myfile.tex -o=outputfile.tex
-   latexindent.pl myfile.tex -outputfile=outputfile.tex
-   latexindent.pl myfile.tex -outputfile outputfile.tex
-
-noting that the *output* file is given *next to* the ``-o`` switch.
-
-The fields given in :numref:`lst:obsoleteYaml` are *obsolete* from Version 3.0 onwards.
-
-.. literalinclude:: demonstrations/obsolete.yaml
-	:class: .baseyaml
-	:caption: Obsolete YAML fields from Version 3.0 
-	:name: lst:obsoleteYaml
-
-There is a slight difference when specifying indentation after headings; specifically, we now write ``indentAfterThisHeading`` instead of ``indent``. See :numref:`lst:indentAfterThisHeadingOld` and :numref:`lst:indentAfterThisHeadingNew`
-
-.. literalinclude:: demonstrations/indentAfterThisHeadingOld.yaml
-	:class: .baseyaml
-	:caption: ``indentAfterThisHeading`` in Version 2.2 
-	:name: lst:indentAfterThisHeadingOld
-
-.. literalinclude:: demonstrations/indentAfterThisHeadingNew.yaml
-	:class: .baseyaml
-	:caption: ``indentAfterThisHeading`` in Version 3.0 
-	:name: lst:indentAfterThisHeadingNew
-
-To specify ``noAdditionalIndent`` for display-math environments in Version 2.2, you would write YAML as in :numref:`lst:noAdditionalIndentOld`; as of Version 3.0, you would write YAML as in :numref:`lst:indentAfterThisHeadingNew1` or, if you’re using ``-m`` switch, :numref:`lst:indentAfterThisHeadingNew2`.
-
-.. index:: specialBeginEnd;update to displaymath V3.0
-
-.. literalinclude:: demonstrations/noAddtionalIndentOld.yaml
-	:class: .baseyaml
-	:caption: ``noAdditionalIndent`` in Version 2.2 
-	:name: lst:noAdditionalIndentOld
-
-.. literalinclude:: demonstrations/noAddtionalIndentNew.yaml
-	:class: .baseyaml
-	:caption: ``noAdditionalIndent`` for ``displayMath`` in Version 3.0 
-	:name: lst:indentAfterThisHeadingNew1
-
-.. literalinclude:: demonstrations/noAddtionalIndentNew1.yaml
-	:class: .baseyaml
-	:caption: ``noAdditionalIndent`` for ``displayMath`` in Version 3.0 
-	:name: lst:indentAfterThisHeadingNew2
+There have been several contributors to the project so far (and hopefully more in the future!); thank you very much to the people detailed in :numref:`sec:contributors` for their valued contributions, and thank you to those who report bugs and request features at (“Home of Latexindent.pl” n.d.).
 
 --------------
 
@@ -1245,6 +1345,11 @@ To specify ``noAdditionalIndent`` for display-math environments in Version 2.2, 
       “Anacoda.” n.d. Accessed December 22, 2021. https://www.anaconda.com/products/individual.
 
    .. container::
+      :name: ref-cmhblog
+
+      “A Perl Script for Indenting Tex Files.” n.d. Accessed January 23, 2017. http://tex.blogoverflow.com/2012/08/a-perl-script-for-indenting-tex-files/.
+
+   .. container::
       :name: ref-conda
 
       “Conda Forge.” n.d. Accessed December 22, 2021. https://github.com/conda-forge/miniforge.
@@ -1253,6 +1358,21 @@ To specify ``noAdditionalIndent`` for display-math environments in Version 2.2, 
       :name: ref-cpan
 
       “CPAN: Comprehensive Perl Archive Network.” n.d. Accessed January 23, 2017. http://www.cpan.org/.
+
+   .. container::
+      :name: ref-dumperdemo
+
+      “Data Dumper Demonstration.” n.d. Accessed June 18, 2021. https://stackoverflow.com/questions/7466825/how-do-you-sort-the-output-of-datadumper.
+
+   .. container::
+      :name: ref-dumper
+
+      “Data::Dumper Module.” n.d. Accessed June 18, 2021. https://perldoc.perl.org/Data::Dumper.
+
+   .. container::
+      :name: ref-jacobo-diaz-hidden-config
+
+      Diaz, Jacobo. 2014. “Hiddenconfig.” July 21, 2014. https://github.com/cmhughes/latexindent.pl/pull/18.
 
    .. container::
       :name: ref-eggplants
@@ -1295,6 +1415,11 @@ To specify ``noAdditionalIndent`` for display-math environments in Version 2.2, 
       Juang, Jason. 2015. “Add in Path Installation.” November 24, 2015. https://github.com/cmhughes/latexindent.pl/pull/38.
 
    .. container::
+      :name: ref-harish
+
+      Kumar, Harish. 2013. “Early Version Testing.” November 10, 2013. https://github.com/harishkumarholla.
+
+   .. container::
       :name: ref-cmhughesio
 
       “Latexindent.pl Ghcr (Github Container Repository) Location.” n.d. Accessed June 12, 2022. https://github.com/cmhughes?tab=packages.
@@ -1328,3 +1453,9 @@ To specify ``noAdditionalIndent`` for display-math environments in Version 2.2, 
       :name: ref-bersbersbers
 
       “Windows Line Breaks on Linux Prevent Removal of White Space from End of Line.” n.d. Accessed June 18, 2021. https://github.com/cmhughes/latexindent.pl/issues/256.
+
+.. [1]
+   If you’re not sure where to put ``indentconfig.yaml``, don’t worry ``latexindent.pl`` will tell you in the log file exactly where to put it assuming it doesn’t exist already.
+
+.. [2]
+   Windows users may find that they have to end ``.yaml`` files with a blank line

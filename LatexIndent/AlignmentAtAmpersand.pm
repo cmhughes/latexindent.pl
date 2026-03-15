@@ -18,99 +18,121 @@ package LatexIndent::AlignmentAtAmpersand;
 use strict;
 use warnings;
 use Data::Dumper;
-use Exporter                      qw/import/;
-use List::Util                    qw/max min sum/;
-use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::Switches         qw/$is_t_switch_active $is_tt_switch_active %switches/;
-use LatexIndent::GetYamlSettings  qw/%mainSettings/;
-use LatexIndent::Tokens           qw/%tokens/;
+use Exporter   qw/import/;
+use List::Util qw/max min sum/;
+
+#-----------
+use LatexIndent::Blocks           qw/$mSwitchOnlyTrailing $allCodeBlocks/;
+use LatexIndent::GetYamlSettings  qw/%mainSetting %previouslyFoundSetting/;
 use LatexIndent::LogFile          qw/$logger/;
-use LatexIndent::HiddenChildren   qw/%familyTree/;
+use LatexIndent::ModifyLineBreaks qw/_mlb_line_break_token_adjust/;
+use LatexIndent::Switches         qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active %switch/;
+use LatexIndent::Tokens           qw/%tokens/;
+use LatexIndent::TrailingComments qw/$trailingCommentRegExp @trailingComments/;
 use LatexIndent::Verbatim         qw/%verbatimStorage/;
 our @ISA = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK
-    = qw/align_at_ampersand find_aligned_block double_back_slash_else main_formatting individual_padding multicolumn_padding multicolumn_pre_check multicolumn_post_check dont_measure hidden_child_cell_row_width hidden_child_row_width get_column_width/;
+    = qw/align_at_ampersand _align_mark_down_block double_back_slash_else main_formatting individual_padding multicolumn_padding multicolumn_pre_check multicolumn_post_check dont_measure hidden_child_cell_row_width hidden_child_row_width get_column_width/;
 our $alignmentBlockCounter;
 our @cellStorage;                      # two-dimensional storage array containing the cell information
 our @formattedBody;                    # array for the new body
 our @minMultiColSpan;
 our @maxColumnWidth;
 our @maxDelimiterWidth;
+our @hiddenChildrenStorage;
+our $hiddenChildCount = 0;
 
-sub find_aligned_block {
+sub _align_mark_down_block {
 
-    my $self = shift;
-
-    return unless ( ${$self}{body} =~ m/(?!<\\)%\*\h*\\begin\{/s );
-
-    # aligned block
+    # aligned block within mark down
+    #
     #      %* \begin{tabular}
     #         1 & 2 & 3 & 4 \\
     #         5 &   & 6 &   \\
     #        %* \end{tabular}
-    $logger->trace('*Searching for ALIGNED blocks marked by comments')  if ($is_t_switch_active);
-    $logger->trace( Dumper( \%{ $mainSettings{lookForAlignDelims} } ) ) if ($is_tt_switch_active);
-    while ( my ( $alignmentBlock, $yesno ) = each %{ $mainSettings{lookForAlignDelims} } ) {
+    #
+    my $self = shift;
+
+    my @tcMarkDownToBeReturned;
+
+    foreach (@trailingComments) {
+        next unless ${$_}{alignMarkUp};
+        next unless ${$self}{body} =~ m/${$_}{id}/s;
+        ${$self}{body} =~ s/${$_}{id}/${$_}{value}/s;
+        push( @tcMarkDownToBeReturned, { id => ${$_}{id}, value => ${$_}{value} } );
+    }
+    $logger->info("*alignment mark-up routine %*\\begin{<tabular>}...\\end{<tabular>}") if $is_t_switch_active;
+    $logger->trace("unpacking mark-up comments for this routine")                       if $is_t_switch_active;
+
+    while ( my ( $alignmentBlock, $yesno ) = each %{ $mainSetting{lookForAlignDelims} } ) {
         if ( ref $yesno eq "HASH" ) {
             $yesno = ( defined ${$yesno}{delims} ) ? ${$yesno}{delims} : 1;
         }
         if ($yesno) {
-            $logger->trace("looking for %*\\begin\{$alignmentBlock\} environments");
+            $logger->trace("looking for %*\\begin\{$alignmentBlock\} environments") if $is_t_switch_active;
 
             my $alignmentRegExp = qr/
+                            (\h*)
                             (
-                                (?!<\\)
-                                %
-                                \*
-                                \h*                       # possible horizontal spaces
+                                (?!<\\)%\*\h*
                                 \\begin\{
                                         ($alignmentBlock) # environment name captured into $2
                                        \}                 # \begin{alignmentBlock} statement captured into $1
                             )
                             (
                                 .*?                       # non-greedy match (body) into $3
+                                \R                        # a line break
                             )
-                            \R                            # a line break
                             \h*                           # possible horizontal spaces
                             (
-                                (?!<\\)
-                                %\*                       # %
+                                (?!<\\)%\*                # %*
                                 \h*                       # possible horizontal spaces
-                                \\end\{\2\}               # \end{alignmentBlock} statement captured into $4
+                                \\end\{\3\}               # \end{alignmentBlock} statement captured into $4
                             )
-                        /sx;
+                        /smx;
 
-            while ( ${$self}{body} =~ m/$alignmentRegExp/sx ) {
-
-                ${$self}{body} =~ s/
-                                    $alignmentRegExp
-                                /
+            ${$self}{body} =~ s/$alignmentRegExp/
+                                    my $indentation = ($1?$1:q());
+                                    my $begin = $2;
+                                    my $name = $3;
+                                    my $body = $4;
+                                    my $end = $5;
                                     # create a new Environment object
-                                    my $alignmentBlockObj = LatexIndent::AlignmentAtAmpersand->new( begin=>$1,
-                                                                          body=>$3,
-                                                                          end=>$4,
-                                                                          name=>$2,
+                                    my $alignmentBlockObj = LatexIndent::AlignmentAtAmpersand->new(
+                                                                          body=>$body,
+                                                                          name=>$name,
                                                                           modifyLineBreaksYamlName=>"environments",
-                                                                          linebreaksAtEnd=>{
-                                                                            begin=>1,
-                                                                            body=>1,
-                                                                            end=>0,
-                                                                          },
                                                                           );
             
                                     # log file output
-                                    $logger->trace("*Alignment block found: %*\\begin\{${$alignmentBlock}{name}\}") if $is_t_switch_active;
+                                    $logger->trace("*found: marked up alignment block %*\\begin{$name}") if $is_t_switch_active;
 
-                                    # the settings and storage of most objects has a lot in common
-                                    $self->get_settings_and_store_new_object($alignmentBlockObj);
+                                    # align at ampersand routine
+                                    $alignmentBlockObj->yaml_get_indentation_settings_for_this_object;
+                                    $alignmentBlockObj->align_at_ampersand ;  
+
+                                    # body update
+                                    $body = ${$alignmentBlockObj}{body};
+                                    $body =~ s"^"$indentation"mg;
+                                    $body =~ s"^$indentation""s;
                                     
-                                    ${@{${$self}{children}}[-1]}{replacementText};
+                                    my $addedIndentation = ${$alignmentBlockObj}{indentation};
+                                    # add indentation
+                                    $body =~ s"^"$addedIndentation"mg;
+                                    $body =~ s"^$addedIndentation""s;
+                                    $body =~ s"\s*$"\n"s;
+                                    $begin.$body.$end;
                               /xseg;
-            }
         }
         else {
-            $logger->trace("*not* looking for $alignmentBlock as $alignmentBlock:$yesno");
+            $logger->trace("*not* looking for $alignmentBlock as $alignmentBlock:$yesno") if $is_t_switch_active;
         }
+    }
+
+    $logger->trace("*alignment mark-up routine: replacing comments") if $is_t_switch_active;
+    my $notPrecededByRegExp = qr/${${$mainSetting{fineTuning}}{trailingComments}}{notPrecededBy}/;
+    foreach (@tcMarkDownToBeReturned) {
+        ${$self}{body} =~ s/$notPrecededByRegExp%\Q${$_}{value}\E/%${$_}{id}/s;
     }
     return;
 }
@@ -119,26 +141,108 @@ sub yaml_modify_line_breaks_settings {
     return;
 }
 
-sub tasks_particular_to_each_object {
-    return;
-}
-
-sub create_unique_id {
-    my $self = shift;
-
-    $alignmentBlockCounter++;
-    ${$self}{id} = "$tokens{alignmentBlock}$alignmentBlockCounter";
-    return;
-}
-
 sub align_at_ampersand {
     my $self  = shift;
     my %input = @_;
 
-    return if ( ${$self}{bodyLineBreaks} == 0 );
+    $logger->trace("*alignAtAmpersand routine for ${$self}{name} (type: ${$self}{modifyLineBreaksYamlName})")
+        if $is_t_switch_active;
 
     # some blocks may contain verbatim to be measured
     ${$self}{measureVerbatim} = ( ${$self}{body} =~ m/$tokens{verbatim}/ ? 1 : 0 );
+
+    # m-switch only for double back slash
+    #   DBSStartsOnOwnLine
+    #   DBSFinishesWithLineBreak
+    if ($is_m_switch_active) {
+        my $DBSStartsOnOwnLine;
+        my $DBSFinishesWithLineBreak;
+        if ( ${$self}{modifyLineBreaksYamlName} =~ m/Arguments/s ) {
+            $DBSStartsOnOwnLine       = ${$self}{DBSStartsOnOwnLine};
+            $DBSFinishesWithLineBreak = ${$self}{DBSFinishesWithLineBreak};
+        }
+        else {
+            my $commandStorageName = ${$self}{name} . ${$self}{modifyLineBreaksYamlName};
+            $DBSStartsOnOwnLine = (
+                defined ${ $previouslyFoundSetting{$commandStorageName} }{DBSStartsOnOwnLine}
+                ? ${ $previouslyFoundSetting{$commandStorageName} }{DBSStartsOnOwnLine}
+                : 0
+            );
+            $DBSFinishesWithLineBreak = (
+                defined ${ $previouslyFoundSetting{$commandStorageName} }{DBSFinishesWithLineBreak}
+                ? ${ $previouslyFoundSetting{$commandStorageName} }{DBSFinishesWithLineBreak}
+                : 0
+            );
+        }
+        $self->double_back_slash_else( $DBSStartsOnOwnLine, $DBSFinishesWithLineBreak )
+            if ( $DBSStartsOnOwnLine or $DBSFinishesWithLineBreak );
+    }
+
+    # abandon the routine if there are no line breaks
+    return unless ${$self}{body} =~ m/\R/s;
+
+    # check for line breaks at end of begin
+    # example:
+    #
+    #       \begin{align*}    1&2\\
+    #         3&4\\
+    #       \end{align*}
+    #
+    # stores '\begin{align*}    ' as the begin statement (note the trailing h-space)
+    #
+    # note: check ${$self}{begin} as well because of poly-switch adjustment (see pmatrix2-mod1.tex)
+    ${$self}{linebreaksAtEnd}{begin} = ( ${$self}{body} =~ m/\A\h*\R/s ? 1 : 0 );
+    if ( $is_m_switch_active and defined ${$self}{begin} and !${$self}{linebreaksAtEnd}{begin} ) {
+        ${$self}{linebreaksAtEnd}{begin} = ( ${$self}{begin} =~ m/\h*\R$/s ? 1 : 0 );
+    }
+    if ( !${ ${$self}{linebreaksAtEnd} }{begin} ) {
+        ${$self}{body} =~ s/\A(\h*)//s;
+        ${$self}{begin} .= ( $1 ? $1 : q() );
+    }
+
+    # check for line breaks at end of body
+    ${$self}{linebreaksAtEnd}{body} = ( ${$self}{body} =~ m/\h*\R$/s ? 1 : 0 );
+
+    # find and store \\ [ but only temporarily; we need to do this before the hidden children routine
+    if ( ${$self}{lookForChildCodeBlocks} ) {
+        my @DBSstorage = ();
+        ${$self}{body} =~ s/(\\\\\h+\[)/
+               $hiddenChildCount++; 
+               my $output = $tokens{alignmentBlock}.$hiddenChildCount.$tokens{endOfToken}; 
+               push(@DBSstorage,{id=>$output, value=>$1 });
+               $output;/sgex;
+
+        # find and store hidden children
+        ${$self}{body} =~ s/
+           (?<ALLCODEBLOCKS>
+             $allCodeBlocks 
+           )/
+           # store the code block
+           my $anyCodeBlock = $+{ALLCODEBLOCKS};
+           # remove leading space
+           $anyCodeBlock =~ s"^(\s*)""s;
+           my $leadingSpace = ($1?$1:q());
+           $anyCodeBlock =~ s"(\s*)$""s;
+           my $trailingSpace = ($1?$1:q());
+           my $output = $anyCodeBlock; 
+           # check for internal line breaks or \\
+           if ($anyCodeBlock =~ m"\R"s 
+                    or $anyCodeBlock =~m"(${$self}{doubleBackSlash})"s
+                    or $anyCodeBlock =~m"${$self}{delimiterRegEx}"s){
+               $hiddenChildCount++; 
+               $output = $tokens{alignmentBlock}.$hiddenChildCount.$tokens{endOfToken}; 
+               push(@hiddenChildrenStorage,{id=>$output,value=>$anyCodeBlock});
+               $logger->trace("*found: hidden child in alignment block")         if $is_t_switch_active;
+               ${$self}{measureHiddenChildren} = 1;
+           }
+           $output = $leadingSpace.$output.$trailingSpace; 
+      $output;/sgex;
+
+        # put DBS with h-space [ back in
+        foreach (@DBSstorage) {
+            ${$self}{body} =~ s/${$_}{id}/${$_}{value}/s;
+        }
+    }
 
     my $maximumNumberOfAmpersands = 0;
 
@@ -157,6 +261,19 @@ sub align_at_ampersand {
 
     $logger->trace("*dontMeasure routine, row mode") if ( ${$self}{dontMeasure} and $is_t_switch_active );
 
+    # delimiters regex, default is:
+    #
+    #   (?<!\\)&
+    #
+    # which is set in GetYamlSettings.pm, but can be set
+    # by the user using, for example
+    #
+    #   lookForAlignDelims:
+    #       tabular:
+    #           delimiter: '\<'
+    #
+    my $delimiterRegEx = qr/${$self}{delimiterRegEx}/;
+
     #
     # initial loop for column storage and measuring
     #
@@ -173,6 +290,7 @@ sub align_at_ampersand {
         my $endPiece = q();
         if ( $_ =~ m/(\\\\.*)/ ) {
             if ( ${$self}{alignFinalDoubleBackSlash} ) {
+                $logger->trace("alignFinalDoubleBackSlash active for ${$self}{name}") if ($is_t_switch_active);
 
                 # for example, if we want:
                 #
@@ -207,19 +325,6 @@ sub align_at_ampersand {
 
         # some rows shouldn't be formatted
         my $unformattedRow = $_;
-
-        # delimiters regex, default is:
-        #
-        #   (?<!\\)&
-        #
-        # which is set in GetYamlSettings.pm, but can be set
-        # by the user using, for example
-        #
-        #   lookForAlignDelims:
-        #       tabular:
-        #           delimiter: '\<'
-        #
-        my $delimiterRegEx = qr/${$self}{delimiterRegEx}/;
 
         my $numberOfAmpersands = () = $_ =~ /$delimiterRegEx/g;
         $maximumNumberOfAmpersands = $numberOfAmpersands if ( $numberOfAmpersands > $maximumNumberOfAmpersands );
@@ -482,6 +587,9 @@ sub align_at_ampersand {
     #
     if ( ${$self}{alignContentAfterDoubleBackSlash} ) {
 
+        # check linebreaks at end of body
+        ${$self}{linebreaksAtEnd}{body} = ( ${$self}{body} =~ s/\R$//s ? 1 : 0 );
+
         # check that spacesAfterDoubleBackSlash>=0
         ${$self}{spacesAfterDoubleBackSlash} = max( ${$self}{spacesAfterDoubleBackSlash}, 0 );
 
@@ -490,9 +598,12 @@ sub align_at_ampersand {
         my $afterDBSbody          = q();
         my $maxDBSlength          = 0;
         foreach (@originalFormattedBody) {
-            ${$_}{row} =~ s/(.*?)(${${$mainSettings{fineTuning}}{modifyLineBreaks}}{doubleBackSlash})\h*//s;
-            ${$_}{beforeDBS} = ( $1 ? $1 : q() );
-            ${$_}{DBS}       = ( $2 ? $2 : q() );
+            ${$_}{beforeDBS} = q();
+            ${$_}{DBS}       = q();
+            if ( ${$_}{row} =~ s/(.*?)(${$self}{doubleBackSlash})\h*//s ) {
+                ${$_}{beforeDBS} = $1;
+                ${$_}{DBS}       = $2;
+            }
             ${$_}{DBS} .= " " x ( ${$self}{spacesAfterDoubleBackSlash} ) if ( ${$_}{DBS} ne '' );
             $afterDBSbody .= ${$_}{row} . "\n";
             push( @beforeDBSlengths, &get_column_width( ${$_}{beforeDBS} . ${$_}{DBS} ) );
@@ -500,6 +611,7 @@ sub align_at_ampersand {
         }
 
         ${$self}{body} = $afterDBSbody;
+        ${$self}{body} =~ s/\h*\R$//s if !${$self}{linebreaksAtEnd}{body};
         $self->align_at_ampersand(
             measure_after_DBS => 1,
             beforeDBSlengths  => \@beforeDBSlengths,
@@ -549,18 +661,37 @@ sub align_at_ampersand {
     #
     # see https://github.com/cmhughes/latexindent.pl/issues/223 for example
 
+    ${$self}{beginAdjusted} = 0;
     if (   !${ ${$self}{linebreaksAtEnd} }{begin}
         and ${ $cellStorage[0][0] }{type} eq "X"
-        and ${ $cellStorage[0][0] }{measureThis} )
+        and ${ $cellStorage[0][0] }{measureThis}
+        and ${ $cellStorage[0][0] }{entry} ne '' )
     {
 
         my $lengthOfBegin = ${$self}{begin};
         if ( ( ${$self}{begin} eq '{' | ${$self}{begin} eq '[' ) and ${$self}{parentBegin} ) {
             $lengthOfBegin = ${$self}{parentBegin} . "{";
         }
+
+        # remove space BEFORE begin statement; see test-cases/alignment/vassar00.tex
+        $lengthOfBegin =~ s/\A\s*//s;
         ${$self}{indentation} = " " x ( &get_column_width($lengthOfBegin) );
         $logger->trace("Adjusting indentation of ${$self}{name} in AlignAtAmpersand routine") if ($is_t_switch_active);
+
+        # begin statement has been adjusted
+        ${$self}{beginAdjusted} = 1;
     }
+
+    # finally finally, put hidden children back in
+    foreach (@hiddenChildrenStorage) {
+        ${$self}{body} =~ m/^(.*?)${$_}{id}/m;
+        my $addedIndentation   = ( $1 ? " " x &get_column_width($1) : q() );
+        my $hiddenChildContent = ${$_}{value};
+        $hiddenChildContent =~ s"^"$addedIndentation"mg;
+        $hiddenChildContent =~ s"^$addedIndentation""s;
+        ${$self}{body}      =~ s/${$_}{id}/$hiddenChildContent/s;
+    }
+
 }
 
 sub main_formatting {
@@ -588,7 +719,7 @@ sub main_formatting {
     # objective (1): padding
     #
 
-    $logger->trace("*formatted rows for: ${$self}{name}") if ($is_t_switch_active);
+    $logger->trace("*formatted rows for: ${$self}{name} (without \\\\)") if ($is_t_switch_active);
 
     my $rowCount = -1;
 
@@ -681,20 +812,6 @@ sub main_formatting {
             ${$self}{maximumRowWidth} = $rowWidth;
         }
     }
-
-    # log file information
-    if ( $is_tt_switch_active and ${$self}{measureHiddenChildren} ) {
-        $logger->info('*FamilyTree after align for ampersand');
-        $logger->trace( Dumper( \%familyTree ) ) if ($is_tt_switch_active);
-
-        $rowCount = -1;
-
-        # row loop
-        foreach my $row (@cellStorage) {
-            $rowCount++;
-            $logger->trace("row $rowCount row width: ${$formattedBody[$rowCount]}{rowWidth}");
-        }
-    }
 }
 
 sub dont_measure {
@@ -705,6 +822,8 @@ sub dont_measure {
     if (    $input{mode} eq "cell"
         and ref( \${$self}{dontMeasure} ) eq "SCALAR"
         and ${$self}{dontMeasure} eq "largest"
+        and defined ${ $cellStorage[ $input{row} ][ $input{column} ] }{width}
+        and defined $maxColumnWidth[ $input{column} ]
         and ${ $cellStorage[ $input{row} ][ $input{column} ] }{width} == $maxColumnWidth[ $input{column} ] )
     {
         # dontMeasure stored as largest, for example
@@ -1519,38 +1638,70 @@ sub pretty_print_cell_info {
 
 sub double_back_slash_else {
     my $self = shift;
+    my ( $DBSStartsOnOwnLine, $DBSFinishesWithLineBreak ) = @_;
 
-    # check for existence of \\ statement, and associated line break information
-    $self->check_for_else_statement(
+    $logger->trace(
+        "*double back slash poly-switch work for ${$self}{name}, DBSStartsOnOwnLine, DBSFinishesWithLineBreak")
+        if $is_t_switch_active;
 
-        # else name regexp
-        elseNameRegExp => qr/${${$mainSettings{fineTuning}}{modifyLineBreaks}}{doubleBackSlash}/,
+    my $DBSRegEx = qr{
+         (\s*)
+         (?:
+           (?<DBS>
+             (?<DBSSTATEMENT>
+               ${$self}{doubleBackSlash}
+             )
+             $mSwitchOnlyTrailing 
+           )
+           |
+           (?<ALLCODEBLOCKS>
+             $allCodeBlocks 
+           )
+         )
+        }xs;
 
-        # else statements name: note that DBS stands for 'Double Back Slash'
-        ElseStartsOnOwnLine => "DBSStartsOnOwnLine",
+    ${$self}{body} =~ s/$DBSRegEx/
+                    my $begin = $1;
+                    my $dbsOrCodeBlock = q();
+                    if ($+{DBS}){
+                        my $horizontalTrailingSpace=($+{TRAILINGHSPACE}?$+{TRAILINGHSPACE}:q());
+                        my $trailingComment=($+{TRAILINGCOMMENT}?$+{TRAILINGCOMMENT}:q());
+                        my $linebreaksAtEnd=($+{TRAILINGCOMMENT} ? q() : ( $+{TRAILINGLINEBREAK} ? $+{TRAILINGLINEBREAK} : q()));
+                        my $dbsStatement = $+{DBSSTATEMENT};
+                        my $horizontalSpaceBeforeDBS = (($begin =~m @^\h*$@s and $DBSStartsOnOwnLine > 0) ? $begin :  q());
 
-        # end statements
-        ElseFinishesWithLineBreak => "DBSFinishesWithLineBreak",
+                        my $codeBlockObj = LatexIndent::Special->new(name=>"dbs",
+                                                          begin=>$begin.$dbsStatement,
+                                                          body=>$horizontalTrailingSpace.$trailingComment.$linebreaksAtEnd,
+                                                          end=>q(),
+                                                          modifyLineBreaksYamlName=>"DBS",
+                                                          type=>"middle",
+                                                          BeginStartsOnOwnLine=>$DBSStartsOnOwnLine,
+                                                          BodyStartsOnOwnLine=>$DBSFinishesWithLineBreak,
+                        );
 
-        # for the YAML settings storage
-        storageNameAppend => "DBS",
+                        $logger->trace("*found: $dbsStatement \t type: DBS")         if $is_t_switch_active;
 
-        # logfile information
-        logName => "double-back-slash-block (for align at ampersand, see lookForAlignDelims)",
+                        # mlb BEFORE \\
+                        $codeBlockObj->_mlb_begin_starts_on_own_line if ${$codeBlockObj}{BeginStartsOnOwnLine} != 0;  
 
-        # we don't want to store these "\\" blocks as demonstrated in test-cases/alignment/issue-426.tex
-        storage => 0,
-    );
+                        # mlb AFTER \\
+                        # \\ needs particular attention when DBSFinishesWithLineBreak is -1, see
+                        #    issue-426 -l issue-426,double-back-slash-finish-1 -o=+-mod-1
+                        ${$codeBlockObj}{body} = " ".${$codeBlockObj}{body} if (${$codeBlockObj}{BodyStartsOnOwnLine} == -1 and ${$codeBlockObj}{body} !~ m"^\h"s );  
+                        $codeBlockObj->_mlb_body_starts_on_own_line if ${$codeBlockObj}{BodyStartsOnOwnLine} != 0;  
 
-    # can return if no "\\" blocks were found
-    return unless defined ${$self}{children};
+                        # put DBS block back together
+                        $dbsOrCodeBlock = $horizontalSpaceBeforeDBS.${$codeBlockObj}{begin}.${$codeBlockObj}{body}.${$codeBlockObj}{end}; 
+                      } else {
+                        $dbsOrCodeBlock = $begin.$+{ALLCODEBLOCKS};
+                      };
+                      $dbsOrCodeBlock;/sgex;
 
-    # now loop back through and put the "\\" blocks back in, accounting for all poly-switches
-    while ( ${ ${$self}{children}[-1] }{storage} == 0 ) {
-        my $child = ${$self}{children}[-1];
-        $self->replace_id_with_begin_body_end( $child, -1 );
-        last if scalar( @{ ${$self}{children} } ) == 0;
-    }
+    ${$self}{body} = _mlb_line_break_token_adjust( ${$self}{body} );
+    $self->_mlb_after_indentation_token_adjust;
+    return;
+
 }
 
 # possible hidden children, see test-cases/alignment/issue-162.tex and friends
@@ -1587,11 +1738,11 @@ sub hidden_child_cell_row_width {
 
     my ( $tmpCellEntry, $rowCounter, $columnCounter ) = @_;
 
-    for my $hiddenChildToMeasure ( @{ ${$self}{measureHiddenChildren} } ) {
-        if ( $tmpCellEntry =~ m/.*?$hiddenChildToMeasure/s
-            and defined $familyTree{$hiddenChildToMeasure}{bodyForMeasure} )
-        {
-            $tmpCellEntry =~ s/$hiddenChildToMeasure/$familyTree{$hiddenChildToMeasure}{bodyForMeasure}/s;
+    foreach (@hiddenChildrenStorage) {
+        my $hiddenChildID      = ${$_}{id};
+        my $hiddenChildContent = ${$_}{value};
+        if ( $tmpCellEntry =~ m/.*?$hiddenChildID/s ) {
+            $tmpCellEntry =~ s/$hiddenChildID/$hiddenChildContent/s;
         }
     }
 
@@ -1673,32 +1824,20 @@ sub hidden_child_row_width {
 
         $tmpRow = ( "." x $lengthOfBegin ) . $tmpRow;
 
-        for my $hiddenChildToMeasure ( @{ ${$self}{measureHiddenChildren} } ) {
-            if ( $tmpRow =~ m/(^.*)?$hiddenChildToMeasure/m
-                and defined $familyTree{$hiddenChildToMeasure}{bodyForMeasure} )
-            {
+        foreach (@hiddenChildrenStorage) {
+            my $hiddenChildID      = ${$_}{id};
+            my $hiddenChildContent = ${$_}{value};
+            if ( $tmpRow =~ m/(^.*)?$hiddenChildID/m ) {
                 my $partBeforeId       = $1;
                 my $lengthPartBeforeId = &get_column_width($partBeforeId);
 
-                foreach ( @{ $familyTree{$hiddenChildToMeasure}{ancestors} } ) {
-                    if ( ${$_}{ancestorID} eq ${$self}{id} ) {
-                        if ( $lengthOfBegin > 0 ) {
-                            ${$_}{ancestorIndentation} = ( " " x ($lengthPartBeforeId) );
-                        }
-                        else {
-                            ${$_}{ancestorIndentation} = ${$_}{ancestorIndentation} . ( " " x ($lengthPartBeforeId) );
-                        }
-                    }
-                }
-                my $tmpBodyToMeasure = join(
-                    "\n" . ( "." x ($lengthPartBeforeId) ),
-                    split( "\n", $familyTree{$hiddenChildToMeasure}{bodyForMeasure} )
-                );
+                my $tmpBodyToMeasure
+                    = join( "\n" . ( "." x ($lengthPartBeforeId) ), split( "\n", $hiddenChildContent ) );
 
                 # remove trailing \\
                 $tmpBodyToMeasure =~ s/(\\\\\h*$)//mg;
 
-                $tmpRow =~ s/$hiddenChildToMeasure/$tmpBodyToMeasure/s;
+                $tmpRow =~ s/$hiddenChildID/$tmpBodyToMeasure/s;
             }
         }
 
@@ -1779,7 +1918,7 @@ sub get_column_width {
 
     # default length measurement
     # credit/reference: https://perldoc.perl.org/perlunicook#%E2%84%9E-33:-String-length-in-graphemes
-    unless ( $switches{GCString} ) {
+    unless ( $switch{GCString} ) {
         my $count = 0;
         while ( $stringToBeMeasured =~ /\X/g ) { $count++ }
         return $count;

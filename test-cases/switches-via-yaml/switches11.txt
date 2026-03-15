@@ -1,0 +1,3 @@
+INFO:  Switch activated via YAML: silent mode (-s)
+INFO:  Switch activated via YAML: ttrace mode (-tt)
+TRACE: found: command 	 type: commands

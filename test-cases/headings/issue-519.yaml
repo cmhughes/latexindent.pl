@@ -5,11 +5,14 @@ noAdditionalIndent:
 
 indentAfterHeadings:
   section:
-    indentAfterThisHeading: 1
+    lookForThis: 1
     level: 3
+    blocksEndBefore: |-
+      (?x)
+        \\end\{document\}
   subsection:
-    indentAfterThisHeading: 1
+    lookForThis: 1
     level: 4
   subsection*:
-    indentAfterThisHeading: 0
+    lookForThis: 0
     level: 4

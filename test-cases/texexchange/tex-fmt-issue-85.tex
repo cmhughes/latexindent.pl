@@ -1,0 +1,9 @@
+\iftyp@doctor
+  \def\englishdegreename{Doctor}
+  \def\englishbooktitle{Doctoral Dissertation}
+  \def\englishthesistype{A dissertation}
+  \def\englishthesistypea{DISSERTATION}
+\else
+  \ClassError{XJTU-thesis} 
+  {You have to assign one of these options for this document: report, slide, bachelor, master or doctor.}{} 
+\fi

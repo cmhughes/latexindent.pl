@@ -13,9 +13,7 @@ latexindent.pl documentation
    :numbered: 4
 
    sec-introduction
-   sec-demonstration
    sec-how-to-use
-   sec-indent-config-and-settings
    sec-default-user-local
    sec-the-m-switch
    sec-replacements
