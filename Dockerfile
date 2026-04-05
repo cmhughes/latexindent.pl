@@ -1,4 +1,4 @@
-FROM perl:5.42.1-slim-threaded-bookworm
+FROM perl:5.42.2-slim-threaded-bookworm
 #
 # Docker necessary file
 #
