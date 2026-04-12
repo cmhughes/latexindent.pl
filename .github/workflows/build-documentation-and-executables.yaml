@@ -422,7 +422,7 @@ jobs:
           mv cmh01 latexindent-release.md
           cat latexindent-release.md
       - name: latexindent.pl release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           body_path: latexindent-release.md
           files: |
