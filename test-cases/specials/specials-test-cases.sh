@@ -115,5 +115,10 @@ egrep -i 'found:' indent.log > issue-619.txt
 latexindent.pl -s -l issue-621 -t issue-621 -o=+-mod1
 egrep -i 'found:' indent.log > issue-621.txt
 
+latexindent.pl -s issue-638 -o=+-mod1
+
+latexindent.pl -s -l issue-638 -t issue-638 -o=+-mod2
+egrep -i 'found:' indent.log > issue-638.txt
+
 set +x 
 wrapuptasks

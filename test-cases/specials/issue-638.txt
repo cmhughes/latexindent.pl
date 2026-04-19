@@ -1,0 +1,5 @@
+TRACE: found: preamble, storing as verbatim (indentPreamble: 0)
+TRACE: found: document 	 type: environments
+TRACE: found: resumeBegEnd 	 type: specialBeginEnd
+TRACE: found: resumeItem 	 type: commands
+TRACE: found: resumeItem 	 type: commands
