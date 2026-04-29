@@ -1,0 +1,21 @@
+switchesViaYaml:
+  mSwitch: 1
+  rSwitch: 1
+
+
+modifyLineBreaks:
+  preserveBlankLines: 1
+  condenseMultipleBlankLinesInto: 1
+  environments:
+    DBSFinishesWithLineBreak: 1
+  oneSentencePerLine:
+    manipulateSentences: 1          
+    sentencesFollow:
+      rightBrace: 0  #NEW!!!!
+
+
+specialBeginEnd:
+  - name: resumeBegEnd
+    begin: \\resumeItemListStart
+    end: \\resumeItemListEnd
+    nested: 1
