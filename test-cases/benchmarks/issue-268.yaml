@@ -1,0 +1,9 @@
+lookForAlignDelims:
+  tikzcd: 1
+  etikzcd: 1
+  pmatrix: 1
+modifyLineBreaks:
+  environments:
+    DBSFinishesWithLineBreak: 1
+  textWrapOptions:
+    columns: 80

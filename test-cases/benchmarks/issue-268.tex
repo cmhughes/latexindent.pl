@@ -1,0 +1,866 @@
+\documentclass{article}
+\input{commands.tex}
+
+\title{Chapter 9 Problems}
+\author{Josiah Bills}
+\date{March 2021}
+
+\begin{document}
+
+\maketitle
+
+\section{9.1.A}
+Consider the following diagram: \[
+    \begin{etikzcd}
+                          & Y \ar[d] \ar[ddr]
+        \\
+        X \ar[r] \ar[rrd] & X \coprod Y
+        \ar[dr, dotted]                           \\
+                          &                   & Z
+    \end{etikzcd}
+\] We may define the dotted
+morphism on $Y$ as the morphism on the top and similarly for
+the morphism on $X$. Since morphisms glue, we get a unique
+morphism making the diagram commute. \qed
+
+\section{9.1.B}
+$\Spec$ is a contravariant equivalence of categories. \qed
+
+\section{9.1.C}
+Let $Z$ be arbitrary, and let $f: Z \to X$.
+Consider the following diagram: \[
+    \begin{etikzcd}
+        h_X(X) \ar[d, "\eta_X", swap] \ar[r, "\_ \after f"] & h_X(Z)
+        \ar[d, "\eta_Z"]                                             \\
+        h_Y(X) 	     \ar[r, "\_ \after f", swap]             & h_Y(Z)
+    \end{etikzcd}
+    \begin{etikzcd}
+        \text{id} \ar[d] \ar[r] & f
+        \ar[d]
+        \\
+        \phi		 \ar[r]             & \phi \after f
+    \end{etikzcd}
+\] Obviously, the natural
+transformation is uniquely determined by the destination of the identity. \qed
+
+\section{9.1.D}
+Suppose we have two morphisms of schemes $\sigma_X: X \to Z, \sigma_Y: Y \to Z$. Let
+$W$ be arbitrary. Then $h_X \times_{h_Z} h_Y(W)$ is given by
+a pair of morphsims $(f_X, f_Y)$ such that $f_X \after \sigma_X=f_Y \after \sigma_Y$.
+Let $U_i$ be an open cover of $W$.
+Consider a collection of morphisms $(f_{Xi}, f_{Yi})$ such that
+$f_{Xi} \after \sigma_X=f_{Yi} \after \sigma_Y$ for all $i$ and such that the
+components individually satisfy gluing. Then they glue to a pair of morphisms
+that satisfy the pullback condition. Identity is likewise trivial. \qed
+
+\section{9.1.E}
+The if direction follows from the existence of pullbacks of open embeddings
+(7.1.B). For the other direction, take $X=Z$ and pull back
+along the identity. \qed
+
+\section{9.1.F}
+\begin{enumerate}[a.]
+    \item Composition of pullback squares is a pullback square. \qed
+    \item Pullback $h'$ along $h''$, then consider the
+          pullback $h' \after h_X$. You once again get a composed pullback square.
+          \qed
+    \item All the pullbacks are of representable functors, so we may perform the pullback
+          in $\catname{Scheme}$ where the result is obvious. \qed
+\end{enumerate}
+
+\section{9.1.G}
+For the moment we assume that fiber products exist. Then we have
+$U\times_WV = U\times_ZY \intersect X\times_ZV$. If $\phi: T \to X\times_ZY$ then
+$\phi^{-1}(U\times_WV)=\phi^{-1}(U\times_ZY
+    ) \intersect
+    \phi^{-1}(X\times_ZV)$. Clearly also $\phi^{-1}(U\times_ZY)=(\pi_X \after
+    \phi)^{-1}(U)$.
+
+Consider the following diagram: \[\begin{etikzcd}
+        {h'}
+        \\
+                                                     & {h_T}
+        \\{h_U\times_{h_W}h_V} &
+                                                     & {h_V}
+        \\
+                                                     & {h_X \times_{h_Z} h_Y } &   &
+        {h_Y}
+        \\{h_U}                &                         &
+        {h_W}
+        \\
+                                                     & {h_X}                   &   &
+        {h_Z}
+        \arrow[from=6-2, to=6-4]
+        \arrow[from=4-4, to=6-4]
+        \arrow[from=4-2, to=6-2]
+        \arrow[from=4-2, to=4-4]
+        \arrow[hook, from=3-3, to=4-4]
+        \arrow[hook, from=5-1, to=6-2]
+        \arrow[hook, from=5-3, to=6-4]
+        \arrow[from=5-1, to=5-3]
+        \arrow[from=3-3, to=5-3]
+        \arrow[from=3-1, to=3-3]
+        \arrow[from=3-1, to=5-1]
+        \arrow[dashed, hook, from=3-1, to=4-2]
+        \arrow[from=2-2, to=4-2]
+        \arrow[hook, from=1-1, to=2-2]
+        \arrow[from=1-1, to=3-1]
+    \end{etikzcd}\] We wish to show that
+$h'$ is representable and that $h' \to h_T$ is
+represented by an open embedding. Consider the following slice of the above
+diagram: \[\begin{etikzcd}
+        {h_{S_1}}
+        \\{h'}                 &
+        {h_T}                                        &
+        {}
+        \\{h_U\times_{h_W}h_V} &
+        {h_X\times_{h_Z}h_Y}
+        \\{h_U}                &
+        {h_X}
+        \arrow[from=2-2, to=3-2]
+        \arrow[from=2-1, to=3-1]
+        \arrow[from=2-1, to=2-2]
+        \arrow[from=3-1, to=3-2]
+        \arrow[from=3-1, to=4-1]
+        \arrow[from=3-2, to=4-2]
+        \arrow[hook, from=4-1, to=4-2]
+        \arrow[hook, from=1-1, to=2-2]
+        \arrow[curve={height=30pt}, from=1-1, to=4-1]
+    \end{etikzcd}\] We find $h_{S_1}$ defined by
+applying the definition of the open embedding $h_U \to h_X$ to the
+vertical morphism. Likewise, we can find an $h_{S_2}$
+corresponding to $h_V$. Now, set $S=S_1 \intersect S_2$, as
+motivated by the first paragraph. We show $h'=h_S$. Let
+$R$ be an arbitrary scheme and consider:
+\[\begin{etikzcd}
+        {h''(R)}
+        \\
+                 & {h_S(R)}                &
+        {h_T(R)} &
+        {}
+        \\
+                 & {h_U\times_{h_W}h_V(R)} &
+        {h_X\times_{h_Z}h_Y(R)}
+        \arrow[from=2-3, to=3-3]
+        \arrow[from=2-2, to=3-2]
+        \arrow[from=2-2, to=2-3]
+        \arrow[from=3-2, to=3-3]
+        \arrow[from=1-1, to=3-2]
+        \arrow[from=1-1, to=2-3]
+        \arrow[dashed, from=1-1, to=2-2]
+    \end{etikzcd}\] Let $x \in h''(R)$. Then we get a pair
+$(f,g) \in h_U\times_{h_W}h_V(R)$ and a morphism $j \in h_T(R)$ whose image is
+$(f, g)$. We wish to show that $\im j \subseteq S$. Applying
+the definition of open embedding, we get two morphisms $f': R \to S_1, g': R \to S_2$
+both of which map to $j$ (and hence are equal). We made no
+choices during this process, so the morphism $x \to f'$ is unique.
+\qed
+
+\section{9.1.H}
+Trivial
+
+\section{9.1.I}
+We first show that open immersions are injective. Let $f_X(x_1)=f_X(x_2)$
+with $x_1, x_2 \in h'(X)$. Then, abusing notation, we write
+$x_1, x_2: h_X \to h'$. By yoneda, we have $f\after x_1=f\after x_2: h_X \to h$. Now,
+pullback $f\after x_1$ along $f$ to get an open
+embedding $h_U \to h_X$. Now, by definition, $(f \after x_1)_X(\id)=f(x_1)$.
+Clearly, then $(x_1,\id) \in h_U(X)$ (regarded as the pullback). Likewise,
+$(x_2, \id) \in h_U(X)$, and these both go to the same element in
+$h_X(X)$. Thus they are equal, so that $x_1 = x_2$.
+
+The identity $h_{U_i}(U_i)$ determines an element
+$h(U_i)$. By the zariski condition we get an element
+$h(X)$. By the yoneda lemma we get a natural transformation
+$f: h_X \to h$. We wish to show that this is bijective.
+
+Let $Y$ be an arbitrary scheme with a pullback cover
+$V_i$. Let $x \in h(Y)$. Then we abuse notation to
+write $x: h_Y \to h$. Now, $\id \in h_Y(Y)$ is determined by
+the inclusions $V_i \to Y$. These pullback to the identity on
+$h_{V_i}(V_i)$, and determine a morphism $V_i \to U_i$.
+These morphisms glue to give a morphism $Y \to X$ which
+corresponds to $x$.
+
+Let $f_Y(x_1)=f_Y(x_2)$. A simple diagram chase shows that the restrictions
+of $x_1, x_2$ to the open cover are equal, hence they are equal.
+\qed
+
+\section{9.2.A}
+Trivial
+
+\section{9.2.B}
+We show that $A \otimes I \cong I^{\text{e}}$ as $A$-modules. The
+morphism is given by $a \otimes i \mapsto a\phi(i)$. We note that
+$a \otimes i = ai \otimes 1$. This map is obviously bijective. It is clear that the
+tensored morphism $I^{\text{e}} \to A$ is injective. \qed
+
+\section{9.2.C}
+\begin{enumerate}[a.]
+    \item We consider an affine open set $\Spec A \subseteq X$. By affineness, we have
+          the the following commutative diagram: \[\begin{etikzcd}
+                  A                             & {A/J}
+                  \\{A/I} & {A/I \otimes_A A/J}
+                  \arrow[from=1-1, to=2-1] \arrow[from=2-1, to=2-2] \arrow[from=1-1, to=1-2]
+                  \arrow["\phi", from=1-2, to=2-2]
+              \end{etikzcd}\] By 9.2.B we see
+          that the tensor product is isomorphic to $(A/J)/(\phi(I))$. It is clear by
+          examinination that the kernel of this map is $I+J$, so the
+          tensor product is $A/(I+J)$, i.e. the closed embedding
+          corresponding to the intersection of closed subschemes. \qed
+    \item Consider the following diagram: \[\begin{etikzcd}
+                  {Z_1\times_XZ_2}                       & {Z_2\times_VW} &
+                  {Z_2}
+                  \\{Z_1\times_UW} & W              & V
+                  \\{Z_1}          & U              & X
+                  \arrow["{\text{open}}", hook, from=2-3, to=3-3]
+                  \arrow["{\text{closed}}", hook, from=1-3, to=2-3]
+                  \arrow["{\text{open}}"', hook, from=3-2, to=3-3]
+                  \arrow["{\text{closed}}"', hook, from=3-1, to=3-2]
+                  \arrow[hook, from=2-2, to=3-2]
+                  \arrow[hook, from=2-2, to=2-3]
+                  \arrow[hook, from=1-2, to=1-3]
+                  \arrow[hook, from=1-2, to=2-2]
+                  \arrow[hook, from=2-1, to=3-1]
+                  \arrow[hook, from=2-1, to=2-2]
+                  \arrow[hook, from=1-1, to=2-1]
+                  \arrow[hook, from=1-1, to=1-2]
+                  \arrow[dashed, hook, from=1-1, to=2-2]
+              \end{etikzcd}\] where the upper left is
+          the pullback because it is the composition of two pullback squares in two
+          different ways. The top left box is the pullback of two closed embeddings, the
+          bottom right box is the pullback of two open embeddings. Hence the overall
+          morphism is a locally closed embedding. \qed
+    \item Apply induction to (b). \qed
+\end{enumerate}
+
+\section{9.2.D}
+We first note that the pullback of a quasicompact morphism along a quasicompact
+morphism is quasicompact (9.4.B(a)). This shows the latter property. Now, we
+may assume that $A$ is affine, say $\Spec A$.
+Let $\Spec B \subseteq X, \Spec C \subseteq Y$. It suffices to show that $A \to B \otimes_A C$
+is finite type. We first note that for any $A$-algebras
+$B/I \otimes_A C \cong (B \otimes_A C)/J$ for some ideal $J$. Indeed, simply
+tensor $I \to B \to B/I$ with $C$ and take kernels.
+Now $A[X]/I \otimes_A A[Y]/J
+    \cong (A[X] \otimes_A A[Y])/K \cong A[X, Y]/J$. \qed
+
+\section{9.2.F}
+Define $b/s \to \phi(b)/\phi(s)$. Suppose we have $f: A \to C$ and
+$g: S^{-1}B \to C$ making the relevant diagram commute. Then we send
+$a/\phi(s) \to f(a)*g(1/s)$. This is clearly unique. \qed
+
+\section{9.2.G}
+We first characterize monomorphisms. $f$ is mono iff the
+following diagram is a pullback: \[\begin{etikzcd}
+        W                                                                     \\
+         & X & X                                                              \\
+         & X & Y \arrow["f", from=2-3, to=3-3] \arrow["f"', from=3-2, to=3-3]
+        \arrow["{\text{id}}"', from=2-2, to=3-2]
+        \arrow["{\text{id}}", from=2-2, to=2-3] \arrow[curve={height=6pt}, from=1-1, to=3-2]
+        \arrow[curve={height=-6pt}, from=1-1, to=2-3] \arrow[dashed, from=1-1, to=2-2]
+    \end{etikzcd}\]
+
+Now, it is clear that if $f: U \to X$ is pulled back along
+$f$ then the result is $U$, and we are
+done.
+
+It is clear from 9.1.C(a) that the pullback of a closed subscheme along itself
+is itself again, so we are done.
+
+Now, let $f: \Spec S^{-1}A \to \Spec A$. We pull this back along the identity, getting
+$\Spec S^{-1}A \otimes_A A$. But by 9.2.F this is just $\Spec S^{-1}A$, and
+we are done. \qed
+
+\section{9.2.H}
+$\A^n_A \cong \Spec A[x_1, \dots, x_n] \cong \Spec A
+    \otimes_{\Z} \Z[x_1, \dots, x_n]$. Now, cover $\P^n_A$ with affine opens,
+so by the first part, the result holds. \qed
+
+\section{9.2.I}
+We note that equality of morphisms can be checked on an open cover. We then
+cover $X$ with affine opens such that we have
+$\Spec A \otimes_k \ell \to \Spec A$ as an open cover of $X \times_k \Spec \ell$. We do the
+same with $Y$, reducing to the case
+$Y=\Spec B$. Consider the following diagram: \[\begin{etikzcd}
+        B                & {B\otimes_k\ell}           & B \\
+        A                &
+        {A\otimes_k\ell} & A \arrow[from=1-2, to=2-2]
+        \arrow[hook, from=1-1, to=1-2] \arrow["\phi", hook, from=2-1, to=2-2] \arrow["\pi"', from=1-1, to=2-1]
+        \arrow["\rho", from=1-3, to=2-3] \arrow[hook, from=2-3, to=2-2] \arrow[hook, from=1-3, to=1-2]
+    \end{etikzcd}\]
+The horizontal morphisms are injections. Let $\pi(x)=y$. Then
+clearly $\phi(x\otimes 1)=y\otimes 1$ so that $\rho(x)=y$. \qed
+
+\section{9.2.J}
+We repeat the above reduction to affine opens. Then  \[\begin{etikzcd}
+        B & {B\otimes_k\ell} \\
+        A &
+        {A\otimes_k\ell} \arrow["\phi", two heads, from=1-2, to=2-2]
+        \arrow[hook, from=1-1, to=1-2] \arrow[hook, from=2-1, to=2-2] \arrow["\pi"', from=1-1, to=2-1]
+    \end{etikzcd}\] We
+have surjective $\pi$ by assumption. Let
+$y \in A$. Then there exists an $x$ such that
+$\pi(x\otimes 1)=y\otimes 1$. Then by injectivity we have $\phi(x)=y$
+and we are done. \qed
+
+\section{9.3.A}
+Consider the following diagram: \[\begin{etikzcd}
+        Z                                              \\
+         & F & X                                       \\
+         & x & Y \arrow["{\phi_x}"', from=2-2, to=3-2]
+        \arrow["\iota", from=2-2, to=2-3] \arrow["\phi", from=2-3, to=3-3] \arrow["\iota"', from=3-2, to=3-3]
+        \arrow["{\pi_1}"', curve={height=12pt}, from=1-1, to=3-2]
+        \arrow["{\pi_2}", curve={height=-12pt}, from=1-1, to=2-3]
+        \arrow["f"{description}, dashed, from=1-1, to=2-2]
+    \end{etikzcd}\] where
+$F=\phi^{-1}(x)$ and $\phi_x=\phi|_F$. We define the universal
+map by $f(z)=\pi_2(z)$. It is obvious that this diagram commutes in
+$\catname{Set}$, so we merely need to show that $f$
+is continuous. Let $U \intersect F \subseteq F \subseteq X$ be open in the subspace topology.
+Then by continuity of $\pi_2$, $\pi_2^{-1}(U)$ is open
+in $Y$. Thus, $f^{-1}(U \intersect F)=\pi_2^{-1}(U)
+    \intersect \pi_2^{-1}(F)=\pi_2^{-1}(U)$ is an open subset of
+$Z$. \qed
+
+\section{9.3.B}
+We reduce immediately to the case of $f: \Spec B \to \Spec A$ with corresponding
+ring morphism $\phi: A \to B$. Let $\p \subseteq B$ be prime.
+Then clearly $\V(\p) \to \Spec A$ pulls back to the closed immersion
+$\V(\p^{\text{e}}) \to \Spec B$. By 3.2.I(a) this is identified with the topological
+fiber of that pullback. Thus, we may reduce to the case where
+$A$ is an integral domain and $\p = (0)$. Then
+the pullback corresponds to the ring $\phi(A \setminus 0)^{-1}B$. Let
+$f(\q)=(0)$ so that $\phi^{-1}(\q)=(0)$. Since
+$(0)$ is principal, we see that $\q \intersect \im \phi = 0$. Thus
+$\q$ avoids $\phi(A \setminus 0)^{-1}$, so that it is a prime
+ideal of $\phi(A \setminus 0)^{-1}B$. Finally, suppose $\q \subseteq \phi(A \setminus 0)^{-1}B$ is
+prime. Then $\phi(A \setminus 0) \nsubseteq \q$ so that $\phi^{-1}(\q)=(0)$. \qed
+
+\section{9.3.C}
+It suffices to show that $\tau \after \iota_p$ (where $\iota_p$
+is the inclusion) factors through $\iota_{\tau(p)}$. Indeed, choose an
+affine open $\Spec A \subseteq Z$ and an affine open $\Spec B \subseteq \tau^{-1}(\Spec A)$.
+Then we have $f \after i: A \to B \to \kappa(p)$. By 3.2.P(a), we may factor this as
+$A \to A/\tau(p) \to \kappa(p)$. By universal property of localization, we may factor
+this as $A \to A/\tau(p) \to \kappa(\tau(p)) \to
+    \kappa(p)$. \qed
+
+\section{9.3.D}
+Let $(p) \subset \Z$ be prime. We are interested in
+$\Z_{(p)}/(p)_{(p)}
+    \otimes_{\Z} \Z[i]$. If $p=0$ then we have
+$\Q \otimes_{\Z} \Z[i] \cong
+    \Q[i]$, a degree two field extension of
+$\Q$. If $p=2$ then we have
+$\Z_2[i] \cong \Z_2[x]/(x^2+1) \cong
+    \Z_2[x]/(x+1)^2$, a double point.
+
+Next, we consider $\Z_p[i]$ for odd primes. We first prove
+Euler's criterion, $(\frac{a}{p})=a^{((p-1)/2}$. Indeed, since
+$\Z_p$ is a field, $x^2=a$ has at most two
+solutions over it. There are $p-1$ units of
+$\Z_p$. Send $x \mapsto x^2$. The range of this map
+are the residues, and at most two values can map to the same value. Thus the
+range has size lower bounded by $p-1/2$. Now, by Fermat's
+little theorem, $a^(p-1)=1 \mod p$ for all $a$. This
+factors as $(a^{p-1/2}-1)(a^{p-1/2}+1)$. Quadratic residues clearly fall into the
+former case. Now $(a^{p-1/2}-1)$ has at most $p-1/2$
+roots. But then these must be precisely the quadratic residues. Hence the other
+factor must be the quadratic non-residues, as desired.
+
+Now, consider $(-1)^{p-1/2} \mod p$. If we want this to be 1 then
+$p-1/2$ must be even, say $2k$. Then
+$p=4k+1$ so that $p = 1 \mod 4$. In this case, we have
+a number $a$ such that $a^2=-1$. Thus
+$\Z_p[x]/(x^2+1) \cong \Z_p[x]/(x+a) \times
+    \Z_p[x]/(x-a)$. This is another double point. In the case
+$p=3 \mod 4$ we find that $x^2+1$ is irreducible,
+hence maximal, hence $\Z_p[i] \cong \F_{p^2}$. This is another degree two field
+extension of the field of fractions.
+
+\section{9.3.E}
+$k[y] \cong k[x, y]/(y^2-x)$. Thus
+\begin{align*}
+    k[y] \otimes_{k[x]} k[z] & \cong \frac{k[x,y]}{(y^2-x)} \otimes_{k[x]} \frac{k[x,z]}{(z^2-x)} \\
+                             & \cong \frac{k[x,y,z]}{(y^2-x, z^2-x)}                              \\
+                             & \cong \frac{k[x,y,z]}{(z^2-y^2)}                                   \\
+                             & \cong \frac{k[x,y,z]}{((z-y)(z+y))}
+\end{align*}
+In characteristic 2 we have $-1=1$ so that we have an
+irreducible but non-reduced scheme. \qed
+
+\section{9.3.F}
+Suppose we are given a point $[a : b] \in \mathbb{P}^1_k$. Then we have
+$xb=ya$, which clearly shows that $(x, y)$ must
+lie on a line with slope $a/b$ or $b/a$.
+Thus the fibers are the lines with slope determined by the projective point.
+
+We examine the fiber of $(a, b) \in \A^2_k$. Clearly this is the pair
+$(a,b), [a : b]$. WLOG assume that $a \neq 0$. Then we may
+examine $\D_{u, x} \to \D_x$. This is given by the ring
+$\Spec k[x, y, v]_x/(xv-y)$. The projection gives a ring morphism
+$k[x, y]_x \to k[x, y, v]_x/(xv-y)$. This is an isomorphism sending $y/x$
+to $v$.
+
+On the open set $\D_u$ we have find that the blowup is the
+affine scheme $\Spec k[x, y, v]/(xv-y)$. Consider $\V(x)$. This
+gives $\Spec k[x, y, v]/(xv-y,x) \cong \Spec
+    k[x, y, v]/(x, y) \cong \Spec
+    k[v] \cong \Spec k \otimes_{k[x, y]}
+    k[x,y,v]/(xv-y)$, i.e. the fiber over $(0, 0)$. On
+the open set $\D_v$, we find this subscheme is cut out by
+$y$.
+
+\section{9.3.G}
+We first reduce to the case of Noetherian $Y$. Indeed, if
+the result holds for a Noetherian open subset of $Y$, then
+it holds for $Y$. So we assume $Y$ is
+Noetherian.
+
+Suppose the result is true for irreducible $Y$. Then for
+reducible $Y$ we get a locally closed subset
+$U_i \intersect Z_i$ where the result holds for each irreducible component
+$Z_i$. Since $Y$ is Noetherian, the index
+set is finite. Now note that $\Union_j (\Intersect_i U_i) \intersect Z_j = \Intersect_i U_i$ is open in
+$Y$, and so the result holds for $\Intersect_i U_i$.
+Thus we may assume $Y$ is irreducible.
+
+Now, following the hint, we show that $A$ is integral over
+$B$. We have that $A \otimes_B \operatorname{K}(B)$ is integral over
+$\operatorname{K}(B)$. Writing $A=B[X]/I$ we find an integral
+relation for $x_i \otimes 1$, for example $f_i(x_i)=x_i^n \otimes 1+\sum_{j=0}^{n-1} x_i^j \otimes b_j/b_j'=0$.
+Replacing $B$ with the localization at all the denominators
+in these relations (and also replacing $A$ with the
+relevant inverse image), we find
+\begin{align*}
+    f_i(x_i) & =x_i^n \otimes 1+\sum_{j=0}^{n-1} x_i^j \otimes b_j  \\
+             & =x_i^n \otimes 1+\sum_{j=0}^{n-1} b_jx_i^j \otimes 1 \\
+             & = (x_i^n+\sum_{j=0}^{n-1} b_jx_i^j) \otimes 1        \\
+             & =0
+\end{align*}
+
+We find that either $x_i^n+\sum_{j=0}^{n-1} b_jx_i^j=0$, in which case we are done, or it
+is annihilated by some $b_i''$ by replacing 1 with
+$b_i''/b_i''$. Replacing $B$ with the
+localization at these $b_i''$, we recall that an element of the
+localization is zero iff the product with a denominator is zero. Hence,
+$f_i(x_i)=0$ in $A$. \qed
+
+\section{9.3.H}
+Note that the following diagram is a pushout: \[\begin{etikzcd}
+        {\Z[x_1, \dots, x_N]} & B \\{\frac{\Z[x_1,\dots, x_N,y_1, \dots, y_M]}{I}}
+                              & {\frac{B[y_1, \dots, y_M]}{I}}
+        \arrow[from=1-2, to=2-2]
+        \arrow[from=1-1, to=1-2]
+        \arrow[from=2-1, to=2-2]
+        \arrow[from=1-1, to=2-1]
+    \end{etikzcd}\] where the
+top map is described by the hint. This shows the result for affine
+$X$.
+
+Lemma: Suppose $\phi \after \pi: B \to B[X]/I \to
+    B[Y]/J$ is a composition of morphism of rings,
+where $X, Y$ are finite sets of variables, and
+$I, J$ are finitely generated ideals. Then we may find a ring
+$B[X']/I' \cong B[Y]/I$ such that $X \subset X'$ and
+$I \subset I'$. Indeed, let $x \in X$. Then we may form
+$B[Y, x]/(J+(x-\phi(x)))$. Repeat this for all $x \in X$ and call
+this ring $B[X, Y]/I'$. I claim this ring has the desired property.
+Let $\iota: B[Y]/J \to B[X, Y]/I'$ be the inclusion. Let $x \in X \subset B[X, Y]/I'$. Then
+$\iota(\phi(x))=x$, so that $\iota$ is surjective. Let
+$a \in \ker \iota$. Then either $a \in J$ or
+$a \in (x-\phi(x))$ for some $x \in X$. But since
+$x \notin R[Y]/J$, we must have $a = 0$. Now, the fact
+that $I \subset I'$ follows by examining the map
+$B[X] \to B[X, Y] \to
+    B[X, Y]/I'$.
+
+Now, suppose $X$ is a scheme as in the original problem,
+and it is covered by finitely many affine opens, all with affine intersections.
+Let $\Spec B[y_1, \dots, y_M]/I$ be such an affine open, and let
+$\Spec B[y'_1, \dots, y'_{M'}]/J$ be the intersection with an arbitrary other affine
+open. Then by the above lemma we have the following diagram:
+\[\begin{etikzcd}
+        {\Z[x_1, \dots, x_N]}                                                  & B
+        \\{\frac{\Z[x_1,\dots, x_N,y_1, \dots, y_M]}{I}} &
+        {\frac{B[y_1, \dots, y_M]}{I}}                                                          \\
+        {\frac{\Z[x'_1, \dots x'_{N'}, y'_1, \dots, y'_{M'}]}{I'}}             & {\frac{B[y'_1,
+        \dots, y'_{M'}]}{I'}}
+        \arrow[from=1-2, to=2-2]
+        \arrow[from=1-1, to=1-2]
+        \arrow[from=2-1, to=2-2]
+        \arrow[from=1-1, to=2-1]
+        \arrow[from=2-2, to=3-2]
+        \arrow[from=2-1, to=3-1]
+        \arrow[from=3-1, to=3-2]
+    \end{etikzcd}\] where the upper right map is the map of global sections
+and the lower right map is the restriction. The maps on the left are defined by
+using the properties of $I$ guaranteed by the lemma.
+Applying $\Spec$, we see that the upper square is a pullback,
+and the whole rectangle is a pullback, hence the bottom square is a pullback.
+Hence, since the lower right map is an open embedding, so is the lower left
+map.
+
+TODO: Check triple intersections, show the result when intersections aren't
+finite.
+
+\section{9.3.I}
+\begin{enumerate}[a.]
+    \item We recall that locally closed embeddings are preserved by base change. Now, the
+          given morphism $\pi$ is the pullback of a morphism
+          $\pi'$ of Noetherian schemes by 9.3.H. Thus the image of
+          $\pi'$ is a finite union of locally closed subsets, which may
+          be realized by finitely many locally closed embeddings. Now examine the
+          following diagram: \[\begin{etikzcd}
+                  {H_i'}                         &   & {H_i}
+                  \\
+                                                 & X &       & {X'}
+                  \\{Z'_i} &   & {Z_i}        \\
+                                                 & Y &       & {Y'}
+                  \arrow[from=2-2, to=4-2]
+                  \arrow[from=2-2, to=2-4]
+                  \arrow[from=2-4, to=4-4]
+                  \arrow[from=4-2, to=4-4]
+                  \arrow[hook, from=3-3, to=4-4]
+                  \arrow[hook, from=1-3, to=2-4]
+                  \arrow[from=1-3, to=3-3]
+                  \arrow[hook, from=1-1, to=2-2]
+                  \arrow[hook, from=3-1, to=4-2]
+                  \arrow[from=3-1, to=3-3]
+                  \arrow[from=1-1, to=3-1]
+                  \arrow[from=1-1, to=1-3]
+              \end{etikzcd}\] Where $\{Z_i\}_{i\in I} \to Y'$ is the
+          covering by locally closed embeddings. Clearly the $H_i$ cover
+          $X'$, so the $H'_i$ must cover
+          $X$. Thus the $Z'_i$ cover the image. \qed
+    \item We first note that being a locally closed embedding is stable under base
+          change. Cover $Y$ with finitely many affines
+          $\{\Spec B_i\}_{i \in I}$ and $X$ with finitely many affines
+          $\{\Spec A_{ij}\}_{i \in I,j \in J}$ such that $B_i \to A_{ij}$ realizes
+          $A_{ij}$ as finitely presented. By (a), the image of this is a
+          finite union of locally closed subsets. Taking the union across all
+          $i, j$ (which is finite), we get our result. \qed
+\end{enumerate}
+
+\section{9.4.A}
+It is clear that being a locally principally closed subscheme is affine-local
+on the target. Additionally, it has the form of part (b) of the lemma, where Q
+is the property "$A \to B_i$ is surjective and realizes
+$B_i$ as $A/(s)$ for some
+$s \in A$". Thus the property may be checked soley for affines.
+The rest of the proof follows the same form as 9.4.B(g). \qed
+
+\section{9.4.B}
+\subsection{Lemma}
+\begin{enumerate}[a.]
+    \item Suppose P is a property of morphisms that is affine local on the target. Then
+          we may reduce to the case of affine times arbitrary over affine.
+    \item Let $f: X \to Z$ be a morphism of schemes. Suppose P is an affine
+          local (on the target) property of $f$ of the form "For every
+          affine $\Spec A \subset Z$ there exists an affine open cover
+          $\{\Spec B_i\}_{i \in I}$ of $f^{-1}(\Spec A)$ such that the morphisms
+          $A \to B_i$ all have propery Q". Then we may reduce to the case of
+          affine times affine over affine.
+\end{enumerate}
+
+Proof:
+\begin{enumerate}[a.]
+    \item Consider the following diagram: \[\begin{etikzcd}
+                  {X\times_ZY} & X                                                   \\
+                  Y            & Z \arrow[from=1-1, to=2-1] \arrow[from=1-1, to=1-2]
+                  \arrow["g"', from=2-1, to=2-2] \arrow["f", from=1-2, to=2-2]
+              \end{etikzcd}\] Cover
+          $Z$ with affines $\{\Spec A_i\}_{i \in I}$. Then we may cover
+          $Y$ with affines $\{\Spec B_{ij}\}_{i \in I, j \in J}$ such that
+          $\Spec B_{ij} \subseteq
+              g^{-1}(\Spec A_i)$. By affine locality, we may check P on the cover
+          $\{\Spec B_{ij}\}_{i \in I, j \in J}$, so in particular if P holds for $Y, Z$
+          affine then P holds for $Y, Z$ arbitrary.
+    \item We first apply part (a) of the lemma. Let $Y=\Spec C$ and
+          $Z=\Spec A$. Now, choose an affine cover $\{\Spec B_i\}_{i \in I}$ of
+          $X$ such that $A \to B_i$ has property Q. Then we
+          may pullback by the open immersion $\Spec B_i$ to get an affine open
+          cover of $X \times_Z Y$. If Q holds for the morphism
+          $C \to C \otimes_A B_i$ then we have an affine open cover of
+          $X \times_ZY$ satisfying P, as desired.
+\end{enumerate} \qed
+
+We now begin the actual proof:
+\begin{enumerate}[a.]
+    \item Apply part (a) of the lemma by 7.3.C. We use notation as in the lemma.
+          $X$ may be covered by finitely many open affines by
+          quasicompactness of $X \to \Spec A$. Call these $\{\Spec B_i\}_{i \in [1, n]}$.
+          Then the finitely many $\Spec C \times_{\Spec A} \Spec B_i$ are affine and cover
+          $X \times_ZY$.
+
+    \item Apply part (a) of the lemma by 7.3.C. Given the intersection of two open
+          affines of $X$, we form a finite affine open cover. The
+          pullback of this finite affine open cover covers the pullback of the
+          intersection.
+    \item Apply part (a) of the lemma by 7.3.4. Then we may take $X$
+          to be affine since $f$ is affine. Then we are done as
+          morphisms of affine schemes are affine.
+    \item Apply (e) and (g).
+    \item Apply part (b) of the lemma, using the fact that integrality is affine-local on
+          the target: 7.3.10. Then apply 7.3.N, base change of integral morphism of
+          affine schemes is affine.
+    \item Apply part (b) of the lemma by 7.3.O. Then the result follows by 9.2.B combined
+          with 9.2.A (tensor product preserves finitely generated algebra-ness).
+    \item Apply (a) and (f).
+    \item The same proof as (f) applies here without change, simply noting that the
+          extension of a finitely generated ideal is finitely generated.
+    \item Apply (a), (b), and (h).
+\end{enumerate} \qed
+
+\section{9.4.C}
+Quasifiniteness obviously satisfies the conditions of part (b) of the lemma
+above. Thus we may reduce to the pullback of $f: \Spec A \to \Spec B$ along
+$g: \Spec C \to \Spec B$. Now, consider $\Spec \kappa(\p) \to \Spec C \to \Spec B$. This factors
+through the morphism $\Spec \kappa(\p) \to \Spec \kappa(g(\p)) \to \Spec B$. Clearly $f^{-1}(g(\p)) \to \Spec \kappa(g(\p))$
+is finite type (since it is the pullback of $f$). Thus we
+reduce to the case of the pullback of field by affine over a field. This case
+is covered by 7.4.D, making the morphism finite. Then it pulls back to a finite
+morphism over the field, hence it has finite fibers. \qed
+
+\section{9.4.D}
+We consider $X\times_ZY$ where $f: Y \to Z$ is surjective
+and $g: X \to Z$ is arbitrary. Let $\p \in X$. Then by
+9.3.C we may reduce to $\Spec \kappa(\p) \to \Spec \kappa(g(\p))$. Now, choosing a point
+$\q \in f^{-1}(g(\p))$ we are reduced to examining $\kappa(\p) \otimes_{\kappa(g(\p))}\kappa(\q)$.
+Now, the tensor product of two non-zero vector spaces is non-zero, since there
+is only one element of the ground field which annihilates both. Thus, the above
+tensor product, being of two $\kappa(g(\p))$-vector spaces must be
+non-zero. It thus has a maximal ideal, hence there is at least one point in the
+fiber over $\p$.
+
+\section{9.4.E}
+We let $k=\overline{k}$. By 9.2.D $X\times_kY$ is finite
+type. By 9.5.L, we may prove irreduciblity on an affine open cover. Also, by
+5.2.A (and the discussion in 5.3.2), reducedness is an affine-local property.
+Thus, if we show that $\Spec A \otimes_k \Spec B$ is integral for (finitely
+generated over $k$) integral domains
+$A, B$, then we are done. Now, $B$ is a
+free $k$-module, so we may choose generators
+$\{b_i\}_{i \in I}$ for some index set $I$. Now,
+suppose $(\sum_i a_i \otimes b_i)(\sum_j a'_j \otimes b'_j) = 0$ where $a_i, a'_j \neq 0$ and the
+$b_i, b'_j$ are generators of $B$. Now,
+$a_1a'_1 \neq 0$, so $\D(a_1a'_1)$ is nonempty and thus has a
+maximal ideal $\m$. Consider $A/\m \otimes_k B$. By the
+weak nullstellensatz, we have $A/\m \cong k$, so this is just
+$B$. Now $(\sum_i \overline{a_i} \otimes b_i)(\sum_j \overline{a'_j}
+    \otimes b'_j)=0 \in B$. But also
+$a_1 \neq 0$ in $A/\m$ so that
+$\overline{a_1}\otimes b_1 \neq 0$ and $\sum_i \overline{a_i} \otimes b_i \neq 0$ (and likewise with
+$a'_1$). But this contradicts the fact that
+$B$ is an integral domain. Thus $a_i = 0$ and
+$a'_j=0$ for all $i, j$. \qed
+
+\section{9.4.F}
+Consider the following diagram: \[\begin{etikzcd}
+        {X\times_S X'}                             & {X'\times_SY} &
+        {X'} \\{X\times_SY'} &
+        {Y\times_SY'}                              &
+        {Y'}                                                                                    \\
+        X                                          & Y             & S \arrow[from=1-3, to=2-3]
+        \arrow[from=2-3, to=3-3] \arrow[from=3-2, to=3-3] \arrow[from=3-1, to=3-2]
+        \arrow[from=2-2, to=3-2] \arrow[from=2-2, to=2-3] \arrow["g"', from=2-1, to=2-2]
+        \arrow[from=2-1, to=3-1] \arrow[from=1-2, to=1-3] \arrow[from=1-2, to=2-2]
+        \arrow[from=1-1, to=1-2] \arrow["f", from=1-1, to=2-1] \arrow[dashed, from=1-1, to=2-2]
+        \arrow[curve={height=12pt}, from=3-1, to=3-3] \arrow[curve={height=-12pt}, from=1-3, to=3-3]
+    \end{etikzcd}\] All the squares in this
+diagram are pullbacks, hence by hypothesis $f$ and
+$g$ in particular have property $P$.
+Hence their composition, the (uniquely defined) dotted morphism has
+$P$. \qed
+
+\section{9.5.A}
+
+\section{9.5.B}
+Compose the relevant pullback squares. \qed
+
+\section{9.5.C}
+\section{9.5.D}
+\begin{enumerate}[a.]
+    \item Let $K$ be a non-trivial purely inseparable extension of an
+          imperfect field $k$. Then $\Spec K \to \Spec k$ is reduced,
+          but $\Spec K \otimes_{\Spec k} \Spec K$ isn't. Indeed, let $x \in K \setminus k$ and let
+          $x^q \in k$. Then $(x \otimes 1 - 1 \otimes x)^q=x^q \otimes 1 - 1 \otimes x^q=x^q\otimes 1 - x^q
+              \otimes 1 = 0$. \qed
+    \item The example of 9.5.C is disconnected since it is the disjoin union of two
+          points. \qed
+    \item The example 9.5.C suffices for this also. \qed
+\end{enumerate}
+
+\section{9.5.E}
+
+\section{9.5.F}
+\begin{enumerate}[a.]
+    \item We note that free modules are flat, hence tensor product with
+          $E$ is exact, hence preserves injectivity. \qed
+    \item We recall that reducedness is affine-local, thus we may reduce to affine
+          $X$. We then note that a subring of a reduced ring is
+          reduced then apply (a).
+    \item By 9.5.L we may reduce to the affine case. Note that a subring of a irreducible
+          ring is irreducible then apply (a). \qed
+    \item The inverse image of a disconnected space under a surjective continuous map is
+          disconnected. Indeed, let $f: X \to Y$ be surjective and continuous
+          and let $Y=U \union V$ with $U \intersect V = \emptyset$. By surjectivity
+          $f^{-1}(Y)=X$ and $f^{-1}(U) \intersect
+              f^{-1}(V)=f^{-1}(U \intersect V) = \emptyset$. To see the result, recall
+          that (9.4.D) the map $X_E \to X$ is surjective. \qed
+\end{enumerate}
+
+\section{9.5.4}
+We first reduce to the case of reduced affine schemes over
+$k$. Then we reduce to showing $\pi: A^n_k \to A^m_k$ is
+open (for $m < n$). By Chevalley's theorem the image of any
+open is constructible. By 7.4.C(b) the image of an open $U$
+is open iff it is closed under generization. Let $p \in U$,
+$S=\pi(U)$, $\pi(p)=q$. We show
+$\Spec k[x_1, \dots, x_n]_p \to \Spec
+    k[x_1, \dots, x_m]_q$ is surjective. It suffices to show
+\[\begin{etikzcd}
+        {k[x_1, \dots, x_m]_q}                        & {\kappa(r)}
+        \\{k[x_1, \dots,x_n]_p} &
+        {k[x_1, \dots,x_n]_p \otimes \kappa(r)}
+        \arrow["f", from=1-1, to=1-2]
+        \arrow["g"', from=1-1, to=2-1]
+        \arrow[from=1-2, to=2-2]
+        \arrow[from=2-1, to=2-2]
+    \end{etikzcd}\] is non-zero. Consider $A \otimes_C B$ Indeed,
+the pure tensor $a \otimes b = 0$ iff $a=0$ or
+$b=0$ or $a=cx$ where
+$c \in C$ and $ca=0$. Consider
+$1 \otimes 1 \in k[x_1, \dots,x_n]_p \otimes
+    \kappa(r)$. Suppose $a \in x_1, \dots, x_m]_q$ be such that
+$f(a)=0$. Then $a \in r$ so that
+$g(a) \in p$. Hence there does not exist an $x$
+such that $g(a)x \neq 1 \in k[x_1, \dots,x_n]_p$. Next we show that $g$ is
+injective. Indeed, the map $k[x_1, \dots, x_m] \to k[x_1, \dots, x_n]$ is injective and
+localization is exact, so $k[x_1, \dots, x_m]_q \to S^{-1}k[x_1,
+    \dots, x_n]$ is injective. The latter has
+no zero divisors, so $S^{-1}k[x_1, \dots, x_n] \to
+    k[x_1, \dots, x_n]_p$ is also injective. Thus, if
+$g(a)=0$ then $a=0$ so that
+$f(a)=0$. \qed
+
+\section{Note on 9.5.6}
+The book doesn't show the following critical result: Let
+$S, A$ be $k$-algebras and let
+$S' \subseteq S$ be a sub-$k$-algebra. Let
+$f \in S'$. Let $\p \in \Spec A$ be in the image of the map
+$(\Spec S' \otimes_k A)_f \to \Spec A$. Consider the following diagram: \[\begin{etikzcd}
+        {\operatorname{Spec} (S' \otimes_k A)_f\otimes_A\kappa(\mathfrak{p})}                       & {\operatorname{Spec} (S' \otimes_k A)_f} &
+        {\operatorname{Spec} (S \otimes_kA)_f}                                                      &
+        {}
+        \\{\operatorname{Spec} (S' \otimes_k A)\otimes_A\kappa(\mathfrak{p})} & {\operatorname{Spec} S'\otimes_kA}       &
+        {\operatorname{Spec} S\otimes_kA}
+        \\{\operatorname{Spec} \kappa(\mathfrak{p})}                          &                                          &
+        {\operatorname{Spec} A}
+        \arrow[from=2-2, to=3-3]
+        \arrow[from=2-3, to=3-3]
+        \arrow[from=2-3, to=2-2]
+        \arrow[from=1-2, to=2-2]
+        \arrow[from=1-3, to=2-3]
+        \arrow[from=1-3, to=1-2]
+        \arrow[from=3-1, to=3-3]
+        \arrow[from=1-1, to=1-2]
+        \arrow[from=1-1, to=2-1]
+        \arrow[from=2-1, to=2-2]
+        \arrow[from=2-1, to=3-1]
+    \end{etikzcd}\]
+Then the image of the map $(\Spec S' \otimes_k A)_f \to \Spec A$ is the same as the image of
+$(\Spec S \otimes_k A)_f \to \Spec A$. This theorem is Stacks 037F. Note first that
+$S' \otimes_k \kappa(\p) \to S \otimes_k \kappa(\p)$ is injective since the component maps are injective and
+$k$ is a field. Now,
+\begin{align*}
+    (S' \otimes_k A)_f \otimes_A \kappa(\p) & \cong ((S' \otimes_k A) \otimes_A \kappa(\p))_f \\
+                                            & \cong (S' \otimes_k (A \otimes_A \kappa(\p)))_f \\
+                                            & \cong (S' \otimes_k \kappa(\p))_f
+\end{align*}
+and similarly for $S$. Now, since $\p$
+is in the image of $(\Spec S' \otimes_k A)_f \to \Spec A$, we find that
+$(S' \otimes_k \kappa(\p))_f$ is non-trivial, hence $S' \otimes_k \kappa(\p)$ is
+nontrival and $f$ is non-nilpotent. Thus
+$S \otimes_k \kappa(\p)$ is nontrival and $f$ is
+non-nilpotent, so that it has a point. \qed
+
+\section{Note on 9.5.7}
+The following result is key: Let $k \to K$ be a purely
+inseparable extension of fields of characteristic $p$.
+Consider the following diagram: \[\begin{etikzcd}
+        k & K             \\
+        A & {A\otimes_kK}
+        \arrow[from=1-2, to=2-2] \arrow[from=2-1, to=2-2] \arrow[from=1-1, to=2-1]
+        \arrow[from=1-1, to=1-2]
+    \end{etikzcd}\] The prime ideals of
+$A\otimes_kK$ inject into $A$. Indeed, let
+$\p, \q \subset A\otimes_kK$ and let them inverse image into the prime ideal
+$\mathfrak{r}$. Let $f \in \p$. Then we see that there
+exists an $n$ such that $f^{p^n} \in A$ (take
+$n$ to be the largest power of a coefficient of
+$f$ such that the coefficients go to
+$k$). Now, $f^{p^n} \in \mathfrak{r}$ which means that
+$f^{p^n} \in \q$. But $\q$ is prime so
+$f \in \q$.
+
+\section{9.5.H}
+Let $X$ be a topological space and let
+$p \in X$. Consider the set of connected subsets containing
+$p$. Let $\{S_i\}_{i \in I}$ be a chain in this poset
+and consider $S=\Union_i S_i$. Let $S=U \union V$. Then they
+intersect on some element of the chain, hence they intersect. Hence
+$S$ is connected. Hence by Zorn's lemma,
+$p$ is contained in a maximal connected set.
+
+Next we show that the closure of a connected subspace is connected. Indeed, let
+$S^{\text{C}} \intersect (U \union V) =
+    S^{\text{C}}$ where $S$ is an arbitrary subset
+and $S^{\text{C}} \intersect U \intersect V = \emptyset$. Then these can't intersect in
+$S$ either. Since $S$ is connected, we
+must have $S \subseteq U \intersect S^{\text{C}}$ or $S \subseteq V$. WLOG assume it is
+$U$. Then $V \subseteq \overline{S^{\text{C}}}$ by definition of closure,
+hence $U=S^{\text{C}}$.
+
+\section{9.5.I}
+Let $S \subseteq Y$ be a connected component. Then
+$S'=\phi^{-1}(S)$ is connected. Indeed, suppose otherwise. Then we have a
+disconnection $S'=U \union V$ with $U \intersect V = \emptyset$. Now,
+$\phi$ is open, hence $\phi(U), \phi(V)$ are open and
+cover $S$. Hence $\phi(U) \intersect \phi(V) \neq \emptyset$. Let
+$x \in \phi(U) \intersect \phi(V)$. Then $U$ and
+$V$ disconnect $\phi^{-1}(x)$, contradiction.
+
+Now, suppose $S \subseteq X$ a connected component. Then
+$\phi(S)$ is connected. Indeed, note that $\phi$
+is surjective, hence the inverse image of a disconnected set is disconnected.
+Let $x \in \phi(S)$. Then $\phi^{-1}(x) \subseteq S$, since it is
+connected. Thus $\phi^{-1}(\phi(S)) = S$, hence $\phi(S)$ is
+connected. \qed
+
+\section{9.5.J}
+We first note that if $X=U \coprod V$ then $\Osh_X(X)=\Osh_X(U) \times \Osh_X(V)$.
+Indeed, any pair of sections over $U$ and
+$V$ agree on the overlap and thus glue. Now,
+$(1,0)$ will suffice as a nontrivial nilpotent. Conversely, if
+$e^2=e$ then $\V(e) \intersect \V(1-e)
+    =\V(1)= \emptyset$ and
+$\V(e) \union
+    \V(1-e)=\V(e^2-e)=\V(0)=X$. $1-e$ is also idempotent (and not
+0), hence it isn't a unit, so $\V(1-e)$ is nontrivial. All this
+together shows that the $X=\overline{\V(e)} \coprod \overline{\V(1-e)}$. \qed
+
+\section{9.5.L}
+\begin{itemize}
+    \item[$\implies$] Let $U_1=X$. \qed
+    \item[$\impliedby$] Irreducible is equivalent to the statement that every
+          pair of non-empty open subsets meets. We are given a cover of non-empty opens,
+          which all meet. Let $V, W$ be arbitrary non-empty opens. We
+          show they intersect. Indeed, choose $i, j$ such that
+          $U_i \intersect V$ and $U_j \intersect W$ are non-empty. Then
+          $U_i \intersect U_j \intersect V \intersect W$ is nonempty since $U_i \intersect U_j$ is nonempty.
+          \qed
+\end{itemize}
+
+\end{document}
