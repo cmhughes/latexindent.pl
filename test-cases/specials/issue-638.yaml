@@ -1,0 +1,4 @@
+specialBeginEnd:
+  - name: resumeBegEnd
+    begin: \\resumeItemListStart
+    end: \\resumeItemListEnd

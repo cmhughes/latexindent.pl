@@ -1,0 +1,23 @@
+switchesViaYaml:
+  mSwitch: 1
+  rSwitch: 1
+
+lookForAlignDelims:
+  myalign:
+    lookForAlignDelims: 1
+  empheq:
+    lookForAlignDelims: 1
+    alignDoubleBackSlash: 0
+  align:
+    alignDoubleBackSlash: 0
+
+removeTrailingWhitespace: 1
+
+modifyLineBreaks:
+  preserveBlankLines: 1
+  condenseMultipleBlankLinesInto: 1
+
+replacements:
+  - when: before                                  #<!--- NEW BIT
+    substitution: s/\$\h*([^\$]*?)\h*\$/\$$1\$/sg #<!--- NEW BIT
+  - substitution: s/(?<=\S) {2,}(?=\S)/ /sg

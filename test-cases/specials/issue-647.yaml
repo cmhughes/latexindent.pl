@@ -1,0 +1,4 @@
+specialBeginEnd:
+  - name: leftBraceRightDot
+    begin: \\left\\\{
+    end: \\right\.

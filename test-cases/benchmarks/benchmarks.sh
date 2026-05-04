@@ -19,5 +19,6 @@ openingtasks
 { time latexindent.pl -s commands-simple-big.tex -o=+-out1 -l arg-minimal-between -y="defaultIndent: '  '" ; } 2> commands-simple-big-timing.data
 { time latexindent.pl -s -m commands-simple-big.tex -o=+-out1 -l arg-minimal-between -y="defaultIndent: '  '" ; } 2> commands-simple-big-timing-m-switch.data
 
+{ time latexindent.pl -s issue-268.tex -o=+-out1 -l issue-268.yaml ; } 2> issue-268.data
 set +x 
 wrapuptasks

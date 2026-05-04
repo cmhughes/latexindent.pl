@@ -1,0 +1,16 @@
+switchesViaYaml:
+  mSwitch: 1
+  rSwitch: 1
+
+modifyLineBreaks:
+  mandatoryArguments:
+    subsection:
+      RCuBFinishesWithLineBreak: 3
+    label:
+      RCuBFinishesWithLineBreak: 3
+
+replacements:
+  -
+    when: after
+    substitution: |-
+      s/(\})\s*(\\label)/$1 $2/sg

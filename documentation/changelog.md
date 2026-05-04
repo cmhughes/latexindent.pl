@@ -1,6 +1,9 @@
-<!-- announcement: Major release -->
+<!-- announcement: blank line poly-switch bug fix -->
 
 # changelog.md
+
+## V4.0.1
+Blank line poly-switch bug fix, see [issue-649](https://github.com/cmhughes/latexindent.pl/issues/649)
 
 ## V4.0, MAJOR release
 A major release that overhauls the way `latexindent.pl` finds code blocks. 

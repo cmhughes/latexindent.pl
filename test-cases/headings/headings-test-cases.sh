@@ -70,5 +70,7 @@ cp indent.log obsolete.txt
 perl -p0i -e 's/.*?(WARN:\s*Obsolete)/$1/s' obsolete.txt
 perl -p0i -e 's/INFO:.*//s' obsolete.txt
 
+latexindent.pl -s issue-644 -l issue-644 -o=+-mod1
+
 set +x 
 wrapuptasks

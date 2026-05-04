@@ -1,0 +1,3 @@
+TRACE: found: align 	 type: environments
+TRACE: found: leftBraceRightDot 	 type: specialBeginEnd
+TRACE: found: hidden child in alignment block
