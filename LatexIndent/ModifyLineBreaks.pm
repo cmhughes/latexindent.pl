@@ -95,6 +95,10 @@ sub _mlb_begin_starts_on_own_line {
                     . ${$self}{begin};
                 $logger->trace("Adding a linebreak *before* begin statement \t\t ($BeginStringLogFile == 3)")
                     if $is_t_switch_active;
+                # BeginStartsOnOwnLine == 4 needs tokens readjusted
+                if (${$self}{BeginStartsOnOwnLine} == 4){
+                    ${$self}{begin} =~ s/($tokens{mBeforeBeginLineBreakADD})(\s*)($tokens{mBeforeBeginLineBreakREMOVE})/$3$2$1/s;
+                }
             }
         }
         elsif ( $_ == -1 ) {

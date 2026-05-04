@@ -43,5 +43,7 @@ latexindent.pl -s -m xaltsc.tex -l=xaltsc.yaml -o=+-mod1
 latexindent.pl -s -m -r xaltsc.tex -l=xaltsc2.yaml -o=+-mod2
 latexindent.pl -s -m -l issue-492 issue-492 -o +-mod1
 
+latexindent.pl -s -m -l issue-649 issue-649 -o +-mod1
+
 set +x 
 wrapuptasks
