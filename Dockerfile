@@ -17,7 +17,7 @@ FROM perl:5.42.2-slim-threaded-bookworm
 #
 
 ARG LATEXINDENT_VERSION
-ENV LATEXINDENT_VERSION=${LATEXINDENT_VERSION:-V4.0.1}
+ENV LATEXINDENT_VERSION=${LATEXINDENT_VERSION:-V4.0.2}
 
 RUN apt-get update \
     && apt-get install \

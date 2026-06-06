@@ -1,6 +1,9 @@
-<!-- announcement: blank line poly-switch bug fix -->
+<!-- announcement: namedBracesBrackets bug fix -->
 
 # changelog.md
+
+## V4.0.2
+namedBracesBrackets bug fix, see [issue-653](https://github.com/cmhughes/latexindent.pl/issues/653)
 
 ## V4.0.1
 Blank line poly-switch bug fix, see [issue-649](https://github.com/cmhughes/latexindent.pl/issues/649)

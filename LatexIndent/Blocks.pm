@@ -1038,7 +1038,7 @@ sub _find_all_code_blocks {
              $name = $+{COMMANDNAME};                                  # <command name>
              $modifyLineBreaksName="commands";                         # 
              $parentBegin = q(\\).$name;                               # for alignAtAmpersand
-          } elsif ($+{NAMEDBRACESBRACKETS}) {                          # <name of named braces brackets>
+          } elsif (defined $+{NAMEDBRACESBRACKETS}) {                          # <name of named braces brackets>
           #                                                            # 
           # named braces or brackets                                   # 
           #                                                            # 
@@ -1564,7 +1564,7 @@ sub _find_ifelsefi_else_or {
                             my $elseRequiresTrailingSpace = 0;
                             if (${$codeBlockObj}{BodyStartsOnOwnLine} == -1 and $horizontalTrailingSpace eq ''){
                                  $elseRequiresTrailingSpace = 1;
-                                 $logger->trace("adding trailing space ' ' *after* $ifElseFiStatement as body empty and BodyStartsOnOwnLine == -1");
+                                 $logger->trace("adding trailing space ' ' *after* $ifElseFiStatement as body empty and BodyStartsOnOwnLine == -1") if $is_t_switch_active;
                             }
                             $codeBlockObj->_mlb_body_starts_on_own_line if ${$codeBlockObj}{BodyStartsOnOwnLine} != 0;  
                             $middleOrSpecial = ${$codeBlockObj}{begin}

@@ -21,7 +21,7 @@ and [pre-commit](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.h
 
 ## version
 
-    latexindent.pl, version 4.0.1, 2026-05-04
+    latexindent.pl, version 4.0.2, 2026-06-06
 
 ## author
 Chris Hughes (cmhughes)
@@ -149,6 +149,8 @@ If you use latexindent via docker you'll only need
 Full details at [using docker](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#using-docker).
 </details>
 
+In your browser, see [latexindent in zeroperl](https://latexindent-pl.netlify.app/).
+
 ## pre-commit
 
 You can use `latexindent` with the [pre-commit
@@ -157,7 +159,7 @@ framework](https://pre-commit.com) by adding this to your
 
 ```yaml
   - repo: https://github.com/cmhughes/latexindent.pl.git
-    rev: V4.0.1
+    rev: V4.0.2
     hooks:
       - id: latexindent
 ```
@@ -265,6 +267,8 @@ You might like to checkout the following related projects on github.
 [Neelfrost/dotfiles](https://github.com/Neelfrost/dotfiles): [![GitHub stars](https://img.shields.io/github/stars/Neelfrost/dotfiles.svg?style=flat-square)](https://github.com/Neelfrost/dotfiles/stargazers)
 
 [latex-formatter](https://github.com/nfode/latex-formatter): [![GitHub stars](https://img.shields.io/github/stars/nfode/latex-formatter.svg?style=flat-square)](https://github.com/nfode/latex-formatter)
+
+[latexindent-web](https://github.com/acmiyaguchi/latexindent-web): [![GitHub stars](https://img.shields.io/github/stars/acmiyaguchi/latexindent-web.svg?style=flat-square)](https://github.com/acmiyaguchi/latexindent-web)
 
 ## thank you
 Thank you to the [contributors](https://github.com/cmhughes/latexindent.pl/graphs/contributors) to the project!
