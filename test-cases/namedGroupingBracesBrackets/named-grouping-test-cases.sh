@@ -54,5 +54,11 @@ latexindent.pl -s -m -y "modifyLineBreaks:textWrapOptions:columns:25,modifyLineB
 latexindent.pl -s -l issue-544 issue-544 -o=+-mod1
 latexindent.pl -s -l issue-565 issue-565 -o=+-mod1
 
+latexindent.pl -s -t issue-653 -o=+-mod1
+egrep 'found:' indent.log > issue-653.txt
+
+latexindent.pl -s -t issue-653a -o=+-mod1
+egrep 'found:' indent.log > issue-653a.txt
+
 set +x 
 wrapuptasks

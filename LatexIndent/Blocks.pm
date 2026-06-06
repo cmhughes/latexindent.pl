@@ -1038,7 +1038,7 @@ sub _find_all_code_blocks {
              $name = $+{COMMANDNAME};                                  # <command name>
              $modifyLineBreaksName="commands";                         # 
              $parentBegin = q(\\).$name;                               # for alignAtAmpersand
-          } elsif ($+{NAMEDBRACESBRACKETS}) {                          # <name of named braces brackets>
+          } elsif (defined $+{NAMEDBRACESBRACKETS}) {                          # <name of named braces brackets>
           #                                                            # 
           # named braces or brackets                                   # 
           #                                                            # 

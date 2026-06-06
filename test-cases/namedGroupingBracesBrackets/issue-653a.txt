@@ -1,0 +1,4 @@
+TRACE: found: displayMath 	 type: specialBeginEnd
+TRACE: found: matrix 	 type: environments
+TRACE: found: 0 	 type: namedGroupingBracesBrackets
+TRACE: found: 0 	 type: namedGroupingBracesBrackets
