@@ -1709,7 +1709,7 @@ sub _find_env_items {
                        #
                        # desired: item two
                        if (${$codeBlockObj}{BodyStartsOnOwnLine} == -1 ){
-                            $logger->trace("adding trailing space ' ' *after*  item statement ItemStartsOnOwnLine == -1");
+                            $logger->trace("adding trailing space ' ' *after*  item statement ItemStartsOnOwnLine == -1") if $is_t_switch_active;
                             $begin .= $tokens{mElseTrailingSpace};
                        }
 
