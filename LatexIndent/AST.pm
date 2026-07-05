@@ -83,20 +83,32 @@ sub _ast_final_work {
 
     foreach my $levelArray (reverse @AST) {
         foreach my $entryInLevel ( @{$levelArray} ) {
-            print "current level: ${$entryInLevel}{level}\n";
             if (index(${$entryInLevel}{body}, $tokens{ast}) != -1) {
-                print "--------\nnested child found\n-----------\n";
                 my @bodySplit = split(/($tokens{ast}\d+$tokens{endOfToken})/,${$entryInLevel}{body});
 
+                delete ${$entryInLevel}{body};
+
                 # first child
-                ${$entryInLevel}{children}[0]{text} = shift(@bodySplit);
-                foreach (@bodySplit){
-                    print "thing: $_\n";
+                ${$entryInLevel}{children}[0]{body} = shift(@bodySplit);
+
+                # subsequent children
+                while (scalar @bodySplit > 0){
+                    my $id_to_look_for = shift(@bodySplit);
+                    my $text_after_id  = shift(@bodySplit);
+                    foreach (@{$AST[${$entryInLevel}{level}+1]}){
+                        if (defined ${$_}{id} and $id_to_look_for eq ${$_}{id}){
+                            delete ${$_}{id};
+                            push(@{${$entryInLevel}{children}},$_);
+                            push(@{${$entryInLevel}{children}},{body=>$text_after_id}) if defined $text_after_id;
+                        } 
+                    }
                 }
             }
         }
     }
 
+    @AST = $AST[0][0];
+    delete ${$AST[0]}{id};
     print Dumper( \@AST );
 }
 1;

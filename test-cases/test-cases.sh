@@ -132,6 +132,7 @@ dirExec=(
   "fine-tuning;fine-tuning-test-cases.sh"
   "fileextensions;file-extension-test-cases.sh"
   "switches-via-yaml;switches-via-yaml.sh"
+  "ast;ast.sh"
   "demonstrations;documentation-test-cases.sh"
   "documentation;doc-indent.sh"
   ) 
