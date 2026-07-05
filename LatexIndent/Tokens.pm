@@ -58,6 +58,8 @@ our %tokens = (
 
     # ifElseFi trailing singlespace
     mElseTrailingSpace => "mElseTrailingSpace",
+
+    ast => "ast-token-",
 );
 
 sub token_check {

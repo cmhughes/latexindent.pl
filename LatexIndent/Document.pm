@@ -25,7 +25,7 @@ use Encode qw/decode/;
 
 # gain access to subroutines in the following modules
 use LatexIndent::Switches
-    qw/store_switches %switch $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_r_switch_active $is_rr_switch_active $is_rv_switch_active $is_check_switch_active/;
+    qw/store_switches %switch $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_r_switch_active $is_rr_switch_active $is_rv_switch_active $is_check_switch_active $is_ast_active/;
 use LatexIndent::LogFile     qw/process_switches $logger/;
 use LatexIndent::Logger      qw/@logFileLines/;
 use LatexIndent::Check       qw/simple_diff/;
@@ -51,6 +51,7 @@ use LatexIndent::DoubleBackSlash qw/dodge_double_backslash un_dodge_double_backs
 # code blocks
 use LatexIndent::Verbatim
     qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  find_verbatim_special verbatim_common_tasks %verbatimStorage/;
+use LatexIndent::AST qw/_ast_final_work/;
 use LatexIndent::Environment;
 use LatexIndent::IfElseFi;
 use LatexIndent::Arguments;
@@ -222,6 +223,8 @@ sub operate_on_file {
         $self->check_if_different                                  if ${$self}{overwriteIfDifferent};
     }
     $self->output_indented_text;
+
+    $self->_ast_final_work if $is_ast_active;
     return;
 }
 

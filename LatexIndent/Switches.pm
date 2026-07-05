@@ -19,8 +19,9 @@ use strict;
 use warnings;
 use Exporter qw/import/;
 our @EXPORT_OK
-    = qw/%switch store_switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_r_switch_active $is_rr_switch_active $is_rv_switch_active $is_check_switch_active $is_check_verbose_switch_active/;
+    = qw/%switch store_switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_r_switch_active $is_rr_switch_active $is_rv_switch_active $is_check_switch_active $is_check_verbose_switch_active $is_ast_active/;
 our %switch;
+our $is_ast_active;
 our $is_m_switch_active;
 our $is_t_switch_active;
 our $is_tt_switch_active;
@@ -51,6 +52,16 @@ sub store_switches {
     $is_check_verbose_switch_active = defined $switch{checkverbose} ? $switch{checkverbose} : 0;
     $is_check_switch_active
         = $is_check_verbose_switch_active ? $is_check_verbose_switch_active : $is_check_switch_active;
+    $is_ast_active         = defined $switch{abstractSyntaxTree}        ? $switch{abstractSyntaxTree}        : 0;
+    if($is_ast_active){
+    $is_m_switch_active  = 0;
+    $is_r_switch_active  = 0;
+    $is_rr_switch_active = 0;
+    $is_rv_switch_active = 0;
+    $is_check_switch_active = 0;
+    $is_check_verbose_switch_active = 0;
+    $switch{silentMode} = 1;
+    }
     delete ${$self}{switches};
 }
 1;

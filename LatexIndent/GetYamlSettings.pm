@@ -19,7 +19,7 @@ use strict;
 use warnings;
 use Data::Dumper;
 use LatexIndent::Switches
-    qw/%switch $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_check_switch_active $is_check_verbose_switch_active $is_r_switch_active $is_rr_switch_active $is_rv_switch_active /;
+    qw/%switch $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_check_switch_active $is_check_verbose_switch_active $is_r_switch_active $is_rr_switch_active $is_rv_switch_active $is_ast_active/;
 use YAML::Tiny;        # interpret defaultSettings.yaml and other potential settings files
 use File::Basename;    # to get the filename and directory path
 use File::HomeDir;
@@ -964,6 +964,15 @@ sub yaml_read_settings {
                 ${ $mainSetting{specialLookUpMiddle} }{ ${$_}{name} } = ${$_}{middle};
             }
         }
+    }
+
+    # AST check
+    if ($is_ast_active){
+        $logger->info("*AST switch active, setting indentation to ''");
+        $mainSetting{defaultIndent} = '';
+        while (my ($key, $value) = each %{$mainSetting{noAdditionalIndentGlobal}}){
+            ${$mainSetting{noAdditionalIndentGlobal}}{$key} = 1;
+        };
     }
 
     # some users may wish to see showAmalgamatedSettings

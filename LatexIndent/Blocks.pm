@@ -17,10 +17,11 @@ package LatexIndent::Blocks;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
+use LatexIndent::AST qw/@AST $ASTCounter _ast_store_block $ASTLevel/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::GetYamlSettings
     qw/%mainSetting %previouslyFoundSetting $commaPolySwitchExists $equalsPolySwitchExists/;
-use LatexIndent::Switches         qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
+use LatexIndent::Switches         qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active $is_ast_active/;
 use LatexIndent::LogFile          qw/$logger/;
 use LatexIndent::Tokens           qw/%tokens/;
 use LatexIndent::ModifyLineBreaks qw/_mlb_line_break_token_adjust/;
@@ -558,6 +559,8 @@ sub _construct_args_with_between {
 sub _find_all_code_blocks {
 
     my $body = shift;
+
+    $ASTLevel++ if $is_ast_active;
 
     # empty body check
     return q() if not defined $body;
@@ -1171,6 +1174,9 @@ sub _find_all_code_blocks {
           $end = $argBody;
        }
 
+       # AST
+       ($begin, $body, $end) = &_ast_store_block(begin=>$begin, body=>$body, end=>$end, level=>$ASTLevel, type=>$modifyLineBreaksName) if $is_ast_active;
+
        # ---------------------
        # output indented block
        # ---------------------
@@ -1179,6 +1185,7 @@ sub _find_all_code_blocks {
     # m switch conflicting linebreak addition or removal handled by tokens
     $body = _mlb_line_break_token_adjust($body) if $is_m_switch_active;
 
+    $ASTLevel-- if $is_ast_active;
     return $body;
 }
 
