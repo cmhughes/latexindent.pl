@@ -224,6 +224,7 @@ ENDQUOTE
         if ( $switch{checkverbose} );
     $logger->info("-n|--lines mode: will only operate on specific lines $switch{lines}") if ( $switch{lines} );
     $logger->info("--GCString switch active, loading Unicode::GCString module")          if ( $switch{GCString} );
+    $logger->info("-a|--AST switch active, creating Abstract Syntax Tree, most other switches disabled")          if ( $switch{abstractSyntaxTree} );
 
     # check if overwrite and outputfile are active similtaneously
     if ( $switch{overwrite} and $switch{outputToFile} ) {

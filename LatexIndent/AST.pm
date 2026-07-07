@@ -21,13 +21,14 @@ use Data::Dumper;
 use Exporter                     qw/import/;
 use LatexIndent::GetYamlSettings qw/%mainSetting/;
 use LatexIndent::Tokens          qw/%tokens/;
+use LatexIndent::Switches qw/%switch/;
 our @AST;
 our $ASTCounter;
 our $ASTLevel = -1;
 our @ISA =
   "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK =
-  qw/@AST $ASTCounter $ASTLevel _ast_store_block _ast_final_work /;
+  qw/@AST $ASTCounter $ASTLevel _ast_store_block _ast_final_work/;
 
 sub _ast_store_block {
     my %input = @_;
@@ -44,6 +45,7 @@ sub _ast_store_block {
                 end   => $input{end},
                 id    => $id,
                 level => $input{level},
+                name => $input{name},
                 type  => $input{type}
             }
         );
@@ -57,6 +59,7 @@ sub _ast_store_block {
                 end   => $input{end},
                 id    => $id,
                 level => $input{level},
+                name => $input{name},
                 type  => $input{type}
             }
         ];
@@ -89,7 +92,7 @@ sub _ast_final_work {
                 delete ${$entryInLevel}{body};
 
                 # first child
-                ${$entryInLevel}{children}[0]{body} = shift(@bodySplit);
+                ${$entryInLevel}{body}[0]{text} = shift(@bodySplit);
 
                 # subsequent children
                 while (scalar @bodySplit > 0){
@@ -98,8 +101,8 @@ sub _ast_final_work {
                     foreach (@{$AST[${$entryInLevel}{level}+1]}){
                         if (defined ${$_}{id} and $id_to_look_for eq ${$_}{id}){
                             delete ${$_}{id};
-                            push(@{${$entryInLevel}{children}},$_);
-                            push(@{${$entryInLevel}{children}},{body=>$text_after_id}) if defined $text_after_id;
+                            push(@{${$entryInLevel}{body}},$_);
+                            push(@{${$entryInLevel}{body}},{text=>$text_after_id}) if defined $text_after_id;
                         } 
                     }
                 }
@@ -107,8 +110,7 @@ sub _ast_final_work {
         }
     }
 
-    @AST = $AST[0][0];
+    @AST = @{$AST[0]};
     delete ${$AST[0]}{id};
-    print Dumper( \@AST );
 }
 1;

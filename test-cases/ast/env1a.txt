@@ -1,0 +1,4 @@
+INFO:  AST switch active, setting indentation to ''
+       AST file check on env1.ast
+INFO:  Output routine:
+       AST outputting to file env1.ast

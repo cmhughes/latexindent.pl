@@ -1,0 +1,15 @@
+INFO:  AST switch active, setting indentation to ''
+INFO:  File extension work:
+       latexindent called to act upon env1 without a file extension;
+       searching for files in the following order (see fileExtensionPreference):
+       	env1.tex
+       	env1.sty
+       	env1.cls
+       	env1.bib
+       env1.tex found!
+       Updated fileName to env1.tex
+       AST file check on env1
+       --abstractSyntaxTree  switch called with file name without extension: env1
+       Updated to env1.ast as the file extension of the input file is ast
+INFO:  Output routine:
+       AST outputting to file env1.ast

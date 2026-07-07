@@ -1175,7 +1175,12 @@ sub _find_all_code_blocks {
        }
 
        # AST
-       ($begin, $body, $end) = &_ast_store_block(begin=>$begin, body=>$body, end=>$end, level=>$ASTLevel, type=>$modifyLineBreaksName) if $is_ast_active;
+       ($begin, $body, $end) = &_ast_store_block(begin=>$begin, 
+                                                 body=>$body, 
+                                                 end=>$end, 
+                                                 name=>$name,
+                                                 level=>$ASTLevel, 
+                                                 type=>$modifyLineBreaksName) if $is_ast_active;
 
        # ---------------------
        # output indented block

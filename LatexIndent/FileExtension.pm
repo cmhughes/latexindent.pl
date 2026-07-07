@@ -173,6 +173,27 @@ sub file_extension_check {
             $logger->info("$fileName does not exist, and will be the output file");
             ${$self}{outputToFile} = $fileName;
         }
+    } 
+    
+    if ($switch{abstractSyntaxTree} ){
+
+        $logger->info("AST file check on $switch{abstractSyntaxTree}");
+
+        ${$self}{abstractSyntaxTree} = $switch{abstractSyntaxTree};
+
+        my $strippedFileExtension = "ast";
+
+        # grab the name, directory, and extension of the output file
+        my ( $name, $dir, $ext ) = fileparse( ${$self}{abstractSyntaxTree}, $strippedFileExtension );
+
+        # if there is no extension, then add the extension from the file to be operated upon
+        if ( !$ext ) {
+            $logger->info( "--abstractSyntaxTree  switch called with file name without extension: " . $switch{abstractSyntaxTree} );
+            ${$self}{abstractSyntaxTree} = $name . ( $name =~ m/\.\z/ ? q() : "." ) . $strippedFileExtension;
+
+            $logger->info(
+                "Updated to ${$self}{abstractSyntaxTree} as the file extension of the input file is $strippedFileExtension");
+        }
     }
 
     # read the file into the Document body

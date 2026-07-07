@@ -51,7 +51,7 @@ use LatexIndent::DoubleBackSlash qw/dodge_double_backslash un_dodge_double_backs
 # code blocks
 use LatexIndent::Verbatim
     qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  find_verbatim_special verbatim_common_tasks %verbatimStorage/;
-use LatexIndent::AST qw/_ast_final_work/;
+use LatexIndent::AST qw/_ast_final_work @AST/;
 use LatexIndent::Environment;
 use LatexIndent::IfElseFi;
 use LatexIndent::Arguments;
@@ -222,9 +222,8 @@ sub operate_on_file {
         ${$self}{body} =~ s/\r\n/\n/sg                             if $mainSetting{dos2unixlinebreaks};
         $self->check_if_different                                  if ${$self}{overwriteIfDifferent};
     }
-    $self->output_indented_text;
-
     $self->_ast_final_work if $is_ast_active;
+    $self->output_indented_text;
     return;
 }
 
@@ -252,12 +251,19 @@ sub output_indented_text {
         print $OUTPUTFILE ${$self}{body};
         close($OUTPUTFILE);
     }
+    elsif ( $switch{abstractSyntaxTree} ){
+        $logger->info("AST outputting to file ${$self}{abstractSyntaxTree}");
+        my $OUTPUTFILE = open_with_encode( '>:encoding(UTF-8)', ${$self}{abstractSyntaxTree} );
+        print $OUTPUTFILE Dumper \@AST;
+        close($OUTPUTFILE);
+        print Dumper \@AST unless $switch{silentMode};
+    }
     else {
         $logger->info("Not outputting to file; see -w and -o switches for more options.");
     }
 
     # output to screen, unless silent mode
-    print ${$self}{body} unless $switch{silentMode};
+    print ${$self}{body} unless ($switch{silentMode} or $switch{abstractSyntaxTree} );
 
     return;
 }

@@ -973,6 +973,8 @@ sub yaml_read_settings {
         while (my ($key, $value) = each %{$mainSetting{noAdditionalIndentGlobal}}){
             ${$mainSetting{noAdditionalIndentGlobal}}{$key} = 1;
         };
+        $Data::Dumper::Pair      = ": ";
+        $Data::Dumper::Quotekeys = 1;
     }
 
     # some users may wish to see showAmalgamatedSettings

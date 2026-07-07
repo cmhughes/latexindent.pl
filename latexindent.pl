@@ -41,7 +41,7 @@ my $commandlineargs = join( ", ", @ARGV );
 my %switches = ( readLocalSettings => 0 );
 
 GetOptions(
-    "abstractSyntaxTree|a"                 => \$switches{abstractSyntaxTree},
+    "abstractSyntaxTree|a=s"    => \$switches{abstractSyntaxTree},
     "version|v"                 => \$switches{version},
     "vversion|vv"               => \$switches{vversion},
     "silent|s"                  => \$switches{silentMode},

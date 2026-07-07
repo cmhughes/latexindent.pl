@@ -1,0 +1,87 @@
+[
+  {
+    "begin": "\\",
+    "body": "documentclass",
+    "end": "{article}",
+    "level": 0,
+    "name": "documentclass",
+    "type": "commands"
+  },
+  {
+    "begin": "\\begin{one}",
+    "body": [
+      {
+        "text": "to be nested before two\nto be nested before two\nto be nested before two "
+      },
+      {
+        "begin": "\\begin{two}",
+        "body": [
+          {
+            "text": "nested two\nnested two "
+          },
+          {
+            "begin": "\\[",
+            "body": [
+              {
+                "text": "f(x)= "
+              },
+              {
+                "begin": "\\",
+                "body": "frac",
+                "end": "{1}{2}",
+                "level": 3,
+                "name": "frac",
+                "type": "commands"
+              }
+            ],
+            "end": "\\]",
+            "level": 2,
+            "name": "displayMath",
+            "type": "specialBeginEnd"
+          },
+          {
+            "text": "\nnested two after math\nnested two after math"
+          }
+        ],
+        "end": "\\end{two}",
+        "level": 1,
+        "name": "two",
+        "type": "environments"
+      },
+      {
+        "text": "\nafter two\nafter two\nafter two "
+      },
+      {
+        "begin": "\\begin{three}",
+        "body": [
+          {
+            "text": "nested three\nnested three\nnested three "
+          },
+          {
+            "begin": "\$",
+            "body": "a = z^3",
+            "end": "\$",
+            "level": 2,
+            "name": "inlineMath",
+            "type": "specialBeginEnd"
+          },
+          {
+            "text": "\nnested three after math"
+          }
+        ],
+        "end": "\\end{three}",
+        "level": 1,
+        "name": "three",
+        "type": "environments"
+      },
+      {
+        "text": "\nafter three\nafter three\nafter three"
+      }
+    ],
+    "end": "\\end{one}",
+    "id": "ast-token-7-END",
+    "level": 0,
+    "name": "one",
+    "type": "environments"
+  }
+]

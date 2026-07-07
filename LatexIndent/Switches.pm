@@ -52,15 +52,18 @@ sub store_switches {
     $is_check_verbose_switch_active = defined $switch{checkverbose} ? $switch{checkverbose} : 0;
     $is_check_switch_active
         = $is_check_verbose_switch_active ? $is_check_verbose_switch_active : $is_check_switch_active;
-    $is_ast_active         = defined $switch{abstractSyntaxTree}        ? $switch{abstractSyntaxTree}        : 0;
-    if($is_ast_active){
-    $is_m_switch_active  = 0;
-    $is_r_switch_active  = 0;
-    $is_rr_switch_active = 0;
-    $is_rv_switch_active = 0;
-    $is_check_switch_active = 0;
-    $is_check_verbose_switch_active = 0;
-    $switch{silentMode} = 1;
+    $is_ast_active = defined $switch{abstractSyntaxTree} ? $switch{abstractSyntaxTree} : 0;
+
+    if ($is_ast_active) {
+        $is_m_switch_active             = 0;
+        $is_check_switch_active         = 0;
+        $is_check_verbose_switch_active = 0;
+        $switch{overwrite}  = 0;
+        $switch{overwriteIfDifferent} = 0;
+        delete $switch{outputToFile} if defined $switch{outputToFile}; 
+        delete $switch{lines} if defined $switch{lines}; 
+        delete $switch{check} if defined $switch{check}; 
+        delete $switch{checkverbose} if defined $switch{checkverbose}; 
     }
     delete ${$self}{switches};
 }
