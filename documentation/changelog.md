@@ -2,13 +2,13 @@
 
 # changelog.md
 
-## V4.0.2
+## V4.0.2, June 6, 2026
 namedBracesBrackets bug fix, see [issue-653](https://github.com/cmhughes/latexindent.pl/issues/653)
 
-## V4.0.1
+## V4.0.1, May 4, 2026
 Blank line poly-switch bug fix, see [issue-649](https://github.com/cmhughes/latexindent.pl/issues/649)
 
-## V4.0, MAJOR release
+## V4.0, MAJOR release, March 15, 2026
 A major release that overhauls the way `latexindent.pl` finds code blocks. 
 
 Some user settings have changed or are now obsolete; full details below.
