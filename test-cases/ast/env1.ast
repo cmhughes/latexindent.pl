@@ -1,13 +1,39 @@
 [
   {
+    "arguments": [
+      {
+        "begin": "{",
+        "body": "article",
+        "end": "}",
+        "level": 0,
+        "name": "documentclass",
+        "type": "mandatoryArgument"
+      }
+    ],
     "begin": "\\",
-    "body": "documentclass",
-    "end": "{article}",
     "level": 0,
     "name": "documentclass",
     "type": "commands"
   },
   {
+    "arguments": [
+      {
+        "begin": "[",
+        "body": "cmh heading here",
+        "end": "]",
+        "level": 0,
+        "name": "one",
+        "type": "optionalArgument"
+      },
+      {
+        "begin": "{",
+        "body": "something",
+        "end": "}",
+        "level": 0,
+        "name": "one",
+        "type": "mandatoryArgument"
+      }
+    ],
     "begin": "\\begin{one}",
     "body": [
       {
@@ -15,34 +41,7 @@
       },
       {
         "begin": "\\begin{two}",
-        "body": [
-          {
-            "text": "nested two\nnested two "
-          },
-          {
-            "begin": "\\[",
-            "body": [
-              {
-                "text": "f(x)= "
-              },
-              {
-                "begin": "\\",
-                "body": "frac",
-                "end": "{1}{2}",
-                "level": 3,
-                "name": "frac",
-                "type": "commands"
-              }
-            ],
-            "end": "\\]",
-            "level": 2,
-            "name": "displayMath",
-            "type": "specialBeginEnd"
-          },
-          {
-            "text": "\nnested two after math\nnested two after math"
-          }
-        ],
+        "body": "nested two\nnested two\nnested two after math\nnested two after math",
         "end": "\\end{two}",
         "level": 1,
         "name": "two",
@@ -53,22 +52,7 @@
       },
       {
         "begin": "\\begin{three}",
-        "body": [
-          {
-            "text": "nested three\nnested three\nnested three "
-          },
-          {
-            "begin": "\$",
-            "body": "a = z^3",
-            "end": "\$",
-            "level": 2,
-            "name": "inlineMath",
-            "type": "specialBeginEnd"
-          },
-          {
-            "text": "\nnested three after math"
-          }
-        ],
+        "body": "nested three\nnested three\nnested three\nnested three after math",
         "end": "\\end{three}",
         "level": 1,
         "name": "three",
@@ -79,7 +63,6 @@
       }
     ],
     "end": "\\end{one}",
-    "id": "ast-token-7-END",
     "level": 0,
     "name": "one",
     "type": "environments"

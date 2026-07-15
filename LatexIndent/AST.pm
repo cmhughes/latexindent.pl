@@ -46,7 +46,8 @@ sub _ast_store_block {
                 id    => $id,
                 level => $input{level},
                 name => $input{name},
-                type  => $input{type}
+                type  => $input{type},
+                arguments => (defined $input{arguments}?\@{$input{arguments}}:0 ),
             }
         );
     }
@@ -60,7 +61,8 @@ sub _ast_store_block {
                 id    => $id,
                 level => $input{level},
                 name => $input{name},
-                type  => $input{type}
+                type  => $input{type},
+                arguments => (defined $input{arguments}?\@{$input{arguments}}:0 ),
             }
         ];
     }
@@ -76,7 +78,16 @@ sub _ast_final_work {
     # remove leading and trailing space
     foreach my $levelArray (@AST) {
         foreach my $entryInLevel ( @{$levelArray} ) {
+            # arguments
+            delete ${$entryInLevel}{arguments} if !${$entryInLevel}{arguments};
+            delete ${$entryInLevel}{begin} if ${$entryInLevel}{type} eq "arguments";
+            delete ${$entryInLevel}{body} if ${$entryInLevel}{type} eq "arguments";
+            delete ${$entryInLevel}{end} if ${$entryInLevel}{type} eq "arguments";
+            # commands
+            delete ${$entryInLevel}{body} if ${$entryInLevel}{type} eq "commands";
+            delete ${$entryInLevel}{end} if ${$entryInLevel}{type} eq "commands";
             while ( my ( $key, $value ) = each %{$entryInLevel} ) {
+                next if ref($value) eq "ARRAY";
                 $value =~ s/^\s*//s;
                 $value =~ s/\s*$//s;
                 ${$entryInLevel}{$key} = $value;
@@ -84,8 +95,29 @@ sub _ast_final_work {
         }
     }
 
+    # 
+    # argument work
+    #
+    foreach my $levelArray (@AST) {
+        foreach my $index (0 .. $#{$levelArray}) {
+            if (${$levelArray}[$index]{type} eq "arguments" ){
+                foreach (@{${$levelArray}[$index]{arguments}}){
+                     push( @{${$levelArray}[$index+1]{arguments}}, $_);
+                }
+               delete ${$levelArray}[$index];
+            }
+        }
+    }
+
+    #
+    # check if body contains "ast-token-" and if it does, then 
+    #
+    #   1. split body
+    #   2. reorganise levels
+    #
     foreach my $levelArray (reverse @AST) {
         foreach my $entryInLevel ( @{$levelArray} ) {
+            next unless defined ${$entryInLevel}{body};
             if (index(${$entryInLevel}{body}, $tokens{ast}) != -1) {
                 my @bodySplit = split(/($tokens{ast}\d+$tokens{endOfToken})/,${$entryInLevel}{body});
 
@@ -112,5 +144,36 @@ sub _ast_final_work {
 
     @AST = @{$AST[0]};
     delete ${$AST[0]}{id};
+
+    # remove empty HASHES 
+    my @ASTemptyHashRemove;
+    foreach my $index ( 0 .. $#AST ) {
+        if (!keys %{$AST[$index]}) { 
+            push(@ASTemptyHashRemove,$index);
+        }
+    }
+    foreach ( reverse @ASTemptyHashRemove ) {
+        splice( @AST, $_ ,1);
+    }
+
+    # remove any id: ast-token-
+    foreach ( @AST ) {
+      %{$_} = &_ast_iterate_through_hash(%{$_});
+    }
+}
+
+sub _ast_iterate_through_hash{
+    my %input = @_;
+
+    delete $input{id} if defined $input{id};
+    while ( my ( $key, $value ) = each %input ) {
+        if (ref($value) eq "ARRAY"){
+            foreach (@{$value}){
+                %{$_} = &_ast_iterate_through_hash(%{$_});
+            }
+        }
+    }
+
+    return %input;
 }
 1;

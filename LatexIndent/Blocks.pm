@@ -576,6 +576,7 @@ sub _find_all_code_blocks {
        my $modifyLineBreaksName;
        my $codeBlockObj;
        my $addedIndentation;
+       my $ASTbody;
        
        #
        # environment
@@ -753,6 +754,8 @@ sub _find_all_code_blocks {
                  $addedIndentation = ${$codeBlockObj}{indentation} if defined ${$codeBlockObj}{indentation};
                  $linebreaksAtEndBegin = ($body =~ m@^\h*\R@ ? 1 : 0) if $argumentsPresent;
              }
+
+             $ASTbody = $body if $is_ast_active;
 
              # prepend argument body
              $body = $argBody.$body;
@@ -1176,7 +1179,7 @@ sub _find_all_code_blocks {
 
        # AST
        ($begin, $body, $end) = &_ast_store_block(begin=>$begin, 
-                                                 body=>$body, 
+                                                 body=>( ( $is_ast_active and $modifyLineBreaksName eq "environments" )? $ASTbody: $body), 
                                                  end=>$end, 
                                                  name=>$name,
                                                  level=>$ASTLevel, 
@@ -1209,6 +1212,8 @@ sub _indent_all_args {
         ? ${ $previouslyFoundSetting{ $name . $modifyLineBreaksName } }{lookForAlignDelims}
         : 0
     );
+
+    my @ASTargStorage;
 
     $body =~ s|\G$allArgumentRegEx$mSwitchOnlyTrailing|
        # mandatory or optional argument?
@@ -1357,8 +1362,24 @@ sub _indent_all_args {
        # if arg body does NOT start on its own line, remove the first indentation added by previous step
        $argBody =~ s@^$currentIndentation@@s if (!$argBodyStartsOwnLine and $bodyHasLineBreaks);
 
+       # AST
+       push(@ASTargStorage, ({begin=>$begin, 
+                             body=>$argBody, 
+                             end=>$end, 
+                             name=>$name,
+                             level=>$ASTLevel, 
+                             type=>($mandatoryArgument? "mandatoryArgument": "optionalArgument")})) if $is_ast_active;
+
        # put it all together
        $begin.$argBody.$end;|sgex;
+
+    &_ast_store_block(begin=>"", 
+                      body=>"", 
+                      end=>"", 
+                      name=>$name,
+                      level=>$ASTLevel, 
+                      type=>"arguments",
+                      arguments=>\@ASTargStorage) if $is_ast_active;
 
     # m switch conflicting linebreak addition or removal handled by tokens
     if ($is_m_switch_active) {
