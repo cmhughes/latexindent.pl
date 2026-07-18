@@ -44,7 +44,10 @@ def recursive_items(dictionary, parent):
                yield from recursive_items(item,cmh_element)
        else:
            cmh_paragraph = ET.Element("paragraph")
-           cmh_paragraph.text = dictionary["body"]
+           try:
+               cmh_paragraph.text = dictionary["body"]
+           except:
+               cmh_paragraph.text = " "
            try:
                cmh_element.append(cmh_paragraph)
            except:

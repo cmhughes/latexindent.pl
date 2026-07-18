@@ -1,12 +1,16 @@
 \documentclass{article}
+\newenvironment{one}[2][]{}{}
+\newenvironment{two}{}{}
+\newenvironment{three}{}{}
+\begin{document}
 here is a nested test
 \begin{one}[cmh heading here]{something}
+    to be nested before two $y=\int_a^b f(x) dx$ 
 	to be nested before two
-	to be nested before two
-	to be nested before two
+	to be nested before two $z=x^2+y^2$
 	\begin{two}
 		nested two
-		nested two
+        nested two $aaa \frac{\mathrm{d}y}{\mathrm{d}x}=\cos x^2$
 		nested two after math
 		nested two after math
 	\end{two}
@@ -16,10 +20,11 @@ here is a nested test
 	\begin{three}
 		nested three
 		nested three
-		nested three
+        nested three $bbb \sin_2 ccc$
 		nested three after math
 	\end{three}
     after three
     after three
     after three
 \end{one}
+\end{document}

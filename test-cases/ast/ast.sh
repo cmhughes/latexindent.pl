@@ -2,12 +2,12 @@
 . ../common.sh
 
 openingtasks
-latexindent.pl -s -a env1.ast env1.tex
+latexindent.pl -s -a env1.ast env1.tex -y "indentPreamble: 1"
 cp indent.log env1a.txt
 perl -p0i -e 's/.*?(INFO:\s+AST\sswitch)/$1/s' env1a.txt
 perl -p0i -e 's/\s+------.*//s' env1a.txt
 
-latexindent.pl -s -a env1 env1
+latexindent.pl -s -a env1 env1 -y "indentPreamble: 1"
 cp indent.log env1b.txt
 perl -p0i -e 's/.*?(INFO:\s+AST\sswitch)/$1/s' env1b.txt
 perl -p0i -e 's/\s+------.*//s' env1b.txt
