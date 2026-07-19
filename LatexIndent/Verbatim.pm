@@ -21,7 +21,7 @@ use Data::Dumper;
 use Exporter                     qw/import/;
 use LatexIndent::Tokens          qw/%tokens/;
 use LatexIndent::GetYamlSettings qw/%mainSetting/;
-use LatexIndent::Switches        qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
+use LatexIndent::Switches        qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active $is_ast_active/;
 use LatexIndent::LogFile         qw/$logger/;
 our @EXPORT_OK
     = qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands find_verbatim_special verbatim_common_tasks %verbatimStorage/;
@@ -478,6 +478,8 @@ sub find_verbatim_special {
 }
 
 sub put_verbatim_back_in {
+    return if $is_ast_active;
+
     my $self  = shift;
     my %input = @_;
 

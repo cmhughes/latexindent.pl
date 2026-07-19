@@ -13,11 +13,14 @@ perl -p0i -e 's/.*?(INFO:\s+AST\sswitch)/$1/s' env1b.txt
 perl -p0i -e 's/\s+------.*//s' env1b.txt
 
 ./ast-demo.py env1.ast --output env1.html
+
+latexindent.pl -a env2.ast -s env1.tex -l math-verb.yaml
+./ast-demo.py env2.ast --output env2.html
 # to do
 #   arguments   
 #   between arguments
 #   items
-#   verbatim
+#   verbatim, environments, inline
 #   trailing comments
 #   align at ampersands
 #   tables

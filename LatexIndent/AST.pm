@@ -22,6 +22,7 @@ use Exporter                     qw/import/;
 use LatexIndent::GetYamlSettings qw/%mainSetting/;
 use LatexIndent::Tokens          qw/%tokens/;
 use LatexIndent::Switches        qw/%switch/;
+use LatexIndent::Verbatim        qw/%verbatimStorage/;
 our @AST;
 our $ASTCounter;
 our $ASTLevel  = -1;
@@ -169,8 +170,8 @@ sub _ast_iterate_through_hash {
 sub _ast_body_find_child {
     my %entryInLevel = @_;
 
-    if ( index( $entryInLevel{body}, $tokens{ast} ) != -1 ) {
-        my @bodySplit = split( /($tokens{ast}\d+$tokens{endOfToken})/, $entryInLevel{body} );
+    if ( index( $entryInLevel{body}, $tokens{ast} ) != -1 or index( $entryInLevel{body}, $tokens{verbatim}) != -1 ) {
+        my @bodySplit = split( /((?:$tokens{ast}\d+$tokens{endOfToken})|(?:$tokens{verbatim}\d+$tokens{endOfToken}))/, $entryInLevel{body} );
 
         delete $entryInLevel{body};
 
@@ -181,6 +182,18 @@ sub _ast_body_find_child {
         while ( scalar @bodySplit > 0 ) {
             my $id_to_look_for = shift(@bodySplit);
             my $text_after_id  = shift(@bodySplit);
+            if ($id_to_look_for =~m /$tokens{verbatim}/s){
+                    ${$verbatimStorage{$id_to_look_for}}{type} = ${$verbatimStorage{$id_to_look_for}}{modifyLineBreaksYamlName};
+                    my %verbatim;
+                    $verbatim{name} = ${$verbatimStorage{$id_to_look_for}}{name};
+                    $verbatim{begin} = ${$verbatimStorage{$id_to_look_for}}{begin};
+                    $verbatim{body} = ${$verbatimStorage{$id_to_look_for}}{body};
+                    $verbatim{end} = ${$verbatimStorage{$id_to_look_for}}{end};
+                    $verbatim{type} = ${$verbatimStorage{$id_to_look_for}}{modifyLineBreaksYamlName};
+                    delete $verbatimStorage{$id_to_look_for};
+                    push( @{ $entryInLevel{body} },\%verbatim);
+                    push( @{ $entryInLevel{body} }, { text => $text_after_id } ) if defined $text_after_id;
+            } else {
             foreach ( @{ $AST[ $entryInLevel{level} + 1 ] } ) {
                 if ( defined ${$_}{id} and $id_to_look_for eq ${$_}{id} ) {
                     delete ${$_}{id};
@@ -205,6 +218,7 @@ sub _ast_body_find_child {
                     push( @{ $entryInLevel{body} }, $_ );
                     push( @{ $entryInLevel{body} }, { text => $text_after_id } ) if defined $text_after_id;
                 }
+            }
             }
         }
     }

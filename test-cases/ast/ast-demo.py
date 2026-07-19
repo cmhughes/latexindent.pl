@@ -91,13 +91,13 @@ cmh_xslt = ET.parse("ast-demo.xsl")
 transform = ET.XSLT(cmh_xslt)
 result = transform(cmh_html)
 ###print(result)
-result.write_output("env1.html")
+result.write_output(args.output)
 
-xml_tree = ET.parse("env1.html")
+xml_tree = ET.parse(args.output)
 root = xml_tree.getroot()
 root.find(".//cmhhead").tag="head"
 ET.indent(xml_tree, '    ')
 tree = ET.ElementTree(root)
-tree.write("env1.html", pretty_print=True, xml_declaration=False, encoding="utf-8")
+tree.write(args.output, pretty_print=True, xml_declaration=False, encoding="utf-8")
 
 exit

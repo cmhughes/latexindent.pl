@@ -1,0 +1,239 @@
+[
+  {
+    "arguments": [
+      {
+        "begin": "{",
+        "body": "article",
+        "end": "}",
+        "level": 0,
+        "name": "documentclass",
+        "type": "mandatoryArgument"
+      }
+    ],
+    "begin": "\\",
+    "level": 0,
+    "name": "documentclass",
+    "type": "commands"
+  },
+  {
+    "arguments": [
+      {
+        "begin": "{",
+        "body": "one",
+        "end": "}",
+        "level": 0,
+        "name": "newenvironment",
+        "type": "mandatoryArgument"
+      },
+      {
+        "begin": "[",
+        "body": 2,
+        "end": "]",
+        "level": 0,
+        "name": "newenvironment",
+        "type": "optionalArgument"
+      },
+      {
+        "begin": "[",
+        "body": "",
+        "end": "]",
+        "level": 0,
+        "name": "newenvironment",
+        "type": "optionalArgument"
+      },
+      {
+        "begin": "{",
+        "body": "",
+        "end": "}",
+        "level": 0,
+        "name": "newenvironment",
+        "type": "mandatoryArgument"
+      },
+      {
+        "begin": "{",
+        "body": "",
+        "end": "}",
+        "level": 0,
+        "name": "newenvironment",
+        "type": "mandatoryArgument"
+      }
+    ],
+    "begin": "\n\\",
+    "level": 0,
+    "name": "newenvironment",
+    "type": "commands"
+  },
+  {
+    "arguments": [
+      {
+        "begin": "{",
+        "body": "two",
+        "end": "}",
+        "level": 0,
+        "name": "newenvironment",
+        "type": "mandatoryArgument"
+      },
+      {
+        "begin": "{",
+        "body": "",
+        "end": "}",
+        "level": 0,
+        "name": "newenvironment",
+        "type": "mandatoryArgument"
+      },
+      {
+        "begin": "{",
+        "body": "",
+        "end": "}",
+        "level": 0,
+        "name": "newenvironment",
+        "type": "mandatoryArgument"
+      }
+    ],
+    "begin": "\n\\",
+    "level": 0,
+    "name": "newenvironment",
+    "type": "commands"
+  },
+  {
+    "arguments": [
+      {
+        "begin": "{",
+        "body": "three",
+        "end": "}",
+        "level": 0,
+        "name": "newenvironment",
+        "type": "mandatoryArgument"
+      },
+      {
+        "begin": "{",
+        "body": "",
+        "end": "}",
+        "level": 0,
+        "name": "newenvironment",
+        "type": "mandatoryArgument"
+      },
+      {
+        "begin": "{",
+        "body": "",
+        "end": "}",
+        "level": 0,
+        "name": "newenvironment",
+        "type": "mandatoryArgument"
+      }
+    ],
+    "begin": "\n\\",
+    "level": 0,
+    "name": "newenvironment",
+    "type": "commands"
+  },
+  {
+    "begin": "\\begin{document}",
+    "body": [
+      {
+        "text": "here is a nested test"
+      },
+      {
+        "arguments": [
+          {
+            "begin": "[",
+            "body": "cmh heading here",
+            "end": "]",
+            "level": 1,
+            "name": "one",
+            "type": "optionalArgument"
+          },
+          {
+            "begin": "{",
+            "body": "something",
+            "end": "}",
+            "level": 1,
+            "name": "one",
+            "type": "mandatoryArgument"
+          }
+        ],
+        "begin": "\\begin{one}",
+        "body": [
+          {
+            "text": "to be nested before two "
+          },
+          {
+            "begin": "\$",
+            "body": "y=\\int_a^b f(x) dx",
+            "end": "\$",
+            "name": "inlineMath",
+            "type": "specialBeginEnd"
+          },
+          {
+            "text": " to be nested before two to be nested before two "
+          },
+          {
+            "begin": "\$",
+            "body": "z=x^2+y^2",
+            "end": "\$",
+            "name": "inlineMath",
+            "type": "specialBeginEnd"
+          },
+          {
+            "begin": "\\begin{two}",
+            "body": [
+              {
+                "text": "nested two nested two "
+              },
+              {
+                "begin": "\$",
+                "body": "aaa \\frac{\\mathrm{d}y}{\\mathrm{d}x}=\\cos x^2",
+                "end": "\$",
+                "name": "inlineMath",
+                "type": "specialBeginEnd"
+              },
+              {
+                "text": " nested two after math nested two after math"
+              }
+            ],
+            "end": "\\end{two}",
+            "level": 2,
+            "name": "two",
+            "type": "environments"
+          },
+          {
+            "text": " after two after two after two"
+          },
+          {
+            "begin": "\\begin{three}",
+            "body": [
+              {
+                "text": "nested three nested three nested three "
+              },
+              {
+                "begin": "\$",
+                "body": "bbb \\sin_2 ccc",
+                "end": "\$",
+                "name": "inlineMath",
+                "type": "specialBeginEnd"
+              },
+              {
+                "text": " nested three after math"
+              }
+            ],
+            "end": "\\end{three}",
+            "level": 2,
+            "name": "three",
+            "type": "environments"
+          },
+          {
+            "text": " after three after three after three"
+          }
+        ],
+        "end": "\\end{one}",
+        "level": 1,
+        "name": "one",
+        "type": "environments"
+      }
+    ],
+    "end": "\\end{document}",
+    "level": 0,
+    "name": "document",
+    "type": "environments"
+  }
+]

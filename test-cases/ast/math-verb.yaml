@@ -1,0 +1,7 @@
+indentPreamble: 1
+
+specialBeginEnd:
+  - name: displayMath                                    
+    lookForThis: verbatim
+  - name: inlineMath                                     
+    lookForThis: verbatim

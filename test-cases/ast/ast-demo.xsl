@@ -76,8 +76,13 @@
   </xsl:element>
 </xsl:template>
 
+<xsl:template match="specialBeginEnd[@name='inlineMath']">
+      <xsl:value-of select="concat('$',paragraph/text(),'$')"/>
+</xsl:template>
+
 <!-- ignore particular paragraphs  -->
 <xsl:template match="commands[@name='documentclass']/mandatoryArgument/paragraph"/>
 <xsl:template match="environments/optionalArgument/paragraph"/>
+<xsl:template match="commands[@name='newenvironment']"/>
 
 </xsl:stylesheet>
