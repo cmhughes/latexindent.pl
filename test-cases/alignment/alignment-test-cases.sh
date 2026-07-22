@@ -406,5 +406,6 @@ latexindent.pl -s -l issue-602.yaml issue-602.tex -o=+-mod1
 latexindent.pl -s issue-602a -o=+-mod1
 latexindent.pl -s issue-630 -o=+-mod1
 latexindent.pl -s issue-630 -l issue-630a -o=+-mod2
+latexindent.pl -s -l issue-657.yaml issue-657.tex -o=+-mod1
 set +x 
 wrapuptasks
