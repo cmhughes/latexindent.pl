@@ -1,0 +1,13 @@
+% latexindent must be idempotent: with -m, an alignment environment whose body
+% starts on the \begin line used to gain one space before the first delimiter
+% on every run, without limit.
+\begin{align*} & a = b \\ &\quad = c.
+\end{align*}
+
+\begin{equation*} \begin{split} & a = b \\ &\quad = c.
+	\end{split}
+\end{equation*}
+
+% unaffected: delimiter is not the first token of the body
+\begin{align*}  a & = b \\ c & = d.
+\end{align*}

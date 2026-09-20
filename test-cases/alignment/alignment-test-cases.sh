@@ -11,6 +11,11 @@ latexindent.pl -s simple-multi-column -o=+-mod2 -y="lookForAlignDelims:tabular:m
 latexindent.pl -s simple-multi-column -o=+-mod3 -y="lookForAlignDelims:tabular:multiColumnGrouping:1;spacesBeforeAmpersand:3;justification:right"
 latexindent.pl -s simple-multi-column -o=+-mod4 -y="lookForAlignDelims:tabular:multiColumnGrouping:1;spacesAfterAmpersand:3;justification:right"
 latexindent.pl -s table1 -o table1-default
+
+# idempotence: an alignment environment whose body starts on the \begin line
+# (https://github.com/cmhughes/latexindent.pl/issues/NNN)
+latexindent.pl -m -s align-body-on-begin-line -o=+-mod1
+latexindent.pl -m -s align-body-on-begin-line-mod1 -o=+-mod2
 latexindent.pl -s unicode1 -o unicode1-default
 
 set +x
