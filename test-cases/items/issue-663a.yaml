@@ -1,0 +1,23 @@
+indentAfterItems:
+  questions: 1
+  parts: 1
+
+indentRules:
+  question: ""
+  qpart: ""
+  part: ""
+
+fineTuning:
+  items:
+    itemRegEx: |-
+      (?x:)
+      \\
+      (?:
+        item
+        |
+        question
+        |
+        qpart
+        |
+        part
+      )

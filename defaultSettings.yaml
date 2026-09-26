@@ -175,7 +175,7 @@ lookForAlignDelims:
 #                 next line is indented
 #           \item another item
 #       \end{itemize}
-# then populate indentAfterItems. See also itemNames
+# then populate indentAfterItems. See also itemRegEx
 indentAfterItems:
   itemize: 1
   itemize*: 1
