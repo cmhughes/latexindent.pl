@@ -1,6 +1,9 @@
-<!-- announcement: namedBracesBrackets bug fix -->
+<!-- announcement: alignAtAmpersand bug fix -->
 
 # changelog.md
+
+## V4.0.3, October 4, 2026
+alignAtAmpersand bug fix, see [issue-660](https://github.com/cmhughes/latexindent.pl/issues/660), thanks to @eduenez
 
 ## V4.0.2, June 6, 2026
 namedBracesBrackets bug fix, see [issue-653](https://github.com/cmhughes/latexindent.pl/issues/653)

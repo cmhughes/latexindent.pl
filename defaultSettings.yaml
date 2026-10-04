@@ -1,5 +1,5 @@
 #
-# latexindent.pl, version 4.0.2, 2026-06-06
+# latexindent.pl, version 4.0.3, 2026-10-04
 # a script that aims to beautify .tex, .sty, .cls files
 #
 # defaultSettings.yaml, the default settings for latexindent.pl
