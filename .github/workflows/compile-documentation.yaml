@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: load the "base actions/checkout" so as to access latexindent.pl
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: installing texlive full
         uses: xu-cheng/texlive-action@v3
         with:

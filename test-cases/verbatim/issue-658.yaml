@@ -1,0 +1,10 @@
+verbatimEnvironments:
+  MatlabCode: 1
+
+switchesViaYaml:
+   rSwitch: 1
+
+replacements:
+   - 
+     substitution: s/^\h*(\\(?:begin|end)\{MatlabCode\})/$1/mg
+     when: after

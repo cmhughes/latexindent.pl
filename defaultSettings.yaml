@@ -1,5 +1,5 @@
 #
-# latexindent.pl, version 4.0.2, 2026-06-06
+# latexindent.pl, version 4.0.3, 2026-10-04
 # a script that aims to beautify .tex, .sty, .cls files
 #
 # defaultSettings.yaml, the default settings for latexindent.pl
@@ -175,7 +175,7 @@ lookForAlignDelims:
 #                 next line is indented
 #           \item another item
 #       \end{itemize}
-# then populate indentAfterItems. See also itemNames
+# then populate indentAfterItems. See also itemRegEx
 indentAfterItems:
   itemize: 1
   itemize*: 1

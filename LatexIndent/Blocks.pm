@@ -643,7 +643,27 @@ sub _find_all_code_blocks {
                   $begin = $begin.($1?$1:q());
                   $body = ($2?$2:q()).$body;
                   $argBody = q();
-                  ${$codeBlockObj}{begin} = $begin if $is_m_switch_active;
+
+                  # When this environment is aligned at ampersand AND its body
+                  # begins with the alignment delimiter -- an empty leading
+                  # column -- the alignment routine regenerates the spacing in
+                  # front of that delimiter itself.  Storing the horizontal
+                  # space on the code block's begin statement as well means the
+                  # two are added together, and one space accumulates on EVERY
+                  # run, without limit:
+                  #
+                  #    \begin{align*}  & a = b \\ &\quad = c.
+                  #    \begin{align*}   & a = b \\ &\quad = c.
+                  #    \begin{align*}    & a = b \\ &\quad = c.
+                  #
+                  # so latexindent is not idempotent on such a file.  Without -m
+                  # the begin statement is not updated and the output is already
+                  # stable; this makes the -m path agree with it.
+                  my $alignmentOwnsLeadingSpace = 0;
+                  if ($is_m_switch_active and $lookForAlignDelims){
+                     $alignmentOwnsLeadingSpace = 1 if $body =~ m@^${$previouslyFoundSetting{$name.$modifyLineBreaksName}}{delimiterRegEx}@;
+                  }
+                  ${$codeBlockObj}{begin} = $begin if ($is_m_switch_active and !$alignmentOwnsLeadingSpace);
                   $logger->trace("arguments for $name environment is ONLY space, pre-pending it to body")         if $is_t_switch_active;
                 } else {
                   $argBody = _indent_all_args($name, $modifyLineBreaksName, $argBody, $currentIndentation);
@@ -1709,7 +1729,7 @@ sub _find_env_items {
                        #
                        # desired: item two
                        if (${$codeBlockObj}{BodyStartsOnOwnLine} == -1 ){
-                            $logger->trace("adding trailing space ' ' *after*  item statement ItemStartsOnOwnLine == -1");
+                            $logger->trace("adding trailing space ' ' *after*  item statement ItemStartsOnOwnLine == -1") if $is_t_switch_active;
                             $begin .= $tokens{mElseTrailingSpace};
                        }
 

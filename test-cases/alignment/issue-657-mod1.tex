@@ -1,0 +1,29 @@
+\[
+	\partial_t V(t, \mu) = \begin{myaligned}[t]
+		 & \bE \Big [ \partial_t U(t, Y^{[r]}_t, Y^{[r]}_{t_k}, \mu) + \sum_{i=1}^r b_k^{(i)} \cdot \nabla_{y_i} U(t, Y^{[r]}_t, Y^{[r]}_{t_k}, \mu) \\
+		 & + \frac{1}{2} \sum_{i=1}^r a_k^{(i)} : \nabla_{y_i}^2 U(t, Y^{[r]}_t, Y^{[r]}_{t_k}, \mu) \Big ] .
+	\end{myaligned}
+\]
+
+\begin{myalign}
+	 & \bE [ b_k \cdot \partial_\mu \rL_{t_k}\cV(t, \mu; X^n_t) ] \\
+	 & = \begin{myaligned}[t]
+	 & \bE \Big [ b_k^{(1)} \cdot \partial_\mu \partial_t \cV (t, \mu; Y^{(1)}_t) + b_k^{(1)} \otimes b_k^{(2)} : \partial_\mu^2 \cV (t, \mu; Y^{[2]}_t) \\
+	 & + \frac{1}{2} a_k^{(1)} \otimes b_k^{(2)} \odot_3 \partial_\mu \nabla_{v_1} \partial_\mu \cV (t, \mu; Y^{[2]}_t) \Big ] ,
+	\end{myaligned}
+\end{myalign}
+
+\[
+	\rL_{(p, \ell)} f (s, \bm{\mu}) \coloneq \begin{myaligned}[t]
+		 & \partial_s f (s, \bm{\mu}) + \bE \Big [ F_{(1, p, \ell)} (s, \mathbf{Z}, \bm{\mu}) \cdot \partial_\mu  f(s, \bm{\mu}; \mathbf{Z}) \\
+		 & + \frac{1}{2} \{ F_{(2, p, \ell)} F_{(2, p, \ell)}^\top \} (s, \mathbf{Z}, \bm{\mu}) : \nabla_v \partial_\mu  f(s, \bm{\mu}; \mathbf{Z}) \Big ] ,
+	\end{myaligned}
+\]
+
+\begin{equation} \label{cal:exp2:eq3}
+	\rL F (t, \mu) \coloneq \begin{myaligned}[t]
+		 & \bE \Big [ \partial_t F (t, \mu) + b(t, Y, \mu) \cdot \partial_\mu F (t, \mu; Y) \\
+		 & + \frac{1}{2} a(t, Y, \mu) : \nabla_v \partial_\mu F (t, \mu; Y ) \Big ]
+		\qtextq{where} \lbrbrak Y \rbrbrak = \mu .
+	\end{myaligned}
+\end{equation}

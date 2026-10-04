@@ -1,0 +1,7 @@
+switchesViaYaml:
+  mSwitch:  1
+modifyLineBreaks:
+  textWrapOptions:
+    columns: 80
+    blocksBeginWith:
+      other: \\textbf\{[A-Z]

@@ -1106,9 +1106,8 @@ sub yaml_read_settings {
                 BodyStartsOnOwnLine  => "NameFinishesWithLineBreak",
             }
         ),
-        items => (
-            { BeginStartsOnOwnLine => "ItemStartsOnOwnLine", BodyStartsOnOwnLine => "ItemFinishesWithLineBreak" }
-        ),
+        items =>
+            ( { BeginStartsOnOwnLine => "ItemStartsOnOwnLine", BodyStartsOnOwnLine => "ItemFinishesWithLineBreak" } ),
         verbatim => (
             {   BeginStartsOnOwnLine     => "VerbatimBeginStartsOnOwnLine",
                 EndFinishesWithLineBreak => "VerbatimEndFinishesWithLineBreak"

@@ -1,0 +1,7 @@
+lookForAlignDelims:
+  myalign:
+    alignDoubleBackSlash: 0
+    lookForChildCodeBlocks: 0
+  myaligned:
+    alignDoubleBackSlash: 0
+    lookForChildCodeBlocks: 0
