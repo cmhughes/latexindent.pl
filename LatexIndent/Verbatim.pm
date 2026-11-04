@@ -533,6 +533,8 @@ sub put_verbatim_back_in {
     }ge;
 
     while ( $verbatimFound < $verbatimCount ) {
+        my $verbatimFoundBeforePass = $verbatimFound;
+        my $verbatimIDRepaired      = 0;
         while ( my ( $verbatimID, $child ) = each %verbatimStorage ) {
             if ( $toMatch =~ m/${$child}{type}/ ) {
                 if ( ${$self}{body} =~ m/$verbatimID/m ) {
@@ -590,7 +592,7 @@ sub put_verbatim_back_in {
                     my $verbatimIDwithLineBreaksRegExp = qr/$verbatimIDwithLineBreaks/s;
 
                     # replace the line-broken verbatim ID with a non-broken verbatim ID
-                    ${$self}{body} =~ s/$verbatimIDwithLineBreaksRegExp/${$child}{id}/s;
+                    $verbatimIDRepaired = 1 if ${$self}{body} =~ s/$verbatimIDwithLineBreaksRegExp/${$child}{id}/s;
 
                     # note: we do *not* label this as found, as we need to go back through
                     #       and search for the newly modified ID
@@ -600,6 +602,18 @@ sub put_verbatim_back_in {
             # logfile info
             $logger->trace('*Post-processed body:') if $is_tt_switch_active;
             $logger->trace( ${$self}{body} )        if ($is_tt_switch_active);
+        }
+
+        # a pass that found and repaired nothing will not find anything next time either:
+        # the remaining IDs are no longer in the body (for example, changed by a replacement
+        # with -rv), so report them and stop, rather than looping forever
+        if ( $verbatimFound == $verbatimFoundBeforePass and !$verbatimIDRepaired ) {
+            while ( my ( $verbatimID, $child ) = each %verbatimStorage ) {
+                next unless ( $toMatch =~ m/${$child}{type}/ );
+                $logger->warn("*$verbatimID not found in body; its verbatim text cannot be put back in");
+                delete $verbatimStorage{$verbatimID};
+            }
+            last;
         }
     }
     return;
