@@ -32,7 +32,7 @@ use Encode qw/ encode decode find_encoding /;
 
 use LatexIndent::LogFile qw/$logger/;
 use LatexIndent::UTF8CmdLineArgsFileOperation
-  qw/commandlineargs_with_encode @new_args/;
+  qw/commandlineargs_with_encode @new_args exist_with_encode/;
 
 commandlineargs_with_encode();
 my $commandlineargs = join( ", ", @ARGV );
@@ -109,6 +109,20 @@ eval "use Unicode::GCString" if $switches{GCString};
 # the only argument is the file to be indented, and place it in @ARGV
 if ( $switches{readLocalSettings} and scalar(@ARGV) < 1 ) {
     push( @ARGV, $switches{readLocalSettings} );
+    $switches{readLocalSettings} = '';
+}
+
+# the same can happen for a batch of files, for example
+#
+#       latexindent.pl -l myfile1.tex myfile2.tex
+#
+# so if the optional parameter is an existing file without a .yaml
+# extension (which the l flag would not read, as it would look for
+# myfile1.tex.yaml) then we place it back at the front of @ARGV
+if ( $switches{readLocalSettings} =~ m/\.(?!ya?ml\z)[^.\/\\]+\z/i
+    and exist_with_encode( $switches{readLocalSettings} ) )
+{
+    unshift( @ARGV, $switches{readLocalSettings} );
     $switches{readLocalSettings} = '';
 }
 
