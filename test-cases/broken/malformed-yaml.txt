@@ -1,0 +1,2 @@
+WARN:  malformed.yaml contains invalid yaml format- not reading from it
+       YAML::Tiny found bad indenting in line ' enumerate: " "'

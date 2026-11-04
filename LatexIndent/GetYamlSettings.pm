@@ -186,7 +186,7 @@ sub yaml_read_settings {
     if ( defined $indentconfig and -f $indentconfig and !$switch{onlyDefault} ) {
 
         # read the absolute paths from indentconfig.yaml
-        $userSettings = YAML::Tiny->read("$indentconfig");
+        $userSettings = eval { YAML::Tiny->read("$indentconfig") };
 
         # update the absolute paths
         if ( $userSettings and ( ref( $userSettings->[0] ) eq 'HASH' ) and $userSettings->[0]->{paths} ) {
@@ -229,6 +229,7 @@ sub yaml_read_settings {
             $logger->warn(
                 "See https://latexindentpl.readthedocs.io/en/latest/sec-indent-config-and-settings.html for an example"
             );
+            $logger->warn($@) if $@;
         }
     }
     else {
@@ -370,7 +371,7 @@ sub yaml_read_settings {
         # check that the settings file exists and that it isn't empty
         if ( exist_with_encode($settings) and !( zero_with_encode($settings) ) ) {
             $logger->info("Reading USER settings from $settings");
-            $userSettings = read_yaml_with_encode("$settings");
+            $userSettings = eval { read_yaml_with_encode("$settings") };
 
             # update the absolute paths
             if ( $userSettings and ( ref( $userSettings->[0] ) eq 'HASH' ) and $userSettings->[0]->{paths} ) {
@@ -567,6 +568,7 @@ sub yaml_read_settings {
             else {
                 # otherwise print a warning that we can not read userSettings.yaml
                 $logger->warn("*$settings contains invalid yaml format- not reading from it");
+                $logger->warn($@) if $@;
             }
         }
         else {
