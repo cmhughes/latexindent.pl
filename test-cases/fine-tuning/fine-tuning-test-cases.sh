@@ -44,5 +44,9 @@ latexindent.pl -s -t arguments2 -o=+-mod2 -l=fine-tuning-args2.yaml
 latexindent.pl -s href.tex -m -o=+-mod1 -l href1.yaml
 latexindent.pl -s href.tex -m -o=+-mod2 -l href2.yaml
 
+# a % after \\ starts a comment, a % after \\\ does not
+latexindent.pl -s trailing-comments-backslashes -o=+-mod0
+latexindent.pl -s -m trailing-comments-backslashes1 -o=+-mod1 -y="modifyLineBreaks:textWrapOptions:columns:20"
+
 set +x 
 wrapuptasks

@@ -42,7 +42,8 @@ sub construct_trailing_comment_regexp {
         $notPrecededByRegExp = qr/$notPreceededBy/;
     }
 
-    $trailingCommentRegExp = qr/$notPrecededByRegExp%$tokens{trailingComment}\d+$tokens{endOfToken}/;
+    # a trailing comment can also follow \\, see remove_trailing_comments
+    $trailingCommentRegExp = qr/(?:$notPrecededByRegExp|(?<=\\\\))%$tokens{trailingComment}\d+$tokens{endOfToken}/;
 }
 
 sub add_comment_symbol {
@@ -81,6 +82,7 @@ sub remove_trailing_comments {
     # perform the substitution
     ${$self}{body} =~ s/
                             $notPrecededByRegExp  # not preceded by a \
+                            (?:\\\\)*\K           # possibly after pairs of backslashes, which are kept
                             %                     # % 
                             (
                                 $afterComment     # anything else
