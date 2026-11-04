@@ -430,7 +430,7 @@ fineTuning:
   items:
     itemRegEx: \\(?:item|myitem)
   ifElseFi:
-    name: (?!@?if[a-zA-Z@]*?\{)@?if[a-zA-Z@]*
+    name: (?!@?if[a-zA-Z@]*?\{|iff(?![a-zA-Z@]))@?if[a-zA-Z@]*+
     elseOrRegEx: \\(?:else|or)
   commands:
     name: [+a-zA-Z@*0-9_:]+
