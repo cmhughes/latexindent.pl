@@ -228,7 +228,7 @@ sub find_verbatim_environments {
                         (\R\s*)?               # possibly followed by a line break
                     /sx;
 
-        while ( ${$self}{body} =~ m/$verbatimRegExp/sx ) {
+        ${$self}{body} =~ s{$verbatimRegExp}{
 
             # create a new Verbatim object
             my $verbatimBlock = LatexIndent::Verbatim->new(
@@ -259,15 +259,15 @@ sub find_verbatim_environments {
             # verbatim children go in special hash
             $verbatimStorage{ ${$verbatimBlock}{id} } = $verbatimBlock;
 
-            # remove the environment block, and replace with unique ID
-            ${$self}{body} =~ s/$verbatimRegExp/${$verbatimBlock}{replacementText}/sx;
-
             $logger->trace("replaced with ID: ${$verbatimBlock}{id}") if $is_t_switch_active;
 
             # possible decoration in log file
             $logger->trace( ${ $mainSetting{logFilePreferences} }{showDecorationFinishCodeBlockTrace} )
                 if ${ $mainSetting{logFilePreferences} }{showDecorationFinishCodeBlockTrace};
-        }
+
+            # remove the environment block, and replace with unique ID
+            ${$verbatimBlock}{replacementText};
+        }ge;
     }
     return;
 }
@@ -339,7 +339,7 @@ sub find_verbatim_commands {
                         (\R)?           # possibly followed by a line break 
                     /mx;
 
-        while ( ${$self}{body} =~ m/$verbatimRegExp/ ) {
+        ${$self}{body} =~ s{$verbatimRegExp}{
 
             # create a new Verbatim object
             my $verbatimCommand = LatexIndent::Verbatim->new(
@@ -385,11 +385,11 @@ sub find_verbatim_commands {
             # log file output
             $logger->trace("*VERBATIM command found: ${$verbatimCommand}{name}") if $is_t_switch_active;
 
-            # remove the environment block, and replace with unique ID
-            ${$self}{body} =~ s/$verbatimRegExp/${$verbatimCommand}{replacementText}/sx;
-
             $logger->trace("replaced with ID: ${$verbatimCommand}{id}") if $is_t_switch_active;
-        }
+
+            # remove the environment block, and replace with unique ID
+            ${$verbatimCommand}{replacementText};
+        }ge;
     }
     return;
 
@@ -508,6 +508,29 @@ sub put_verbatim_back_in {
 
     # loop through document children hash
     my $verbatimFound = 0;
+
+    # most IDs only need replacing with their verbatim text; do these in a single
+    # pass through the body, leaving the others to the loop below
+    ${$self}{body} =~ s{((?:$tokens{verbatimInline}|$tokens{verbatim})\d+$tokens{endOfToken})}{
+        my $verbatimID = $1;
+        my $child      = $verbatimStorage{$verbatimID};
+        if (    defined $child
+            and $toMatch =~ m/${$child}{type}/
+            and ${$child}{type} ne "linesprotect"
+            and !(  $is_m_switch_active
+                and defined ${$child}{EndFinishesWithLineBreak}
+                and ${$child}{EndFinishesWithLineBreak} == -1 )
+            )
+        {
+            delete $verbatimStorage{$verbatimID};
+            $verbatimFound++;
+            ${$child}{begin} . ${$child}{body} . ${$child}{end};
+        }
+        else {
+            $verbatimID;
+        }
+    }ge;
+
     while ( $verbatimFound < $verbatimCount ) {
         while ( my ( $verbatimID, $child ) = each %verbatimStorage ) {
             if ( $toMatch =~ m/${$child}{type}/ ) {
