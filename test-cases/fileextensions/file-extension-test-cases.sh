@@ -115,5 +115,13 @@ for outputfile in *0.tex; do mv $outputfile tmp.log; done
 latexindent.pl -w cmh.txt -s
 latexindent.pl -w cmh.jab -s
 
+# the -o switch keeps the directory of the output file name
+keepappendinglogfile
+latexindent.pl -s cmh.tex -o=subdir/four
+grep "Outputting to file" indent.log > subdir/output-files.txt
+latexindent.pl -s cmh.tex -o=subdir/five++.tex
+grep "Outputting to file" indent.log >> subdir/output-files.txt
+mv subdir/five0.tex subdir/tmp.log
+
 set +x 
 wrapuptasks

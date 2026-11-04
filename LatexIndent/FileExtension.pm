@@ -146,10 +146,13 @@ sub file_extension_check {
         # grab the name, directory, and extension of the output file
         my ( $name, $dir, $ext ) = fileparse( ${$self}{outputToFile}, $strippedFileExtension );
 
+        # fileparse gives ./ when there is no directory; keep only a directory that was given
+        $dir = q() unless ( ${$self}{outputToFile} =~ m/^\Q$dir\E/ );
+
         # if there is no extension, then add the extension from the file to be operated upon
         if ( !$ext ) {
             $logger->info( "-o switch called with file name without extension: " . $switch{outputToFile} );
-            ${$self}{outputToFile} = $name . ( $name =~ m/\.\z/ ? q() : "." ) . $strippedFileExtension;
+            ${$self}{outputToFile} = $dir . $name . ( $name =~ m/\.\z/ ? q() : "." ) . $strippedFileExtension;
 
             $logger->info(
                 "Updated to ${$self}{outputToFile} as the file extension of the input file is $strippedFileExtension");
@@ -162,6 +165,7 @@ sub file_extension_check {
             $logger->info("-o switch called with file name ending with ++: ${$self}{outputToFile}");
             $name =~ s/\+\+$//;
             $name = ${$self}{baseName} if ( $name eq "" );
+            $name = $dir . $name;
             my $outputFileCounter = 0;
             my $fileName          = $name . $outputFileCounter . "." . $strippedFileExtension;
             $logger->info("will search for existence and increment counter, starting with $fileName");
