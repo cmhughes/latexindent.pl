@@ -254,7 +254,9 @@ sub lines_verbatim_create_line_block {
     my $finishLine = $_[2];
 
     my $verbBody = join( "", @lines[ $startLine .. $finishLine ] );
-    $verbBody =~ s/\R?$//s;
+    # store the line break at the end of the block (if any) so that it can be put back as it was
+    $verbBody =~ s/(\R?)\z//s;
+    my $trailingLineBreak = $1;
 
     # create a new Verbatim object
     my $noIndentBlockObj = LatexIndent::Verbatim->new(
@@ -273,7 +275,7 @@ sub lines_verbatim_create_line_block {
     $verbatimStorage{ ${$noIndentBlockObj}{id} } = $noIndentBlockObj;
 
     # remove the environment block, and replace with unique ID
-    ${$self}{body} .= ${$noIndentBlockObj}{id} . "\n";
+    ${$self}{body} .= ${$noIndentBlockObj}{id} . $trailingLineBreak;
 
     return;
 }
