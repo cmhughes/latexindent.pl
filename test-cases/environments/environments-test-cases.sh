@@ -100,6 +100,8 @@ latexindent.pl -s environments-nested-fourth -o=+-max-indentation4 -l=max-indent
 latexindent.pl -s environments-nested-fourth -o=+-max-indentation5 -l=max-indentation5
 latexindent.pl -s environments-nested-fourth -o=+-max-indentation-mod1 -l=max-indentation1,env-mod-lines1 -m 
 latexindent.pl -s environments-verbatim-harder -o=+-max-ind1 -l=max-indentation1
+# maximum indentation expands leading tabs only, not tabs within the line
+latexindent.pl -s max-indentation-tabs -o=+-mod1 -l=max-indentation1
 
 # empty body environment
 latexindent.pl -s env-no-body -o +-mod1 -l=env-mod1 -m
