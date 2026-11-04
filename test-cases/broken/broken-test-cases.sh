@@ -5,6 +5,8 @@ openingtasks
 latexindent.pl -s broken -o=+-mod1
 latexindent.pl -s -l no-specials.yaml broken -o=+-mod2 -t 
 egrep 'specialBeginEnd empty' indent.log > no-specials.txt
+# environments are still found when no specialBeginEnd is active
+latexindent.pl -s -l no-specials.yaml no-specials-env -o=+-mod1
 
 latexindent.pl -s ifnextchar -o=+-mod1 -l=com-name-special1.yaml -t
 egrep 'found:' indent.log > ifnextchar.txt
