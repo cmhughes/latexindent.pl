@@ -437,7 +437,7 @@ fineTuning:
   namedGroupingBracesBrackets:
     name: [0-9\.a-zA-Z@\*><]+
   keyEqualsValuesBracesBrackets:
-    name: [a-zA-Z@\*0-9_\/.:\#-]+[a-zA-Z@\*0-9_\/.\h:\#-]*
+    name: [a-zA-Z@\*0-9_\/.:\#-]++[a-zA-Z@\*0-9_\/.\h:\#-]*+
   arguments:
     between: |-                               
       (?x)                                    
