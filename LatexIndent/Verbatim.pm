@@ -316,6 +316,7 @@ sub find_verbatim_commands {
                         (
                             \\($verbCommandSpec) # name of command into $2
                             (?![a-zA-Z])         # not followed by a letter, so \verb is not \verbatiminput
+                            \*?                  # possibly starred, as in \verb*
                             \h*
                         )
                         (
