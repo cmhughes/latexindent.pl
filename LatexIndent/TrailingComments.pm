@@ -130,6 +130,39 @@ sub put_trailing_comments_back_in {
         ${$self}{body} =~ s/($trailingCommentRegExp)\s*$/$1\n/s;
     }
 
+    # the -m switch can split trailing comment IDs across lines, see below
+    my $commentIDsCanBeSplit
+        = ( $is_m_switch_active and ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{huge} ne "overflow" );
+
+    # count how many times each trailing comment ID appears in the body
+    my %commentIDcount;
+    $commentIDcount{$1}++ while ( ${$self}{body} =~ m/%($tokens{trailingComment}\d+$tokens{endOfToken})/g );
+
+    # usually each trailing comment ID appears exactly once; in that case each comment
+    # only affects its own line, so we put the comments back in one line at a time, in the
+    # same (reverse) order as the loop below, instead of searching the whole body for each one
+    unless (
+        grep {
+            my $count = $commentIDcount{ ${$_}{id} } // 0;
+            $count > 1 or ( $count == 0 and $commentIDsCanBeSplit )
+        } @trailingComments
+        )
+    {
+        my %commentIndex;
+        @commentIndex{ map { ${$_}{id} } @trailingComments } = ( 0 .. $#trailingComments );
+        ${$self}{body} =~ s/^(.*%$tokens{trailingComment}\d+$tokens{endOfToken}.*)$/
+                            my $line = $1;
+                            my @commentsOnLine = sort { $b <=> $a }
+                                                 grep { defined }
+                                                 map { $commentIndex{$_} }
+                                                 ( $line =~ m@%($tokens{trailingComment}\d+$tokens{endOfToken})@g );
+                            _put_trailing_comment_back_in( \$line, $trailingComments[$_] ) foreach (@commentsOnLine);
+                            $line;
+                           /gme;
+        @trailingComments = ();
+        return;
+    }
+
     # loop through trailing comments in reverse so that, for example,
     # latexindenttrailingcomment1 doesn't match the first
     # part of latexindenttrailingcomment18, which would result in an 8 left over (bad)
@@ -163,26 +196,35 @@ sub put_trailing_comments_back_in {
             # replace the line-broken trailing comment ID with a non-broken trailing comment ID
             ${$self}{body} =~ s/%\R?$trailingcommentIDwithLineBreaksRegExp/%$trailingcommentID/s;
         }
-        if (${$self}{body} =~ m/%$trailingcommentID
-                              (
-                                  (?!                       # not immediately preceded by 
-                                      $notPrecededByRegExp  # \
-                                      %                     # %
-                                  ).*?
-                              )                             # captured into $1
-                              (\h*)?$                
-                          /mx and $1 ne ''
-            )
-        {
-            $logger->trace("Comment not at end of line $trailingcommentID, moving it to end of line")
-                if $is_t_switch_active;
-            ${$self}{body} =~ s/%$trailingcommentID(.*)$/$1%$trailingcommentValue/m;
-        }
-        else {
-            ${$self}{body} =~ s/%$trailingcommentID/%$trailingcommentValue/;
-        }
-        $logger->trace("replace %$trailingcommentID with %$trailingcommentValue") if ($is_tt_switch_active);
+        _put_trailing_comment_back_in( \${$self}{body}, $comment );
     }
+    return;
+}
+
+sub _put_trailing_comment_back_in {
+    my ( $text, $comment ) = @_;
+    my $trailingcommentID    = ${$comment}{id};
+    my $trailingcommentValue = ${$comment}{value};
+
+    if (${$text} =~ m/%$trailingcommentID
+                      (
+                          (?!                       # not immediately preceded by 
+                              $notPrecededByRegExp  # \
+                              %                     # %
+                          ).*?
+                      )                             # captured into $1
+                      (\h*)?$                
+                  /mx and $1 ne ''
+        )
+    {
+        $logger->trace("Comment not at end of line $trailingcommentID, moving it to end of line")
+            if $is_t_switch_active;
+        ${$text} =~ s/%$trailingcommentID(.*)$/$1%$trailingcommentValue/m;
+    }
+    else {
+        ${$text} =~ s/%$trailingcommentID/%$trailingcommentValue/;
+    }
+    $logger->trace("replace %$trailingcommentID with %$trailingcommentValue") if ($is_tt_switch_active);
     return;
 }
 
