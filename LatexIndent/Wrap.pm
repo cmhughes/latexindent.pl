@@ -103,7 +103,7 @@ sub text_wrap {
                 }
             }
             elsif ( $blocksFollowEachPart eq "other" ) {
-                $blocksFollowEachPart = qr/$yesNo/x;
+                $blocksFollowEachPart = qr/$yesNo/xn;
             }
             $blocksFollow .= ( $blocksFollow eq '' ? q() : "|" ) . qr/$blocksFollowEachPart/s;
         }
@@ -162,7 +162,7 @@ sub text_wrap {
                 $logger->trace(
                     "textWrap Blocks BEGINS with other $yesNo (reg exp) (see textWrap:blocksBeginWith:other)")
                     if $is_t_switch_active;
-                $blocksBeginWithEachPart = qr/$yesNo/;
+                $blocksBeginWithEachPart = qr/$yesNo/n;
             }
             $blocksBeginWith .= ( $blocksBeginWith eq "" ? q() : "|" ) . $blocksBeginWithEachPart;
         }
@@ -183,7 +183,7 @@ sub text_wrap {
             if ( $blocksEndBeforeEachPart eq "other" ) {
                 $logger->trace("textWrap Blocks ENDS with other $yesNo (reg exp) (see textWrap:blocksEndBefore:other)")
                     if $is_t_switch_active;
-                $blocksEndBeforeEachPart = qr/\R?$yesNo/;
+                $blocksEndBeforeEachPart = qr/\R?$yesNo/n;
             }
             elsif ( $blocksEndBeforeEachPart eq "commentOnOwnLine" ) {
                 $logger->trace(

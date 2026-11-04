@@ -180,5 +180,8 @@ latexindent.pl -s -l issue-622.yaml -m -r issue-622-mod1 -o=issue-622-mod3
 latexindent.pl -s -l issue-645  issue-645  -o=+-mod1
 latexindent.pl -s -l issue-645a issue-645 -o=+-mod2
 latexindent.pl -s -l issue-645b issue-645 -o=+-mod3
+
+# capture groups in a user sentencesEndWith pattern
+latexindent.pl -s -m -l sentence-capture-group sentence-capture-group -o=+-mod1
 set +x 
 wrapuptasks
