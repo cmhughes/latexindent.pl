@@ -830,7 +830,7 @@ sub yaml_read_settings {
             $logger->info("*Switch activated via YAML: check mode (-k)");
             $is_check_switch_active = 1;
         }
-        if ( $switch eq 'kvSwitch' and !$is_check_switch_active ) {
+        if ( $switch eq 'kvSwitch' and !$is_check_verbose_switch_active ) {
             $logger->info("*Switch activated via YAML: verbose check mode (-kv)");
             $is_check_switch_active         = 1;
             $is_check_verbose_switch_active = 1;
