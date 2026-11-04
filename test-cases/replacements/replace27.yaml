@@ -1,0 +1,5 @@
+replacements:
+  -
+    substitution: s/(\\arraycolsep=\d+pt//sg
+  -
+    substitution: s/\\arraycolsep=\d+pt//sg
