@@ -19,7 +19,7 @@ use strict;
 use warnings;
 use Exporter              qw/import/;
 use LatexIndent::LogFile  qw/$logger/;
-use LatexIndent::Switches qw/$is_m_switch_active $is_check_verbose_switch_active/;
+use LatexIndent::Switches qw/$is_check_verbose_switch_active/;
 our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/simple_diff/;
 
@@ -35,101 +35,57 @@ sub simple_diff {
         return;
     }
 
-    # otherwise we loop through the old and new body, and make comparisons
-    my @oldBody = split( "\n", ${$self}{originalBody} );
-    my @newBody = split( "\n", ${$self}{body} );
-    my @diff    = ();
-
-    # this loop stores the differences ...
-    if ($is_m_switch_active) {
-
-        # if -m *is* active, then the number of lines in old and new may not be the same
-        # so we need to go through the options
-        my $maxLines = ( $#oldBody >= $#newBody ? $#oldBody : $#newBody );
-
-        # loop through to maxLines, accounting for the three scenarios:
-        #
-        #   oldBody[lineCount] and newBody[lineCount] both defined
-        #   oldBody[lineCount] defined and newBody[lineCount] not defined
-        #   oldBody[lineCount] not defined and newBody[lineCount] defined
-        #
-        for ( my $lineCount = 0; $lineCount <= $maxLines; $lineCount++ ) {
-            if ( $lineCount <= $#oldBody and $lineCount <= $#newBody ) {
-                if ( $oldBody[$lineCount] ne $newBody[$lineCount] ) {
-                    push( @diff,
-                        { old => $oldBody[$lineCount], new => $newBody[$lineCount], lineNumber => $lineCount + 1 } );
-                }
-            }
-            elsif ( $lineCount <= $#oldBody ) {
-                push( @diff, { old => $oldBody[$lineCount], lineNumber => $lineCount + 1 } );
-            }
-            else {
-                push( @diff, { new => $newBody[$lineCount], lineNumber => $lineCount + 1 } );
-            }
-        }
+    # otherwise we loop through the old and new body, and make comparisons;
+    # the -1 keeps trailing blank lines, and a final line break common to both is not a line
+    my @oldBody = split( "\n", ${$self}{originalBody}, -1 );
+    my @newBody = split( "\n", ${$self}{body},         -1 );
+    if ( ${$self}{originalBody} =~ m/\n\z/ and ${$self}{body} =~ m/\n\z/ ) {
+        pop(@oldBody);
+        pop(@newBody);
     }
-    else {
-        # if -m is not active, then the number of lines in old and new will be the same
-        for ( my $lineCount = 0; $lineCount <= $#oldBody; $lineCount++ ) {
+    my @diff = ();
+
+    # the number of lines in old and new may not be the same (-m, -r, -rr, -rv)
+    my $maxLines = ( $#oldBody >= $#newBody ? $#oldBody : $#newBody );
+
+    # loop through to maxLines, accounting for the three scenarios:
+    #
+    #   oldBody[lineCount] and newBody[lineCount] both defined
+    #   oldBody[lineCount] defined and newBody[lineCount] not defined
+    #   oldBody[lineCount] not defined and newBody[lineCount] defined
+    #
+    for ( my $lineCount = 0; $lineCount <= $maxLines; $lineCount++ ) {
+        if ( $lineCount <= $#oldBody and $lineCount <= $#newBody ) {
             if ( $oldBody[$lineCount] ne $newBody[$lineCount] ) {
                 push( @diff,
                     { old => $oldBody[$lineCount], new => $newBody[$lineCount], lineNumber => $lineCount + 1 } );
             }
         }
-    }
-
-    # initialise the old and new tmp body for storage
-    my $tmpOldBody         = '-';
-    my $tmpNewBody         = '+';
-    my $previousLineNumber = -1;
-
-    # and the 'diff chunk' storage array
-    my @diffChunks               = ();
-    my $diffChunkFirstLineNumber = ${ $diff[0] }{lineNumber};
-
-    # ... and this loop combines the diffs into chunks
-    for my $i ( 0 .. $#diff ) {
-
-        my $currentLineNumber = ${ $diff[$i] }{lineNumber};
-
-        if ( $i == $#diff
-            or ( $previousLineNumber >= 0 and $currentLineNumber > ( $previousLineNumber + 1 ) ) )
-        {
-
-            my $lastLine = ${ $diff[ $i - 1 ] }{lineNumber};
-
-            if ( $i == $#diff ) {
-                $lastLine = $currentLineNumber;
-                $tmpOldBody .= ( $tmpOldBody eq '-' ? q() : "\n-" );
-                $tmpOldBody .= ${ $diff[$i] }{old} if defined ${ $diff[$i] }{old};
-
-                $tmpNewBody .= ( $tmpNewBody eq '+' ? q() : "\n+" );
-                $tmpNewBody .= ${ $diff[$i] }{new} if defined ${ $diff[$i] }{new};
-            }
-
-            push(
-                @diffChunks,
-                {   old       => $tmpOldBody,
-                    new       => $tmpNewBody,
-                    firstLine => $diffChunkFirstLineNumber,
-                    lastLine  => $lastLine
-                }
-            );
-
-            $tmpOldBody               = '-' . ${ $diff[$i] }{old} if defined ${ $diff[$i] }{old};
-            $tmpNewBody               = '+' . ${ $diff[$i] }{new} if defined ${ $diff[$i] }{new};
-            $diffChunkFirstLineNumber = $currentLineNumber;
+        elsif ( $lineCount <= $#oldBody ) {
+            push( @diff, { old => $oldBody[$lineCount], lineNumber => $lineCount + 1 } );
         }
         else {
-            $tmpOldBody .= ( $tmpOldBody eq '-' ? q() : "\n-" ) . ${ $diff[$i] }{old} if defined ${ $diff[$i] }{old};
-            $tmpNewBody .= ( $tmpNewBody eq '+' ? q() : "\n+" ) . ${ $diff[$i] }{new} if defined ${ $diff[$i] }{new};
+            push( @diff, { new => $newBody[$lineCount], lineNumber => $lineCount + 1 } );
         }
+    }
 
-        $previousLineNumber = ${ $diff[$i] }{lineNumber};
+    # ... and this loop combines the diffs into chunks of consecutive line numbers
+    my @diffChunks = ();
+    foreach (@diff) {
+
+        # start a new chunk at the first diff, and after a gap in the line numbers
+        if ( !@diffChunks or ${$_}{lineNumber} > ${ $diffChunks[-1] }{lastLine} + 1 ) {
+            push( @diffChunks, { oldLines => [], newLines => [], firstLine => ${$_}{lineNumber} } );
+        }
+        push( @{ ${ $diffChunks[-1] }{oldLines} }, ${$_}{old} ) if defined ${$_}{old};
+        push( @{ ${ $diffChunks[-1] }{newLines} }, ${$_}{new} ) if defined ${$_}{new};
+        ${ $diffChunks[-1] }{lastLine} = ${$_}{lineNumber};
     }
 
     # finally, output the diff chunks
     foreach (@diffChunks) {
+        ${$_}{old} = '-' . join( "\n-", @{ ${$_}{oldLines} } );
+        ${$_}{new} = '+' . join( "\n+", @{ ${$_}{newLines} } );
         $logger->info("@@ ${$_}{firstLine} -- ${$_}{lastLine} @@");
         $logger->info( ${$_}{old} );
         $logger->info( ${$_}{new} );

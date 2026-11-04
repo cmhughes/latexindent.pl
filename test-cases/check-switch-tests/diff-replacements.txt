@@ -1,0 +1,9 @@
+simple diff: (check switch active)
+       @@ 1 -- 1 @@
+       -a
+       +A
+       @@ 4 -- 6 @@
+       -
+       +X
+       +Y
+       +Z
