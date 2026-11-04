@@ -740,7 +740,7 @@ sub yaml_read_settings {
 
             # it's possible that the 'value' will contain an escaped
             # semi-colon, so we replace it with just a semi-colon
-            $value =~ s/\\:/:/;
+            $value =~ s/\\:/:/g;
 
             # strings need special treatment
             if ( $value =~ m/^"(.*)"$/ ) {
