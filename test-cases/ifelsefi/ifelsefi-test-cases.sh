@@ -123,5 +123,8 @@ latexindent.pl -s tabdo.sty -o=+-default
 # \iff is not a conditional
 latexindent.pl -s iff -o=+-mod1
 
+# \orcidlink, \ordinal are not \or
+latexindent.pl -s ifelsefi-else-or-prefix -o=+-mod1
+
 set +x 
 wrapuptasks

@@ -1756,6 +1756,11 @@ sub _find_env_items {
     # final m switch adjustment
     if ($is_m_switch_active) {
 
+        # itemFinishesWithLineBreak == -1 needs care, see, for example, items1-blanklines-unPreserveBlankLines-mod2
+        # (done first, so that itemRegEx below does not see the token directly after \item)
+        $body =~ s@([a-zA-Z0-9])$tokens{mElseTrailingSpace}([a-zA-Z0-9])@$1 $2@sg;
+        $body =~ s@$tokens{mElseTrailingSpace}@@sg;
+
         # itemStartsOnOwnline == 2 needs care, see, for example, items1-mod5
         #
         # mSwitchComment
@@ -1767,10 +1772,6 @@ sub _find_env_items {
 
         # itemStartsOnOwnline == 3 needs care, see, for example, items1-mod8
         $body =~ s/\R\h*$tokens{mBeforeBeginLineBreakADD}($tokens{blanklines})?\s*($itemRegEx)/\n$2/sg;
-
-        # itemFinishesWithLineBreak == -1 needs care, see, for example, items1-blanklines-unPreserveBlankLines-mod2
-        $body =~ s@([a-zA-Z0-9])$tokens{mElseTrailingSpace}([a-zA-Z0-9])@$1 $2@sg;
-        $body =~ s@$tokens{mElseTrailingSpace}@@sg;
 
         # m switch conflicting linebreak addition or removal handled by tokens
         $body = _mlb_line_break_token_adjust($body);

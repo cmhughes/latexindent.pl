@@ -74,7 +74,7 @@ sub construct_headings_levels {
             }
             else {
                 $logger->trace("Putting $headingName at the END of the allHeadings regexp") if $is_t_switch_active;
-                $allHeadingsRegexp .= ( $allHeadingsRegexp eq '' ? q() : "|" ) . $headingName;
+                $allHeadingsRegexp .= ( $allHeadingsRegexp eq '' ? q() : "|" ) . $headingName . "(?![a-zA-Z])";
             }
         }
     }
@@ -113,8 +113,8 @@ sub construct_headings_levels {
                 else {
                     $logger->trace("Putting $_ at the END of this regexp (level $i)") if $is_t_switch_active;
 
-                    # note: NOT followed by a * (gets escaped next)
-                    $headingsAtThisLevel .= ( $headingsAtThisLevel eq '' ? q() : "|" ) . $_ . "(?!*)";
+                    # note: NOT followed by a * or a letter (gets escaped next)
+                    $headingsAtThisLevel .= ( $headingsAtThisLevel eq '' ? q() : "|" ) . $_ . "(?![*a-zA-Z])";
                 }
             }
 
