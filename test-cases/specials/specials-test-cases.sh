@@ -124,5 +124,8 @@ latexindent.pl -s issue-647 -o=+-mod1
 latexindent.pl -s -l issue-647 -t issue-647 -o=+-mod2
 egrep -i 'found:' indent.log > issue-647.txt
 
+# a duplicated entry must not remove the entries that follow it
+latexindent.pl -s -l special-amalgamate special-amalgamate -o=+-mod1
+
 set +x 
 wrapuptasks

@@ -1,0 +1,6 @@
+specialBeginEnd:
+  - name: displayMath
+    lookForThis: 0
+  - name: myBlock
+    begin: \\START
+    end: \\FINISH

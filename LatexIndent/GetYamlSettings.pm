@@ -942,7 +942,7 @@ sub yaml_read_settings {
 
     # specialBeginEnd: remove duplicates now that they have been accounted for above
     foreach ( reverse @specialToBeRemoved ) {
-        splice( @{ $mainSetting{specialBeginEnd} }, $_ );
+        splice( @{ $mainSetting{specialBeginEnd} }, $_, 1 );
     }
 
     # special: set default look for this as 1 if not specified
