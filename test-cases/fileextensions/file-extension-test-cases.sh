@@ -16,6 +16,10 @@ latexindent.pl -w -s  myfile -g=myfile.log
 # should pick up myfile.sty first
 latexindent.pl -w -s  myfile -l=style-file-first.yaml -g=myfile-sty.log
 
+# won't work, as the directory for the output file does not exist
+latexindent.pl -s cmh.tex -o=missing-dir/cmh.tex
+cp indent.log fatal-info3.txt
+
 # won't work, as it will look for another.tex, another.cls, another.bib, another.sty
 latexindent.pl -w -s  another
 cp indent.log fatal-info1.txt

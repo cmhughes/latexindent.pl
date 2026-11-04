@@ -240,12 +240,24 @@ sub output_indented_text {
 
         $logger->info("Overwriting file ${$self}{fileName}");
         my $OUTPUTFILE = open_with_encode( '>:encoding(UTF-8)', ${$self}{fileName} );
+        if ( !$OUTPUTFILE ) {
+            $logger->fatal("*Could not write to ${$self}{fileName}: $!");
+            $logger->fatal("Exiting, indented text not written.");
+            $self->output_logfile();
+            exit(7);
+        }
         print $OUTPUTFILE ${$self}{body};
         close($OUTPUTFILE);
     }
     elsif ( $switch{outputToFile} ) {
         $logger->info("Outputting to file ${$self}{outputToFile}");
         my $OUTPUTFILE = open_with_encode( '>:encoding(UTF-8)', ${$self}{outputToFile} );
+        if ( !$OUTPUTFILE ) {
+            $logger->fatal("*Could not write to output file ${$self}{outputToFile}: $!");
+            $logger->fatal("Exiting, indented text not written.");
+            $self->output_logfile();
+            exit(7);
+        }
         print $OUTPUTFILE ${$self}{body};
         close($OUTPUTFILE);
     }
