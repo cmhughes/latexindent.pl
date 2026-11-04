@@ -197,7 +197,7 @@ sub file_extension_check {
         close($MAINFILE);
     }
     else {
-        push( @lines, $_ ) while (<>);
+        push( @lines, $_ ) while (<STDIN>);
     }
 
     # -n, --lines mode active
