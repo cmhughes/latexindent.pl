@@ -71,6 +71,8 @@ latexindent.pl -s issue-266b -o=+-default
 # noindentblock
 latexindent.pl -s noindentblock1 -o=+-default
 latexindent.pl -s noindentblock1 -l noindent1 -o=+-mod1
+# a noindent marker after an escaped \%, but not after \\%, is ignored
+latexindent.pl -s noindentblock2 -o=+-default
 
 # noindentblock with begin, body, end: https://github.com/cmhughes/latexindent.pl/issues/274
 latexindent.pl -s -m href -l href1 -o=+-mod1
