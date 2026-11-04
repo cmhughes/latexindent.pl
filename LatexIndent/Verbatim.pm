@@ -304,7 +304,7 @@ sub find_verbatim_commands {
         }
         elsif ( ref($yesno) ne "HASH" and $yesno ) {
             $logger->trace("looking for $verbCommand:$yesno Commands") if $is_t_switch_active;
-            $verbCommandSpec = $verbCommand;
+            ( $verbCommandSpec = $verbCommand ) =~ s/\*/\\*/sg;
         }
         else {
             $logger->trace("*not* looking for $verbCommand as $verbCommand:$yesno") if $is_t_switch_active;
