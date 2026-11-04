@@ -1,0 +1,3 @@
+FATAL: invalid-utf8.tex is not valid UTF-8 (line 3)
+      Exiting, no indentation done.
+       --------------
