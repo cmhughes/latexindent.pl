@@ -5,6 +5,10 @@ openingtasks
 cat myfile.tex | latexindent.pl -s -o=myfile-default 
 cat myfile.tex | latexindent.pl -s -o=myfile-default -l=dontMeasure.yaml -
 
+# -o=+name with STDIN input has its + removed, so it outputs to name.tex
+cat myfile.tex| latexindent.pl -s -o=+myfile-plus -
+grep "Outputting to file" indent.log > myfile-plus.txt
+
 # issue 493
 cat issue-493.tex| latexindent.pl -s -m -l latexindent.yaml -o=issue-493-mod1 -
 latexindent.pl -s -l -m -o=+-mod2 issue-493.tex 
