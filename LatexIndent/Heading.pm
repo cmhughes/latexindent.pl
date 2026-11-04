@@ -144,6 +144,9 @@ sub find_heading {
         $logger->trace("*protecting preamble which can contain headings commands (indentPreamble: 1)");
         $mainSetting{indentPreamble} = 0;
         $self->find_file_contents_environments_and_preamble;
+
+        # switch it back on, so that the preamble of the next file is indented too
+        $mainSetting{indentPreamble} = 1;
         ${$self}{preambleIndentationWanted} = 1;
     }
 
