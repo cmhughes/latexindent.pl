@@ -63,6 +63,13 @@ perl -p0i -e 's/.*?(INFO:\s+-o)/$1/s' ext-info3.txt
 latexindent.pl -s cmh.bib -o two. 
 cp indent.log ext-info4.txt
 perl -p0i -e 's/.*?(INFO:\s+-o)/$1/s' ext-info4.txt
+# an output file name with an extension keeps it, and one that ends in tex is not taken to have one
+latexindent.pl -s cmh.tex -o four.md
+cp indent.log ext-info5.txt
+perl -p0i -e 's/.*?(INFO:\s+-o)/$1/s' ext-info5.txt
+latexindent.pl -s cmh.tex -o vertex
+cp indent.log ext-info6.txt
+perl -p0i -e 's/.*?(INFO:\s+-o)/$1/s' ext-info6.txt
 
 set +x
 for infofile in ext-info*.txt 
@@ -98,6 +105,9 @@ latexindent.pl cmh.tex -o +myfile++.tex -s
 cp indent.log cmh-info4.txt
 latexindent.pl cmh.tex -o myfile++.tex -s
 cp indent.log cmh-info5.txt
+# an extension given after ++ is kept, even if it differs from that of the input file
+latexindent.pl cmh.bib -o bibfile++.tex -s
+cp indent.log cmh-info6.txt
 set +x
 for infofile in cmh-info*.txt 
 do 
