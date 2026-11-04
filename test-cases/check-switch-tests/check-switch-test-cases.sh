@@ -11,4 +11,14 @@ do
 done
 keepappendinglogfile
 set +x 
+
+# --lines: lines that are not changed are not reported as changed
+latexindent.pl -s -k --lines 2 environments-simple-nested.tex -g lines-switch-check.log
+cp lines-switch-check.log lines-switch-check.txt
+perl -p0i -e 's/.*?(INFO:\s*simple\sdiff)/$1/s' lines-switch-check.txt
+
+latexindent.pl -s -wd --lines 2 environments-simple-nested.tex -g lines-switch-wd.log
+cp lines-switch-wd.log lines-switch-wd.txt
+perl -p0i -e 's/.*?(INFO:\s*\-wd)/$1/s' lines-switch-wd.txt
+
 wrapuptasks
