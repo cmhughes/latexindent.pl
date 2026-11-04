@@ -147,5 +147,8 @@ latexindent.pl -s -l issue-508b -m issue-508 -o=+-mod3
 latexindent.pl -s -l issue-508c -r issue-508 -o=+-mod4
 latexindent.pl -s -l issue-508d -m issue-508 -o=+-mod5
 
+# unmatched \begin statements should not take exponential time
+latexindent.pl -s unmatched-begin -o=+-mod1
+
 set +x 
 wrapuptasks

@@ -88,6 +88,7 @@ sub _construct_code_blocks_regex {
         (?<ENVBEGIN>                                  # 
            \\begin\{(?<ENVNAME>$environmentName)\}    # \begin{<ENVNAME>}
         )                                             # 
+        (?=.*?\\end\{\g{ENVNAME}\})                   # fail fast if no \end{<ENVNAME>} follows
         (?<ENVARGS>                                   # *possible* arguments
           $allArgumentRegEx*                          # 
           $mSwitchOnlyTrailingNoCapture
