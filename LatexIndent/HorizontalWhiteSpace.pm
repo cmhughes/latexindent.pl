@@ -72,7 +72,7 @@ sub remove_trailing_whitespace {
 
     ${$self}{body} =~ s/
                        \h+  # followed by possible horizontal space
-                       $    # up to the end of a line
+                       (?=\r?$)    # up to the end of a line (\n or \r\n)
                        //xsmg;
 
 }
