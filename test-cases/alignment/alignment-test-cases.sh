@@ -415,5 +415,8 @@ latexindent.pl -s -l issue-657.yaml issue-657.tex -o=+-mod1
 latexindent.pl -m -s issue-660 -o=+-mod1
 latexindent.pl -m -s issue-660-mod1 -o=issue-660-mod2
 
+# CRLF line breaks: the \r is not measured as part of a cell or row
+latexindent.pl -s -y="lookForAlignDelims:tabular:spacesBeforeDoubleBackSlash:0" crlf-alignment -o=+-mod1
+
 set +x 
 wrapuptasks

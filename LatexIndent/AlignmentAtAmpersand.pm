@@ -280,6 +280,10 @@ sub align_at_ampersand {
     foreach ( split( "\n", ${$self}{body} ) ) {
         $rowCounter++;
 
+        # with CRLF line breaks, keep the \r out of the row (it would otherwise be
+        # measured as part of the final cell), and put it back when the body is rebuilt
+        my $carriageReturn = ( $_ =~ s/\r$// ? "\r" : q() );
+
         # default is to measure this row, but it can be switched off by the dont_measure routine
         ${$self}{measureRow} = 1;
 
@@ -477,7 +481,8 @@ sub align_at_ampersand {
                 endPiece           => $endPiece,
                 trailingComment    => $trailingComments,
                 numberOfAmpersands => $numberOfAmpersands,
-                unformattedRow     => $unformattedRow
+                unformattedRow     => $unformattedRow,
+                carriageReturn     => $carriageReturn
             }
         );
 
@@ -636,7 +641,7 @@ sub align_at_ampersand {
     ${$self}{body} = q();
 
     # update the body
-    ${$self}{body} .= ${$_}{row} . "\n" for @formattedBody;
+    ${$self}{body} .= ${$_}{row} . ${$_}{carriageReturn} . "\n" for @formattedBody;
 
     # if the \end{} statement didn't originally have a line break before it, we need to remove the final
     # line break added by the above
@@ -1770,7 +1775,7 @@ sub hidden_child_cell_row_width {
     $bodyLineBreaks++ while ( $tmpCellEntry =~ m/\R/sg );
     if ( $bodyLineBreaks > 0 ) {
         my $maxRowWidthWithinCell = 0;
-        foreach ( split( "\n", $tmpCellEntry ) ) {
+        foreach ( split( /\r?\n/, $tmpCellEntry ) ) {
             my $currentRowWidth = &get_column_width($_);
             $maxRowWidthWithinCell = $currentRowWidth if ( $currentRowWidth > $maxRowWidthWithinCell );
         }
@@ -1836,7 +1841,7 @@ sub hidden_child_row_width {
                 my $lengthPartBeforeId = &get_column_width($partBeforeId);
 
                 my $tmpBodyToMeasure
-                    = join( "\n" . ( "." x ($lengthPartBeforeId) ), split( "\n", $hiddenChildContent ) );
+                    = join( "\n" . ( "." x ($lengthPartBeforeId) ), split( /\r?\n/, $hiddenChildContent ) );
 
                 # remove trailing \\
                 $tmpBodyToMeasure =~ s/(\\\\\h*$)//mg;
@@ -1867,7 +1872,7 @@ sub hidden_child_row_width {
         if ( $bodyLineBreaks > 0 ) {
             my $maxRowWidth = 0;
 
-            foreach ( split( "\n", $tmpRow ) ) {
+            foreach ( split( /\r?\n/, $tmpRow ) ) {
                 my $currentRowWidth = &get_column_width($_);
                 $maxRowWidth = $currentRowWidth if ( $currentRowWidth > $maxRowWidth );
             }
