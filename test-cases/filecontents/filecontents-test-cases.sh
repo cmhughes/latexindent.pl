@@ -37,6 +37,8 @@ latexindent.pl -s filecontents6 -o=+-indent-preamble -l=indentPreambleYes
 latexindent.pl -s headings-preamble-verbatim -o=+-default
 latexindent.pl -s headings-preamble-verbatim -o=+-indent-preamble -l=indentPreambleYes
 latexindent.pl -s headings-preamble-verbatim -o=+-indent-preamble-with-headings -l=indentPreambleYes,levels1
+# CRLF line breaks are kept after \end{filecontents}
+latexindent.pl -s filecontents-crlf -o=+-default
 
 set +x 
 wrapuptasks

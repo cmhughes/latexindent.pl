@@ -83,7 +83,7 @@ sub find_file_contents_environments_and_preamble {
                 linebreaksAtEnd => {
                     begin => 0,
                     body  => 0,
-                    end   => $5 ? 1 : 0,
+                    end   => $5 ? $5 : q(),
                 },
                 modifyLineBreaksYamlName => "filecontents",
             );
@@ -104,7 +104,7 @@ sub find_file_contents_environments_and_preamble {
 
             # the above regexp, when used below, will remove the trailing linebreak in ${$self}{linebreaksAtEnd}{end}
             # so we compensate for it here
-            ${$fileContentsBlock}{replacementText} .= "\n" if ( ${$fileContentsBlock}{linebreaksAtEnd}{end} );
+            ${$fileContentsBlock}{replacementText} .= ${$fileContentsBlock}{linebreaksAtEnd}{end};
 
             # store the fileContentsBlock, and determine location afterwards
             push( @fileContentsStorageArray, $fileContentsBlock );
