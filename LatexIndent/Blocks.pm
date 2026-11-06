@@ -94,6 +94,8 @@ sub _construct_code_blocks_regex {
         )                                             # 
         (?<ENVBODY>                                   # body
           (?>                                         # 
+              [^\\]+                                  # cannot start \begin or \end
+              |                                       # 
               (??{ $environmentRegEx })               # 
               |                                       # 
               (?!                                     # 
@@ -148,6 +150,8 @@ sub _construct_code_blocks_regex {
                 )                         
                 (?<IFELSEFIBODY>                    
                   (?>                               
+                      [^\\]+                       # cannot start \if... or \fi
+                      |
                       (??{ $ifElseFiRegEx })     
                       |
                       (?!                           
