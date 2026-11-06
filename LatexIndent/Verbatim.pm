@@ -315,6 +315,7 @@ sub find_verbatim_commands {
         my $verbatimRegExp = qr/
                         (
                             \\($verbCommandSpec) # name of command into $2
+                            (?![a-zA-Z])         # not followed by a letter, so \verb is not \verbatiminput
                             \h*
                         )
                         (
