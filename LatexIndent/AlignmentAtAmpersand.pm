@@ -74,7 +74,7 @@ sub _align_mark_down_block {
             my $alignmentRegExp = qr/
                             (\h*)
                             (
-                                (?!<\\)%\*\h*
+                                (?<!\\)(?:\\\\)*%\*\h*    # %* not escaped: an even number of backslashes
                                 \\begin\{
                                         ($alignmentBlock) # environment name captured into $2
                                        \}                 # \begin{alignmentBlock} statement captured into $1
@@ -85,7 +85,7 @@ sub _align_mark_down_block {
                             )
                             \h*                           # possible horizontal spaces
                             (
-                                (?!<\\)%\*                # %*
+                                (?<!\\)(?:\\\\)*%\*       # %* not escaped: an even number of backslashes
                                 \h*                       # possible horizontal spaces
                                 \\end\{\3\}               # \end{alignmentBlock} statement captured into $4
                             )
