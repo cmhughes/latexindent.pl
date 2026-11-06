@@ -683,15 +683,19 @@ sub align_at_ampersand {
     }
 
     # finally finally, put hidden children back in
+    my @hiddenChildrenNotPutBack;
     foreach (@hiddenChildrenStorage) {
         ${$self}{body} =~ m/^(.*?)${$_}{id}/m;
         my $addedIndentation   = ( $1 ? " " x &get_column_width($1) : q() );
         my $hiddenChildContent = ${$_}{value};
         $hiddenChildContent =~ s"^"$addedIndentation"mg;
         $hiddenChildContent =~ s"^$addedIndentation""s;
-        ${$self}{body}      =~ s/${$_}{id}/$hiddenChildContent/s;
+        ${$self}{body}      =~ s/${$_}{id}/$hiddenChildContent/s or push( @hiddenChildrenNotPutBack, $_ );
     }
 
+    # forget the hidden children that have been put back, so that
+    # later alignment blocks do not loop through them again
+    @hiddenChildrenStorage = @hiddenChildrenNotPutBack;
 }
 
 sub main_formatting {
