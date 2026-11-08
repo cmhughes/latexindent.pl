@@ -62,6 +62,8 @@ latexindent.pl -s  -m verbatim-trailing-comments -l=verb-begin2 -o=+-mod2
 # verbatim command
 latexindent.pl -s verbatim-commands -l=nameAsRegex -o=+-mod1
 latexindent.pl -s verbatim-trailing-comments1 -o=+-default
+# \verbatiminput is not \verb, so the comment after it is found
+latexindent.pl -s -m verbatim-commands-name -y="modifyLineBreaks:textWrapOptions:columns:80" -o=+-mod1
 
 # verbatim noindent block 
 latexindent.pl -s issue-266 -o=+-default
