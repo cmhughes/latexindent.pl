@@ -129,6 +129,9 @@ latexindent.pl -s -y='modifyLineBreaks:environments: myenv:EndStartsOnOwnLine:3;
 latexindent.pl -s issue-256 -o +-mod1
 latexindent.pl -s -y="dos2unixlinebreaks:1" issue-256 -o +-mod2
 
+# CRLF line breaks: no trailing indentation before \r\n, as for \n
+latexindent.pl -s crlf-trailing-indent -o=+-mod1
+
 latexindent.pl -s -l issue-488 -r -m issue-488 -o=+-mod1
 latexindent.pl -s -l issue-488a -m issue-488a -o=+-mod1
 
