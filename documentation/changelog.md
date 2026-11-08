@@ -2,6 +2,20 @@
 
 # changelog.md
 
+## V4.0.4, XXXX, YYYY
+Efficiency upgrades, thanks to @diracdeltafunk, full details at: 
+[pull 664](https://github.com/cmhughes/latexindent.pl/pull/664), 
+[pull 665](https://github.com/cmhughes/latexindent.pl/pull/665), 
+[pull 666](https://github.com/cmhughes/latexindent.pl/pull/666), 
+[pull 667](https://github.com/cmhughes/latexindent.pl/pull/667), 
+[pull 668](https://github.com/cmhughes/latexindent.pl/pull/668), 
+[pull 669](https://github.com/cmhughes/latexindent.pl/pull/669), 
+[pull 670](https://github.com/cmhughes/latexindent.pl/pull/670), 
+[pull 671](https://github.com/cmhughes/latexindent.pl/pull/671), 
+[pull 672](https://github.com/cmhughes/latexindent.pl/pull/672), 
+[pull 673](https://github.com/cmhughes/latexindent.pl/pull/673), 
+[pull 674](https://github.com/cmhughes/latexindent.pl/pull/674) 
+
 ## V4.0.3, October 4, 2026
 alignAtAmpersand bug fix, see [issue-660](https://github.com/cmhughes/latexindent.pl/issues/660), thanks to @eduenez
 
