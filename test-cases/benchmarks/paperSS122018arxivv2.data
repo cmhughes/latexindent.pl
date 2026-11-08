@@ -1,5 +1,5 @@
 + latexindent.pl -s -l paperSS122018arxivv2 -o=+-mod1
 
-real	0m16.583s
-user	0m16.473s
-sys	0m0.069s
+real	0m14.779s
+user	0m14.723s
+sys	0m0.055s

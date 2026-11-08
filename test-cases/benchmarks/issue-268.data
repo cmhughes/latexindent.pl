@@ -1,5 +1,5 @@
 + latexindent.pl -s issue-268.tex -o=+-out1 -l issue-268.yaml
 
-real	0m0.410s
-user	0m0.395s
-sys	0m0.015s
+real	0m0.394s
+user	0m0.384s
+sys	0m0.009s
