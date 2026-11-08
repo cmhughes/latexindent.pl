@@ -109,10 +109,10 @@ sub find_noindent_block {
 
             ( my $noIndentBlockSpec = $noIndentBlock ) =~ s/\*/\\*/sg;
             $noIndentRegExp = qr/
+                            (?<!\\)(?:\\\\)*\K               # % not escaped: an even number of backslashes
                             (
-                                (?!<\\)
                                 %
-                                (?:\h|(?!<\\)%)*             # possible horizontal spaces
+                                (?:\h|(?<!\\)%)*             # possible horizontal spaces
                                 \\begin\{
                                         ($noIndentBlockSpec) # environment name captured into $2
                                        \}                    # % \begin{noindentblock} statement
@@ -121,9 +121,9 @@ sub find_noindent_block {
                                 .*?                          # non-greedy match (body) into $3
                             )
                             (
-                                (?!<\\)
+                                (?<!\\)(?:\\\\)*             # % not escaped: an even number of backslashes
                                 %                            # %
-                                (?:\h|(?!<\\)%)*             # possible horizontal spaces
+                                (?:\h|(?<!\\)%)*             # possible horizontal spaces
                                 \\end\{\2\}                  # % \end{noindentblock} statement
                             )                                # end statement captured into $4
                         /sx;

@@ -47,6 +47,8 @@ keepappendinglogfile
 
 latexindent.pl -s align-mark-down -o=+-mod1
 latexindent.pl -s align-mark-down -o=+-mod2 -y="lookForAlignDelims:tabular:0"
+# an escaped \%* is not an alignment marker; %* after \\ is
+latexindent.pl -s align-mark-down-escaped -o=+-mod1
 latexindent.pl -s table1 -o=+-mod3 -l=tabular3
 
 # legacy matrix test case
