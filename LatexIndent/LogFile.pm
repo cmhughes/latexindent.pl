@@ -249,6 +249,14 @@ ENDQUOTE
         $switch{overwriteIfDifferent} = 0;
     }
 
+    # -w and -wd need a file to overwrite, so they can not be used with STDIN
+    if ( ( $switch{overwrite} or $switch{overwriteIfDifferent} ) and grep { $_ eq "-" } @fileNames ) {
+        $logger->fatal("*-w and -wd can not be used with STDIN input, as there is no file to overwrite");
+        $logger->fatal("Exiting, no indentation done.");
+        $self->output_logfile();
+        exit(5);
+    }
+
     # multiple files with the -o switch needs care
     #
     # example
