@@ -304,7 +304,7 @@ sub find_verbatim_commands {
         }
         elsif ( ref($yesno) ne "HASH" and $yesno ) {
             $logger->trace("looking for $verbCommand:$yesno Commands") if $is_t_switch_active;
-            $verbCommandSpec = $verbCommand;
+            ( $verbCommandSpec = $verbCommand ) =~ s/\*/\\*/sg;
         }
         else {
             $logger->trace("*not* looking for $verbCommand as $verbCommand:$yesno") if $is_t_switch_active;
@@ -316,6 +316,7 @@ sub find_verbatim_commands {
                         (
                             \\($verbCommandSpec) # name of command into $2
                             (?![a-zA-Z])         # not followed by a letter, so \verb is not \verbatiminput
+                            \*?                  # possibly starred, as in \verb*
                             \h*
                         )
                         (
