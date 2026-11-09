@@ -217,8 +217,10 @@ sub file_extension_check {
     #
     #   $switch{overwriteIfDifferent}
     #
+    # this is the file as read, as the body may contain --lines placeholders
+    #
     if ( $is_check_switch_active or $switch{overwriteIfDifferent} ) {
-        ${$self}{originalBody} = ${$self}{body};
+        ${$self}{originalBody} = join( "", @lines );
     }
 
     return 0;
