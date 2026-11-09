@@ -48,6 +48,7 @@ latexindent.pl --lines 6 -s -m environments-to-multiple.tex -l env-mod-lines2.ya
 
 # replacement switch testing
 latexindent.pl --lines 3 -s -r environments-simple-nested.tex -l replace1.yaml -o=+-mod14
+latexindent.pl --lines 3 -s -rr environments-simple-nested.tex -l replace1.yaml -o=+-mod20
 
 # not mode ....
 latexindent.pl --lines !8-10,!3-5 -s environments-simple-nested.tex -o=+-mod15

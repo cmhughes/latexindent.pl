@@ -7,6 +7,11 @@ latexindent.pl -s -r test1.tex -l=replace1.yaml -o=+-mod1
 latexindent.pl -s -r test1.tex -l=replace2.yaml -o=+-mod2
 latexindent.pl -s -rr test1.tex -l=replace1.yaml -o=+-rr-mod1
 latexindent.pl -s -onlyreplacement test1.tex -l=replace1.yaml -o=+-rr-mod1
+
+# -rr with -wd overwrites the file when the replacements change it
+cp test1.tex test1-rr-wd.tex
+latexindent.pl -s -rr -wd test1-rr-wd.tex -l=replace1.yaml -y 'onlyOneBackUp:1'
+
 latexindent.pl -s -r test1.tex -l=replace3.yaml -o=+-mod3
 
 latexindent.pl -s -r test2.tex -l=replace4.yaml -o=+-mod4
