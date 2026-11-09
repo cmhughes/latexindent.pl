@@ -2,6 +2,10 @@
 . ../common.sh
 
 openingtasks
+
+# - followed by a file name: only STDIN is read for -, then the file is read
+cat myfile.tex| latexindent.pl - 713971.tex > stdin-dash.txt
+
 cat myfile.tex | latexindent.pl -s -o=myfile-default 
 cat myfile.tex | latexindent.pl -s -o=myfile-default -l=dontMeasure.yaml -
 

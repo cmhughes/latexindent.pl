@@ -1,0 +1,4 @@
+\mycommand{one
+	two
+	three}
+\title{Zusätzliche Beteiligung}
