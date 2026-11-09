@@ -267,6 +267,14 @@ ENDQUOTE
         $switch{outputToFile} = 0;
     }
 
+    # -o=+ and -o=++ build the output file name from the input file name,
+    # which STDIN input does not have (the + symbols are removed for STDIN)
+    if ( $switch{outputToFile} and $switch{outputToFile} =~ m/^\++$/ and grep { $_ eq "-" } @fileNames ) {
+        $logger->warn("*-o=$switch{outputToFile} needs the name of an input file, but the input is STDIN");
+        $logger->warn("ignoring your specification -o=$switch{outputToFile}");
+        $switch{outputToFile} = 0;
+    }
+
     $logger->info("*Directory for backup files and log file $logfileName:");
     $logger->info( $switch{cruftDirectory} ? ${$self}{cruftDirectory} : ${$self}{cruftDirectory} );
     $logger->info("cruft directory creation: ${$self}{cruftDirectory}") if $cruftDirectoryCreation;
