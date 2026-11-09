@@ -25,11 +25,18 @@ latexindent.pl --lines 5-6,4-10 -s environments-simple-nested.tex -o=+-mod6D
 latexindent.pl --lines 5-6,4-10,7-8 -s environments-simple-nested.tex -o=+-mod6E
 latexindent.pl --lines 3-7,7-8 -s environments-simple-nested.tex -o=+-mod6F
 
+# line ranges with the same min line keep the larger max line
+latexindent.pl --lines 3-10,3-5 -s environments-simple-nested.tex -o=+-mod17
+latexindent.pl --lines !3-10,!3-5 -s environments-simple-nested.tex -o=+-mod18
+
 # line range when <maxline> is greater than the number of lines in the file
 latexindent.pl --lines 3-15 -s environments-simple-nested.tex -o=+-mod7
 
 # invalid line range, which will be ignored
 latexindent.pl --lines 3x-7 -s environments-simple-nested.tex -o=+-mod8
+
+# line 0 is not a valid line, so the range is ignored
+latexindent.pl --lines 0-3 -s environments-simple-nested.tex -o=+-mod19
 
 # ranges specified in funky order
 latexindent.pl --lines 8-10,3-5 -s environments-simple-nested.tex -o=+-mod9
@@ -51,6 +58,9 @@ latexindent.pl --lines 3 -s -r environments-simple-nested.tex -l replace1.yaml -
 
 # not mode ....
 latexindent.pl --lines !8-10,!3-5 -s environments-simple-nested.tex -o=+-mod15
+
+# not mode, final line still operated upon
+latexindent.pl --lines !7 blank-lines.tex -s -o=+-mod9
 
 # nearly all the lines
 latexindent.pl --lines 2-12 environments-simple-nested.tex -s -o=+-mod16
