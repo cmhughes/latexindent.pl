@@ -51,6 +51,11 @@ do
     set +x
 done
 
+# the -l switch can omit .yaml, even from a file name that ends in yaml
+keepappendinglogfile
+latexindent.pl -s myfile -l=localSettings,myyaml -o=+-mod1
+set +x
+
 # no extension for output file
 latexindent.pl -s cmh.tex -o one
 latexindent.pl -s cmh -o two
