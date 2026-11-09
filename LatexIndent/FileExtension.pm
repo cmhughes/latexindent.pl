@@ -22,7 +22,7 @@ use PerlIO::encoding;
 #use open ':std', ':encoding(UTF-8)';
 use File::Basename;    # to get the filename and directory path
 use Exporter                     qw/import/;
-use Encode                       qw/decode/;
+use Encode                       qw/decode FB_CROAK/;
 use LatexIndent::GetYamlSettings qw/%mainSetting/;
 use LatexIndent::Switches        qw/%switch $is_check_switch_active/;
 use LatexIndent::LogFile         qw/$logger/;
@@ -179,7 +179,7 @@ sub file_extension_check {
     my @lines;
     if ( $fileName ne "-" ) {
         my $openFilePossible = 1;
-        my $MAINFILE         = open_with_encode( '<:encoding(UTF-8)', $fileName ) or ( $openFilePossible = 0 );
+        my $MAINFILE         = open_with_encode( '<', $fileName ) or ( $openFilePossible = 0 );
         if ( $openFilePossible == 0 ) {
             if ( defined ${$self}{multipleFiles} ) {
                 $logger->warn("*$fileName exists, but could not open it");
@@ -195,6 +195,30 @@ sub file_extension_check {
         }
         push( @lines, $_ ) while (<$MAINFILE>);
         close($MAINFILE);
+
+        # decode as UTF-8, stopping at invalid input rather than replacing it
+        # with escape text (which the -w switch would write back to the file)
+        my $invalidLine = 0;
+        foreach my $i ( 0 .. $#lines ) {
+            $lines[$i] = eval { decode( 'UTF-8', $lines[$i], FB_CROAK ) };
+            if ( !defined $lines[$i] ) {
+                $invalidLine = $i + 1;
+                last;
+            }
+        }
+        if ($invalidLine) {
+            if ( defined ${$self}{multipleFiles} ) {
+                $logger->warn("*$fileName is not valid UTF-8 (line $invalidLine)");
+                $logger->warn("moving on, no indentation done for $fileName");
+                return 4;
+            }
+            else {
+                $logger->fatal("*$fileName is not valid UTF-8 (line $invalidLine)");
+                $logger->fatal("Exiting, no indentation done.");
+                $self->output_logfile();
+                exit(4);
+            }
+        }
     }
     else {
         push( @lines, $_ ) while (<>);
