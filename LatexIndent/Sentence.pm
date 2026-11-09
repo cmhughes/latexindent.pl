@@ -81,7 +81,7 @@ sub one_sentence_per_line {
                 $sentencesFollowEachPart = qr/$trailingCommentRegExp\h*\R/s;
             }
             elsif ( $sentencesFollowEachPart eq "other" ) {
-                $sentencesFollowEachPart = qr/$yesNo/;
+                $sentencesFollowEachPart = qr/$yesNo/n;
             }
             $sentencesFollow .= ( $sentencesFollow eq '' ? q() : "|" ) . qr/$sentencesFollowEachPart/sx;
         }
@@ -131,7 +131,7 @@ sub one_sentence_per_line {
                 $logger->trace(
                     "sentence BEGINS with other $yesNo (reg exp) (see oneSentencePerLine:sentencesBeginWith:other)")
                     if $is_t_switch_active;
-                $sentencesBeginWithEachPart = qr/$yesNo/;
+                $sentencesBeginWithEachPart = qr/$yesNo/n;
             }
             $sentencesBeginWith .= ( $sentencesBeginWith eq "" ? q() : "|" ) . $sentencesBeginWithEachPart;
         }
@@ -176,7 +176,7 @@ sub one_sentence_per_line {
                 $logger->trace(
                     "sentence ENDS with other $yesNo (reg exp) (see oneSentencePerLine:sentencesEndWith:other)")
                     if $is_t_switch_active;
-                $sentencesEndWithEachPart = qr/$yesNo/;
+                $sentencesEndWithEachPart = qr/$yesNo/n;
             }
             $sentencesEndWith .= ( $sentencesEndWith eq "" ? q() : "|" ) . $sentencesEndWithEachPart;
         }
@@ -226,7 +226,7 @@ sub one_sentence_per_line {
         and defined ${ ${ $mainSetting{modifyLineBreaks}{oneSentencePerLine} }{sentencesDoNOTcontain} }{other} )
     {
         my $sentencesDoNOTcontain
-            = qr/${${ $mainSetting{modifyLineBreaks}{oneSentencePerLine} }{sentencesDoNOTcontain}}{other}/;
+            = qr/${${ $mainSetting{modifyLineBreaks}{oneSentencePerLine} }{sentencesDoNOTcontain}}{other}/n;
 
         $sentenceRegEx = qr/
                         ((?:$sentencesFollow))
