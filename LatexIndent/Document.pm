@@ -66,7 +66,7 @@ use LatexIndent::Heading      qw/find_heading construct_headings_levels $allHead
 use LatexIndent::FileContents qw/find_file_contents_environments_and_preamble/;
 
 use LatexIndent::UTF8CmdLineArgsFileOperation
-    qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode/;
+    qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode text_mode_line_breaks/;
 use utf8;
 
 sub new {
@@ -232,6 +232,13 @@ sub output_indented_text {
 
     $logger->info("*Output routine:");
 
+    # write in binary mode; in text mode (Windows), write CRLF line breaks only if
+    # the input had them (see file_extension_check) and dos2unixlinebreaks is off,
+    # instead of writing every LF as CRLF
+    my $textMode = text_mode_line_breaks();
+    my $body     = ${$self}{body};
+    $body =~ s/\r?\n/\r\n/g if ( $textMode and ${$self}{crlfLineBreaks} and !$mainSetting{dos2unixlinebreaks} );
+
     # if -overwrite is active then output to original fileName
     if ( ${$self}{overwrite} ) {
 
@@ -239,14 +246,14 @@ sub output_indented_text {
         ${$self}{fileName} = ${$self}{fileName};
 
         $logger->info("Overwriting file ${$self}{fileName}");
-        my $OUTPUTFILE = open_with_encode( '>:encoding(UTF-8)', ${$self}{fileName} );
-        print $OUTPUTFILE ${$self}{body};
+        my $OUTPUTFILE = open_with_encode( '>:raw:encoding(UTF-8)', ${$self}{fileName} );
+        print $OUTPUTFILE $body;
         close($OUTPUTFILE);
     }
     elsif ( $switch{outputToFile} ) {
         $logger->info("Outputting to file ${$self}{outputToFile}");
-        my $OUTPUTFILE = open_with_encode( '>:encoding(UTF-8)', ${$self}{outputToFile} );
-        print $OUTPUTFILE ${$self}{body};
+        my $OUTPUTFILE = open_with_encode( '>:raw:encoding(UTF-8)', ${$self}{outputToFile} );
+        print $OUTPUTFILE $body;
         close($OUTPUTFILE);
     }
     else {
@@ -254,7 +261,11 @@ sub output_indented_text {
     }
 
     # output to screen, unless silent mode
-    print ${$self}{body} unless $switch{silentMode};
+    unless ( $switch{silentMode} ) {
+        binmode( STDOUT, ':raw:encoding(UTF-8)' ) if $textMode;
+        print $body;
+        binmode( STDOUT, ':raw:crlf:encoding(utf8)' ) if $textMode;
+    }
 
     return;
 }
