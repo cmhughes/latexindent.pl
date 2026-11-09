@@ -296,5 +296,9 @@ latexindent.pl -s -l sec-intro -m sec-intro -o=+-mod1
 
 latexindent.pl -s -l issue-659.yaml issue-659.tex -o=+-mod1
 
+# trailing comments moved before a comment on its own line keep the space from the line break
+latexindent.pl -s -m -y 'modifyLineBreaks:textWrapOptions:columns:80' tw-comment-line -o=+-mod1
+latexindent.pl -s -m -y 'modifyLineBreaks:textWrapOptions:columns:80;blocksFollow:commentOnPreviousLine:0' tw-comment-line -o=+-mod2
+
 set +x 
 wrapuptasks
