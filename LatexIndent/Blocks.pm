@@ -936,6 +936,8 @@ sub _find_all_code_blocks {
              # get the name of special
              if (not defined $specialLookUpName{$lookupBegin}){
                 foreach ( @{ $mainSetting{specialBeginEnd} } ) {
+                   next if !${$_}{lookForThis};
+                   next if ${$_}{lookForThis} eq 'verbatim';
                    if($lookupBegin =~m^${$_}{begin}^s){
                      $specialLookUpName{$lookupBegin} = ${$_}{name};
                      last;
