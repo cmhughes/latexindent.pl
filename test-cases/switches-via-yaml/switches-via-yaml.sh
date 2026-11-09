@@ -39,5 +39,9 @@ latexindent.pl command1 -l switches11.yaml -o=+-mod11
 egrep -i 'INFO:  Switch activated via YAML:' indent.log > switches11.txt
 egrep -i 'found:' indent.log >> switches11.txt
 
+# kvSwitch turns on verbose check mode even when kSwitch has already turned on check mode
+latexindent.pl command1 -l switches12.yaml > /dev/null
+egrep -i 'INFO:  Switch activated via YAML:' indent.log > switches12.txt
+
 set +x 
 wrapuptasks
