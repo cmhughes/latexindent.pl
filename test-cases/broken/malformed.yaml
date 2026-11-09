@@ -1,0 +1,4 @@
+defaultIndent: "  "
+indentRules:
+  itemize: " "
+ enumerate: " "
