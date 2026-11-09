@@ -61,5 +61,9 @@ latexindent.pl --lines 4 blank-lines.tex -s -o=+-mod4
 latexindent.pl --lines 6 blank-lines.tex -s -o=+-mod6
 latexindent.pl --lines 8 blank-lines.tex -s -o=+-mod8
 
+# line breaks of lines not operated upon are kept as they are
+latexindent.pl --lines 1 no-final-line-break.tex -s -o=+-mod1
+latexindent.pl --lines 2 crlf-line-breaks.tex -s -o=+-mod2
+
 set +x 
 wrapuptasks
