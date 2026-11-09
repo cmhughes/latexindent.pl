@@ -1,0 +1,3 @@
+Unknown option: chek
+Exiting, no indentation done; see latexindent.pl --help
+exit code: 8
