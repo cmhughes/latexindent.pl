@@ -63,6 +63,13 @@ perl -p0i -e 's/.*?(INFO:\s+-o)/$1/s' ext-info3.txt
 latexindent.pl -s cmh.bib -o two. 
 cp indent.log ext-info4.txt
 perl -p0i -e 's/.*?(INFO:\s+-o)/$1/s' ext-info4.txt
+# an output file name with an extension keeps it, and one that ends in tex is not taken to have one
+latexindent.pl -s cmh.tex -o four.md
+cp indent.log ext-info5.txt
+perl -p0i -e 's/.*?(INFO:\s+-o)/$1/s' ext-info5.txt
+latexindent.pl -s cmh.tex -o vertex
+cp indent.log ext-info6.txt
+perl -p0i -e 's/.*?(INFO:\s+-o)/$1/s' ext-info6.txt
 
 set +x
 for infofile in ext-info*.txt 
@@ -98,6 +105,9 @@ latexindent.pl cmh.tex -o +myfile++.tex -s
 cp indent.log cmh-info4.txt
 latexindent.pl cmh.tex -o myfile++.tex -s
 cp indent.log cmh-info5.txt
+# an extension given after ++ is kept, even if it differs from that of the input file
+latexindent.pl cmh.bib -o bibfile++.tex -s
+cp indent.log cmh-info6.txt
 set +x
 for infofile in cmh-info*.txt 
 do 
@@ -114,6 +124,14 @@ for outputfile in *0.tex; do mv $outputfile tmp.log; done
 # part of fileExtensionPreference
 latexindent.pl -w cmh.txt -s
 latexindent.pl -w cmh.jab -s
+
+# the -o switch keeps the directory of the output file name
+keepappendinglogfile
+latexindent.pl -s cmh.tex -o=subdir/four
+grep "Outputting to file" indent.log > subdir/output-files.txt
+latexindent.pl -s cmh.tex -o=subdir/five++.tex
+grep "Outputting to file" indent.log >> subdir/output-files.txt
+mv subdir/five0.tex subdir/tmp.log
 
 set +x 
 wrapuptasks
