@@ -41,6 +41,10 @@ do
     latexindent.pl -s  -m verbatim-commands1 -l=verb-end$i -o=+-end-mod$i
     latexindent.pl -s  -m verbatim-commands4 -l=verb-end$i -o=+-end-mod$i
     latexindent.pl -s  -m verbatim-commands5 -l=verb-end$i -o=+-end-mod$i
+    # verbatim commands within comments
+    latexindent.pl -s  -m verbatim-commands-comment -l=verb-end$i -o=+-end-mod$i
+    # verbatim commands within verbatim environments and specials
+    latexindent.pl -s  -m verbatim-commands-verbatim -l=verb-special,verb-end$i -o=+-end-mod$i
     set +x
 done
 keepappendinglogfile

@@ -18,16 +18,18 @@ package LatexIndent::Verbatim;
 use strict;
 use warnings;
 use Data::Dumper;
-use Exporter                     qw/import/;
-use LatexIndent::Tokens          qw/%tokens/;
-use LatexIndent::GetYamlSettings qw/%mainSetting/;
-use LatexIndent::Switches        qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
-use LatexIndent::LogFile         qw/$logger/;
+use Exporter                      qw/import/;
+use LatexIndent::Tokens           qw/%tokens/;
+use LatexIndent::GetYamlSettings  qw/%mainSetting/;
+use LatexIndent::Switches         qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
+use LatexIndent::LogFile          qw/$logger/;
+use LatexIndent::TrailingComments qw/$notPrecededByRegExp/;
 our @EXPORT_OK
     = qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands find_verbatim_special verbatim_common_tasks %verbatimStorage/;
 our @ISA = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
 our $verbatimCounter;
 our %verbatimStorage;
+our %replacementTextWithoutTokens;
 
 sub find_noindent_block {
     my $self = shift;
@@ -253,6 +255,9 @@ sub find_verbatim_environments {
             # log file output
             $logger->trace("*VERBATIM environment found: ${$verbatimBlock}{name}") if $is_t_switch_active;
 
+            # verbatim commands within the environment keep the text after them
+            $verbatimBlock->restore_text_after_verbatim_commands if $is_m_switch_active;
+
             # there are common tasks for each of the verbatim objects
             $verbatimBlock->verbatim_common_tasks;
 
@@ -282,6 +287,7 @@ sub find_verbatim_commands {
     # back in
     $logger->trace('*Searching for VERBATIM commands (see verbatimCommands)') if $is_t_switch_active;
     $logger->trace( Dumper( \%{ $mainSetting{verbatimCommands} } ) )          if ($is_tt_switch_active);
+    %replacementTextWithoutTokens = ();
     while ( my ( $verbCommand, $yesno ) = each %{ $mainSetting{verbatimCommands} } ) {
         my $verbCommandSpec;
 
@@ -363,8 +369,15 @@ sub find_verbatim_commands {
                 optArg => $3 ? $3 : q(),
             );
 
+            # the horizontal space and line break after the command, as found
+            my $textAfterCommand
+                = ${$verbatimCommand}{horizontalTrailingSpace} . ${$verbatimCommand}{linebreaksAtEnd}{end};
+
             # there are common tasks for each of the verbatim objects
             $verbatimCommand->verbatim_common_tasks;
+
+            # replacement text for a command within a comment or verbatim block, see below
+            $replacementTextWithoutTokens{ ${$verbatimCommand}{id} } = ${$verbatimCommand}{id} . $textAfterCommand;
 
             # output, if desired
             $logger->trace( Dumper($verbatimCommand), 'ttrace' ) if ($is_tt_switch_active);
@@ -392,8 +405,37 @@ sub find_verbatim_commands {
             ${$verbatimCommand}{replacementText};
         }ge;
     }
+
+    # a verbatim command within a comment is stored with that comment, where poly-switch
+    # tokens are never processed, so it keeps the trailing space and line break it had
+    if ($is_m_switch_active) {
+        while ( my ( $verbatimID, $replacementText ) = each %replacementTextWithoutTokens ) {
+            my $child = $verbatimStorage{$verbatimID};
+            next unless ( defined $child and ${$child}{replacementText} ne $replacementText );
+            if ( ${$self}{body} =~ s/($notPrecededByRegExp%.*?)\Q${$child}{replacementText}\E/$1$replacementText/ ) {
+                ${$child}{EndFinishesWithLineBreak} = 0;
+            }
+        }
+    }
     return;
 
+}
+
+sub restore_text_after_verbatim_commands {
+    my $self = shift;
+
+    # a verbatim command within a verbatim environment or special is stored in that block's
+    # body, where poly-switch tokens are never processed, so it keeps the trailing space and
+    # line break it had
+    foreach my $verbatimID ( ${$self}{body} =~ m/$tokens{verbatimInline}\d+$tokens{endOfToken}/g ) {
+        my $child           = $verbatimStorage{$verbatimID};
+        my $replacementText = $replacementTextWithoutTokens{$verbatimID};
+        next unless ( defined $child and ${$child}{replacementText} ne $replacementText );
+        if ( ${$self}{body} =~ s/\Q${$child}{replacementText}\E/$replacementText/ ) {
+            ${$child}{EndFinishesWithLineBreak} = 0;
+        }
+    }
+    return;
 }
 
 sub find_verbatim_special {
@@ -443,6 +485,9 @@ sub find_verbatim_special {
                         EndFinishesWithLineBreak => "SpecialEndFinishesWithLineBreak",
                     },
                 );
+
+                # verbatim commands within the special keep the text after them
+                $verbatimBlock->restore_text_after_verbatim_commands if $is_m_switch_active;
 
                 # there are common tasks for each of the verbatim objects
                 $verbatimBlock->verbatim_common_tasks;
