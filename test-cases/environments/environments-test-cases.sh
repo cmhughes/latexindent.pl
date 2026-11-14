@@ -129,6 +129,13 @@ latexindent.pl -s -y='modifyLineBreaks:environments: myenv:EndStartsOnOwnLine:3;
 latexindent.pl -s issue-256 -o +-mod1
 latexindent.pl -s -y="dos2unixlinebreaks:1" issue-256 -o +-mod2
 
+# issue 662: in text mode, as on Windows (emulated here with PERLIO=:unix:crlf),
+# LF input is written with LF line breaks and CRLF input with CRLF line breaks;
+# dos2unixlinebreaks gives LF line breaks
+PERLIO=:unix:crlf latexindent.pl -s issue-662-lf -o=+-mod1
+PERLIO=:unix:crlf latexindent.pl -s issue-662-crlf -o=+-mod1
+PERLIO=:unix:crlf latexindent.pl -s -y="dos2unixlinebreaks:1" issue-662-crlf -o=+-mod2
+
 # CRLF line breaks: no trailing indentation before \r\n, as for \n
 latexindent.pl -s crlf-trailing-indent -o=+-mod1
 

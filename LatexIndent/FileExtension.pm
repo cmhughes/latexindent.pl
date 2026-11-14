@@ -29,7 +29,7 @@ use LatexIndent::LogFile         qw/$logger/;
 our @EXPORT_OK = qw/file_extension_check/;
 
 use LatexIndent::UTF8CmdLineArgsFileOperation
-    qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode/;
+    qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode text_mode_line_breaks/;
 use utf8;
 
 sub file_extension_check {
@@ -176,10 +176,15 @@ sub file_extension_check {
     }
 
     # read the file into the Document body
+    #
+    # read in binary mode; in text mode (Windows), convert CRLF line breaks to LF
+    # below, as text mode would, and note whether the input had CRLF line breaks,
+    # so that output_indented_text can write the same line breaks
+    my $textMode = text_mode_line_breaks();
     my @lines;
     if ( $fileName ne "-" ) {
         my $openFilePossible = 1;
-        my $MAINFILE         = open_with_encode( '<:encoding(UTF-8)', $fileName ) or ( $openFilePossible = 0 );
+        my $MAINFILE         = open_with_encode( '<:raw:encoding(UTF-8)', $fileName ) or ( $openFilePossible = 0 );
         if ( $openFilePossible == 0 ) {
             if ( defined ${$self}{multipleFiles} ) {
                 $logger->warn("*$fileName exists, but could not open it");
@@ -197,7 +202,15 @@ sub file_extension_check {
         close($MAINFILE);
     }
     else {
+        binmode( STDIN, ':raw:encoding(UTF-8)' ) if $textMode;
         push( @lines, $_ ) while (<>);
+    }
+
+    if ($textMode) {
+        ${$self}{crlfLineBreaks} = 0;
+        foreach (@lines) {
+            ${$self}{crlfLineBreaks} = 1 if s/\r\n\z/\n/;
+        }
     }
 
     # -n, --lines mode active

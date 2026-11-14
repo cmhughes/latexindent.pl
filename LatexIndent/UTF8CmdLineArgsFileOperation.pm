@@ -9,7 +9,7 @@ use Encode qw(find_encoding decode encode );
 
 use Exporter qw/import/;
 our @EXPORT_OK
-    = qw/commandlineargs_with_encode @new_args copy_with_encode exist_with_encode open_with_encode zero_with_encode read_yaml_with_encode isdir_with_encode mkdir_with_encode/;
+    = qw/commandlineargs_with_encode @new_args copy_with_encode exist_with_encode open_with_encode zero_with_encode read_yaml_with_encode isdir_with_encode mkdir_with_encode text_mode_line_breaks/;
 
 our $encodingObject;
 
@@ -74,6 +74,16 @@ sub zero_with_encode {
         $filename = $encodingObject->encode($filename);
         return -z $filename;
     }
+}
+
+# Returns 1 if files are read and written in text mode by default, as on Windows:
+# CRLF line breaks are read as LF, and every LF is written as CRLF. Perl does this
+# through its default :crlf layer, and latexindent.exe through Win32::Unicode::File.
+# The answer is worked out on the first call, before STDIN may be set to binary mode.
+sub text_mode_line_breaks {
+    state $textMode
+        = ( $FindBin::Script =~ /\.exe$/ or grep { $_ eq 'crlf' } PerlIO::get_layers(*STDIN) ) ? 1 : 0;
+    return $textMode;
 }
 
 sub open_with_encode {
