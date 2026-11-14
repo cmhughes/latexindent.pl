@@ -1,7 +1,6 @@
 
 @@ 1 -- 4 @@
 -\command{body}
--
 +\command
 +{
 +	body

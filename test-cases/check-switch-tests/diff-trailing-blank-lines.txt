@@ -1,0 +1,5 @@
+simple diff: (check switch active)
+       @@ 3 -- 4 @@
+       -
+       -
+       +

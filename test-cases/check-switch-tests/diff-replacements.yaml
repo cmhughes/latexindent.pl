@@ -1,0 +1,7 @@
+replacements:
+  -
+    this: 'a'
+    that: 'A'
+  -
+    this: "c\n"
+    that: "c\nX\nY\nZ\n"
