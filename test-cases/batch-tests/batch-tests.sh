@@ -47,5 +47,9 @@ cat local-settings-friend-4/indent.log | grep "WARN:  yaml" > local-settings-fri
 latexindent.pl -s -l local-settings-nofriend/mwe.tex
 cat local-settings-nofriend/indent.log | grep "WARN:  yaml" > local-settings-nofriend/warnings.txt
 
+# -l switch without filename, followed by more than one file: all files are operated upon
+latexindent.pl -s -l env-batch1.tex env-batch2.tex -g bare-l-switch.log
+grep "Filename" bare-l-switch.log > bare-l-switch.txt
+
 set +x 
 wrapuptasks
