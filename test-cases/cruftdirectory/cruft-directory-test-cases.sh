@@ -16,5 +16,10 @@ fi
 latexindent.pl -s  cruft-directory1  -w -l=cycleThroughBackUps.yaml -g=four.log 
 latexindent.pl -s  cruft-directory1  -w -l=cycleThroughBackUps.yaml,noCycle.yaml -g=five.log 
 
+# an absolute -g path is used as given, rather than placed in the cruft directory
+logdir=$(mktemp -d)
+latexindent.pl -s  cruft-directory1 -g $logdir/six.log
+grep "Filename" $logdir/six.log > absolute-logfile.txt
+
 set +x 
 wrapuptasks

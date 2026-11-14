@@ -19,6 +19,7 @@ use strict;
 use warnings;
 use Data::Dumper;
 use File::Basename;    # to get the filename and directory path
+use File::Spec;
 
 use open ':std', ':encoding(UTF-8)';
 use Encode qw/decode/;
@@ -289,8 +290,10 @@ sub output_logfile {
     # open log file
     my $logfileName = $switch{logFileName} || "indent.log";
 
+    # an absolute log file name (-g) is used as given, otherwise it goes in the cruft directory
     my $logfilePath;
-    $logfilePath = "${$self}{cruftDirectory}/$logfileName";
+    $logfilePath
+        = File::Spec->file_name_is_absolute($logfileName) ? $logfileName : "${$self}{cruftDirectory}/$logfileName";
     $logfilePath =~ s/\\/\//g;
     $logfilePath =~ s/\/{2,}/\//g;
     if ( $^O eq 'MSWin32' ) {
