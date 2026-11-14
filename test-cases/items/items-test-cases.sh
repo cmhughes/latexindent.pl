@@ -116,5 +116,9 @@ latexindent.pl -s -l issue-518 issue-518 -o=+-mod1
 latexindent.pl -s -l issue-663 issue-663 -o=+-mod1
 latexindent.pl -s -l issue-663a issue-663 -o=+-mod2
 
+# \itemsep, \itemindent are not items
+latexindent.pl -s items-prefix -o=+-mod1
+latexindent.pl -s -m -l items-mod1 items-prefix -o=+-mod2
+
 set +x 
 wrapuptasks

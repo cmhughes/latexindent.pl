@@ -428,10 +428,10 @@ fineTuning:
   environments:
     name: [a-zA-Z@\*0-9_\\]+
   items:
-    itemRegEx: \\(?:item|myitem)
+    itemRegEx: \\(?:item|myitem)(?![a-zA-Z])
   ifElseFi:
     name: (?!@?if[a-zA-Z@]*?\{|iff(?![a-zA-Z@]))@?if[a-zA-Z@]*+
-    elseOrRegEx: \\(?:else|or)
+    elseOrRegEx: \\(?:else|or)(?![a-zA-Z])
   commands:
     name: [+a-zA-Z@*0-9_:]+
   namedGroupingBracesBrackets:

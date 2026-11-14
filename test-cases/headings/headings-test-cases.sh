@@ -72,5 +72,8 @@ perl -p0i -e 's/INFO:.*//s' obsolete.txt
 
 latexindent.pl -s issue-644 -l issue-644 -o=+-mod1
 
+# \partial, \chaptermark are not headings
+latexindent.pl -s headings-prefix -l indentHeadings -o=+-mod1
+
 set +x 
 wrapuptasks
