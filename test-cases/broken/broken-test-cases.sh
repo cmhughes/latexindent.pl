@@ -26,5 +26,11 @@ cp indent.log obsolete.txt
 perl -p0i -e 's/.*?(WARN:\s*Obsolete)/$1/s' obsolete.txt
 perl -p0i -e 's/INFO:.*//s' obsolete.txt
 
+# malformed YAML is reported in indent.log and skipped: -l file, then indentconfig file
+latexindent.pl -s -l malformed.yaml malformed-yaml.tex -o=+-mod1
+egrep 'WARN|YAML::Tiny found' indent.log | perl -pe 's/ at .+ line \d+\.$//' > malformed-yaml.txt
+LATEXINDENT_CONFIG=malformed-indentconfig.yaml latexindent.pl -s malformed-yaml.tex -o=+-mod2
+egrep 'WARN|YAML::Tiny found' indent.log | perl -pe 's/ at .+ line \d+\.$//' > malformed-indentconfig.txt
+
 set +x 
 wrapuptasks

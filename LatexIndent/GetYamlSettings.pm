@@ -186,7 +186,7 @@ sub yaml_read_settings {
     if ( defined $indentconfig and -f $indentconfig and !$switch{onlyDefault} ) {
 
         # read the absolute paths from indentconfig.yaml
-        $userSettings = YAML::Tiny->read("$indentconfig");
+        $userSettings = eval { YAML::Tiny->read("$indentconfig") };
 
         # update the absolute paths
         if ( $userSettings and ( ref( $userSettings->[0] ) eq 'HASH' ) and $userSettings->[0]->{paths} ) {
@@ -229,6 +229,7 @@ sub yaml_read_settings {
             $logger->warn(
                 "See https://latexindentpl.readthedocs.io/en/latest/sec-indent-config-and-settings.html for an example"
             );
+            $logger->warn($@) if $@;
         }
     }
     else {
@@ -365,12 +366,14 @@ sub yaml_read_settings {
     $logger->info("*YAML settings, reading from the following files:") if @absPaths;
 
     # read in the settings from each file
+    my %settingsFilesRead;
     foreach my $settings (@absPaths) {
 
         # check that the settings file exists and that it isn't empty
         if ( exist_with_encode($settings) and !( zero_with_encode($settings) ) ) {
             $logger->info("Reading USER settings from $settings");
-            $userSettings = read_yaml_with_encode("$settings");
+            $userSettings = eval { read_yaml_with_encode("$settings") };
+            $settingsFilesRead{$settings} = 1;
 
             # update the absolute paths
             if ( $userSettings and ( ref( $userSettings->[0] ) eq 'HASH' ) and $userSettings->[0]->{paths} ) {
@@ -380,6 +383,14 @@ sub yaml_read_settings {
                 $logger->info( Dump \%{ $userSettings->[0] } );
 
                 foreach ( @{ $userSettings->[0]->{paths} } ) {
+
+                    # a file that has already been read is not read again, so that files
+                    # which list themselves, or each other, under paths do not loop forever
+                    if ( $settingsFilesRead{$_} ) {
+                        $logger->warn(
+                            "*$_ is listed under paths in $settings but has already been read; not reading it again");
+                        next;
+                    }
                     push( @absPaths, $_ );
                 }
             }
@@ -567,6 +578,7 @@ sub yaml_read_settings {
             else {
                 # otherwise print a warning that we can not read userSettings.yaml
                 $logger->warn("*$settings contains invalid yaml format- not reading from it");
+                $logger->warn($@) if $@;
             }
         }
         else {

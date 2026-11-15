@@ -37,5 +37,11 @@ cp indent.log path-test7.txt
 perl -p0i -e 's/.*?(YAML\ssettings, reading)/$1/s' path-test7.txt
 perl -p0i -e 's/INFO:.*//s' path-test7.txt
 
+# files that list each other under paths are each read only once
+latexindent.pl -s -l nested-paths8.yaml mwe.tex -o=+-mod8
+cp indent.log path-test8.txt
+perl -p0i -e 's/.*?(YAML\ssettings, reading)/$1/s' path-test8.txt
+perl -p0i -e 's/INFO:.*//s' path-test8.txt
+
 set +x 
 wrapuptasks

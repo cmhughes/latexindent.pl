@@ -1,0 +1,2 @@
+WARN:  The paths field cannot be read from malformed-indentconfig.yaml; this means it is either empty or contains invalid YAML
+       YAML::Tiny found bad indenting in line '  - other.yaml'
