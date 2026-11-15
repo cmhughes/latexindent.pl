@@ -131,8 +131,7 @@ sub max_indentation_check {
     $logger->trace("*Maximum indentation check") if ($is_t_switch_active);
 
     # replace any leading tabs with spaces, and update the body
-    my @expanded_lines = expand( ${$self}{body} );
-    ${$self}{body} = join( "", @expanded_lines );
+    ${$self}{body} =~ s/^(\h*\t)/expand("$1")/mge;
 
     # grab the maximum indentation
     my $maximumIndentation       = $mainSetting{maximumIndentation};
