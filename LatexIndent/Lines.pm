@@ -72,8 +72,8 @@ sub lines_body_selected_lines {
             $maxLine = $_;
         }
 
-        # both minLine and maxLine need to be INTEGERS
-        if ( $minLine !~ m/^\d+$/ or $maxLine !~ m/^\d+$/ ) {
+        # both minLine and maxLine need to be POSITIVE INTEGERS
+        if ( $minLine !~ m/^\d+$/ or $maxLine !~ m/^\d+$/ or $minLine == 0 or $maxLine == 0 ) {
             $logger->warn("*$_ not a valid line specification; I'm ignoring this entry");
             next;
         }
@@ -101,12 +101,14 @@ sub lines_body_selected_lines {
             $maxLine = $#lines + 1;
         }
 
-        # either store the negation, or not
+        # either store the negation, or not; ranges with the same min line keep the larger max line
         if ($negationMode) {
-            $negationMinMaxStorage{$minLine} = $maxLine;
+            $negationMinMaxStorage{$minLine} = $maxLine
+                unless ( defined $negationMinMaxStorage{$minLine} and $negationMinMaxStorage{$minLine} > $maxLine );
         }
         else {
-            $minMaxStorage{$minLine} = $maxLine;
+            $minMaxStorage{$minLine} = $maxLine
+                unless ( defined $minMaxStorage{$minLine} and $minMaxStorage{$minLine} > $maxLine );
         }
         $logger->info("min line: $minLine, max line: $maxLine");
     }
@@ -144,7 +146,7 @@ sub lines_body_selected_lines {
         }
 
         # final range
-        if ( $NOTindentLineRange[-1] < $#lines ) {
+        if ( $NOTindentLineRange[-1] < $#lines + 1 ) {
             $minMaxStorage{ $NOTindentLineRange[-1] + 1 } = $#lines + 1;
         }
     }
