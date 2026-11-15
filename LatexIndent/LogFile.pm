@@ -143,8 +143,9 @@ ENDQUOTE
 
     my $cruftDirectoryCreation = 0;
 
-    # if cruft directory does not exist, create it
-    if ( !( isdir_with_encode( ${$self}{cruftDirectory} ) ) ) {
+    # if cruft directory (-c) does not exist, create it; the directory of the
+    # file is not created, as the file cannot exist if its directory does not
+    if ( $switch{cruftDirectory} and !( isdir_with_encode( ${$self}{cruftDirectory} ) ) ) {
         eval { mkdir_with_encode( ${$self}{cruftDirectory} ) };
         if ($@) {
             $logger->fatal( "*Could not create cruft directory " . ${$self}{cruftDirectory} );
