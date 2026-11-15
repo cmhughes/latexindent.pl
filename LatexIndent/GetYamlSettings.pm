@@ -316,7 +316,7 @@ sub yaml_read_settings {
     foreach (@localSettings) {
 
         # check for an extension (.yaml)
-        my ( $name, $dir, $ext ) = fileparse( $_, "yaml" );
+        my ( $name, $dir, $ext ) = fileparse( $_, qr/\.yaml$/ );
 
         # if no extension is found, append the current localSetting with .yaml
         $_ = $_ . ( $_ =~ m/\.\z/ ? q() : "." ) . "yaml" if ( !$ext );
