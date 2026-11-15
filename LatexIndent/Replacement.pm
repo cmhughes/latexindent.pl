@@ -81,6 +81,10 @@ sub make_replacements {
 # https://stackoverflow.com/questions/12423337/how-to-pass-a-replacing-regex-as-a-command-line-argument-to-a-perl-script
                 my $body = ${$self}{body};
                 eval("\$body =~ ${$_}{substitution}");
+                if ($@) {
+                    $logger->warn("*substitution could not be evaluated: ${$_}{substitution}");
+                    $logger->warn($@);
+                }
                 ${$self}{body} = $body;
             }
         }

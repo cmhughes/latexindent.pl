@@ -1,0 +1,1 @@
+WARN:  substitution could not be evaluated: s/(\\arraycolsep=\d+pt//sg

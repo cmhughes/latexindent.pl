@@ -23,6 +23,10 @@ latexindent.pl -s -r test4.tex -l=replace8.yaml -o=+-mod8
 latexindent.pl -s -r test4.tex -l=replace9.yaml -o=+-mod9
 latexindent.pl -s -r test3.tex -l=replace10.yaml -o=+-mod10
 
+# a substitution that cannot be evaluated is reported in indent.log
+latexindent.pl -s -r test4.tex -l=replace27.yaml -o=+-mod27
+egrep -i 'warn:' indent.log > replace27.txt
+
 # replace $$...$$ with \begin{equation}...\end{equation}, https://tex.stackexchange.com/questions/242150/good-looking-latex-code
 latexindent.pl -s -r test5.tex -l=replace11.yaml -o=+-mod11
 latexindent.pl -s -r test5.tex -l=replace11.yaml -o=+-m-mod11 -m -y="modifyLineBreaks:environments:BeginStartsOnOwnLine:1;BodyStartsOnOwnLine:2;EndStartsOnOwnLine:2"
