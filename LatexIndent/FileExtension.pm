@@ -200,30 +200,6 @@ sub file_extension_check {
         }
         push( @lines, $_ ) while (<$MAINFILE>);
         close($MAINFILE);
-
-        # decode as UTF-8, stopping at invalid input rather than replacing it
-        # with escape text (which the -w switch would write back to the file)
-        my $invalidLine = 0;
-        foreach my $i ( 0 .. $#lines ) {
-            $lines[$i] = eval { decode( 'UTF-8', $lines[$i], FB_CROAK ) };
-            if ( !defined $lines[$i] ) {
-                $invalidLine = $i + 1;
-                last;
-            }
-        }
-        if ($invalidLine) {
-            if ( defined ${$self}{multipleFiles} ) {
-                $logger->warn("*$fileName is not valid UTF-8 (line $invalidLine)");
-                $logger->warn("moving on, no indentation done for $fileName");
-                return 4;
-            }
-            else {
-                $logger->fatal("*$fileName is not valid UTF-8 (line $invalidLine)");
-                $logger->fatal("Exiting, no indentation done.");
-                $self->output_logfile();
-                exit(4);
-            }
-        }
     }
     else {
         binmode( STDIN, ':raw:encoding(UTF-8)' ) if $textMode;
