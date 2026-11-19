@@ -384,7 +384,8 @@ sub text_wrap {
                             $firstLineColumns = $columns - length($subsequentSpace);
 
                             $thingToMeasure =~ s/^\h*//;
-                            for ( my $i = 0; $i < &get_column_width($thingToMeasure); $i++ ) {
+                            my $widthOfThingToMeasure = &get_column_width($thingToMeasure);
+                            for ( my $i = 0; $i < $widthOfThingToMeasure; $i++ ) {
                                 $subsequentSpace =~ s/ //;
                             }
                             $subsequentSpace .= ${ $previouslyFoundSetting{textWrapAfter} }{$name};
