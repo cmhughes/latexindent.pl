@@ -113,7 +113,7 @@ An overview of how the text wrapping feature works:
 
    #. multiple trailing comments will be connected at the end of the text wrap block (see :numref:`lst:tw-tc4`);
 
-   #. the number of spaces between the end of the text wrap block and the (possibly combined) trailing comments is determined by the spaces (if any) at the end of the text wrap block (see :numref:`lst:tw-tc5`);
+   #. the number of spaces between the end of the text wrap block and the (possibly combined) trailing comments is determined by the spaces (if any) at the end of the text wrap block (see :numref:`lst:tw-tc5`); if the text wrap block ends with a line break and is followed by a comment on its own line, then one space is used;
 
 #. trailing comments can receive text wrapping ; examples are shown in :numref:`subsubsec:tw:comments` and :numref:`subsubsec:ospl:tw:comments`.
 

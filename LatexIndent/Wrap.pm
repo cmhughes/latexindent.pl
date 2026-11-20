@@ -416,6 +416,20 @@ sub text_wrap {
                 $textWrapBlockStorageValue = $textWrapBeforeEndWith[0];
             }
 
+            # a line break at the end of the block, followed by a comment on its own line,
+            # separates the last word from the text after that comment; it is kept as a space
+            # below, as the trailing comments appended to the block would otherwise remove it
+            my $textFollowing
+                = scalar @textWrapBeforeEndWith > 1
+                ? $textWrapBeforeEndWith[1]
+                : $textWrapBlockStorage[ $textWrapBlockCount + 1 ];
+            my $lineBreakBeforeCommentOnOwnLine = (
+                        defined $textFollowing
+                    and $textFollowing =~ m/\A\h*\R?\h*$trailingCommentRegExp/
+                    and ( $textWrapBlockStorageValue =~ m/\R\h*\z/ or $textFollowing =~ m/\A\h*\R/ )
+                    and $textWrapBlockStorageValue !~ m/$trailingCommentRegExp\h*\R?\h*\z/
+            );
+
             $logger->trace("TEXTWRAP BLOCK: $textWrapBlockStorageValue") if $is_tt_switch_active;
 
             # initiate the trailing comments storage
@@ -583,6 +597,10 @@ sub text_wrap {
                 # remove the very first leading space, which is already handled by blocks follow
                 $textWrapBlockStorageValue =~ s/^\h*//s unless ${$self}{modifyLineBreaksYamlName} eq 'sentence';
             }
+
+            # keep the line break as a space if trailing comments will take its place
+            $textWrapBlockStorageValue =~ s/(\H)(\R?)\z/$1 $2/s
+                if ( $lineBreakBeforeCommentOnOwnLine and $trailingComments ne '' );
 
             #
             # optionally wrap comments
