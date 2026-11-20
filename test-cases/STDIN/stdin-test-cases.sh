@@ -10,6 +10,10 @@ cat issue-493.tex| latexindent.pl -s -m -l latexindent.yaml -o=issue-493-mod1 -
 latexindent.pl -s -l -m -o=+-mod2 issue-493.tex 
 cat issue-493.tex| latexindent.pl -s -m -l issue-493a.yaml -o=issue-493-mod3 -
 
+# -w and -wd need a file to overwrite, so they are rejected for STDIN
+cat myfile.tex| latexindent.pl -s -w > stdin-overwrite.txt
+cat myfile.tex| latexindent.pl -s -wd >> stdin-overwrite.txt
+
 cat issue-528.tex| latexindent.pl -s -o=issue-528-mod1 -
 
 # issue 662: in text mode, as on Windows (emulated here with PERLIO=:unix:crlf),

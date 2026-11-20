@@ -1,0 +1,4 @@
+FATAL: -w and -wd can not be used with STDIN input, as there is no file to overwrite
+      Exiting, no indentation done.
+FATAL: -w and -wd can not be used with STDIN input, as there is no file to overwrite
+      Exiting, no indentation done.
