@@ -92,6 +92,11 @@ egrep -i --color=auto 'found:' indent.log > issue-602.txt
 
 latexindent.pl -s -l issue-658.yaml issue-658.tex -o=+-mod1
 
+# \verb* is a verbatim command too
+latexindent.pl -s -m verbatim-commands-star -y="modifyLineBreaks:textWrapOptions:columns:20" -o=+-mod1
+# the * in a verbatimCommands name is a literal *, so verb* does not match \vert
+latexindent.pl -s -m verbatim-commands-star-name -l=verbatim-commands-star-name -y="modifyLineBreaks:textWrapOptions:columns:80" -o=+-mod1
+
 verbatimTest=0
 set +x 
 wrapuptasks
