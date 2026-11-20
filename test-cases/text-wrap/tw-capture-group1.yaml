@@ -1,0 +1,5 @@
+modifyLineBreaks:
+  textWrapOptions:
+    columns: 80
+    blocksEndBefore:
+      other: '\\begin\{(one|two)\}'

@@ -1,0 +1,5 @@
+modifyLineBreaks:
+  textWrapOptions:
+    columns: 80
+    blocksFollow:
+      other: '\\mymarker\{(x|y)\}'

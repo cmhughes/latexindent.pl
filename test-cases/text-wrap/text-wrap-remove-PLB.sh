@@ -290,6 +290,11 @@ latexindent.pl -s -l issue-556 -m issue-556 -o=+-mod1
 latexindent.pl -s -l issue-556a -m -r issue-556 -o=+-mod2
 
 latexindent.pl -s -l issue-562 -m issue-562 -o=+-mod1
+
+# capture groups in user blocksEndBefore and blocksFollow patterns
+latexindent.pl -s -m -l tw-capture-group1 tw-capture-group -o=+-mod1
+latexindent.pl -s -m -l tw-capture-group2 tw-capture-group -o=+-mod2
+
 latexindent.pl -s -l issue-608.yaml -m issue-608.tex -o=+-mod1
 latexindent.pl -s -r -l issue-608a.yaml -m issue-608.tex -o=+-mod2
 latexindent.pl -s -l sec-intro -m sec-intro -o=+-mod1
