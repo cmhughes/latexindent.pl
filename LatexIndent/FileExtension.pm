@@ -133,7 +133,7 @@ sub file_extension_check {
         }
 
         # the -o file name might begin with a + symbol
-        if ( $switch{outputToFile} =~ m/^\+(.*)/ and $1 ne "+" ) {
+        if ( ${$self}{outputToFile} =~ m/^\+(.*)/ and $1 ne "+" ) {
             $logger->info("-o switch called with + symbol at the beginning: ${$self}{outputToFile}");
             ${$self}{outputToFile} = ${$self}{baseName} . $1;
             $logger->info("output file is now: ${$self}{outputToFile}");
