@@ -21,6 +21,9 @@ latexindent.pl -s --lines 1---7 lines*.tex -g lines-log.log
 latexindent.pl --check -s lines*.tex -g check-switch-pass.log
 latexindent.pl --check -s env-batch*.tex env-batch11.tex -g check-switch-fail.log -y "defaultIndent: ' '"
 
+# verbatim specialBeginEnd entries are honoured in every file of a batch
+latexindent.pl -s -l=verbatim-special.yaml verbatim-special1.tex verbatim-special2.tex -o=+-mod1 -g verbatim-special.log
+
 # fatal checks
 latexindent.pl -s cmh.tex lines*.tex -g fatal-file-not-exist.log
 latexindent.pl -s cmh1.tex lines*.tex -g fatal-file-no-read.log
