@@ -24,7 +24,7 @@ use LatexIndent::LogFile         qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @EXPORT_OK
-    = qw/remove_trailing_comments put_trailing_comments_back_in $trailingCommentRegExp add_comment_symbol construct_trailing_comment_regexp @trailingComments $alignMarkUpBlockPresent/;
+    = qw/remove_trailing_comments put_trailing_comments_back_in $trailingCommentRegExp add_comment_symbol construct_trailing_comment_regexp @trailingComments $alignMarkUpBlockPresent $notPrecededByRegExp/;
 our @trailingComments;
 our $commentCounter = 0;
 our $notPrecededByRegExp;
