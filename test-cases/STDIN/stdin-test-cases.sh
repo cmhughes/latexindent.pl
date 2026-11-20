@@ -18,5 +18,11 @@ cat issue-662.tex | PERLIO=:unix:crlf latexindent.pl - > issue-662-mod1.tex
 
 cat 713971.tex| latexindent.pl -s -o=713971-mod1 -
 
+# -o=++ needs an input file name, so it is ignored for STDIN (and no file called .tex is written)
+cat myfile.tex | latexindent.pl -s -o=++ - -g stdin-plusplus.log
+egrep 'WARN|ignoring' stdin-plusplus.log > stdin-plusplus.txt
+ls -a | grep -x '\.tex' >> stdin-plusplus.txt
+rm -f .tex
+
 set +x 
 wrapuptasks

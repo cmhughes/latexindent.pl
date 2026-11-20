@@ -1,0 +1,2 @@
+WARN:  -o=++ needs the name of an input file, but the input is STDIN
+       ignoring your specification -o=++
