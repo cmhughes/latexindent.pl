@@ -437,9 +437,10 @@ sub text_wrap {
             #   do *NOT* have a leading space
             #   do have a trailing line break
             #
-            # then we *remove* the trailing line break
+            # then we *remove* the trailing line break, and the
+            # leading space of the next line (present when text wrap is 'after')
             while ( $textWrapBlockStorageValue =~ m|\H$trailingCommentRegExp\h*\R|s ) {
-                $textWrapBlockStorageValue =~ s|(\H)($trailingCommentRegExp)\h*\R|$1$2|s;
+                $textWrapBlockStorageValue =~ s|(\H)($trailingCommentRegExp)\h*\R\h*|$1$2|s;
             }
 
             # now we put all of the trailing comments together
