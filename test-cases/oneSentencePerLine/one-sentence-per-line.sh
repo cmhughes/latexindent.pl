@@ -34,6 +34,9 @@ latexindent.pl -s other-punctuation -m -o=+mod1 -l=manipulateSentences,sentences
 latexindent.pl -s other-punctuation -m -o=+mod2 -l=manipulateSentences,sentences-start-with-lower-case -y="modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\;|\:"
 latexindent.pl -s other-punctuation -m -o=+mod3 -l=manipulateSentences,sentences-start-with-lower-case -y='modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\;|\:|\"'
 
+# wrap the first sentence after a list item, including a custom label
+latexindent.pl -s -m -l=issue-521 issue-521 -o=+-mod1
+
 # sentences across blank lines, note the difference between the following two
 latexindent.pl -s sentences-across-blank-lines -m -o=+mod0 -l=manipulateSentences,issue-419b 
 latexindent.pl -s sentences-across-blank-lines -m -o=+mod1 -l=manipulateSentences -y="modifyLineBreaks:preserveBlankLines:0"

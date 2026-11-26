@@ -29,6 +29,11 @@ our @EXPORT_OK = qw/one_sentence_per_line mlb_one_sentence_per_line_indent one_s
 our $sentenceCounter;
 our @sentenceStorage;
 
+sub _inline_item_prefix {
+    my $item = ${ ${ $mainSetting{fineTuning} }{items} }{itemRegEx};
+    return qr/(?:$item)(?:\h*\[[^\]\r\n]*\]\h*|\h+)/n;
+}
+
 sub one_sentence_per_line {
     my $self = shift;
 
@@ -102,6 +107,13 @@ sub one_sentence_per_line {
     }
     else {
         $sentencesFollow = ( $sentencesFollow eq '' ? q() : qr/(?:$sentencesFollow)(?:\h*\R?)/sx );
+    }
+
+    my $itemPrefix = _inline_item_prefix();
+    my $wrapSentences = ${ $mainSetting{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}
+        && ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{columns} != 0;
+    if ($wrapSentences) {
+        $sentencesFollow = qr/(?:$sentencesFollow|^\h*$itemPrefix)/m;
     }
 
     $logger->trace("Sentences follow regexp:") if $is_tt_switch_active;
@@ -335,13 +347,16 @@ sub one_sentence_per_line {
     ${$self}{body} =~ s/($trailingCommentRegExp)\h($trailingCommentRegExp)/$1$2/sg
         unless ${ ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap};
 
-    #
-    # before:
-    #   \item LTXIN-TK-SENTENCE-117-END
-    # after
-    #   \item
-    #   LTXIN-TK-SENTENCE-117-END
-    ${$self}{body} =~ s/(\S)\h*($tokens{sentence}\d+$tokens{endOfToken})/$1\n$2/sg;
+    # Keep the first sentence on the item's line so the item prefix counts
+    # toward the available space. Other sentence tokens still start new lines.
+    my $sentenceToken = qr/$tokens{sentence}\d+$tokens{endOfToken}/;
+    if ($wrapSentences) {
+        ${$self}{body} =~ s/(^\h*$itemPrefix)($sentenceToken)|(\S)\h*($sentenceToken)/
+            defined($1) ? $1.$2 : "$3\n$4"/mgse;
+    }
+    else {
+        ${$self}{body} =~ s/(\S)\h*($sentenceToken)/$1\n$2/sg;
+    }
 
     #
     # before:
@@ -375,8 +390,18 @@ sub one_sentence_per_line {
                 modifyLineBreaksYamlName => "sentence",
                 BeginStartsOnOwnLine     => 1,
             );
+            my $inlineItem = ${$sentence}{follows} =~ m/^\h*$itemPrefix$/;
+            # Measure the item prefix even when wrapping precedes indentation.
+            local ${ $mainSetting{modifyLineBreaks}{textWrapOptions} }{when} = 'after' if $inlineItem;
             $sentenceObj->text_wrap;
             $sentenceStorageValue = ${$sentenceObj}{body};
+            # The item will receive its indentation during code block processing.
+            $sentenceStorageValue =~ s/^\h+//mg if $inlineItem;
+        }
+
+        if ( $wrapSentences
+            and ${$self}{body} =~ s/^(\h*$itemPrefix)$sentenceStorageID\h*\R?/$1$sentenceStorageValue\n/m ) {
+            next;
         }
 
         # sentence at the very END
@@ -405,6 +430,8 @@ sub mlb_one_sentence_per_line_indent {
 
     $logger->trace("*one sentence per line: sentence INDENTATION active, finding code blocks");
 
+    my $itemPrefix = _inline_item_prefix();
+
     # loop back through the sentenceStorage and replace with the sentence, adjusting line breaks
     # before and after appropriately
     foreach my $sentenceObj ( @{ ${$self}{children} } ) {
@@ -414,10 +441,11 @@ sub mlb_one_sentence_per_line_indent {
 
         ${$sentenceObj}{follows} =~ s/(.*?\R)//s;
 
-        ${$self}{body} =~ m/^(\h*)$sentenceStorageID/m;
-        my $surroundingIndentation = ( $1 ? $1 : q() );
+        my $sentenceStart = qr/^(\h*)($itemPrefix)?$sentenceStorageID/m;
+        my ( $surroundingIndentation, $item ) = ${$self}{body} =~ $sentenceStart;
+        $surroundingIndentation //= q();
 
-        ${$sentenceObj}{follows} = $surroundingIndentation;
+        ${$sentenceObj}{follows} = $surroundingIndentation . ( $item // q() );
 
         # option to text wrap (and option to indent) sentences
         if ( ${ $mainSetting{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences} ) {
@@ -466,9 +494,10 @@ sub mlb_one_sentence_per_line_indent {
         }
 
         $sentenceStorageValue = ${$sentenceObj}{body};
+        $sentenceStorageValue =~ s/^\h+// if defined $item;
 
         # indented sentences
-        ${$self}{body} =~ s/^(\h*)$sentenceStorageID/$1$sentenceStorageValue/m;
+        ${$self}{body} =~ s{$sentenceStart}{$1 . ( $2 // q() ) . $sentenceStorageValue}e;
 
     }
 }
