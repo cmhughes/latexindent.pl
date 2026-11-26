@@ -219,8 +219,11 @@ sub operate_on_file {
         $self->_mlb_file_starts_with_line_break( when => "after" ) if $is_m_switch_active;
         $self->make_replacements( when => "after" )                if ( $is_r_switch_active and !$is_rv_switch_active );
         ${$self}{body} =~ s/\r\n/\n/sg                             if $mainSetting{dos2unixlinebreaks};
-        $self->check_if_different                                  if ${$self}{overwriteIfDifferent};
     }
+
+    # -rr skips the block above, so put back the lines not selected by --lines
+    $self->put_verbatim_back_in( match => "everything-except-commands" ) if ( $is_rr_switch_active and $switch{lines} );
+    $self->check_if_different if ${$self}{overwriteIfDifferent};
     $self->output_indented_text;
     return;
 }
