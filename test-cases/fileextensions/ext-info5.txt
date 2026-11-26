@@ -1,0 +1,4 @@
+INFO:  -o switch active: output file check
+INFO:  Output routine:
+       Outputting to file four.md
+       --------------

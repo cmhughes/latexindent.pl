@@ -1,0 +1,6 @@
+INFO:  -o switch active: output file check
+       -o switch called with file name without extension: vertex
+       Updated to vertex.tex as the file extension of the input file is tex
+INFO:  Output routine:
+       Outputting to file vertex.tex
+       --------------
