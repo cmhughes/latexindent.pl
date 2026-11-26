@@ -64,7 +64,13 @@ GetOptions(
     "checkv|kv"                 => \$switches{checkverbose},
     "lines|n=s"                 => \$switches{lines},
     "GCString"                  => \$switches{GCString},
-);
+) or do {
+
+    # an unknown switch, or a switch without its value, has already been
+    # reported by GetOptions
+    print STDERR "Exiting, no indentation done; see $FindBin::Script --help\n";
+    exit(8);
+};
 
 $logger = LatexIndent::Logger->new();
 our $consoleoutcp;
